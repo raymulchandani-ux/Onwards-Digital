@@ -18,7 +18,7 @@
             --radius-lg: 22px;
         }
 
-        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -688,6 +688,40 @@
     };
 
     const moSpan = '<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
+
+    // ── SMART ANCHOR SCROLL ─────────────────────────────────────────────────────
+    // Shows sections content-first just below the nav, or centered if they fit
+    function scrollToSection(id) {
+        const section = document.getElementById(id);
+        if (!section) return;
+        const nav = document.querySelector('nav');
+        const navH = nav ? nav.offsetHeight : 64;
+        const padTop = parseFloat(window.getComputedStyle(section).paddingTop) || 0;
+        const sectionH = section.offsetHeight;
+        const available = window.innerHeight - navH;
+        const absTop = section.getBoundingClientRect().top + window.scrollY;
+
+        let scrollY;
+        if (sectionH <= available) {
+            // Section fits in viewport: center it below the nav
+            const gap = (available - sectionH) / 2;
+            scrollY = absTop - navH - gap;
+        } else {
+            // Section is taller than viewport: scroll so content (after padding) is just below nav
+            scrollY = absTop + padTop - navH - 20;
+        }
+        window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
+    }
+
+    // Intercept all hash anchor clicks and use smart scroll
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+        const id = link.getAttribute('href').slice(1);
+        if (!id || !document.getElementById(id)) return;
+        e.preventDefault();
+        scrollToSection(id);
+    });
 
     function toggleCurrency() {
         isAED = !isAED;
