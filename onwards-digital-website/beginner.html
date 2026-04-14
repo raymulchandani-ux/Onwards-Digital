@@ -242,10 +242,10 @@
 
         <ul class="features">
             <li>One custom homepage design</li>
-            <li>Mobile-responsive layout</li>
+            <li>Either Mobile or Computer responsive layout</li>
             <li>No commitment required</li>
             <li>Delivered within 3–5 business days</li>
-            <li>Upgrade to Advanced anytime to go live</li>
+            <li>Upgrade to Advanced or Professional to go live</li>
         </ul>
     </div>
 
@@ -318,13 +318,25 @@
                 <label class="form-label">Are you upgrading an existing website or creating a new one?</label>
                 <div class="radio-group">
                     <div class="radio-option">
-                        <input type="radio" id="type-new" name="website_type" value="new" required>
+                        <input type="radio" id="type-new" name="website_type" value="new" required onchange="handleWebsiteTypeChange()">
                         <label for="type-new">Creating new</label>
                     </div>
                     <div class="radio-option">
-                        <input type="radio" id="type-upgrade" name="website_type" value="upgrade">
+                        <input type="radio" id="type-upgrade" name="website_type" value="upgrade" onchange="handleWebsiteTypeChange()">
                         <label for="type-upgrade">Upgrading existing</label>
                     </div>
+                </div>
+            </div>
+
+            <!-- UPGRADE FIELDS (shown only when "Upgrading existing" is selected) -->
+            <div id="upgrade-fields" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Your current website URL</label>
+                    <input type="url" class="form-input" name="current_website_url" placeholder="https://yourwebsite.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">What would you like upgraded?</label>
+                    <textarea class="form-textarea" name="upgrade_details" placeholder="Describe what you'd like changed or improved on your existing site..."></textarea>
                 </div>
             </div>
 
@@ -388,6 +400,12 @@
         });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Upgrading existing website fields
+    function handleWebsiteTypeChange() {
+        const upgradeSelected = document.getElementById('type-upgrade').checked;
+        document.getElementById('upgrade-fields').style.display = upgradeSelected ? 'block' : 'none';
+    }
 
     // File upload
     function handleIndustryChange(select) {

@@ -144,7 +144,7 @@
         </div>
         <div class="next-step">
             <div class="step-dot">3</div>
-            <p><strong>Your site goes live in 3–7 days.</strong> We'll keep you updated every step of the way.</p>
+            <p id="step3-text"><strong>Your site will be completed within 3–7 business days.</strong> We'll keep you updated every step of the way.</p>
         </div>
     </div>
 
@@ -195,6 +195,14 @@
 
     document.getElementById('summary-price').innerHTML = priceDisplay.replace('/mo', '<span class="per-mo">/mo</span>');
     document.getElementById('summary-type').textContent = typeText;
+
+    // ── STEP 3 PLAN-SPECIFIC TEXT ────────────────────────────────────
+    const step3 = document.getElementById('step3-text');
+    if (planName.toLowerCase().includes('advanced')) {
+        step3.innerHTML = '<strong>Your site will be completed within 3–5 business days.</strong> We\'ll keep you updated every step of the way.';
+    } else if (planName.toLowerCase().includes('professional')) {
+        step3.innerHTML = '<strong>Your site will be completed within 5–7 business days.</strong> We\'ll keep you updated every step of the way.';
+    }
 
     // ── PAYPAL BUTTON ────────────────────────────────────────────────
     function handlePayPalClick(e) {

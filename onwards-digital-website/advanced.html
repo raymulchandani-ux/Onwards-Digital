@@ -110,6 +110,7 @@
         <ul class="features">
             <li>Up to 3 page responsive website</li>
             <li>Mobile &amp; computer optimized design</li>
+            <li>Booking or payment integration</li>
             <li>Contact form integration</li>
             <li>Basic SEO setup</li>
             <li>2 rounds of revisions</li>
@@ -167,10 +168,23 @@
             <div class="form-group">
                 <label class="form-label">Are you upgrading an existing website or creating a new one?</label>
                 <div class="radio-group">
-                    <div class="radio-option"><input type="radio" id="type-new" name="website_type" value="new" required><label for="type-new">Creating new</label></div>
-                    <div class="radio-option"><input type="radio" id="type-upgrade" name="website_type" value="upgrade"><label for="type-upgrade">Upgrading existing</label></div>
+                    <div class="radio-option"><input type="radio" id="type-new" name="website_type" value="new" required onchange="handleWebsiteTypeChange()"><label for="type-new">Creating new</label></div>
+                    <div class="radio-option"><input type="radio" id="type-upgrade" name="website_type" value="upgrade" onchange="handleWebsiteTypeChange()"><label for="type-upgrade">Upgrading existing</label></div>
                 </div>
             </div>
+
+            <!-- UPGRADE FIELDS (shown only when "Upgrading existing" is selected) -->
+            <div id="upgrade-fields" style="display:none;">
+                <div class="form-group">
+                    <label class="form-label">Your current website URL</label>
+                    <input type="url" class="form-input" name="current_website_url" placeholder="https://yourwebsite.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">What would you like upgraded?</label>
+                    <textarea class="form-textarea" name="upgrade_details" placeholder="Describe what you'd like changed or improved on your existing site..."></textarea>
+                </div>
+            </div>
+
             <div class="form-group">
                 <label class="form-label">Anything else you'd like us to know?</label>
                 <textarea class="form-textarea" name="comments" placeholder="Tell us about your preferences, colors you like, websites you admire, features you need..."></textarea>
@@ -241,6 +255,11 @@
     }
 
     let addonSelected = false;
+
+    function handleWebsiteTypeChange() {
+        const upgradeSelected = document.getElementById('type-upgrade').checked;
+        document.getElementById('upgrade-fields').style.display = upgradeSelected ? 'block' : 'none';
+    }
 
     function handleIndustryChange(select) {
         const other = document.getElementById('business-type-other');
