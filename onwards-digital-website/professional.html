@@ -314,6 +314,7 @@
             document.getElementById('form-section').style.display = 'none';
             document.querySelector('.divider').style.display = 'none';
             document.getElementById('success').classList.add('show');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             setTimeout(() => { window.location.href = paymentUrl; }, 1500);
         }).catch(() => {
             window.location.href = paymentUrl;
