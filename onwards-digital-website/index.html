@@ -690,26 +690,32 @@
     const moSpan = '<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
 
     // ── SMART ANCHOR SCROLL ─────────────────────────────────────────────────────
-    // Shows sections content-first just below the nav, or centered if they fit
+    // Centers the section's visible content (excluding its own padding) in the
+    // available space below the fixed nav, giving equal breathing room top & bottom.
     function scrollToSection(id) {
         const section = document.getElementById(id);
         if (!section) return;
         const nav = document.querySelector('nav');
         const navH = nav ? nav.offsetHeight : 64;
-        const padTop = parseFloat(window.getComputedStyle(section).paddingTop) || 0;
-        const sectionH = section.offsetHeight;
+        const cs = window.getComputedStyle(section);
+        const padTop    = parseFloat(cs.paddingTop)    || 0;
+        const padBottom = parseFloat(cs.paddingBottom) || 0;
+        // contentH = the actual visible content (cards, text) without section padding
+        const contentH  = section.offsetHeight - padTop - padBottom;
         const available = window.innerHeight - navH;
-        const absTop = section.getBoundingClientRect().top + window.scrollY;
+        const absTop    = section.getBoundingClientRect().top + window.scrollY;
 
-        let scrollY;
-        if (sectionH <= available) {
-            // Section fits in viewport: center it below the nav
-            const gap = (available - sectionH) / 2;
-            scrollY = absTop - navH - gap;
+        const minGap = 36; // minimum breathing room above & below content
+        let gap;
+        if (contentH <= available - minGap * 2) {
+            // Content fits: center it perfectly in the available area
+            gap = (available - contentH) / 2;
         } else {
-            // Section is taller than viewport: scroll so content (after padding) is just below nav
-            scrollY = absTop + padTop - navH - 20;
+            // Content taller than viewport: use minimum gap above, scroll naturally
+            gap = minGap;
         }
+
+        const scrollY = absTop + padTop - navH - gap;
         window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
     }
 
