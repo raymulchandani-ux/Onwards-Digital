@@ -200,7 +200,7 @@
             font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
         }
         .pricing-card h3 { font-size: 1rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.75rem; }
-        .pricing-price { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 0.25rem; color: var(--text); white-space: nowrap; }
+        .pricing-price { font-size: 2.4rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.25rem; color: var(--text); white-space: nowrap; }
         .pricing-desc { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 2rem; }
         .pricing-features { list-style: none; }
         .pricing-features li {
@@ -329,8 +329,36 @@
         @media (max-width: 768px) {
             .nav-links, .nav-cta { display: none; }
             .mobile-menu-btn { display: block; }
-            .hero { padding: 7rem 1.5rem 4rem; }
-            section { padding: 4.5rem 1.5rem; }
+            .hero { padding: 6rem 1.25rem 3rem; }
+            section { padding: 3.25rem 1.25rem; }
+            .section-title { font-size: 1.65rem !important; letter-spacing: -0.8px; }
+            .section-subtitle { font-size: 0.92rem; margin-bottom: 2rem; }
+            .section-label { font-size: 0.72rem; margin-bottom: 0.75rem; }
+
+            /* SERVICES + WHY US — tighter cards */
+            .services-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+            .service-card { padding: 1.35rem 1.25rem; }
+            .service-icon { width: 40px; height: 40px; font-size: 1.1rem; margin-bottom: 0.85rem; border-radius: 10px; }
+            .service-card h3 { font-size: 0.98rem; margin-bottom: 0.4rem; }
+            .service-card p { font-size: 0.84rem; line-height: 1.55; }
+
+            /* HOW IT WORKS */
+            .process-steps { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2rem; }
+            .step { padding: 1.25rem 1rem; }
+            .step-number { width: 38px; height: 38px; font-size: 0.95rem; margin-bottom: 0.8rem; }
+            .step h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+            .step p { font-size: 0.8rem; line-height: 1.5; }
+
+            /* PRICING — keep readable */
+            .pricing-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .pricing-card { padding: 1.75rem 1.5rem; }
+            .pricing-price { font-size: 2.1rem; }
+
+            /* TESTIMONIALS */
+            .testimonials-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+            .testimonial-card { padding: 1.5rem 1.25rem; }
+            .testimonial-card blockquote { font-size: 0.86rem; margin-bottom: 1rem; }
+
             .pricing-card.featured::before { top: -10px; }
         }
     </style>
@@ -342,11 +370,10 @@
     <a href="#" class="nav-logo">Onwards Digital</a>
     <ul class="nav-links">
         <li><a href="#services">Services</a></li>
-        <li><a href="#work">Work</a></li>
-        <li><a href="#process">Process</a></li>
+        <li><a href="#work">Why Us</a></li>
+        <li><a href="#process">How It Works</a></li>
         <li><a href="#pricing">Pricing</a></li>
     </ul>
-    <a href="#pricing" class="nav-cta">Get a Free Mockup</a>
     <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">&#9776;</button>
 </nav>
 
@@ -357,7 +384,7 @@
         <h1>Your business deserves a<br><span>website that works</span></h1>
         <p>We design and build fast, modern websites that turn visitors into customers — delivered in days, not months.</p>
         <div class="hero-buttons">
-            <a href="beginner.html" class="btn-primary">Get Your Free Mockup &rarr;</a>
+            <a href="#pricing" class="btn-primary">Get Your Free Mockup &rarr;</a>
         </div>
     </div>
 </section>
@@ -541,7 +568,7 @@
             </div>
             <div class="pricing-card glass fade-in">
                 <h3>Monthly Care</h3>
-                <div class="pricing-price" id="price-monthly">$49<span class="per-mo" style="font-size:1rem;font-weight:400;color:var(--text-muted)">/mo</span></div>
+                <div class="pricing-price" id="price-monthly">$49<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
                 <p class="pricing-desc">Keep your site fresh, fast, and secure without lifting a finger.</p>
                 <ul class="pricing-features">
                     <li>Content updates as needed</li>
@@ -572,7 +599,7 @@
                     <div class="testimonial-avatar">MR</div>
                     <div>
                         <div class="testimonial-name">Marcus R.</div>
-                        <div class="testimonial-role">Owner, Meridian Plumbing</div>
+                        <div class="testimonial-role">Owner, Plumbing Company</div>
                     </div>
                 </div>
             </div>
@@ -583,7 +610,7 @@
                     <div class="testimonial-avatar">SL</div>
                     <div>
                         <div class="testimonial-name">Sarah L.</div>
-                        <div class="testimonial-role">Founder, Green Leaf Wellness</div>
+                        <div class="testimonial-role">Founder, Wellness Brand</div>
                     </div>
                 </div>
             </div>
@@ -594,7 +621,7 @@
                     <div class="testimonial-avatar">JT</div>
                     <div>
                         <div class="testimonial-name">James T.</div>
-                        <div class="testimonial-role">CEO, Summit Roofing</div>
+                        <div class="testimonial-role">CEO, Roofing Company</div>
                     </div>
                 </div>
             </div>
@@ -613,7 +640,7 @@
     <a href="#services" class="panel-link" onclick="closeMobileMenu()">Services</a>
     <a href="#work" class="panel-link" onclick="closeMobileMenu()">Why Us</a>
     <a href="#process" class="panel-link" onclick="closeMobileMenu()">How It Works</a>
-    <a href="#pricing" class="panel-link" onclick="closeMobileMenu()">Prices</a>
+    <a href="#pricing" class="panel-link" onclick="closeMobileMenu()">Pricing</a>
     <div class="panel-cta-btn">
         <a href="beginner.html">Get a Free Mockup &rarr;</a>
     </div>
@@ -660,7 +687,7 @@
         'price-professional': { usd: '$599', aed: 'AED 2,200' },
     };
 
-    const moSpan = '<span class="per-mo" style="font-size:1rem;font-weight:400;color:var(--text-muted)">/mo</span>';
+    const moSpan = '<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
 
     function toggleCurrency() {
         isAED = !isAED;

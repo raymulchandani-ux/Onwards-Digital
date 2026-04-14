@@ -167,7 +167,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label">What type of business are you?</label>
-                <select class="form-select" name="business_type" required>
+                <select class="form-select" name="business_type" id="business-type-select" required onchange="handleIndustryChange(this)">
                     <option value="" disabled selected>Select your industry</option>
                     <option value="restaurant">Restaurant / Food & Beverage</option>
                     <option value="retail">Retail / E-commerce</option>
@@ -182,6 +182,7 @@
                     <option value="tech">Technology / SaaS</option>
                     <option value="other">Other</option>
                 </select>
+                <input type="text" class="form-input" name="business_type_other" id="business-type-other" placeholder="Type your industry..." style="display:none;margin-top:0.6rem;">
             </div>
             <div class="form-group">
                 <label class="form-label">What kind of updates do you typically need?</label>
@@ -249,6 +250,19 @@
         'professional': { label: 'Professional + Monthly Care — $599 + $49/mo', btnText: 'Continue to Payment — $599 + $49/mo →', stripe: 'https://buy.stripe.com/YOUR_PROFESSIONAL_CARE_LINK' },
         'care-only':    { label: 'Monthly Care Only — $49/mo', btnText: 'Subscribe — $49/mo →', stripe: 'https://buy.stripe.com/YOUR_MONTHLY_LINK' },
     };
+
+    function handleIndustryChange(select) {
+        const other = document.getElementById('business-type-other');
+        if (select.value === 'other') {
+            other.style.display = 'block';
+            other.required = true;
+            other.focus();
+        } else {
+            other.style.display = 'none';
+            other.required = false;
+            other.value = '';
+        }
+    }
 
     function handleFileSelect(input) {
         if (input.files && input.files[0]) {
