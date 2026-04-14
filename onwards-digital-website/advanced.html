@@ -108,12 +108,12 @@
         <p class="plan-desc">A single-page, mobile-responsive website designed and built for your business — delivered in 3–5 days. Perfect for businesses that need to get online quickly with a professional, clean site.</p>
 
         <ul class="features">
-            <li>Single-page responsive website</li>
-            <li>Mobile-optimized design</li>
+            <li>Up to 3 page responsive website</li>
+            <li>Mobile &amp; computer optimized design</li>
             <li>Contact form integration</li>
             <li>Basic SEO setup</li>
             <li>2 rounds of revisions</li>
-            <li>Delivered in 3–5 days</li>
+            <li>Delivered within 3–5 business days</li>
         </ul>
     </div>
 
@@ -202,8 +202,8 @@
                 <div class="addon-card" id="addon-card" onclick="toggleAddon()">
                     <div class="addon-check" id="addon-check"></div>
                     <div>
-                        <div class="addon-name">Monthly Care &mdash; <span class="addon-price">+$49/mo</span></div>
-                        <div class="addon-desc">Content updates, security &amp; backups, hosting management, and priority support. Cancel anytime.</div>
+                        <div class="addon-name">Monthly Care &mdash; <span class="addon-price">+$12.99/mo</span></div>
+                        <div class="addon-desc">3 content updates per month, performance monitoring. Cancel anytime.</div>
                     </div>
                 </div>
                 <input type="hidden" name="monthly_care" id="care-input" value="No">
@@ -274,28 +274,28 @@
         document.getElementById('addon-check').textContent = addonSelected ? '✓' : '';
         document.getElementById('care-input').value = addonSelected ? 'Yes' : 'No';
         document.getElementById('submit-btn').textContent = addonSelected
-            ? 'Continue to Payment — $299 + $49/mo →'
+            ? 'Continue to Payment — $299 + $12.99/mo →'
             : 'Continue to Payment — $299 →';
     }
 
     function handleSubmit(e) {
         e.preventDefault();
         const data = new FormData(e.target);
-        data.append('plan', addonSelected ? 'Advanced + Monthly Care — $299 + $49/mo' : 'Advanced — $299');
+        data.append('plan', addonSelected ? 'Advanced + Monthly Care — $299 + $12.99/mo' : 'Advanced — $299');
 
-        const stripeLink = addonSelected
-            ? 'https://buy.stripe.com/YOUR_STARTER_CARE_LINK'
-            : 'https://buy.stripe.com/YOUR_STARTER_LINK';
+        const paymentUrl = addonSelected
+            ? 'payment.html?plan=Advanced&price=299&addon=true'
+            : 'payment.html?plan=Advanced&price=299';
 
-        fetch('https://formsubmit.co/ajax/contact@onwarddigital.com', {
+        fetch('https://formsubmit.co/ajax/contact@onwardsdigital.com', {
             method: 'POST', body: data
         }).then(() => {
             document.getElementById('form-section').style.display = 'none';
             document.querySelector('.divider').style.display = 'none';
             document.getElementById('success').classList.add('show');
-            setTimeout(() => { window.location.href = stripeLink; }, 1500);
+            setTimeout(() => { window.location.href = paymentUrl; }, 1500);
         }).catch(() => {
-            window.location.href = stripeLink;
+            window.location.href = paymentUrl;
         });
     }
 </script>

@@ -186,7 +186,7 @@
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.25rem;
         }
-        .pricing-card { padding: 1.6rem 1.75rem; position: relative; display: flex; flex-direction: column; }
+        .pricing-card { padding: 1.6rem 1.75rem 2.4rem; position: relative; display: flex; flex-direction: column; }
         .pricing-card.featured {
             border: 1px solid rgba(99,102,241,0.25);
             background: rgba(255,255,255,0.7);
@@ -517,7 +517,7 @@
                 <h2 class="section-title">Simple, transparent pricing</h2>
                 <p class="section-subtitle">No hidden fees. No contracts. Just a great website.</p>
             </div>
-            <div class="currency-toggle" onclick="toggleCurrency()" title="Switch currency">
+            <div class="currency-toggle" onclick="toggleCurrency()" title="Switch currency" style="margin-top:2rem;">
                 <span class="toggle-flag">🇺🇸</span>
                 <div class="toggle-track" id="toggle-track">
                     <div class="toggle-thumb" id="toggle-thumb"></div>
@@ -543,12 +543,12 @@
                 <div class="pricing-price" id="price-starter">$299</div>
                 <p class="pricing-desc">Perfect for businesses that need a clean online presence fast.</p>
                 <ul class="pricing-features">
-                    <li>Single-page responsive website</li>
-                    <li>Mobile-optimized design</li>
+                    <li>Up to 3 page responsive website</li>
+                    <li>Mobile &amp; computer optimized design</li>
                     <li>Contact form integration</li>
                     <li>Basic SEO setup</li>
                     <li>2 rounds of revisions</li>
-                    <li>Delivered in 3–5 days</li>
+                    <li>Delivered within 3–5 business days</li>
                 </ul>
                 <a href="advanced.html" class="pricing-btn secondary">Get Started</a>
             </div>
@@ -560,21 +560,18 @@
                     <li>Up to 5 custom pages</li>
                     <li>Premium responsive design</li>
                     <li>Booking or payment integration</li>
-                    <li>Google Business optimization</li>
-                    <li>7 rounds of revisions</li>
-                    <li>Delivered in 5–7 days</li>
+                    <li>Up to 5 rounds of revisions</li>
+                    <li>Delivered within 5–7 business days</li>
                 </ul>
                 <a href="professional.html" class="pricing-btn primary">Get Started</a>
             </div>
             <div class="pricing-card glass fade-in">
                 <h3>Monthly Care</h3>
-                <div class="pricing-price" id="price-monthly">$49<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
+                <div class="pricing-price" id="price-monthly">$12.99<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
                 <p class="pricing-desc">Keep your site fresh, fast, and secure without lifting a finger.</p>
                 <ul class="pricing-features">
-                    <li>Content updates as needed</li>
+                    <li>3 content updates per month</li>
                     <li>Performance monitoring</li>
-                    <li>Hosting management</li>
-                    <li>Priority support</li>
                     <li>Cancel anytime</li>
                 </ul>
                 <a href="monthly-care.html" class="pricing-btn secondary">Add to Any Plan</a>
@@ -698,7 +695,7 @@
             document.getElementById(id).innerHTML = isAED ? vals.aed : vals.usd;
         });
 
-        document.getElementById('price-monthly').innerHTML = (isAED ? 'AED 180' : '$49') + moSpan;
+        document.getElementById('price-monthly').innerHTML = (isAED ? 'AED 48' : '$12.99') + moSpan;
     }
 </script>
 

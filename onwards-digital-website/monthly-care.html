@@ -104,15 +104,13 @@
                 <span class="toggle-flag">🇦🇪</span>
             </div>
         </div>
-        <div class="plan-price" id="plan-price">$49<span class="per-mo" style="font-size:1.2rem;font-weight:400;color:var(--text-muted)">/mo</span></div>
+        <div class="plan-price" id="plan-price">$12.99<span class="per-mo" style="font-size:1.2rem;font-weight:400;color:var(--text-muted)">/mo</span></div>
         <h1 class="plan-title">Monthly Care Plan</h1>
-        <p class="plan-desc">Keep your website fresh, fast, and secure without lifting a finger. We handle content updates, performance monitoring, hosting, and security — so you can focus on your business. Cancel anytime.</p>
+        <p class="plan-desc">Keep your website fresh and performing without lifting a finger. We handle content updates and performance monitoring — so you can focus on your business. Cancel anytime.</p>
 
         <ul class="features">
-            <li>Content updates as needed</li>
+            <li>3 content updates per month</li>
             <li>Performance monitoring</li>
-            <li>Hosting management</li>
-            <li>Priority support</li>
             <li>Cancel anytime — no contracts</li>
         </ul>
     </div>
@@ -126,17 +124,17 @@
         <div class="plan-picker">
             <div class="plan-choice" id="choice-advanced" onclick="selectPlan('advanced')">
                 <div class="plan-choice-name">Advanced</div>
-                <div class="plan-choice-price">$299<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)"> + $49/mo</span></div>
+                <div class="plan-choice-price">$299<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)"> + $12.99/mo</span></div>
                 <div class="plan-choice-desc">Single-page site built from scratch, plus Monthly Care</div>
             </div>
             <div class="plan-choice" id="choice-professional" onclick="selectPlan('professional')">
                 <div class="plan-choice-name">Professional</div>
-                <div class="plan-choice-price">$599<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)"> + $49/mo</span></div>
+                <div class="plan-choice-price">$599<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)"> + $12.99/mo</span></div>
                 <div class="plan-choice-desc">Full multi-page site built from scratch, plus Monthly Care</div>
             </div>
             <div class="plan-choice" id="choice-care-only" onclick="selectPlan('care-only')">
                 <div class="plan-choice-name">Care Only</div>
-                <div class="plan-choice-price">$49<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
+                <div class="plan-choice-price">$12.99<span style="font-size:0.85rem;font-weight:500;color:var(--text-muted)">/mo</span></div>
                 <div class="plan-choice-desc">I already have a website and just need ongoing care</div>
             </div>
         </div>
@@ -239,16 +237,16 @@
         isAED = !isAED;
         document.getElementById('toggle-thumb').classList.toggle('aed', isAED);
         document.getElementById('toggle-track').classList.toggle('aed', isAED);
-        document.getElementById('plan-price').innerHTML = (isAED ? 'AED 180' : '$49') + moSpan;
+        document.getElementById('plan-price').innerHTML = (isAED ? 'AED 48' : '$12.99') + moSpan;
     }
 
     // Plan picker
     let chosenPlan = null;
 
     const planConfig = {
-        'advanced':     { label: 'Advanced + Monthly Care — $299 + $49/mo', btnText: 'Continue to Payment — $299 + $49/mo →', stripe: 'https://buy.stripe.com/YOUR_STARTER_CARE_LINK' },
-        'professional': { label: 'Professional + Monthly Care — $599 + $49/mo', btnText: 'Continue to Payment — $599 + $49/mo →', stripe: 'https://buy.stripe.com/YOUR_PROFESSIONAL_CARE_LINK' },
-        'care-only':    { label: 'Monthly Care Only — $49/mo', btnText: 'Subscribe — $49/mo →', stripe: 'https://buy.stripe.com/YOUR_MONTHLY_LINK' },
+        'advanced':     { label: 'Advanced + Monthly Care — $299 + $12.99/mo', btnText: 'Continue to Payment — $299 + $12.99/mo →', paymentUrl: 'payment.html?plan=Advanced&price=299&addon=true' },
+        'professional': { label: 'Professional + Monthly Care — $599 + $12.99/mo', btnText: 'Continue to Payment — $599 + $12.99/mo →', paymentUrl: 'payment.html?plan=Professional&price=599&addon=true' },
+        'care-only':    { label: 'Monthly Care Only — $12.99/mo', btnText: 'Subscribe — $12.99/mo →', paymentUrl: 'payment.html?plan=Monthly+Care&price=12.99&monthly=true' },
     };
 
     function handleIndustryChange(select) {
@@ -297,15 +295,15 @@
         const cfg = planConfig[chosenPlan];
         data.append('plan', cfg.label);
 
-        fetch('https://formsubmit.co/ajax/contact@onwarddigital.com', {
+        fetch('https://formsubmit.co/ajax/contact@onwardsdigital.com', {
             method: 'POST', body: data
         }).then(() => {
             document.getElementById('form-section').style.display = 'none';
             document.getElementById('divider-2').style.display = 'none';
             document.getElementById('success').classList.add('show');
-            setTimeout(() => { window.location.href = cfg.stripe; }, 1500);
+            setTimeout(() => { window.location.href = cfg.paymentUrl; }, 1500);
         }).catch(() => {
-            window.location.href = cfg.stripe;
+            window.location.href = cfg.paymentUrl;
         });
     }
 </script>

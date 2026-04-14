@@ -106,15 +106,14 @@
         </div>
         <div class="plan-price" id="plan-price">$599</div>
         <h1 class="plan-title">Professional Multi-Page Site</h1>
-        <p class="plan-desc">A full multi-page website designed to convert visitors into paying customers. Includes booking or payment integration, Google Business optimization, and unlimited revisions until you're thrilled with the result.</p>
+        <p class="plan-desc">A full multi-page website designed to convert visitors into paying customers. Includes booking or payment integration and up to 5 rounds of revisions until you're thrilled with the result.</p>
 
         <ul class="features">
             <li>Up to 5 custom pages</li>
             <li>Premium responsive design</li>
             <li>Booking or payment integration</li>
-            <li>Google Business optimization</li>
-            <li>7 rounds of revisions</li>
-            <li>Delivered in 5–7 days</li>
+            <li>Up to 5 rounds of revisions</li>
+            <li>Delivered within 5–7 business days</li>
         </ul>
     </div>
 
@@ -203,8 +202,8 @@
                 <div class="addon-card" id="addon-card" onclick="toggleAddon()">
                     <div class="addon-check" id="addon-check"></div>
                     <div>
-                        <div class="addon-name">Monthly Care &mdash; <span class="addon-price">+$49/mo</span></div>
-                        <div class="addon-desc">Content updates, security &amp; backups, hosting management, and priority support. Cancel anytime.</div>
+                        <div class="addon-name">Monthly Care &mdash; <span class="addon-price">+$12.99/mo</span></div>
+                        <div class="addon-desc">3 content updates per month, performance monitoring. Cancel anytime.</div>
                     </div>
                 </div>
                 <input type="hidden" name="monthly_care" id="care-input" value="No">
@@ -275,28 +274,28 @@
         document.getElementById('addon-check').textContent = addonSelected ? '✓' : '';
         document.getElementById('care-input').value = addonSelected ? 'Yes' : 'No';
         document.getElementById('submit-btn').textContent = addonSelected
-            ? 'Continue to Payment — $599 + $49/mo →'
+            ? 'Continue to Payment — $599 + $12.99/mo →'
             : 'Continue to Payment — $599 →';
     }
 
     function handleSubmit(e) {
         e.preventDefault();
         const data = new FormData(e.target);
-        data.append('plan', addonSelected ? 'Professional + Monthly Care — $599 + $49/mo' : 'Professional — $599');
+        data.append('plan', addonSelected ? 'Professional + Monthly Care — $599 + $12.99/mo' : 'Professional — $599');
 
-        const stripeLink = addonSelected
-            ? 'https://buy.stripe.com/YOUR_PROFESSIONAL_CARE_LINK'
-            : 'https://buy.stripe.com/YOUR_PROFESSIONAL_LINK';
+        const paymentUrl = addonSelected
+            ? 'payment.html?plan=Professional&price=599&addon=true'
+            : 'payment.html?plan=Professional&price=599';
 
-        fetch('https://formsubmit.co/ajax/contact@onwarddigital.com', {
+        fetch('https://formsubmit.co/ajax/contact@onwardsdigital.com', {
             method: 'POST', body: data
         }).then(() => {
             document.getElementById('form-section').style.display = 'none';
             document.querySelector('.divider').style.display = 'none';
             document.getElementById('success').classList.add('show');
-            setTimeout(() => { window.location.href = stripeLink; }, 1500);
+            setTimeout(() => { window.location.href = paymentUrl; }, 1500);
         }).catch(() => {
-            window.location.href = stripeLink;
+            window.location.href = paymentUrl;
         });
     }
 </script>
