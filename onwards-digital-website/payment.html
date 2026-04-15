@@ -16,7 +16,9 @@
         .nav-back { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
         .nav-back:hover { color: var(--text); }
 
-        .page { flex: 1; max-width: 560px; margin: 0 auto; padding: 3.5rem 1.5rem 4rem; width: 100%; }
+        .page { flex: 1; max-width: 960px; margin: 0 auto; padding: 3.5rem 1.5rem 4rem; width: 100%; }
+        .payment-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+        .payment-left { display: flex; flex-direction: column; gap: 1.25rem; }
 
         /* ORDER SUMMARY CARD */
         .summary-card {
@@ -75,8 +77,9 @@
         footer p { color: var(--text-muted); font-size: 0.8rem; }
         footer a { color: var(--accent); text-decoration: none; }
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
             .page { padding: 2rem 1rem 3rem; }
+            .payment-layout { grid-template-columns: 1fr; }
             .summary-card, .paypal-card, .next-card { padding: 1.5rem 1.25rem; }
             .summary-price { font-size: 2.2rem; }
         }
@@ -90,6 +93,8 @@
 </nav>
 
 <div class="page">
+<div class="payment-layout">
+<div class="payment-left">
 
     <!-- ORDER SUMMARY -->
     <div class="summary-card">
@@ -131,7 +136,9 @@
         </div>
     </div>
 
-    <!-- WHAT HAPPENS NEXT -->
+</div><!-- end payment-left -->
+
+    <!-- WHAT HAPPENS NEXT (right column) -->
     <div class="next-card">
         <h3>What happens after payment</h3>
         <div class="next-step">
@@ -146,9 +153,10 @@
             <div class="step-dot">3</div>
             <p id="step3-text"><strong>Your site will be completed within 3–7 business days.</strong> We'll keep you updated every step of the way.</p>
         </div>
-    </div>
+    </div><!-- end next-card -->
 
-</div>
+</div><!-- end payment-layout -->
+</div><!-- end page -->
 
 <footer>
     <p>Questions? Email us at <a href="mailto:contact@onwardsdigital.com">contact@onwardsdigital.com</a></p>

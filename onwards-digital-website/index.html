@@ -369,10 +369,11 @@
 <nav>
     <a href="#" class="nav-logo">Onwards Digital</a>
     <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#work">Why Us</a></li>
-        <li><a href="#process">How It Works</a></li>
-        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('services')">Services</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('work')">Why Us</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('process')">How It Works</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('pricing')">Pricing</a></li>
+        <li><a href="javascript:void(0)" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Testimonials</a></li>
     </ul>
     <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">&#9776;</button>
 </nav>
@@ -384,7 +385,7 @@
         <h1>Your business deserves a<br><span>website that works</span></h1>
         <p>We design and build fast, modern websites that turn visitors into customers — delivered in days, not months.</p>
         <div class="hero-buttons">
-            <a href="#pricing" class="btn-primary">Get Your Free Mockup &rarr;</a>
+            <a href="javascript:void(0)" onclick="scrollToSection('pricing')" class="btn-primary">Get Your Free Mockup &rarr;</a>
         </div>
     </div>
 </section>
@@ -509,7 +510,7 @@
 </section>
 
 <!-- PRICING -->
-<section id="pricing" style="padding-top:4rem;padding-bottom:4rem;">
+<section id="pricing" style="padding-top:7rem;padding-bottom:4rem;">
     <div class="container">
         <div class="fade-in pricing-top">
             <div>
@@ -584,7 +585,7 @@
 </section>
 
 <!-- TESTIMONIALS -->
-<section>
+<section id="testimonials">
     <div class="container">
         <div class="fade-in">
             <div class="section-label">Testimonials</div>
@@ -636,11 +637,12 @@
 <div class="mobile-panel" id="mobile-panel">
     <button class="panel-close" onclick="closeMobileMenu()" aria-label="Close menu">&#x2715;</button>
     <div class="panel-logo">Onwards Digital</div>
-    <a href="#" class="panel-link" onclick="closeMobileMenu()">Home</a>
-    <a href="#services" class="panel-link" onclick="closeMobileMenu()">Services</a>
-    <a href="#work" class="panel-link" onclick="closeMobileMenu()">Why Us</a>
-    <a href="#process" class="panel-link" onclick="closeMobileMenu()">How It Works</a>
-    <a href="#pricing" class="panel-link" onclick="closeMobileMenu()">Pricing</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu()">Home</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('services')">Services</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('work')">Why Us</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('process')">How It Works</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('pricing')">Pricing</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Testimonials</a>
     <div class="panel-cta-btn">
         <a href="beginner.html">Get a Free Mockup &rarr;</a>
     </div>
@@ -719,7 +721,7 @@
         window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
     }
 
-    // Intercept all hash anchor clicks and use smart scroll
+    // Intercept any remaining hash anchor clicks (fallback)
     document.addEventListener('click', function(e) {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
