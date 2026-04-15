@@ -8,93 +8,113 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-        :root { --text: #1a1a2e; --text-muted: #6b7280; --accent: #6366f1; --accent-light: #818cf8; --radius: 14px; --radius-lg: 22px; }
+        :root {
+            --accent:      #2563eb;
+            --text:        #0f172a;
+            --text-muted:  #64748b;
+            --bg:          #ffffff;
+            --bg-soft:     #f8faff;
+            --border:      rgba(0,0,0,0.08);
+            --border-blue: rgba(37,99,235,0.15);
+            --radius:      10px;
+            --radius-lg:   16px;
+        }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); line-height: 1.6; background: #ffffff; }
-        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1.1rem 2.5rem; background: rgba(255,255,255,0.7); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; }
-        .nav-logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
-        .nav-back { color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: var(--text); line-height: 1.6; background: var(--bg); }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 1rem 2.5rem; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
+        .nav-back { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; letter-spacing: -0.1px; }
         .nav-back:hover { color: var(--text); }
-        .page { max-width: 720px; margin: 0 auto; padding: 7rem 2rem 4rem; }
-        .plan-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1.1rem; border-radius: 100px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.15); font-size: 0.82rem; color: var(--accent); font-weight: 600; margin-bottom: 1.25rem; }
-        .plan-title { font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.5rem; }
-        .plan-price { font-size: 3.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 0.5rem; }
-        .plan-desc { font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 2rem; max-width: 540px; }
-        .features { list-style: none; margin-bottom: 3rem; padding: 1.75rem; border-radius: var(--radius-lg); background: #faf8ff; border: 1px solid rgba(99,102,241,0.06); }
-        .features li { padding: 0.5rem 0; color: var(--text-muted); font-size: 0.92rem; display: flex; align-items: center; gap: 0.75rem; }
-        .features li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+        .page { max-width: 680px; margin: 0 auto; padding: 7rem 2rem 5rem; }
+        .badge-row { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
+        .plan-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 1rem; border-radius: 100px; background: rgba(37,99,235,0.07); border: 1px solid var(--border-blue); font-size: 0.78rem; color: var(--accent); font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+        .plan-badge.popular { background: var(--accent); color: white; border-color: var(--accent); }
+        .plan-price { font-size: 3.8rem; font-weight: 800; letter-spacing: -3px; margin-bottom: 0.3rem; color: var(--text); line-height: 1; }
+        .plan-title { font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.6rem; }
+        .plan-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.72; margin-bottom: 2rem; max-width: 520px; }
+        .features { list-style: none; margin-bottom: 2.5rem; padding: 1.5rem 1.75rem; border-radius: var(--radius-lg); background: var(--bg-soft); border: 1px solid rgba(37,99,235,0.08); }
+        .features li { padding: 0.45rem 0; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: flex-start; gap: 0.75rem; line-height: 1.5; }
+        .features li svg { flex-shrink: 0; color: var(--accent); margin-top: 2px; }
         .divider { height: 1px; background: rgba(0,0,0,0.06); margin: 2.5rem 0; }
-        .form-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.4rem; }
-        .form-subtitle { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-label { display: block; font-size: 0.88rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); }
-        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.8rem 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); font-size: 0.92rem; font-family: inherit; color: var(--text); background: #fff; transition: border-color 0.2s; }
-        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.08); }
+        .form-title { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.35rem; letter-spacing: -0.5px; }
+        .form-subtitle { font-size: 0.925rem; color: var(--text-muted); margin-bottom: 2rem; line-height: 1.6; }
+        .form-group { margin-bottom: 1.4rem; }
+        .form-label { display: block; font-size: 0.862rem; font-weight: 600; margin-bottom: 0.45rem; color: var(--text); }
+        .form-input, .form-select, .form-textarea { width: 100%; padding: 0.78rem 1rem; border-radius: var(--radius); border: 1px solid var(--border); font-size: 0.9rem; font-family: inherit; color: var(--text); background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.08); }
+        .form-input::placeholder, .form-textarea::placeholder { color: #94a3b8; }
         .form-textarea { min-height: 120px; resize: vertical; }
-        .form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236b7280' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
-        .radio-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-        .radio-option { flex: 1; min-width: 140px; position: relative; }
+        .form-select { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2364748b' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem; }
+        .radio-group { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+        .radio-option { flex: 1; min-width: 130px; position: relative; }
         .radio-option input { position: absolute; opacity: 0; width: 0; height: 0; }
-        .radio-option label { display: block; padding: 0.75rem 1rem; border-radius: 10px; border: 1px solid rgba(0,0,0,0.1); text-align: center; font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
-        .radio-option input:checked + label { border-color: var(--accent); background: rgba(99,102,241,0.05); color: var(--accent); font-weight: 600; }
-        .radio-option label:hover { border-color: rgba(99,102,241,0.3); }
-        /* ADDON CARD */
-        .addon-card { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-radius: 12px; border: 1.5px solid rgba(0,0,0,0.08); cursor: pointer; transition: border-color 0.2s, background 0.2s; background: #fff; }
-        .addon-card:hover { border-color: rgba(99,102,241,0.3); }
-        .addon-card.selected { border-color: var(--accent); background: rgba(99,102,241,0.04); }
-        .addon-check { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid rgba(0,0,0,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: white; background: transparent; transition: background 0.2s, border-color 0.2s; margin-top: 2px; }
-        .addon-card.selected .addon-check { background: var(--accent); border-color: var(--accent); }
-        .addon-name { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .addon-price { color: var(--accent); }
-        .addon-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.55; }
+        .radio-option label { display: block; padding: 0.7rem 0.9rem; border-radius: var(--radius); border: 1px solid var(--border); text-align: center; font-size: 0.862rem; font-weight: 500; cursor: pointer; transition: border-color 0.2s, background 0.2s, color 0.2s; }
+        .radio-option input:checked + label { border-color: var(--accent); background: rgba(37,99,235,0.05); color: var(--accent); font-weight: 600; }
+        .radio-option label:hover { border-color: rgba(37,99,235,0.35); }
 
-        .btn-submit { display: block; width: 100%; padding: 1rem; border-radius: 12px; font-size: 1rem; font-weight: 700; text-align: center; border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; margin-top: 0.5rem; }
-        .btn-submit.dark { background: var(--text); color: white; }
-        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-        .submit-note { text-align: center; margin-top: 1rem; font-size: 0.82rem; color: var(--text-muted); }
-        .upload-area { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; padding: 1.4rem; border-radius: 12px; border: 1.5px dashed rgba(99,102,241,0.3); background: rgba(99,102,241,0.02); cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: center; }
-        .upload-area:hover { border-color: var(--accent); background: rgba(99,102,241,0.05); }
-        .upload-icon { font-size: 1.4rem; }
-        .upload-text { font-size: 0.9rem; font-weight: 600; color: var(--text); }
-        .upload-hint { font-size: 0.76rem; color: var(--text-muted); }
+        /* ADDON CARD */
+        .addon-card { display: flex; align-items: flex-start; gap: 1rem; padding: 1.2rem 1.25rem; border-radius: var(--radius); border: 1.5px solid var(--border); cursor: pointer; transition: border-color 0.2s, background 0.2s; background: #fff; }
+        .addon-card:hover { border-color: rgba(37,99,235,0.3); }
+        .addon-card.selected { border-color: var(--accent); background: rgba(37,99,235,0.04); }
+        .addon-check { width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid rgba(0,0,0,0.15); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: white; background: transparent; transition: background 0.2s, border-color 0.2s; margin-top: 2px; }
+        .addon-card.selected .addon-check { background: var(--accent); border-color: var(--accent); }
+        .addon-name { font-weight: 700; font-size: 0.925rem; margin-bottom: 0.2rem; }
+        .addon-price { color: var(--accent); }
+        .addon-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; }
+
+        .upload-area { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; padding: 1.4rem; border-radius: var(--radius); border: 1.5px dashed rgba(37,99,235,0.25); background: rgba(37,99,235,0.02); cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: center; }
+        .upload-area:hover { border-color: var(--accent); background: rgba(37,99,235,0.04); }
+        .upload-icon { color: var(--accent); margin-bottom: 0.1rem; }
+        .upload-text { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+        .upload-hint { font-size: 0.75rem; color: var(--text-muted); }
         .upload-preview { margin-top: 0.75rem; display: none; }
-        .upload-file-info { display: flex; align-items: center; gap: 0.65rem; padding: 0.65rem 1rem; border-radius: 10px; background: rgba(99,102,241,0.05); border: 1px solid rgba(99,102,241,0.12); }
-        .upload-file-icon { font-size: 1.1rem; flex-shrink: 0; }
-        .upload-file-name { font-size: 0.88rem; font-weight: 500; flex: 1; color: var(--text); word-break: break-all; }
+        .upload-file-info { display: flex; align-items: center; gap: 0.65rem; padding: 0.65rem 1rem; border-radius: var(--radius); background: rgba(37,99,235,0.04); border: 1px solid rgba(37,99,235,0.1); }
+        .upload-file-icon { color: var(--accent); flex-shrink: 0; }
+        .upload-file-name { font-size: 0.875rem; font-weight: 500; flex: 1; color: var(--text); word-break: break-all; }
         .upload-remove { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1rem; padding: 0.2rem 0.4rem; border-radius: 6px; transition: background 0.2s; flex-shrink: 0; }
         .upload-remove:hover { background: rgba(0,0,0,0.06); color: var(--text); }
         .upload-caption { margin-top: 0.75rem; }
-        .success-message { display: none; text-align: center; padding: 5rem 1rem; }
-        .success-message.show { display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .spinner { width: 52px; height: 52px; border: 4px solid rgba(99,102,241,0.15); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1.5rem; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .success-message p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
-        footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid rgba(0,0,0,0.06); }
-        footer p { color: var(--text-muted); font-size: 0.82rem; }
-        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
-        /* Currency toggle */
-        .badge-row { display: flex; align-items: center; gap: 0.85rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
-        .badge-row .plan-badge { margin-bottom: 0; }
+
         .currency-toggle { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
         .toggle-flag { font-size: 1.2rem; line-height: 1; }
-        .toggle-track { width: 46px; height: 26px; background: #3a5bd4; border-radius: 100px; position: relative; transition: background 0.35s; flex-shrink: 0; }
-        .toggle-track.aed { background: #009b3a; }
+        .toggle-track { width: 46px; height: 26px; background: #2563eb; border-radius: 100px; position: relative; transition: background 0.35s; flex-shrink: 0; }
+        .toggle-track.aed { background: #059669; }
         .toggle-thumb { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .toggle-thumb.aed { transform: translateX(20px); }
 
-        @media (max-width: 768px) { .page { padding: 6rem 1.5rem 3rem; } .radio-group { flex-direction: column; } }
+        .btn-submit { display: block; width: 100%; padding: 0.95rem; border-radius: 10px; font-size: 0.975rem; font-weight: 700; text-align: center; border: none; cursor: pointer; letter-spacing: -0.2px; transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s; margin-top: 0.5rem; }
+        .btn-submit.dark { background: var(--text); color: white; }
+        .btn-submit.primary { background: var(--accent); color: white; }
+        .btn-submit:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,0,0,0.12); }
+        .submit-note { text-align: center; margin-top: 1rem; font-size: 0.8rem; color: var(--text-muted); }
+
+        .success-message { display: none; text-align: center; padding: 5rem 1rem; }
+        .success-message.show { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .spinner { width: 48px; height: 48px; border: 3px solid rgba(37,99,235,0.12); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 1.5rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .success-message p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; }
+
+        footer { padding: 2.5rem 2rem; text-align: center; border-top: 1px solid rgba(0,0,0,0.06); }
+        footer p { color: var(--text-muted); font-size: 0.8rem; }
+
+        .reveal { opacity: 0; transform: translateY(16px); filter: blur(3px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.6s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+        @media (max-width: 768px) { .page { padding: 6rem 1.25rem 3.5rem; } .radio-group { flex-direction: column; } }
     </style>
 </head>
 <body>
 
 <nav>
     <a href="index.html" class="nav-logo">Onwards Digital</a>
-    <a href="index.html" class="nav-back">&larr; Back to Home</a>
+    <a href="index.html" class="nav-back">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to Home
+    </a>
 </nav>
 
 <div class="page">
-    <div class="fade-in">
+    <div class="reveal">
         <div class="badge-row">
             <div class="plan-badge">Advanced Plan</div>
             <div class="currency-toggle" onclick="toggleCurrency()" title="Switch currency">
@@ -105,22 +125,22 @@
         </div>
         <div class="plan-price" id="plan-price">$299</div>
         <h1 class="plan-title">Launch Your Online Presence</h1>
-        <p class="plan-desc">A single-page, mobile-responsive website designed and built for your business — delivered in 3–5 days. Perfect for businesses that need to get online quickly with a professional, clean site.</p>
+        <p class="plan-desc">A clean, mobile-responsive website designed and built for your business — delivered in 3–5 days. Perfect for businesses that need to get online quickly with a professional site.</p>
 
         <ul class="features">
-            <li>Up to 3 page responsive website</li>
-            <li>Mobile &amp; computer optimized design</li>
-            <li>Booking or payment integration</li>
-            <li>Contact form integration</li>
-            <li>Basic SEO setup</li>
-            <li>2 rounds of revisions</li>
-            <li>Delivered within 3–5 business days</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 3 page responsive website</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mobile &amp; computer optimized design</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Booking or payment integration</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contact form integration</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic SEO setup</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2 rounds of revisions</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Delivered within 3–5 business days</li>
         </ul>
     </div>
 
     <div class="divider"></div>
 
-    <div class="fade-in" id="form-section">
+    <div class="reveal" id="form-section">
         <h2 class="form-title">Tell us about your business</h2>
         <p class="form-subtitle">Fill out the form below, then proceed to payment. We'll start building your site immediately.</p>
 
@@ -173,7 +193,6 @@
                 </div>
             </div>
 
-            <!-- UPGRADE FIELDS (shown only when "Upgrading existing" is selected) -->
             <div id="upgrade-fields" style="display:none;">
                 <div class="form-group">
                     <label class="form-label">Your current website URL</label>
@@ -193,19 +212,19 @@
             <div class="form-group">
                 <label class="form-label">Inspiration photo or document <span style="font-weight:400;color:var(--text-muted)">(optional)</span></label>
                 <div class="upload-area" id="upload-area" onclick="document.getElementById('insp-file').click()">
-                    <span class="upload-icon">📎</span>
+                    <span class="upload-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></span>
                     <span class="upload-text">Upload a photo or file for inspiration</span>
                     <span class="upload-hint">JPG, PNG, PDF — up to 10MB</span>
                 </div>
                 <input type="file" id="insp-file" name="attachment" accept="image/*,.pdf,.doc,.docx" style="display:none" onchange="handleFileSelect(this)">
                 <div class="upload-preview" id="upload-preview">
                     <div class="upload-file-info">
-                        <span class="upload-file-icon">📄</span>
+                        <span class="upload-file-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/></svg></span>
                         <span class="upload-file-name" id="upload-file-name"></span>
                         <button type="button" class="upload-remove" onclick="removeFile()">✕</button>
                     </div>
                     <div class="upload-caption">
-                        <textarea class="form-textarea" name="attachment_caption" placeholder="e.g. I love the colors on this site — the dark tones with gold accents would work perfectly for my restaurant. I want something similar in feel." style="min-height:90px;margin-top:0.75rem;"></textarea>
+                        <textarea class="form-textarea" name="attachment_caption" placeholder="e.g. I love the colors on this site — the dark tones with gold accents would work perfectly for my restaurant." style="min-height:90px;margin-top:0.75rem;"></textarea>
                     </div>
                 </div>
             </div>
@@ -217,15 +236,15 @@
                     <div class="addon-check" id="addon-check"></div>
                     <div>
                         <div class="addon-name">Monthly Care &mdash; <span class="addon-price">+$12.99/mo</span></div>
-                        <div class="addon-desc">3 content updates per month, performance monitoring. Cancel anytime.</div>
+                        <div class="addon-desc">3 content updates per month, customer support access. Cancel anytime.</div>
                     </div>
                 </div>
                 <input type="hidden" name="monthly_care" id="care-input" value="No">
             </div>
 
             <div class="form-group" style="display:flex;align-items:flex-start;gap:0.75rem;margin-top:0.5rem;">
-                <input type="checkbox" name="portfolio_consent" id="portfolio-consent" style="margin-top:0.15rem;accent-color:var(--accent);width:16px;height:16px;flex-shrink:0;cursor:pointer;">
-                <label for="portfolio-consent" style="font-size:0.86rem;color:var(--text-muted);line-height:1.55;cursor:pointer;">I'm happy for Onwards Digital to showcase my completed website as an example of their work when speaking with potential future clients.</label>
+                <input type="checkbox" name="portfolio_consent" id="portfolio-consent" style="margin-top:0.2rem;accent-color:var(--accent);width:15px;height:15px;flex-shrink:0;cursor:pointer;">
+                <label for="portfolio-consent" style="font-size:0.84rem;color:var(--text-muted);line-height:1.55;cursor:pointer;">I'm happy for Onwards Digital to showcase my completed website as an example of their work when speaking with potential future clients.</label>
             </div>
 
             <button type="submit" class="btn-submit dark" id="submit-btn">Continue to Payment &mdash; $299 &rarr;</button>
@@ -246,10 +265,9 @@
 <script>
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-    }, { threshold: 0.1 });
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Currency toggle
     let isAED = false;
     function toggleCurrency() {
         isAED = !isAED;
@@ -268,13 +286,9 @@
     function handleIndustryChange(select) {
         const other = document.getElementById('business-type-other');
         if (select.value === 'other') {
-            other.style.display = 'block';
-            other.required = true;
-            other.focus();
+            other.style.display = 'block'; other.required = true; other.focus();
         } else {
-            other.style.display = 'none';
-            other.required = false;
-            other.value = '';
+            other.style.display = 'none'; other.required = false; other.value = '';
         }
     }
 

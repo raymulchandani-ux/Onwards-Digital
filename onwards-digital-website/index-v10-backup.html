@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onwards Digital — Modern Websites for Growing Businesses</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --radius: 14px;
+            --radius-lg: 22px;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: #ffffff;
+        }
+
+
+        /* ─── NAV ─── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1.1rem 2.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex; align-items: center; justify-content: space-between;
+            transition: background 0.3s;
+        }
+        .nav-logo {
+            font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px;
+            color: var(--text); text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2.25rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); }
+        .nav-cta {
+            padding: 0.55rem 1.4rem; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+            background: var(--text); color: white; text-decoration: none; border: none; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 8rem 2rem 6rem;
+            position: relative;
+        }
+        .hero-content { max-width: 780px; position: relative; z-index: 1; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 1.1rem; border-radius: 100px;
+            background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99,102,241,0.15);
+            font-size: 0.82rem; color: var(--accent); font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800;
+            letter-spacing: -2.5px; line-height: 1.05; margin-bottom: 1.5rem;
+            color: var(--text);
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p {
+            font-size: 1.15rem; color: var(--text-muted); max-width: 560px; margin: 0 auto 2.5rem;
+            line-height: 1.75; font-weight: 400;
+        }
+        .hero-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 0.9rem 2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+            background: var(--text); color: white; text-decoration: none; border: none;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
+        .btn-secondary {
+            padding: 0.9rem 2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+            background: white; color: var(--text); text-decoration: none;
+            border: 1px solid rgba(0,0,0,0.08); cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-secondary:hover { background: #f9fafb; }
+
+        /* ─── SECTIONS ─── */
+        section { padding: 7rem 2rem; position: relative; z-index: 1; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .section-label {
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px;
+            color: var(--accent); margin-bottom: 0.7rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800;
+            letter-spacing: -1.5px; margin-bottom: 0.85rem; color: var(--text);
+        }
+        .section-subtitle {
+            font-size: 1rem; color: var(--text-muted); max-width: 560px; margin-bottom: 1.25rem;
+            line-height: 1.65;
+        }
+
+        /* ─── GLASS CARDS ─── */
+        .glass {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+            border-radius: var(--radius-lg);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .glass:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        }
+
+        /* ─── SERVICES ─── */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .service-card { padding: 1.75rem; }
+        .service-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(99, 102, 241, 0.08);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; margin-bottom: 1rem;
+        }
+        .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; }
+        .service-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
+
+
+        /* ─── PROCESS ─── */
+        .process-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem; margin-top: 1rem;
+        }
+        .step { text-align: center; padding: 1.75rem 1.4rem; }
+        .step-number {
+            width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 1rem;
+            background: rgba(99, 102, 241, 0.08); border: 2px solid rgba(99,102,241,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; font-weight: 800; color: var(--accent);
+        }
+        .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; }
+        .step p { color: var(--text-muted); font-size: 0.86rem; line-height: 1.6; }
+
+        /* ─── CURRENCY TOGGLE ─── */
+        .pricing-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
+        .pricing-top .section-subtitle { margin-bottom: 0; }
+        .currency-toggle { display: flex; align-items: center; gap: 0.65rem; padding-top: 0.25rem; flex-shrink: 0; }
+        .toggle-flag { font-size: 1.5rem; line-height: 1; }
+        .toggle-track {
+            width: 54px; height: 30px;
+            background: #3a5bd4;
+            border-radius: 100px; cursor: pointer; position: relative;
+            transition: background 0.35s ease; flex-shrink: 0;
+        }
+        .toggle-track.aed { background: #009b3a; }
+        .toggle-thumb {
+            width: 24px; height: 24px; background: white; border-radius: 50%;
+            position: absolute; top: 3px; left: 3px;
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.22);
+        }
+        .toggle-thumb.aed { transform: translateX(24px); }
+        .toggle-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.3px; }
+
+
+        /* ─── PRICING ─── */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+        }
+        .pricing-card { padding: 1.4rem 1.65rem 1.8rem; position: relative; display: flex; flex-direction: column; }
+        .pricing-card.featured {
+            border: 1px solid rgba(99,102,241,0.25);
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 4px 30px rgba(99,102,241,0.08), 0 0 0 1px rgba(99,102,241,0.1);
+        }
+        .pricing-card.featured::before {
+            content: 'Most Popular';
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            padding: 0.3rem 1rem; border-radius: 100px;
+            background: var(--accent); color: white;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
+        }
+        .pricing-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .pricing-price { font-size: 2.1rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.2rem; color: var(--text); white-space: nowrap; }
+        .pricing-desc { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.85rem; }
+        .pricing-features { list-style: none; }
+        .pricing-features li {
+            padding: 0.2rem 0; color: var(--text-muted); font-size: 0.82rem;
+            display: flex; align-items: center; gap: 0.55rem;
+        }
+        .pricing-features li::before { content: '✓'; color: var(--accent); font-weight: 700; font-size: 0.85rem; }
+        .pricing-features { margin-bottom: auto; }
+        .pricing-btn {
+            display: block; width: 100%; padding: 0.75rem; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none;
+            border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
+        }
+        .pricing-btn.primary { background: var(--accent); color: white; }
+        .pricing-btn.secondary {
+            background: white; color: var(--text);
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+        .pricing-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+
+        /* ─── TESTIMONIALS ─── */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .testimonial-card { padding: 2rem; }
+        .testimonial-stars { color: #f59e0b; font-size: 0.95rem; margin-bottom: 1rem; letter-spacing: 2px; }
+        .testimonial-card blockquote {
+            color: var(--text-muted); font-size: 0.92rem; line-height: 1.75;
+            margin-bottom: 1.5rem; font-style: italic;
+        }
+        .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
+        .testimonial-avatar {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(99, 102, 241, 0.08); display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: var(--accent);
+        }
+        .testimonial-name { font-weight: 600; font-size: 0.88rem; color: var(--text); }
+        .testimonial-role { color: var(--text-muted); font-size: 0.78rem; }
+
+        /* ─── CTA ─── */
+        .cta-section {
+            text-align: center; padding: 7rem 2rem;
+        }
+        .cta-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            letter-spacing: -1.5px; margin-bottom: 1rem;
+        }
+        .cta-section p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2.5rem; }
+
+        /* ─── FOOTER ─── */
+        footer {
+            padding: 3rem 2rem; text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            position: relative; z-index: 1;
+        }
+        footer p { color: var(--text-muted); font-size: 0.82rem; }
+
+        /* ─── FADE-IN ANIMATION ─── */
+        .fade-in {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ─── MOBILE ─── */
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; }
+
+        /* Mobile slide panel */
+        .mobile-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.35);
+            z-index: 150; opacity: 0; pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .mobile-overlay.open { opacity: 1; pointer-events: all; }
+
+        .mobile-panel {
+            position: fixed; top: 0; right: 0; bottom: 0;
+            width: min(300px, 82vw);
+            background: #ffffff;
+            box-shadow: -8px 0 40px rgba(0,0,0,0.12);
+            z-index: 200;
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 5rem 1.75rem 2rem;
+            display: flex; flex-direction: column;
+        }
+        .mobile-panel.open { transform: translateX(0); }
+
+        .panel-close {
+            position: absolute; top: 1.25rem; right: 1.25rem;
+            background: none; border: none; font-size: 1.4rem;
+            cursor: pointer; color: var(--text-muted);
+            width: 36px; height: 36px; display: flex;
+            align-items: center; justify-content: center;
+            border-radius: 8px; transition: background 0.2s;
+        }
+        .panel-close:hover { background: rgba(0,0,0,0.05); }
+
+        .panel-logo {
+            font-size: 1rem; font-weight: 800; color: var(--text-muted);
+            margin-bottom: 2rem; letter-spacing: -0.3px;
+        }
+        .panel-link {
+            display: block; padding: 0.9rem 0;
+            font-size: 1.05rem; font-weight: 600;
+            color: var(--text); text-decoration: none;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            transition: color 0.2s, padding-left 0.2s;
+        }
+        .panel-link:hover { color: var(--accent); padding-left: 4px; }
+        .panel-link:first-of-type { border-top: 1px solid rgba(0,0,0,0.06); }
+        .panel-cta-btn {
+            display: block; margin-top: auto; padding-top: 2rem;
+        }
+        .panel-cta-btn a {
+            display: block; padding: 0.9rem 1.5rem; border-radius: 12px;
+            background: var(--text); color: white;
+            font-weight: 700; font-size: 0.95rem;
+            text-align: center; text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .panel-cta-btn a:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero { padding: 6rem 1.25rem 3rem; }
+            section { padding: 3.25rem 1.25rem; }
+            .section-title { font-size: 1.6rem !important; letter-spacing: -0.8px; }
+            .section-subtitle { font-size: 0.9rem; margin-bottom: 1.75rem; }
+            .section-label { font-size: 0.72rem; margin-bottom: 0.6rem; }
+
+            /* SERVICES + WHY US — 2-column compact grid matching How It Works */
+            .services-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .service-card { padding: 1.25rem 1rem; }
+            .service-icon { width: 38px; height: 38px; font-size: 1rem; margin-bottom: 0.8rem; border-radius: 10px; }
+            .service-card h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+            .service-card p { font-size: 0.8rem; line-height: 1.5; }
+
+            /* HOW IT WORKS */
+            .process-steps { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2rem; }
+            .step { padding: 1.25rem 1rem; }
+            .step-number { width: 38px; height: 38px; font-size: 0.95rem; margin-bottom: 0.8rem; }
+            .step h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+            .step p { font-size: 0.8rem; line-height: 1.5; }
+
+            /* PRICING — keep readable */
+            .pricing-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+            .pricing-card { padding: 1.25rem 1.25rem; }
+            .pricing-price { font-size: 1.9rem; }
+
+            /* TESTIMONIALS */
+            .testimonials-grid { grid-template-columns: 1fr; gap: 0.85rem; }
+            .testimonial-card { padding: 1.5rem 1.25rem; }
+            .testimonial-card blockquote { font-size: 0.86rem; margin-bottom: 1rem; }
+
+            .pricing-card.featured::before { top: -10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <a href="#" class="nav-logo">Onwards Digital</a>
+    <ul class="nav-links">
+        <li><a href="javascript:void(0)" onclick="scrollToSection('services')">Services</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('work')">Why Us</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('process')">How It Works</a></li>
+        <li><a href="javascript:void(0)" onclick="scrollToSection('pricing')">Pricing</a></li>
+        <li><a href="javascript:void(0)" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Testimonials</a></li>
+    </ul>
+    <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">&#9776;</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content fade-in">
+        <div class="hero-badge">Now accepting new clients</div>
+        <h1>Your business deserves a<br><span>website that works</span></h1>
+        <p>We design and build fast, modern websites that turn visitors into customers — delivered in days, not months.</p>
+        <div class="hero-buttons">
+            <a href="javascript:void(0)" onclick="scrollToSection('pricing')" class="btn-primary">Get Your Free Mockup &rarr;</a>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+    <div class="container">
+        <div class="fade-in">
+            <div class="section-label">Services</div>
+            <h2 class="section-title">Everything you need online</h2>
+            <p class="section-subtitle">From launch to growth — we handle your entire web presence so you can focus on running your business.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#127912;</div>
+                <h3>Custom Website Design</h3>
+                <p>A clean, professional site built specifically for your business. Designed to look great on every device.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#9889;</div>
+                <h3>Speed & Performance</h3>
+                <p>Fast-loading pages that rank higher on Google and keep visitors engaged. Every second counts when someone finds you online.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128241;</div>
+                <h3>Mobile-First Design</h3>
+                <p>Over 60% of web traffic is mobile. Every site we build looks and works flawlessly on phones and tablets.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128200;</div>
+                <h3>SEO & Visibility</h3>
+                <p>Built-in search engine optimization so your customers can actually find you. We set up the foundation for organic growth.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128279;</div>
+                <h3>Integrations</h3>
+                <p>Connect your site to booking systems, payment processors, contact forms, social media, and more — all set up for you.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128295;</div>
+                <h3>Ongoing Support</h3>
+                <p>Need an update? Want to add a page? We offer affordable monthly maintenance so your site never falls behind.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY US -->
+<section id="work">
+    <div class="container">
+        <div class="fade-in">
+            <div class="section-label">Why Us</div>
+            <h2 class="section-title">Built different, priced fairly</h2>
+            <p class="section-subtitle">Most agencies charge thousands and take months. We do things differently.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#9889;</div>
+                <h3>Delivered in Days, Not Months</h3>
+                <p>Traditional agencies drag projects out for months. We deliver your finished website in 3–7 business days — without cutting corners on quality.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128176;</div>
+                <h3>A Fraction of Agency Prices</h3>
+                <p>Agencies charge $5,000–$20,000 for the same work. We charge $299–$599. Same modern design, same results — minus the inflated overhead.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#127919;</div>
+                <h3>Designed to Convert</h3>
+                <p>Every element is built with one goal: turning visitors into customers. Beautiful design means nothing if it doesn't grow your business.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128081;</div>
+                <h3>You Own Everything</h3>
+                <p>You get the full code ready to connect to your domain - it's yours, completely, forever.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128172;</div>
+                <h3>Real People, Real Responses</h3>
+                <p>You'll talk directly to the person building your site — not a sales rep or account manager. Fast replies, clear communication, no runaround.</p>
+            </div>
+            <div class="service-card glass fade-in">
+                <div class="service-icon">&#128260;</div>
+                <h3>Try Before You Pay</h3>
+                <p>Not sure yet? Get a free custom mockup of your homepage first. Zero commitment. If you love it, we'll move forward. If not, no hard feelings.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+    <div class="container" style="text-align: center;">
+        <div class="fade-in">
+            <div class="section-label">How It Works</div>
+            <h2 class="section-title">Live in days, not months</h2>
+            <p class="section-subtitle" style="margin: 0 auto 1rem;">Our streamlined process gets your site up fast — without cutting corners.</p>
+        </div>
+        <div class="process-steps">
+            <div class="step glass fade-in">
+                <div class="step-number">1</div>
+                <h3>Free Mockup</h3>
+                <p>We build a custom homepage mockup for your business — on us. No commitment required.</p>
+            </div>
+            <div class="step glass fade-in">
+                <div class="step-number">2</div>
+                <h3>Refine & Build</h3>
+                <p>Upgrade your package. We refine, then build the full site with all your content and features.</p>
+            </div>
+            <div class="step glass fade-in">
+                <div class="step-number">3</div>
+                <h3>Review & Revise</h3>
+                <p>We send over your new site, and complete 2–5 rounds of revisions based on your package and preferences.</p>
+            </div>
+            <div class="step glass fade-in">
+                <div class="step-number">4</div>
+                <h3>Grow</h3>
+                <p>Ongoing optional support to keep your site updated, and performing at its best.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="padding-top:7rem;padding-bottom:4rem;">
+    <div class="container">
+        <div class="fade-in pricing-top">
+            <div>
+                <div class="section-label">Pricing</div>
+                <h2 class="section-title">Simple, transparent pricing</h2>
+                <p class="section-subtitle">No hidden fees. No contracts. Just a great website.</p>
+            </div>
+            <div class="currency-toggle" onclick="toggleCurrency()" title="Switch currency" style="margin-top:2rem;">
+                <span class="toggle-flag">🇺🇸</span>
+                <div class="toggle-track" id="toggle-track">
+                    <div class="toggle-thumb" id="toggle-thumb"></div>
+                </div>
+                <span class="toggle-flag">🇦🇪</span>
+            </div>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card glass fade-in">
+                <h3>Beginner</h3>
+                <div class="pricing-price" id="price-beginner">$0</div>
+                <p class="pricing-desc">We'll build you a complete website mockup — totally free. Love it? Upgrade to Advanced for the full package.</p>
+                <ul class="pricing-features">
+                    <li>One custom homepage design</li>
+                    <li>Either Mobile or Computer responsive layout</li>
+                    <li>No commitment required</li>
+                    <li>Upgrade to Advanced or Professional to go live</li>
+                </ul>
+                <a href="beginner.html" class="pricing-btn secondary">Get Your Free Mockup</a>
+            </div>
+            <div class="pricing-card glass fade-in">
+                <h3>Advanced</h3>
+                <div class="pricing-price" id="price-starter">$299</div>
+                <p class="pricing-desc">Perfect for businesses that need a clean online presence fast.</p>
+                <ul class="pricing-features">
+                    <li>Up to 3 page responsive website</li>
+                    <li>Mobile &amp; computer optimized design</li>
+                    <li>Contact form integration</li>
+                    <li>Basic SEO setup</li>
+                    <li>2 rounds of revisions</li>
+                    <li>Delivered within 3–5 business days</li>
+                </ul>
+                <a href="advanced.html" class="pricing-btn secondary">Get Started</a>
+            </div>
+            <div class="pricing-card glass featured fade-in">
+                <h3>Professional</h3>
+                <div class="pricing-price" id="price-professional">$599</div>
+                <p class="pricing-desc">A full multi-page site designed to convert visitors into customers.</p>
+                <ul class="pricing-features">
+                    <li>Up to 5 custom pages</li>
+                    <li>Premium design</li>
+                    <li>Booking or payment integration</li>
+                    <li>Mobile &amp; computer optimized design</li>
+                    <li>Contact form integration</li>
+                    <li>Basic SEO setup</li>
+                    <li>5 rounds of revisions</li>
+                    <li>Delivered within 5–7 business days</li>
+                </ul>
+                <a href="professional.html" class="pricing-btn primary">Get Started</a>
+            </div>
+            <div class="pricing-card glass fade-in">
+                <h3>Monthly Care</h3>
+                <div class="pricing-price" id="price-monthly">$12.99<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
+                <p class="pricing-desc">Keep your site fresh without lifting a finger.</p>
+                <ul class="pricing-features">
+                    <li>3 content updates per month</li>
+                    <li>Customer support access</li>
+                    <li>Cancel anytime</li>
+                </ul>
+                <a href="monthly-care.html" class="pricing-btn secondary">Add to Any Plan</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+    <div class="container">
+        <div class="fade-in">
+            <div class="section-label">Testimonials</div>
+            <h2 class="section-title">What our clients say</h2>
+            <p class="section-subtitle">Real results from real businesses.</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card glass fade-in">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"We went from having no website to getting 15+ calls a week from our new site. The investment paid for itself in the first week."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">MR</div>
+                    <div>
+                        <div class="testimonial-name">Marcus R.</div>
+                        <div class="testimonial-role">Owner, Plumbing Company</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card glass fade-in">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"I was quoted $4,000 from another agency. Onwards Digital delivered a better site in a fraction of the time and cost. Couldn't be happier."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">SL</div>
+                    <div>
+                        <div class="testimonial-name">Sarah L.</div>
+                        <div class="testimonial-role">Founder, Wellness Brand</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card glass fade-in">
+                <div class="testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <blockquote>"Professional, fast, and easy to work with. They actually understood what our business needed, not just what looks pretty."</blockquote>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">JT</div>
+                    <div>
+                        <div class="testimonial-name">James T.</div>
+                        <div class="testimonial-role">CEO, Roofing Company</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MOBILE OVERLAY -->
+<div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileMenu()"></div>
+
+<!-- MOBILE PANEL -->
+<div class="mobile-panel" id="mobile-panel">
+    <button class="panel-close" onclick="closeMobileMenu()" aria-label="Close menu">&#x2715;</button>
+    <div class="panel-logo">Onwards Digital</div>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu()">Home</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('services')">Services</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('work')">Why Us</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('process')">How It Works</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); scrollToSection('pricing')">Pricing</a>
+    <a href="javascript:void(0)" class="panel-link" onclick="closeMobileMenu(); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Testimonials</a>
+    <div class="panel-cta-btn">
+        <a href="beginner.html">Get a Free Mockup &rarr;</a>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <p style="margin-bottom: 0.5rem;"><span style="font-weight: 800; color: var(--text);">Onwards Digital</span></p>
+    <p>&copy; 2026 Onwards Digital. All rights reserved.</p>
+</footer>
+
+<!-- SCROLL ANIMATIONS + CURRENCY TOGGLE -->
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Mobile panel
+    function openMobileMenu() {
+        document.getElementById('mobile-panel').classList.add('open');
+        document.getElementById('mobile-overlay').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMobileMenu() {
+        document.getElementById('mobile-panel').classList.remove('open');
+        document.getElementById('mobile-overlay').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    // Close on Escape key
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenu(); });
+
+    // Currency toggle
+    let isAED = false;
+
+    const priceData = {
+        'price-beginner':     { usd: '$0',   aed: 'AED 0' },
+        'price-starter':      { usd: '$299', aed: 'AED 1,099' },
+        'price-professional': { usd: '$599', aed: 'AED 2,200' },
+    };
+
+    const moSpan = '<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
+
+    // ── SMART ANCHOR SCROLL ─────────────────────────────────────────────────────
+    // Centers the section's visible content (excluding its own padding) in the
+    // available space below the fixed nav, giving equal breathing room top & bottom.
+    function scrollToSection(id) {
+        const section = document.getElementById(id);
+        if (!section) return;
+        const nav = document.querySelector('nav');
+        const navH = nav ? nav.offsetHeight : 64;
+        const cs = window.getComputedStyle(section);
+        const padTop    = parseFloat(cs.paddingTop)    || 0;
+        const padBottom = parseFloat(cs.paddingBottom) || 0;
+        // contentH = the actual visible content (cards, text) without section padding
+        const contentH  = section.offsetHeight - padTop - padBottom;
+        const available = window.innerHeight - navH;
+        const absTop    = section.getBoundingClientRect().top + window.scrollY;
+
+        const minGap = 36; // minimum breathing room above & below content
+        let gap;
+        if (contentH <= available - minGap * 2) {
+            // Content fits: center it perfectly in the available area
+            gap = (available - contentH) / 2;
+        } else {
+            // Content taller than viewport: use minimum gap above, scroll naturally
+            gap = minGap;
+        }
+
+        const scrollY = absTop + padTop - navH - gap;
+        window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
+    }
+
+    // Intercept any remaining hash anchor clicks (fallback)
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('a[href^="#"]');
+        if (!link) return;
+        const id = link.getAttribute('href').slice(1);
+        if (!id || !document.getElementById(id)) return;
+        e.preventDefault();
+        scrollToSection(id);
+    });
+
+    function toggleCurrency() {
+        isAED = !isAED;
+        document.getElementById('toggle-thumb').classList.toggle('aed', isAED);
+        document.getElementById('toggle-track').classList.toggle('aed', isAED);
+
+        Object.entries(priceData).forEach(([id, vals]) => {
+            document.getElementById(id).innerHTML = isAED ? vals.aed : vals.usd;
+        });
+
+        document.getElementById('price-monthly').innerHTML = (isAED ? 'AED 48' : '$12.99') + moSpan;
+    }
+</script>
+
+</body>
+</html>
