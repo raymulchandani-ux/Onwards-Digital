@@ -122,8 +122,30 @@
         .upload-caption { margin-top: 0.75rem; }
 
         @media (max-width: 768px) {
-            .page { padding: 6rem 1.5rem 3rem; }
+            nav { padding: 1rem 1.25rem; }
+            .page { padding: 5.5rem 1.25rem 3rem; }
+
+            /* Prevent iOS auto-zoom on inputs — must be ≥ 16px */
+            .form-input, .form-select, .form-textarea { font-size: 1rem; }
+
+            /* Readable plan header on phones */
+            .plan-price { font-size: 2.5rem; letter-spacing: -1px; }
+            .plan-title { font-size: clamp(1.6rem, 6vw, 2rem); letter-spacing: -0.8px; }
+            .plan-desc { font-size: 0.95rem; }
+
+            /* Touch-friendly inputs & radios */
             .radio-group { flex-direction: column; }
+            .radio-option label { min-height: 48px; display: flex; align-items: center; justify-content: center; }
+            .form-input, .form-select { min-height: 48px; }
+
+            /* Full-width submit */
+            .btn-submit { min-height: 52px; font-size: 0.95rem; }
+
+            /* Badge row wraps cleanly */
+            .badge-row { gap: 0.6rem; }
+
+            /* Upload area touch-friendly */
+            .upload-area { padding: 1.5rem 1rem; }
         }
     </style>
 </head>
