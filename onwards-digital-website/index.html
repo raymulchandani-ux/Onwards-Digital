@@ -10,17 +10,12 @@
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --accent:       #2563eb;
-            --accent-light: #3b82f6;
-            --accent-glow:  rgba(37, 99, 235, 0.12);
-            --bg:           #ffffff;
-            --bg-soft:      #f8faff;
-            --text:         #0f172a;
-            --text-muted:   #64748b;
-            --border:       rgba(37, 99, 235, 0.1);
-            --border-soft:  rgba(0, 0, 0, 0.06);
-            --radius:       12px;
-            --radius-lg:    18px;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --radius: 14px;
+            --radius-lg: 22px;
         }
 
         html { scroll-behavior: smooth; }
@@ -30,113 +25,81 @@
             color: var(--text);
             line-height: 1.6;
             overflow-x: hidden;
-            background: var(--bg);
+            background: #ffffff;
         }
 
         /* ─── NAV ─── */
         nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-            padding: 1rem 2.5rem;
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-soft);
+            padding: 1.1rem 2.5rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             display: flex; align-items: center; justify-content: space-between;
             transition: background 0.3s;
         }
         .nav-logo {
-            font-size: 1.1rem; font-weight: 800; letter-spacing: -0.5px;
+            font-size: 1.2rem; font-weight: 800; letter-spacing: -0.5px;
             color: var(--text); text-decoration: none;
         }
-        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links { display: flex; gap: 2.25rem; list-style: none; }
         .nav-links a {
-            color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500;
-            transition: color 0.2s; letter-spacing: -0.1px;
+            color: var(--text-muted); text-decoration: none; font-size: 0.88rem; font-weight: 500;
+            transition: color 0.2s;
         }
         .nav-links a:hover { color: var(--text); }
         .nav-cta {
-            padding: 0.5rem 1.25rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
-            background: var(--accent); color: white; text-decoration: none; border: none;
-            cursor: pointer; transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
-            letter-spacing: -0.2px;
+            padding: 0.55rem 1.4rem; border-radius: 10px; font-size: 0.88rem; font-weight: 600;
+            background: var(--text); color: white; text-decoration: none; border: none; cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.28); }
+        .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
 
         /* ─── HERO ─── */
         .hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            text-align: center; padding: 9rem 2rem 6rem;
+            text-align: center; padding: 8rem 2rem 6rem;
             position: relative; overflow: hidden;
-            background: var(--bg);
         }
-
-        /* Radial blue glow orb */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -10%; left: 50%; transform: translateX(-50%);
-            width: 900px; height: 600px;
-            background: radial-gradient(ellipse at center,
-                rgba(37,99,235,0.1) 0%,
-                rgba(37,99,235,0.04) 40%,
-                transparent 70%);
-            pointer-events: none; z-index: 0;
-        }
-
-        /* Subtle grid */
-        .hero::after {
-            content: '';
-            position: absolute; inset: 0;
-            background-image:
-                linear-gradient(rgba(37,99,235,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(37,99,235,0.04) 1px, transparent 1px);
-            background-size: 60px 60px;
-            mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
-            -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
-            pointer-events: none; z-index: 0;
-        }
-
-        .hero-content { max-width: 800px; position: relative; z-index: 1; }
+        .hero-content { max-width: 780px; position: relative; z-index: 1; }
 
         .hero-badge {
             display: inline-flex; align-items: center; gap: 0.5rem;
-            padding: 0.35rem 1rem; border-radius: 100px;
-            background: rgba(37, 99, 235, 0.07);
-            border: 1px solid rgba(37, 99, 235, 0.18);
-            font-size: 0.8rem; color: var(--accent); font-weight: 600;
-            margin-bottom: 2rem; letter-spacing: 0.1px;
+            padding: 0.4rem 1.1rem; border-radius: 100px;
+            background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99,102,241,0.15);
+            font-size: 0.82rem; color: var(--accent); font-weight: 600;
+            margin-bottom: 2rem;
             animation: blur-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         .hero-badge .dot {
             width: 6px; height: 6px; border-radius: 50%;
-            background: var(--accent);
+            background: var(--accent); flex-shrink: 0;
             animation: pulse-dot 2.4s ease-in-out infinite;
         }
-
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.7); }
+            50% { opacity: 0.45; transform: scale(0.65); }
         }
 
         @keyframes blur-up {
             from { opacity: 0; transform: translateY(16px); filter: blur(6px); }
-            to   { opacity: 1; transform: translateY(0);    filter: blur(0);   }
+            to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
         }
 
         .hero h1 {
             font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800;
-            letter-spacing: -3px; line-height: 1.04; margin-bottom: 1.5rem;
+            letter-spacing: -2.5px; line-height: 1.05; margin-bottom: 1.5rem;
             color: var(--text);
             animation: blur-up 0.75s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
-        .hero h1 em {
-            font-style: normal;
-            background: linear-gradient(135deg, var(--accent) 0%, #60a5fa 100%);
+        .hero h1 span {
+            background: linear-gradient(135deg, #6366f1, #a855f7, #ec4899);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             background-clip: text;
         }
         .hero p {
-            font-size: 1.1rem; color: var(--text-muted); max-width: 520px; margin: 0 auto 2.5rem;
-            line-height: 1.75; font-weight: 400; letter-spacing: -0.1px;
+            font-size: 1.15rem; color: var(--text-muted); max-width: 560px; margin: 0 auto 2.5rem;
+            line-height: 1.75; font-weight: 400;
             animation: blur-up 0.75s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         .hero-buttons {
@@ -144,251 +107,215 @@
             animation: blur-up 0.75s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         .btn-primary {
-            padding: 0.85rem 1.85rem; border-radius: 10px; font-size: 0.925rem; font-weight: 600;
-            background: var(--accent); color: white; text-decoration: none; border: none;
-            cursor: pointer; letter-spacing: -0.2px;
-            transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
+            padding: 0.9rem 2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
+            background: var(--text); color: white; text-decoration: none; border: none;
+            cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
         .btn-secondary {
-            padding: 0.85rem 1.85rem; border-radius: 10px; font-size: 0.925rem; font-weight: 600;
+            padding: 0.9rem 2rem; border-radius: 12px; font-size: 0.95rem; font-weight: 600;
             background: white; color: var(--text); text-decoration: none;
-            border: 1px solid rgba(0,0,0,0.1); cursor: pointer; letter-spacing: -0.2px;
-            transition: background 0.18s, border-color 0.18s;
+            border: 1px solid rgba(0,0,0,0.08); cursor: pointer;
+            transition: background 0.2s;
         }
-        .btn-secondary:hover { background: #f8fafc; border-color: rgba(0,0,0,0.15); }
+        .btn-secondary:hover { background: #f9fafb; }
 
         /* ─── SECTIONS ─── */
         section { padding: 7rem 2rem; position: relative; z-index: 1; }
-        section.alt-bg { background: var(--bg-soft); }
+        section.alt-bg { background: #f7f7ff; }
         .container { max-width: 1100px; margin: 0 auto; }
         .section-label {
-            font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px;
-            color: var(--accent); margin-bottom: 0.65rem;
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px;
+            color: var(--accent); margin-bottom: 0.7rem;
         }
         .section-title {
-            font-size: clamp(1.8rem, 3.5vw, 2.5rem); font-weight: 800;
-            letter-spacing: -1.8px; margin-bottom: 0.75rem; color: var(--text);
-            line-height: 1.1;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800;
+            letter-spacing: -1.5px; margin-bottom: 0.85rem; color: var(--text);
         }
         .section-subtitle {
-            font-size: 0.975rem; color: var(--text-muted); max-width: 520px; margin-bottom: 1.25rem;
-            line-height: 1.68; letter-spacing: -0.05px;
+            font-size: 1rem; color: var(--text-muted); max-width: 560px; margin-bottom: 1.25rem;
+            line-height: 1.65;
         }
 
-        /* ─── CARDS (Linear style) ─── */
-        .card {
-            background: white;
-            border: 1px solid var(--border-soft);
+        /* ─── GLASS CARDS ─── */
+        .glass {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0,0,0,0.04);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.04);
             border-radius: var(--radius-lg);
-            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-        .card:hover {
-            border-color: rgba(37, 99, 235, 0.2);
-            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.05), 0 8px 32px rgba(0,0,0,0.06);
-            transform: translateY(-2px);
+        .glass:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.08);
         }
 
         /* ─── SERVICES ─── */
         .services-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
+            gap: 1.25rem;
         }
         .service-card { padding: 1.75rem; }
         .service-icon {
-            width: 44px; height: 44px; border-radius: 10px;
-            background: rgba(37, 99, 235, 0.07);
+            width: 46px; height: 46px; border-radius: 12px;
+            background: rgba(99, 102, 241, 0.08);
             display: flex; align-items: center; justify-content: center;
             margin-bottom: 1rem; color: var(--accent);
         }
-        .service-card h3 { font-size: 0.975rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: -0.3px; }
-        .service-card p { color: var(--text-muted); font-size: 0.875rem; line-height: 1.65; }
+        .service-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; }
+        .service-card p { color: var(--text-muted); font-size: 0.88rem; line-height: 1.6; }
 
         /* ─── PROCESS ─── */
         .process-steps {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem; margin-top: 1rem;
+            gap: 1.25rem; margin-top: 1rem;
         }
-        .step { text-align: center; padding: 1.75rem 1.5rem; }
+        .step { text-align: center; padding: 1.75rem 1.4rem; }
         .step-number {
-            width: 44px; height: 44px; border-radius: 50%; margin: 0 auto 1rem;
-            background: rgba(37, 99, 235, 0.07);
-            border: 1.5px solid rgba(37, 99, 235, 0.2);
+            width: 46px; height: 46px; border-radius: 50%; margin: 0 auto 1rem;
+            background: rgba(99, 102, 241, 0.08); border: 2px solid rgba(99,102,241,0.15);
             display: flex; align-items: center; justify-content: center;
-            font-size: 0.95rem; font-weight: 800; color: var(--accent);
+            font-size: 1rem; font-weight: 800; color: var(--accent);
         }
-        .step h3 { font-size: 0.975rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: -0.3px; }
-        .step p { color: var(--text-muted); font-size: 0.862rem; line-height: 1.65; }
+        .step h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.45rem; }
+        .step p { color: var(--text-muted); font-size: 0.86rem; line-height: 1.6; }
 
         /* ─── CURRENCY TOGGLE ─── */
         .pricing-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
         .pricing-top .section-subtitle { margin-bottom: 0; }
-        .currency-toggle { display: flex; align-items: center; gap: 0.65rem; padding-top: 0.25rem; flex-shrink: 0; cursor: pointer; }
-        .toggle-flag { font-size: 1.4rem; line-height: 1; }
+        .currency-toggle { display: flex; align-items: center; gap: 0.65rem; padding-top: 0.25rem; flex-shrink: 0; }
+        .toggle-flag { font-size: 1.5rem; line-height: 1; }
         .toggle-track {
-            width: 50px; height: 28px;
-            background: #2563eb;
-            border-radius: 100px; position: relative;
+            width: 54px; height: 30px;
+            background: #3a5bd4;
+            border-radius: 100px; cursor: pointer; position: relative;
             transition: background 0.35s ease; flex-shrink: 0;
         }
-        .toggle-track.aed { background: #059669; }
+        .toggle-track.aed { background: #009b3a; }
         .toggle-thumb {
-            width: 22px; height: 22px; background: white; border-radius: 50%;
+            width: 24px; height: 24px; background: white; border-radius: 50%;
             position: absolute; top: 3px; left: 3px;
             transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.22);
         }
-        .toggle-thumb.aed { transform: translateX(22px); }
-        .toggle-label { font-size: 0.76rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.3px; }
+        .toggle-thumb.aed { transform: translateX(24px); }
+        .toggle-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.3px; }
 
         /* ─── PRICING ─── */
         .pricing-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
+            gap: 1.25rem;
         }
-        .pricing-card { padding: 1.5rem 1.65rem 1.85rem; position: relative; display: flex; flex-direction: column; }
+        .pricing-card { padding: 1.4rem 1.65rem 1.8rem; position: relative; display: flex; flex-direction: column; }
         .pricing-card.featured {
-            border: 1.5px solid rgba(37, 99, 235, 0.3);
-            box-shadow: 0 0 0 4px rgba(37,99,235,0.06), 0 8px 32px rgba(37,99,235,0.08);
+            border: 1px solid rgba(99,102,241,0.25);
+            background: rgba(255,255,255,0.7);
+            box-shadow: 0 4px 30px rgba(99,102,241,0.08), 0 0 0 1px rgba(99,102,241,0.1);
         }
         .pricing-card.featured::before {
             content: 'Most Popular';
             position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
-            padding: 0.28rem 1rem; border-radius: 100px;
+            padding: 0.3rem 1rem; border-radius: 100px;
             background: var(--accent); color: white;
-            font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;
-            white-space: nowrap;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px;
         }
-        .pricing-card h3 {
-            font-size: 0.85rem; font-weight: 700; color: var(--text-muted);
-            margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;
-        }
-        .pricing-price {
-            font-size: 2.1rem; font-weight: 800; letter-spacing: -2px;
-            margin-bottom: 0.2rem; color: var(--text); white-space: nowrap;
-        }
-        .pricing-desc { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.9rem; line-height: 1.55; }
-        .pricing-divider { height: 1px; background: var(--border-soft); margin: 0.85rem 0; }
-        .pricing-features { list-style: none; margin-bottom: auto; }
+        .pricing-card h3 { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.5rem; }
+        .pricing-price { font-size: 2.1rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 0.2rem; color: var(--text); white-space: nowrap; }
+        .pricing-desc { color: var(--text-muted); font-size: 0.82rem; margin-bottom: 0.85rem; }
+        .pricing-features { list-style: none; }
         .pricing-features li {
-            padding: 0.22rem 0; color: var(--text-muted); font-size: 0.82rem;
-            display: flex; align-items: flex-start; gap: 0.55rem; line-height: 1.5;
+            padding: 0.2rem 0; color: var(--text-muted); font-size: 0.82rem;
+            display: flex; align-items: flex-start; gap: 0.55rem;
         }
-        .pricing-features li .check {
-            flex-shrink: 0; margin-top: 1px;
-            width: 14px; height: 14px; color: var(--accent);
-        }
+        .pricing-features li svg { flex-shrink: 0; color: var(--accent); margin-top: 1px; }
+        .pricing-features { margin-bottom: auto; }
         .pricing-btn {
-            display: block; width: 100%; padding: 0.72rem; border-radius: 9px;
-            font-size: 0.875rem; font-weight: 600; text-align: center; text-decoration: none;
-            border: none; cursor: pointer; letter-spacing: -0.2px;
-            transition: transform 0.18s, box-shadow 0.18s, opacity 0.18s;
-            margin-top: 1.1rem;
+            display: block; width: 100%; padding: 0.75rem; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 600; text-align: center; text-decoration: none;
+            border: none; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 1rem;
         }
         .pricing-btn.primary { background: var(--accent); color: white; }
-        .pricing-btn.primary:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.28); }
-        .pricing-btn.outline {
+        .pricing-btn.secondary {
             background: white; color: var(--text);
-            border: 1px solid rgba(0,0,0,0.1);
+            border: 1px solid rgba(0,0,0,0.08);
         }
-        .pricing-btn.outline:hover { background: #f8fafc; transform: translateY(-1px); }
+        .pricing-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
 
         /* ─── TESTIMONIALS ─── */
         .testimonials-grid {
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
+            gap: 1.25rem;
         }
-        .testimonial-card { padding: 1.75rem 2rem; }
-        .testimonial-stars { margin-bottom: 1rem; display: flex; gap: 3px; }
+        .testimonial-card { padding: 2rem; }
+        .testimonial-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
         .testimonial-stars svg { width: 15px; height: 15px; fill: #f59e0b; }
         .testimonial-card blockquote {
-            color: var(--text); font-size: 0.9rem; line-height: 1.75;
-            margin-bottom: 1.5rem; font-style: normal; font-weight: 400;
+            color: var(--text-muted); font-size: 0.92rem; line-height: 1.75;
+            margin-bottom: 1.5rem; font-style: italic;
         }
         .testimonial-author { display: flex; align-items: center; gap: 0.75rem; }
         .testimonial-avatar {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: rgba(37, 99, 235, 0.08);
-            border: 1.5px solid rgba(37,99,235,0.15);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 0.82rem; color: var(--accent);
-            flex-shrink: 0;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(99, 102, 241, 0.08); display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.85rem; color: var(--accent);
         }
-        .testimonial-name { font-weight: 600; font-size: 0.875rem; color: var(--text); letter-spacing: -0.2px; }
-        .testimonial-role { color: var(--text-muted); font-size: 0.775rem; }
+        .testimonial-name { font-weight: 600; font-size: 0.88rem; color: var(--text); }
+        .testimonial-role { color: var(--text-muted); font-size: 0.78rem; }
 
         /* ─── CTA ─── */
-        .cta-section {
-            text-align: center; padding: 8rem 2rem;
-            background: var(--bg-soft);
-            position: relative; overflow: hidden;
-        }
-        .cta-section::before {
-            content: '';
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 700px; height: 400px;
-            background: radial-gradient(ellipse at center, rgba(37,99,235,0.08) 0%, transparent 70%);
-            pointer-events: none;
-        }
+        .cta-section { text-align: center; padding: 7rem 2rem; }
         .cta-section h2 {
             font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
-            letter-spacing: -2px; margin-bottom: 1rem; color: var(--text);
-            position: relative; z-index: 1;
+            letter-spacing: -1.5px; margin-bottom: 1rem;
         }
-        .cta-section p {
-            color: var(--text-muted); font-size: 1.025rem; margin-bottom: 2.5rem;
-            position: relative; z-index: 1;
-        }
-        .cta-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+        .cta-section p { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 2.5rem; }
 
         /* ─── FOOTER ─── */
         footer {
-            padding: 2.5rem 2rem; text-align: center;
-            border-top: 1px solid var(--border-soft);
-            background: var(--bg);
+            padding: 3rem 2rem; text-align: center;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            position: relative; z-index: 1;
         }
-        footer p { color: var(--text-muted); font-size: 0.8rem; }
+        footer p { color: var(--text-muted); font-size: 0.82rem; }
 
-        /* ─── SCROLL ANIMATIONS ─── */
+        /* ─── REVEAL ANIMATIONS ─── */
         .reveal {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translateY(22px);
             filter: blur(4px);
             transition:
-                opacity   0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
-                filter    0.65s cubic-bezier(0.16, 1, 0.3, 1);
+                opacity   0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                filter    0.7s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.06s; }
-        .reveal-delay-2 { transition-delay: 0.12s; }
-        .reveal-delay-3 { transition-delay: 0.18s; }
-        .reveal-delay-4 { transition-delay: 0.24s; }
-        .reveal-delay-5 { transition-delay: 0.30s; }
-        .reveal-delay-6 { transition-delay: 0.36s; }
+        .reveal.visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+        .reveal-delay-1 { transition-delay: 0.07s; }
+        .reveal-delay-2 { transition-delay: 0.14s; }
+        .reveal-delay-3 { transition-delay: 0.21s; }
+        .reveal-delay-4 { transition-delay: 0.28s; }
+        .reveal-delay-5 { transition-delay: 0.35s; }
+        .reveal-delay-6 { transition-delay: 0.42s; }
 
-        /* ─── MOBILE MENU ─── */
-        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 0.25rem; }
+        /* ─── MOBILE ─── */
+        .mobile-menu-btn { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; padding: 0.25rem; }
 
         .mobile-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.3);
+            position: fixed; inset: 0; background: rgba(0,0,0,0.35);
             z-index: 150; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.35s ease;
         }
         .mobile-overlay.open { opacity: 1; pointer-events: all; }
 
         .mobile-panel {
             position: fixed; top: 0; right: 0; bottom: 0;
             width: min(300px, 82vw);
-            background: white;
-            box-shadow: -8px 0 40px rgba(0,0,0,0.1);
+            background: #ffffff;
+            box-shadow: -8px 0 40px rgba(0,0,0,0.12);
             z-index: 200;
             transform: translateX(100%);
-            transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 5rem 1.75rem 2rem;
             display: flex; flex-direction: column;
         }
@@ -396,53 +323,54 @@
 
         .panel-close {
             position: absolute; top: 1.25rem; right: 1.25rem;
-            background: none; border: none; font-size: 1.3rem;
+            background: none; border: none; font-size: 1.4rem;
             cursor: pointer; color: var(--text-muted);
-            width: 34px; height: 34px; display: flex;
+            width: 36px; height: 36px; display: flex;
             align-items: center; justify-content: center;
             border-radius: 8px; transition: background 0.2s;
         }
         .panel-close:hover { background: rgba(0,0,0,0.05); }
-        .panel-logo { font-size: 1rem; font-weight: 800; color: var(--text-muted); margin-bottom: 2rem; }
+
+        .panel-logo { font-size: 1rem; font-weight: 800; color: var(--text-muted); margin-bottom: 2rem; letter-spacing: -0.3px; }
         .panel-link {
             display: block; padding: 0.9rem 0;
-            font-size: 1rem; font-weight: 600;
+            font-size: 1.05rem; font-weight: 600;
             color: var(--text); text-decoration: none;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
             transition: color 0.2s, padding-left 0.2s;
         }
         .panel-link:hover { color: var(--accent); padding-left: 4px; }
-        .panel-link:first-of-type { border-top: 1px solid rgba(0,0,0,0.05); }
+        .panel-link:first-of-type { border-top: 1px solid rgba(0,0,0,0.06); }
         .panel-cta-btn { display: block; margin-top: auto; padding-top: 2rem; }
         .panel-cta-btn a {
-            display: block; padding: 0.9rem 1.5rem; border-radius: 10px;
-            background: var(--accent); color: white;
-            font-weight: 700; font-size: 0.925rem;
+            display: block; padding: 0.9rem 1.5rem; border-radius: 12px;
+            background: var(--text); color: white;
+            font-weight: 700; font-size: 0.95rem;
             text-align: center; text-decoration: none;
-            transition: opacity 0.18s, transform 0.18s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .panel-cta-btn a:hover { opacity: 0.88; transform: translateY(-1px); }
+        .panel-cta-btn a:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 
-        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
             .nav-links, .nav-cta { display: none; }
-            .mobile-menu-btn { display: flex; align-items: center; }
-            .hero { padding: 6rem 1.25rem 3.5rem; }
-            section { padding: 3.5rem 1.25rem; }
-            .section-title { font-size: 1.65rem !important; letter-spacing: -1px; }
-            .section-subtitle { font-size: 0.9rem; }
+            .mobile-menu-btn { display: block; }
+            .hero { padding: 6rem 1.25rem 3rem; }
+            section { padding: 3.25rem 1.25rem; }
+            .section-title { font-size: 1.6rem !important; letter-spacing: -0.8px; }
+            .section-subtitle { font-size: 0.9rem; margin-bottom: 1.75rem; }
+            .section-label { font-size: 0.72rem; margin-bottom: 0.6rem; }
 
             .services-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-            .service-card { padding: 1.2rem 1rem; }
-            .service-icon { width: 36px; height: 36px; margin-bottom: 0.75rem; border-radius: 9px; }
-            .service-card h3 { font-size: 0.9rem; margin-bottom: 0.3rem; }
-            .service-card p { font-size: 0.8rem; }
+            .service-card { padding: 1.25rem 1rem; }
+            .service-icon { width: 38px; height: 38px; font-size: 1rem; margin-bottom: 0.8rem; border-radius: 10px; }
+            .service-card h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+            .service-card p { font-size: 0.8rem; line-height: 1.5; }
 
-            .process-steps { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1.5rem; }
-            .step { padding: 1.2rem 1rem; }
-            .step-number { width: 36px; height: 36px; font-size: 0.9rem; margin-bottom: 0.75rem; }
-            .step h3 { font-size: 0.9rem; margin-bottom: 0.3rem; }
-            .step p { font-size: 0.8rem; }
+            .process-steps { grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 2rem; }
+            .step { padding: 1.25rem 1rem; }
+            .step-number { width: 38px; height: 38px; font-size: 0.95rem; margin-bottom: 0.8rem; }
+            .step h3 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+            .step p { font-size: 0.8rem; line-height: 1.5; }
 
             .pricing-grid { grid-template-columns: 1fr; gap: 0.85rem; }
             .pricing-card { padding: 1.25rem 1.25rem; }
@@ -453,7 +381,6 @@
             .testimonial-card blockquote { font-size: 0.86rem; margin-bottom: 1rem; }
 
             .pricing-card.featured::before { top: -10px; }
-            .cta-section { padding: 5rem 1.25rem; }
         }
     </style>
 </head>
@@ -469,14 +396,7 @@
         <li><a href="javascript:void(0)" onclick="scrollToSection('pricing')">Pricing</a></li>
         <li><a href="javascript:void(0)" onclick="window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'})">Testimonials</a></li>
     </ul>
-    <a href="beginner.html" class="nav-cta" style="display:none;" id="desktop-cta">Get Free Mockup</a>
-    <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <line x1="3" y1="12" x2="21" y2="12"/>
-            <line x1="3" y1="18" x2="21" y2="18"/>
-        </svg>
-    </button>
+    <button class="mobile-menu-btn" onclick="openMobileMenu()" aria-label="Open menu">&#9776;</button>
 </nav>
 
 <!-- HERO -->
@@ -486,7 +406,7 @@
             <span class="dot"></span>
             Now accepting new clients
         </div>
-        <h1>Your business deserves a<br><em>website that works</em></h1>
+        <h1>Your business deserves a<br><span>website that works</span></h1>
         <p>We design and build fast, modern websites that turn visitors into customers — delivered in days, not months.</p>
         <div class="hero-buttons">
             <a href="javascript:void(0)" onclick="scrollToSection('pricing')" class="btn-primary">Get Your Free Mockup &rarr;</a>
@@ -504,42 +424,42 @@
             <p class="section-subtitle">From launch to growth — we handle your entire web presence so you can focus on running your business.</p>
         </div>
         <div class="services-grid">
-            <div class="service-card card reveal reveal-delay-1">
+            <div class="service-card glass reveal reveal-delay-1">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
                 </div>
                 <h3>Custom Website Design</h3>
                 <p>A clean, professional site built specifically for your business. Designed to look great on every device.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-2">
+            <div class="service-card glass reveal reveal-delay-2">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                 </div>
                 <h3>Speed & Performance</h3>
                 <p>Fast-loading pages that rank higher on Google and keep visitors engaged. Every second counts when someone finds you online.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-3">
+            <div class="service-card glass reveal reveal-delay-3">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
                 </div>
                 <h3>Mobile-First Design</h3>
                 <p>Over 60% of web traffic is mobile. Every site we build looks and works flawlessly on phones and tablets.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-4">
+            <div class="service-card glass reveal reveal-delay-4">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                 </div>
                 <h3>SEO & Visibility</h3>
                 <p>Built-in search engine optimization so your customers can actually find you. We set up the foundation for organic growth.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-5">
+            <div class="service-card glass reveal reveal-delay-5">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                 </div>
                 <h3>Integrations</h3>
                 <p>Connect your site to booking systems, payment processors, contact forms, social media, and more — all set up for you.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-6">
+            <div class="service-card glass reveal reveal-delay-6">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                 </div>
@@ -559,42 +479,42 @@
             <p class="section-subtitle">Most agencies charge thousands and take months. We do things differently.</p>
         </div>
         <div class="services-grid">
-            <div class="service-card card reveal reveal-delay-1">
+            <div class="service-card glass reveal reveal-delay-1">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 </div>
                 <h3>Delivered in Days, Not Months</h3>
                 <p>Traditional agencies drag projects out for months. We deliver your finished website in 3–7 business days — without cutting corners on quality.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-2">
+            <div class="service-card glass reveal reveal-delay-2">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
                 </div>
                 <h3>A Fraction of Agency Prices</h3>
                 <p>Agencies charge $5,000–$20,000 for the same work. We charge $299–$599. Same modern design, same results — minus the inflated overhead.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-3">
+            <div class="service-card glass reveal reveal-delay-3">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                 </div>
                 <h3>Designed to Convert</h3>
                 <p>Every element is built with one goal: turning visitors into customers. Beautiful design means nothing if it doesn't grow your business.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-4">
+            <div class="service-card glass reveal reveal-delay-4">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 <h3>You Own Everything</h3>
                 <p>You get the full code ready to connect to your domain — it's yours, completely, forever.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-5">
+            <div class="service-card glass reveal reveal-delay-5">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 </div>
                 <h3>Real People, Real Responses</h3>
                 <p>You'll talk directly to the person building your site — not a sales rep or account manager. Fast replies, clear communication, no runaround.</p>
             </div>
-            <div class="service-card card reveal reveal-delay-6">
+            <div class="service-card glass reveal reveal-delay-6">
                 <div class="service-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 </div>
@@ -614,22 +534,22 @@
             <p class="section-subtitle" style="margin: 0 auto 1rem;">Our streamlined process gets your site up fast — without cutting corners.</p>
         </div>
         <div class="process-steps">
-            <div class="step card reveal reveal-delay-1">
+            <div class="step glass reveal reveal-delay-1">
                 <div class="step-number">1</div>
                 <h3>Free Mockup</h3>
                 <p>We build a custom homepage mockup for your business — on us. No commitment required.</p>
             </div>
-            <div class="step card reveal reveal-delay-2">
+            <div class="step glass reveal reveal-delay-2">
                 <div class="step-number">2</div>
                 <h3>Refine & Build</h3>
                 <p>Upgrade your package. We refine, then build the full site with all your content and features.</p>
             </div>
-            <div class="step card reveal reveal-delay-3">
+            <div class="step glass reveal reveal-delay-3">
                 <div class="step-number">3</div>
                 <h3>Review & Revise</h3>
                 <p>We send over your new site, and complete 2–5 rounds of revisions based on your package and preferences.</p>
             </div>
-            <div class="step card reveal reveal-delay-4">
+            <div class="step glass reveal reveal-delay-4">
                 <div class="step-number">4</div>
                 <h3>Grow</h3>
                 <p>Ongoing optional support to keep your site updated, and performing at its best.</p>
@@ -656,72 +576,59 @@
             </div>
         </div>
         <div class="pricing-grid">
-
-            <!-- BEGINNER -->
-            <div class="pricing-card card reveal reveal-delay-1">
+            <div class="pricing-card glass reveal reveal-delay-1">
                 <h3>Beginner</h3>
                 <div class="pricing-price" id="price-beginner">$0</div>
                 <p class="pricing-desc">We'll build you a complete website mockup — totally free. Love it? Upgrade to Advanced for the full package.</p>
-                <div class="pricing-divider"></div>
                 <ul class="pricing-features">
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>One custom homepage design</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Either Mobile or Computer responsive layout</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No commitment required</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Upgrade to Advanced or Professional to go live</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>One custom homepage design</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Either Mobile or Computer responsive layout</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No commitment required</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Upgrade to Advanced or Professional to go live</li>
                 </ul>
-                <a href="beginner.html" class="pricing-btn outline">Get Your Free Mockup</a>
+                <a href="beginner.html" class="pricing-btn secondary">Get Your Free Mockup</a>
             </div>
-
-            <!-- ADVANCED -->
-            <div class="pricing-card card reveal reveal-delay-2">
+            <div class="pricing-card glass reveal reveal-delay-2">
                 <h3>Advanced</h3>
                 <div class="pricing-price" id="price-starter">$299</div>
                 <p class="pricing-desc">Perfect for businesses that need a clean online presence fast.</p>
-                <div class="pricing-divider"></div>
                 <ul class="pricing-features">
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 3 page responsive website</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mobile &amp; computer optimized design</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contact form integration</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic SEO setup</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2 rounds of revisions</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Delivered within 3–5 business days</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 3 page responsive website</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mobile &amp; computer optimized design</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contact form integration</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic SEO setup</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2 rounds of revisions</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Delivered within 3–5 business days</li>
                 </ul>
-                <a href="advanced.html" class="pricing-btn outline">Get Started</a>
+                <a href="advanced.html" class="pricing-btn secondary">Get Started</a>
             </div>
-
-            <!-- PROFESSIONAL (featured) -->
-            <div class="pricing-card card featured reveal reveal-delay-3">
+            <div class="pricing-card glass featured reveal reveal-delay-3">
                 <h3>Professional</h3>
                 <div class="pricing-price" id="price-professional">$599</div>
                 <p class="pricing-desc">A full multi-page site designed to convert visitors into customers.</p>
-                <div class="pricing-divider"></div>
                 <ul class="pricing-features">
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 5 custom pages</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Premium design</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Booking or payment integration</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mobile &amp; computer optimized design</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contact form integration</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic SEO setup</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>5 rounds of revisions</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Delivered within 5–7 business days</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 5 custom pages</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Premium design</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Booking or payment integration</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Mobile &amp; computer optimized design</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Contact form integration</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Basic SEO setup</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>5 rounds of revisions</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Delivered within 5–7 business days</li>
                 </ul>
                 <a href="professional.html" class="pricing-btn primary">Get Started</a>
             </div>
-
-            <!-- MONTHLY CARE -->
-            <div class="pricing-card card reveal reveal-delay-4">
+            <div class="pricing-card glass reveal reveal-delay-4">
                 <h3>Monthly Care</h3>
-                <div class="pricing-price" id="price-monthly">$12.99<span class="per-mo" style="font-size:1.3rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
+                <div class="pricing-price" id="price-monthly">$12.99<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span></div>
                 <p class="pricing-desc">Keep your site fresh without lifting a finger.</p>
-                <div class="pricing-divider"></div>
                 <ul class="pricing-features">
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 content updates per month</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Customer support access</li>
-                    <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cancel anytime</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 content updates per month</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Customer support access</li>
+                    <li><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cancel anytime</li>
                 </ul>
-                <a href="monthly-care.html" class="pricing-btn outline">Add to Any Plan</a>
+                <a href="monthly-care.html" class="pricing-btn secondary">Add to Any Plan</a>
             </div>
-
         </div>
     </div>
 </section>
@@ -735,7 +642,7 @@
             <p class="section-subtitle">Real results from real businesses.</p>
         </div>
         <div class="testimonials-grid">
-            <div class="testimonial-card card reveal reveal-delay-1">
+            <div class="testimonial-card glass reveal reveal-delay-1">
                 <div class="testimonial-stars">
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -752,7 +659,7 @@
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card card reveal reveal-delay-2">
+            <div class="testimonial-card glass reveal reveal-delay-2">
                 <div class="testimonial-stars">
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -769,7 +676,7 @@
                     </div>
                 </div>
             </div>
-            <div class="testimonial-card card reveal reveal-delay-3">
+            <div class="testimonial-card glass reveal reveal-delay-3">
                 <div class="testimonial-stars">
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                     <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -786,18 +693,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- CTA -->
-<section class="cta-section">
-    <div class="reveal">
-        <h2>Ready to get started?</h2>
-        <p>Get a free custom homepage mockup — no commitment, no credit card.</p>
-        <div class="cta-buttons">
-            <a href="beginner.html" class="btn-primary">Get Your Free Mockup &rarr;</a>
-            <a href="javascript:void(0)" onclick="scrollToSection('pricing')" class="btn-secondary">View Pricing</a>
         </div>
     </div>
 </section>
@@ -830,15 +725,13 @@
     // ── REVEAL ANIMATIONS ───────────────────────────────────────────────
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
+            if (entry.isIntersecting) entry.target.classList.add('visible');
         });
     }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // ── MOBILE MENU ─────────────────────────────────────────────────────
+    // ── MOBILE PANEL ────────────────────────────────────────────────────
     function openMobileMenu() {
         document.getElementById('mobile-panel').classList.add('open');
         document.getElementById('mobile-overlay').classList.add('open');
@@ -860,19 +753,7 @@
         'price-professional': { usd: '$599', aed: 'AED 2,200' },
     };
 
-    const moSpan = '<span class="per-mo" style="font-size:1.3rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
-
-    function toggleCurrency() {
-        isAED = !isAED;
-        document.getElementById('toggle-thumb').classList.toggle('aed', isAED);
-        document.getElementById('toggle-track').classList.toggle('aed', isAED);
-
-        Object.entries(priceData).forEach(([id, vals]) => {
-            document.getElementById(id).innerHTML = isAED ? vals.aed : vals.usd;
-        });
-
-        document.getElementById('price-monthly').innerHTML = (isAED ? 'AED 48' : '$12.99') + moSpan;
-    }
+    const moSpan = '<span class="per-mo" style="font-size:1.35rem;font-weight:700;color:var(--text-muted);margin-left:0.15rem;">/mo</span>';
 
     // ── SMART ANCHOR SCROLL ─────────────────────────────────────────────
     function scrollToSection(id) {
@@ -899,7 +780,6 @@
         window.scrollTo({ top: Math.max(0, scrollY), behavior: 'smooth' });
     }
 
-    // Fallback for hash anchor clicks
     document.addEventListener('click', function(e) {
         const link = e.target.closest('a[href^="#"]');
         if (!link) return;
@@ -909,11 +789,17 @@
         scrollToSection(id);
     });
 
-    // Show desktop CTA after brief delay (not on hero)
-    setTimeout(() => {
-        const cta = document.getElementById('desktop-cta');
-        if (cta) cta.style.display = 'inline-block';
-    }, 400);
+    function toggleCurrency() {
+        isAED = !isAED;
+        document.getElementById('toggle-thumb').classList.toggle('aed', isAED);
+        document.getElementById('toggle-track').classList.toggle('aed', isAED);
+
+        Object.entries(priceData).forEach(([id, vals]) => {
+            document.getElementById(id).innerHTML = isAED ? vals.aed : vals.usd;
+        });
+
+        document.getElementById('price-monthly').innerHTML = (isAED ? 'AED 48' : '$12.99') + moSpan;
+    }
 </script>
 
 </body>
