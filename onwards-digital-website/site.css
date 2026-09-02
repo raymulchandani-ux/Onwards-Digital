@@ -548,3 +548,7 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
   .fact:nth-child(even) { padding-left: 14px; }
   .fact:nth-child(3), .fact:nth-child(4) { border-bottom: 0; }
 }
+@media (max-width: 760px) {
+  .footer .col:last-child { grid-column: 1 / -1; }
+  .footer .col:last-child a:first-of-type { font-size: 14px; }
+}

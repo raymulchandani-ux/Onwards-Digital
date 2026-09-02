@@ -56,6 +56,10 @@
   .head-cta{display:flex;align-items:center;gap:22px}
   .head-cta .btn{min-height:44px;padding:0 22px;background:transparent;color:var(--amber);border-color:var(--amber)}
   .head-cta .btn:hover{background:var(--amber);color:var(--night)}
+  .head-tel{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:13px;letter-spacing:.14em;color:var(--cream-2);font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .2s}
+  .head-tel:hover{color:var(--amber)}
+  .head-tel svg.i{width:16px;height:16px}
+  .nav .nav-tel{display:none}
   .menu-toggle{display:none;background:none;border:1px solid var(--rule-2);width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:var(--cream)}
   .menu-toggle svg.i{width:20px;height:20px}
 
@@ -84,6 +88,9 @@
   .hero .side .v{font-family:var(--display);font-size:clamp(22px,1.8vw,26px);line-height:1.25}
   .hero .side .v strong{font-weight:500;color:#fff}
   .hero .side .sub{margin-top:10px;color:var(--cream-2);font-size:15px;max-width:34ch}
+  .hero .side .tel{margin-top:12px;font-size:15px}
+  .hero .side .tel a{text-decoration:none;color:var(--cream);border-bottom:1px solid var(--rule-2);font-variant-numeric:tabular-nums}
+  .hero .side .tel a:hover{color:var(--amber);border-color:var(--amber)}
 
   /* Section scaffolding — generous */
   section{padding:clamp(72px,9vw,120px) 0}
@@ -166,6 +173,15 @@
   .reserve .aside{margin-top:36px;padding-top:24px;border-top:1px solid var(--rule);color:var(--cream-3);font-size:15px;max-width:40ch}
   .reserve .aside a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
   .reserve .aside a:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct{margin-top:36px;padding:26px 0 28px;border-top:1px solid var(--rule-2);border-bottom:1px solid var(--rule-2)}
+  .contact-direct .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:14px}
+  .contact-direct .num{display:inline-block;font-family:var(--display);font-size:clamp(34px,3.2vw,44px);line-height:1;font-weight:500;color:#fff;text-decoration:none;font-variant-numeric:tabular-nums;letter-spacing:.01em;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+  .contact-direct .num:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct .hrs{margin-top:14px;color:var(--cream-2);font-size:15px}
+  .contact-direct .hrs a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .contact-direct .hrs a:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct .why{margin-top:14px;font-family:var(--display);font-style:italic;font-size:20px;line-height:1.3;color:var(--cream);max-width:30ch}
+  .contact-direct.m{display:none}
   form.res{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px}
   form.res .field{display:flex;flex-direction:column;gap:10px}
   form.res .field.full{grid-column:1/-1}
@@ -185,7 +201,7 @@
   form.res .fine{font-size:14px;color:var(--cream-3)}
   form.res .done{display:none;grid-column:1/-1;font-family:var(--display);font-size:26px;font-style:italic;padding-top:8px}
   form.res.sent .done{display:block}
-  form.res.sent .field,form.res.sent .submit{display:none}
+  form.res.sent .field,form.res.sent .submit,form.res.sent .contact-direct{display:none}
 
   /* Footer */
   footer{padding:clamp(64px,7vw,96px) 0 40px;border-top:1px solid var(--rule)}
@@ -236,6 +252,10 @@
     .nav a:last-child{border-bottom:0}
     .menu-toggle{display:inline-flex}
     .head-cta .btn{display:none}
+    .head-cta{gap:14px}
+    .head-tel{font-size:12px;letter-spacing:.1em}
+    .nav .nav-tel{display:flex;align-items:center;gap:10px;color:var(--amber)}
+    .nav .nav-tel svg.i{width:16px;height:16px}
     .hero{min-height:calc(100vh - 102px);min-height:calc(100svh - 102px);display:flex;align-items:flex-end}
     .hero .aside .photo{position:absolute;inset:0;min-height:0;z-index:-1}
     .hero .aside .photo::before,.hero .aside .photo>figcaption{display:none}
@@ -271,6 +291,9 @@
     .story .pics .photo:first-child{min-height:320px}
     .story .pics .photo:last-child{min-height:220px;margin-top:-60px;margin-right:-22px;box-shadow:0 0 0 10px var(--night)}
     .story .text p:first-of-type{font-size:23px}
+    .contact-direct.d{display:none}
+    .contact-direct.m{display:block;grid-column:1/-1;margin:0 0 6px;padding:0 0 26px;border-top:0}
+    .contact-direct .num{font-size:36px}
     form.res{grid-template-columns:1fr;gap:22px}
     form.res .submit{flex-direction:column;align-items:stretch}
     form.res button{width:100%}
@@ -280,6 +303,7 @@
   }
 
   /* Phone: keep only the back link in the top bar */
+  @media (max-width:640px){.head-tel{display:none}}
   @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
 </style>
 </head>
@@ -301,8 +325,10 @@
       <a href="#reviews">Reviews</a>
       <a href="#story">The Family</a>
       <a href="#reserve">Reserve</a>
+      <a class="nav-tel" href="tel:0000000000"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Call (000) 000 0000</a>
     </nav>
     <div class="head-cta">
+      <a class="head-tel" href="tel:0000000000" aria-label="Call Ossobello, (000) 000 0000"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>(000) 000 0000</a>
       <a class="btn" href="#reserve">Reserve a table</a>
       <button class="menu-toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="Open menu">
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
@@ -330,6 +356,7 @@
           <span class="k">Tonight</span>
           <p class="v" id="today-text"><strong>Dinner 5 – 10 pm</strong><br>walk-ins welcome at the bar</p>
           <p class="sub">Two doors up from the arch on the Hill. Reservations are online now; the bar stays first come, first served.</p>
+          <p class="tel">Call <a href="tel:0000000000">(000) 000 0000</a></p>
         </div>
         <figure class="photo" data-photo="the dining room after dark, candles on every table, wide">
           <img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=2000&q=80"
@@ -486,6 +513,12 @@
         <div class="aside">
           <p>Something we should know: an allergy, a birthday, someone who needs the quiet corner? Put it in the note. For the back room or a party over twelve, <a href="mailto:ciao@ossobello.example">email Marco directly</a>.</p>
         </div>
+        <div class="contact-direct d" aria-labelledby="contact-direct-title">
+          <span class="k" id="contact-direct-title">Or contact us directly</span>
+          <a class="num" href="tel:0000000000">(000) 000 0000</a>
+          <p class="hrs">Dinner Tue–Thu 5–10, Fri &amp; Sat 5–11, Sun 4–9<br><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></p>
+          <p class="why">Call for parties of seven or more, private dining, or same-night tables.</p>
+        </div>
         <figure class="photo" data-photo="candles and wine glasses on a dimly lit table" style="margin-top:44px;min-height:300px">
           <img src="https://images.unsplash.com/photo-1756925974940-fbf149fa0fd2?auto=format&fit=crop&w=1200&q=80"
                alt="Candles and wine glasses on a dimly lit table" loading="lazy"
@@ -495,6 +528,12 @@
       </div>
 
       <form class="res reveal" action="#" method="post" novalidate onsubmit="event.preventDefault();this.classList.add('sent');">
+        <div class="contact-direct m">
+          <span class="k">Or contact us directly</span>
+          <a class="num" href="tel:0000000000">(000) 000 0000</a>
+          <p class="hrs">Dinner Tue–Thu 5–10, Fri &amp; Sat 5–11, Sun 4–9<br><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></p>
+          <p class="why">Call for parties of seven or more, private dining, or same-night tables.</p>
+        </div>
         <div class="field">
           <label for="r-name">Name</label>
           <input id="r-name" name="name" type="text" placeholder="Who's the table under?" autocomplete="name" required>
@@ -550,8 +589,9 @@
         <p style="margin-top:26px"><a class="btn" href="#reserve">Reserve a table</a></p>
       </div>
       <div>
-        <h4>Write to us</h4>
+        <h4>Write or call</h4>
         <ul>
+          <li><a href="tel:0000000000">(000) 000 0000</a></li>
           <li><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></li>
           <li><a href="#reserve">Reservations</a></li>
           <li><a href="#menu">Takeout</a></li>
