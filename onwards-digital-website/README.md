@@ -115,3 +115,12 @@ entity (in Terms §intro and Privacy §intro) and the governing law (Terms §10)
 Search the files for `class="ph"`. These are drafts, not legal advice — have a
 lawyer review them before taking real payments. Update the "Last updated" date
 whenever you change them.
+
+## 7. Logo files
+
+`logo-mark.svg` (ink), `logo-mark-reversed.svg` (bone, for dark backgrounds),
+`logo-lockup.svg` / `logo-lockup.png` / `logo-lockup-reversed.png` (mark +
+wordmark, for email signatures, invoices and social profiles). The favicon set
+(`favicon.svg`, `favicon.ico`, `favicon-192.png`, `favicon-512.png`,
+`apple-touch-icon.png`) is generated from the same mark. The mark is the
+"open O" — a ring opening on the right into an arrow.
