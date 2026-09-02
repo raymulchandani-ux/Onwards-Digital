@@ -278,6 +278,9 @@
     footer .cols{grid-template-columns:1fr;gap:36px}
     footer .brand{font-size:32px}
   }
+
+  /* Phone: keep only the back link in the top bar */
+  @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
 </style>
 </head>
 <body>

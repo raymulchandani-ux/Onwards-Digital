@@ -359,6 +359,9 @@
     .urg label:last-child{border-bottom:0}
     .foot .cols{grid-template-columns:1fr;gap:28px}
   }
+
+  /* Phone: keep only the back link in the top bar */
+  @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
 </style>
 </head>
 <body>
