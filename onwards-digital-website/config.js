@@ -5,10 +5,10 @@ window.ONWARDS = {
 
   // Where form submissions are emailed (FormSubmit.co — no account needed;
   // the first submission sends a one-time activation email to this address).
-  formEndpoint: "https://formsubmit.co/ajax/contact@onwardsdigital.com",
+  formEndpoint: "https://formsubmit.co/ajax/contactonwardsdigital@gmail.com",
 
   // Public contact email shown on the site.
-  contactEmail: "contact@onwardsdigital.com",
+  contactEmail: "contactonwardsdigital@gmail.com",
 
   // ── PayPal ─────────────────────────────────────────────────
   // Your PayPal.me link, e.g. "https://paypal.me/onwardsdigital".

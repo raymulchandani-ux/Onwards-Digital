@@ -19,7 +19,7 @@ example-*.html        Five demo homepages for fictional businesses
 ## 1. Go live checklist (edit `config.js             ← THE ONLY FILE YOU NEED TO EDIT TO GO LIVE
 
 1. **Form emails** — `formEndpoint` uses FormSubmit.co and points at
-   `contact@onwardsdigital.com`. The first real submission triggers a one-time
+   `contactonwardsdigital@gmail.com`. The first real submission triggers a one-time
    activation email to that inbox; click the link once and every later
    submission arrives normally. (If you'd rather use Formspree or Netlify Forms,
    change this one URL.)
