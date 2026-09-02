@@ -10,6 +10,9 @@ advanced.html         $299 plan — questionnaire → payment.html
 professional.html     $599 plan — questionnaire → payment.html
 monthly-care.html     $12.99/mo — plan picker + questionnaire → payment.html
 payment.html          Checkout: PayPal or Stripe (reads plan/price from the URL)
+terms.html            Terms of Service   ┐
+privacy.html          Privacy Policy     ├ legal pages — see section 6
+refunds.html          Refunds & Cancellations ┘
 site.css              The design system (one file for all six pages)
 site.js               Shared behaviour: nav, currency, forms, add-on, submit
 config.js             ← THE ONLY FILE YOU NEED TO EDIT TO GO LIVE
@@ -96,3 +99,14 @@ front-end only (they confirm on the page and send nothing).
   one, change it on the others (or regenerate them — ask Claude for
   `tools/build_plans.py`).
 - Fonts: Instrument Serif + Schibsted Grotesk from Google Fonts.
+
+## 6. Legal pages
+
+`terms.html`, `privacy.html` and `refunds.html` are drafted around how Onwards
+actually works (50% refund before handover, Monthly Care runs to the end of the
+paid month, bugs fixed free but must be reported, portfolio opt-out). Two
+highlighted placeholders need your input before launch: the legal name /
+entity (in Terms §intro and Privacy §intro) and the governing law (Terms §10).
+Search the files for `class="ph"`. These are drafts, not legal advice — have a
+lawyer review them before taking real payments. Update the "Last updated" date
+whenever you change them.
