@@ -287,7 +287,7 @@ ul { padding: 0; list-style: none; }
 
 
 /* ── Homepage v2 additions ─────────────────────────────────── */
-.hero-text { padding-top: 96px; }
+.hero-text { padding-top: 20px; }
 .hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; }
 .hero-left { display: flex; flex-direction: column; gap: 24px; }
 .h-hero { font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 6.4vw, 96px); line-height: 0.98; letter-spacing: -0.015em; text-wrap: pretty; }
@@ -354,7 +354,7 @@ ul { padding: 0; list-style: none; }
   .included { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
-  .hero-text { padding-top: 56px; }
+  .hero-text { padding-top: 12px; }
   .facts { grid-template-columns: 1fr; margin-top: 48px; }
   .fact { border-right: 0; border-bottom: 1px solid var(--hair); padding: 18px 0; }
   .fact + .fact { padding-left: 0; }
@@ -552,3 +552,15 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
   .footer .col:last-child { grid-column: 1 / -1; }
   .footer .col:last-child a:first-of-type { font-size: 14px; }
 }
+
+/* Hero kicker (centred, under the header rule) */
+.hero-kicker { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px); text-align: center; margin: 40px 0 8px; letter-spacing: 0.01em; }
+@media (max-width: 760px) { .hero-kicker { margin: 28px 0 4px; font-size: 22px; } }
+/* Currency dropdown: breathing room + centred text */
+.cur-dd { text-align: center; text-align-last: center; }
+.cur-dd.small { padding: 4px 22px 4px 8px; }
+.cur-dd option { text-align: left; }
+
+/* Dirham symbol drawn inline before AED prices */
+.dh { display: inline-block; width: 0.62em; height: 0.62em; vertical-align: -0.02em; margin-right: 0.08em; }
+.price .dh { width: 0.66em; height: 0.66em; vertical-align: 0.02em; margin-right: 0.04em; }

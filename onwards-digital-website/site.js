@@ -38,11 +38,14 @@
   /* Currency (display only) --------------------------------- */
   var SYM = CFG.currencies || { USD: "$" };
   var cur = "USD";
-  try { var saved = localStorage.getItem("onwards-currency"); if (saved && SYM[saved]) cur = saved; } catch (e) {}
+  try { var saved = localStorage.getItem("onwards-currency"); if (saved && (saved in SYM)) cur = saved; } catch (e) {}
+  // The new UAE dirham symbol (2025) is not on keyboards or in most fonts yet,
+  // so it is drawn as a small inline SVG in front of AED prices.
+  var DIRHAM = '<svg class="dh" viewBox="0 0 100 100" aria-label="AED" role="img"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg>';
   function fmt(n) {
-    var s = SYM[cur] || "";
     var v = (n % 1) ? n.toFixed(2) : n.toLocaleString("en-US");
-    return s + v;
+    if (cur === "AED") return DIRHAM + v;
+    return (SYM[cur] || "") + v;
   }
   function paintCurrency() {
     document.querySelectorAll("[data-price]").forEach(function (el) {
@@ -61,7 +64,7 @@
   }
   document.querySelectorAll(".cur-dd").forEach(function (dd) {
     dd.addEventListener("change", function () {
-      if (!SYM[dd.value]) return;
+      if (!(dd.value in SYM)) return;
       cur = dd.value;
       try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
       paintCurrency();

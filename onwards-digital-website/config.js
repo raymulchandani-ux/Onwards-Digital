@@ -39,5 +39,5 @@ window.ONWARDS = {
     professional: { USD: 599,   AED: 2200, GBP: 450,  EUR: 510   },
     monthlyCare:  { USD: 12.99, AED: 48,   GBP: 9.99, EUR: 11.49 }
   },
-  currencies: { USD: "$", AED: "AED ", GBP: "£", EUR: "€" }
+  currencies: { USD: "$", EUR: "€", GBP: "£", AED: "" } // AED uses the drawn dirham symbol
 };
