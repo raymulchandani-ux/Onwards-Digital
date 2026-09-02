@@ -589,3 +589,6 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 .cur-menu.bare .cur-btn:focus-visible { box-shadow: none; outline: 1px dotted var(--muted); outline-offset: 2px; }
 .cur-menu.bare .cur-list { top: calc(100% + 6px); }
 .utility .right { position: relative; z-index: 40; }
+
+/* The currency already chosen is not offered again in the list */
+.cur-list li[aria-selected="true"] { display: none; }
