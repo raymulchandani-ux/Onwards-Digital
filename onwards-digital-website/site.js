@@ -200,27 +200,48 @@
       var plan = form.getAttribute("data-plan");          // "Beginner" | "Advanced" | "Professional" | "Monthly Care"
       var price = form.getAttribute("data-price");        // "0" | "299" | "599" | "12.99"
       var next = form.getAttribute("data-next");          // "" for beginner, "payment" otherwise
-      var data = new FormData(form);
       var label = plan + (addonOn ? " + Monthly Care" : "");
       if (window.__selectedPlan) label = window.__selectedPlan.label; // monthly-care page picker
-      data.append("plan", label);
-      data.append("_subject", "New Onwards Digital request — " + label);
 
-      var dest = null;
+      var dest;                                            // where the visitor lands afterwards
       if (next === "payment") {
-        if (window.__selectedPlan) dest = window.__selectedPlan.paymentUrl;
-        else dest = "payment.html?plan=" + encodeURIComponent(plan) + "&price=" + price + (addonOn ? "&addon=true" : "");
+        dest = window.__selectedPlan ? window.__selectedPlan.paymentUrl
+             : "payment.html?plan=" + encodeURIComponent(plan) + "&price=" + price + (addonOn ? "&addon=true" : "");
+      } else {
+        dest = "thanks.html";
       }
-      var go = function () {
-        if (dest) { window.location.href = dest; return; }
-        var fs = document.getElementById("form-section");
-        if (fs) fs.style.display = "none";
-        var ok = document.getElementById("success");
-        if (ok) { ok.classList.add("show"); ok.scrollIntoView({ behavior: "smooth", block: "start" }); }
-      };
-      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = dest ? "Saving your details…" : "Sending…"; }
+      var absNext = new URL(dest, location.href).href;
+
+      // Extra fields FormSubmit reads
+      function hidden(name, value) {
+        var el = form.querySelector('input[name="' + name + '"]');
+        if (!el) { el = document.createElement("input"); el.type = "hidden"; el.name = name; form.appendChild(el); }
+        el.value = value;
+      }
+      hidden("plan", label);
+      hidden("_subject", "New Onwards Digital request — " + label);
+      hidden("_template", "table");
+
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = next === "payment" ? "Saving your details…" : "Sending…"; }
+
+      var fileEl = form.querySelector('input[type="file"]');
+      var hasFile = !!(fileEl && fileEl.files && fileEl.files.length);
+
+      if (hasFile) {
+        // Attachments only arrive on a normal (non-AJAX) submission, so post the
+        // form itself; FormSubmit then redirects the visitor to _next.
+        hidden("_next", absNext);
+        hidden("_captcha", "false");
+        form.setAttribute("action", (CFG.formEndpoint || "").replace("/ajax/", "/"));
+        form.setAttribute("method", "POST");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.submit();
+        return;
+      }
+
+      var data = new FormData(form);
       var done = false;
-      var finish = function () { if (!done) { done = true; go(); } };
+      var finish = function () { if (!done) { done = true; window.location.href = dest; } };
       setTimeout(finish, 4000); // never leave the visitor waiting on a slow mail relay
       fetch(CFG.formEndpoint, { method: "POST", body: data, headers: { "Accept": "application/json" } }).then(finish, finish);
     });

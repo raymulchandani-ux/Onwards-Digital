@@ -9,6 +9,7 @@ beginner.html         Free mockup (form only, no payment)
 advanced.html         $299 plan — questionnaire → payment.html
 professional.html     $599 plan — questionnaire → payment.html
 monthly-care.html     $12.99/mo — plan picker + questionnaire → payment.html
+thanks.html           Landing page after the free-mockup form
 payment.html          Checkout: PayPal or Stripe (reads plan/price from the URL)
 terms.html            Terms of Service   ┐
 privacy.html          Privacy Policy     ├ legal pages — see section 6
@@ -21,7 +22,11 @@ example-*.html        Five demo homepages for fictional businesses
 
 ## 1. Go live checklist (edit `config.js             ← THE ONLY FILE YOU NEED TO EDIT TO GO LIVE
 
-1. **Form emails** — `formEndpoint` uses FormSubmit.co and points at
+1. **Form emails** — `formEndpoint` uses FormSubmit.co. Submissions without an
+   attachment go through FormSubmit's AJAX endpoint; ones with a file are posted
+   as a normal form (FormSubmit only delivers attachments that way, max 10 MB)
+   and FormSubmit redirects the visitor to `payment.html` or `thanks.html`.
+   The endpoint and points at
    `contactonwardsdigital@gmail.com`. The first real submission triggers a one-time
    activation email to that inbox; click the link once and every later
    submission arrives normally. (If you'd rather use Formspree or Netlify Forms,
