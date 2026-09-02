@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260902r">
+  <link rel="stylesheet" href="site.css?v=20260902t">
 </head>
 <body>
 
@@ -49,13 +49,13 @@
 <!-- Hero (text only) -->
 <section class="hero-text">
   <div class="wrap">
-    <p class="hero-kicker">Websites for small businesses</p>
     <div class="hero-grid">
       <div class="hero-left">
+        <p class="hero-kicker">Websites for small businesses</p>
         <h1 class="h-hero">Built in a week. Yours to change whenever you like.</h1>
       </div>
       <div class="hero-right">
-        <p class="lede-lg">A clean, fast website for your business — designed to be fully functional on phone or computer, delivered in a week, with a simple editor allowing you to update the site at any time.</p>
+        <p class="lede-lg">A clean, fast website for your business — designed to be fully functional on phone or computer, delivered in a week, while also allowing you to update the site at any time.</p>
         <div class="hero-actions">
           <a href="beginner.html" class="btn">Get a free mockup</a>
           <a href="#work" class="btn-line">See our work</a>
@@ -226,7 +226,7 @@
       <div class="step"><span class="n">4</span><span class="t">Go live, then edit it yourself</span><p class="d">You get the finished site, ready to put on your own domain. With Monthly Care you can edit the site up to three times a month: change prices, update your hours, swap a photo, and publish.</p></div>
     </div>
     <div class="need reveal">
-      <div class="need-head"><span class="cap muted">What we’ll need from you</span></div>
+      <div class="need-head"><h3 class="need-title">What we’ll need from you</h3></div>
       <ul class="need-list">
         <li><span>Your logo</span><span class="muted">Any format. No logo? We set your name in good type.</span></li>
         <li><span>Photos</span><span class="muted">Your own are best. Phone photos in daylight are fine.</span></li>
@@ -268,7 +268,17 @@
         <h2 class="h-section">Pricing</h2>
         <span class="muted" style="font-size:15px;">No hidden fees. No contracts. One-time build, then a small monthly amount if you want to edit the site yourself.</span>
       </div>
-      <label class="cur-select"><span class="cap muted">Show prices in</span><select class="cur-dd" aria-label="Currency"><option value="USD">USD $</option><option value="EUR">EUR €</option><option value="GBP">GBP £</option><option value="AED">AED</option></select></label>
+      <div class="cur-select"><span class="cap muted">Show prices in</span>
+        <div class="cur-menu" id="cur-menu">
+          <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="cur-list" role="listbox" hidden>
+            <li role="option" data-cur="USD" aria-selected="true"><span>USD</span><span class="sym">$</span></li>
+            <li role="option" data-cur="EUR"><span>EUR</span><span class="sym">€</span></li>
+            <li role="option" data-cur="GBP"><span>GBP</span><span class="sym">£</span></li>
+            <li role="option" data-cur="AED"><span>AED</span><span class="sym"><svg class="dh" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg></span></li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="plans reveal">
       <div class="plan">
@@ -365,11 +375,11 @@
       </details>
       <details>
         <summary>What does Monthly Care actually cover?</summary>
-        <p>An editor, so you can change menus, hours, prices and photos yourself whenever you like, plus support by email. We’ll make up to three a month for you.</p>
+        <p>An editor, so you can change menus, hours, prices and photos yourself whenever you like, plus support by email. We’ll make up to three a month for you, within 3 business days.</p>
       </details>
       <details>
         <summary>I’m not in the US. Does that matter?</summary>
-        <p>No. We work by email and everything is online. Prices are in US dollars; switch the toggle at the top of the page to see them in AED.</p>
+        <p>No. We work by email and everything is online. Prices are in US dollars; switch the toggle at the top of the page to see them in another currency.</p>
       </details>
     </div>
   </div>
@@ -401,7 +411,7 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260902r"></script>
-<script src="site.js?v=20260902r"></script>
+<script src="config.js?v=20260902t"></script>
+<script src="site.js?v=20260902t"></script>
 </body>
 </html>

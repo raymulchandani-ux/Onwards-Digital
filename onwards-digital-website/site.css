@@ -287,7 +287,7 @@ ul { padding: 0; list-style: none; }
 
 
 /* ── Homepage v2 additions ─────────────────────────────────── */
-.hero-text { padding-top: 20px; }
+.hero-text { padding-top: 72px; }
 .hero-grid { display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: end; }
 .hero-left { display: flex; flex-direction: column; gap: 24px; }
 .h-hero { font-family: var(--serif); font-weight: 400; font-size: clamp(48px, 6.4vw, 96px); line-height: 0.98; letter-spacing: -0.015em; text-wrap: pretty; }
@@ -321,8 +321,9 @@ ul { padding: 0; list-style: none; }
 .case-list li:last-child { border-bottom: 1px solid var(--hair); }
 .case-copy .btn-text { align-self: flex-start; }
 
-.need { display: grid; grid-template-columns: 2fr 10fr; gap: 24px; margin-top: 56px; border-top: 1px solid var(--ink); padding-top: 24px; }
-.need-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; }
+.need { display: flex; flex-direction: column; gap: 12px; margin-top: 56px; border-top: 1px solid var(--ink); padding-top: 28px; }
+.need-title { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.2vw, 30px); letter-spacing: 0.01em; }
+.need-list { display: flex; flex-direction: column; max-width: 640px; }
 .need-list li { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--hair); font-size: 15px; }
 .need-list li .muted { font-size: 14px; }
 
@@ -354,7 +355,7 @@ ul { padding: 0; list-style: none; }
   .included { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
-  .hero-text { padding-top: 12px; }
+  .hero-text { padding-top: 40px; }
   .facts { grid-template-columns: 1fr; margin-top: 48px; }
   .fact { border-right: 0; border-bottom: 1px solid var(--hair); padding: 18px 0; }
   .fact + .fact { padding-left: 0; }
@@ -554,8 +555,8 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 }
 
 /* Hero kicker (centred, under the header rule) */
-.hero-kicker { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px); text-align: center; margin: 40px 0 8px; letter-spacing: 0.01em; }
-@media (max-width: 760px) { .hero-kicker { margin: 28px 0 4px; font-size: 22px; } }
+.hero-kicker { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 30px); text-align: left; margin: 0 0 -4px; letter-spacing: 0.01em; }
+@media (max-width: 760px) { .hero-kicker { margin: 0; font-size: 22px; } }
 /* Currency dropdown: breathing room + centred text */
 .cur-dd { text-align: center; text-align-last: center; }
 .cur-dd.small { padding: 4px 22px 4px 8px; }
@@ -564,3 +565,20 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 /* Dirham symbol drawn inline before AED prices */
 .dh { display: inline-block; width: 0.62em; height: 0.62em; vertical-align: -0.02em; margin-right: 0.08em; }
 .price .dh { width: 0.66em; height: 0.66em; vertical-align: 0.02em; margin-right: 0.04em; }
+
+.cur-dd.small:focus { box-shadow: none; }
+.cur-dd.small:focus-visible { outline: 1px dotted var(--muted); outline-offset: 2px; }
+
+/* Custom currency menu (pricing section) — can show the dirham symbol */
+.cur-menu { position: relative; }
+.cur-btn { display: inline-flex; align-items: center; gap: 10px; min-width: 110px; justify-content: space-between; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--ink); background: transparent; border: 1px solid var(--ink); padding: 9px 12px 9px 14px; }
+.cur-btn:focus-visible { box-shadow: inset 0 0 0 1px var(--ink); outline: none; }
+.cur-btn .dh { width: 0.9em; height: 0.9em; vertical-align: -0.1em; }
+.cur-list { position: absolute; right: 0; top: calc(100% - 1px); min-width: 100%; margin: 0; padding: 0; list-style: none; background: var(--paper); border: 1px solid var(--ink); z-index: 20; }
+.cur-list li { display: flex; justify-content: space-between; align-items: center; gap: 18px; padding: 10px 14px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; cursor: pointer; border-top: 1px solid var(--hair); }
+.cur-list li:first-child { border-top: 0; }
+.cur-list li:hover, .cur-list li.active { background: var(--ink); color: var(--bg); }
+.cur-list li[aria-selected="true"] { text-decoration: underline; text-underline-offset: 3px; }
+.cur-list .sym { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 15px; display: inline-flex; align-items: center; }
+.cur-list .dh { width: 0.9em; height: 0.9em; }
+#pricing .section-head { position: relative; z-index: 30; }

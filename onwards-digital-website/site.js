@@ -58,6 +58,12 @@
       el.innerHTML = txt + (suffix ? '<small> ' + suffix + '</small>' : "");
     });
     document.querySelectorAll(".cur-dd").forEach(function (dd) { dd.value = cur; });
+    var btnLabel = document.querySelector(".cur-btn-label");
+    if (btnLabel) {
+      var symHtml = { USD: "$", EUR: "€", GBP: "£", AED: DIRHAM }[cur] || "";
+      btnLabel.innerHTML = cur + " " + symHtml;
+      document.querySelectorAll(".cur-list li").forEach(function (li) { li.setAttribute("aria-selected", li.getAttribute("data-cur") === cur ? "true" : "false"); });
+    }
     document.querySelectorAll("[data-currency-note]").forEach(function (el) {
       el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
@@ -71,6 +77,23 @@
     });
   });
   paintCurrency();
+
+  /* Custom currency menu (pricing section) */
+  var menu = document.getElementById("cur-menu");
+  if (menu) {
+    var mBtn = menu.querySelector(".cur-btn"), mList = menu.querySelector(".cur-list");
+    function openMenu(o) { mList.hidden = !o; mBtn.setAttribute("aria-expanded", o ? "true" : "false"); }
+    mBtn.addEventListener("click", function () { openMenu(mList.hidden); });
+    mList.querySelectorAll("li").forEach(function (li) {
+      li.addEventListener("click", function () {
+        cur = li.getAttribute("data-cur");
+        try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
+        paintCurrency(); openMenu(false); mBtn.focus();
+      });
+    });
+    document.addEventListener("click", function (e) { if (!menu.contains(e.target)) openMenu(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") openMenu(false); });
+  }
 
   /* Form helpers (plan pages) ------------------------------- */
   var industry = document.getElementById("business-type");
