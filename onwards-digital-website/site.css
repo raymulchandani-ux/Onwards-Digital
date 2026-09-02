@@ -564,7 +564,7 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 
 /* Dirham symbol drawn inline before AED prices */
 .dh { display: inline-block; width: 0.62em; height: 0.62em; vertical-align: -0.02em; margin-right: 0.08em; }
-.price .dh { width: 0.66em; height: 0.66em; vertical-align: 0.02em; margin-right: 0.04em; }
+.price .dh, .fact .dh { width: 0.66em; height: 0.66em; vertical-align: 0.02em; margin-right: 0.04em; }
 
 .cur-dd.small:focus { box-shadow: none; }
 .cur-dd.small:focus-visible { outline: 1px dotted var(--muted); outline-offset: 2px; }

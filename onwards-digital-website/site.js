@@ -55,7 +55,8 @@
       var v = p[cur]; if (v == null) v = p.USD;
       var txt = (key === "beginner") ? "Free" : fmt(v);
       var suffix = el.getAttribute("data-suffix") || "";
-      el.innerHTML = txt + (suffix ? '<small> ' + suffix + '</small>' : "");
+      var prefix = el.getAttribute("data-prefix") || "";
+      el.innerHTML = prefix + txt + (suffix ? '<small> ' + suffix + '</small>' : "");
     });
     document.querySelectorAll(".cur-dd").forEach(function (dd) { dd.value = cur; });
     var symHtml = { USD: "$", EUR: "€", GBP: "£", AED: DIRHAM }[cur] || "";
