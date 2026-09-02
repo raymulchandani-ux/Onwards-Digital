@@ -65,31 +65,57 @@
       el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
   }
+  // One entry point for every control on the page (top bar, pricing section, plain <select>).
+  function setCurrency(c) {
+    if (!c || !(c in SYM)) return;
+    cur = c;
+    try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
+    paintCurrency();
+  }
   document.querySelectorAll(".cur-dd").forEach(function (dd) {
-    dd.addEventListener("change", function () {
-      if (!(dd.value in SYM)) return;
-      cur = dd.value;
-      try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
-      paintCurrency();
-    });
+    dd.addEventListener("change", function () { setCurrency(dd.value); });
   });
   paintCurrency();
 
   /* Custom currency menus (top bar and pricing section) */
-  document.querySelectorAll(".cur-menu").forEach(function (menu) {
+  var menus = Array.prototype.slice.call(document.querySelectorAll(".cur-menu"));
+  function closeAllMenus(except) {
+    menus.forEach(function (m) { if (m !== except) m._close && m._close(); });
+  }
+  menus.forEach(function (menu) {
     var mBtn = menu.querySelector(".cur-btn"), mList = menu.querySelector(".cur-list");
-    function openMenu(o) { mList.hidden = !o; mBtn.setAttribute("aria-expanded", o ? "true" : "false"); }
-    mBtn.addEventListener("click", function (e) { e.stopPropagation(); openMenu(mList.hidden); });
-    mList.querySelectorAll("li").forEach(function (li) {
-      li.addEventListener("click", function () {
-        cur = li.getAttribute("data-cur");
-        try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
-        paintCurrency(); openMenu(false); mBtn.focus();
-      });
+    if (!mBtn || !mList) return;
+    function openMenu(o) {
+      menu.classList.toggle("open", o);
+      if (o) mList.removeAttribute("hidden"); else mList.setAttribute("hidden", "");
+      mBtn.setAttribute("aria-expanded", o ? "true" : "false");
+    }
+    menu._close = function () { openMenu(false); };
+    mBtn.addEventListener("click", function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var willOpen = !menu.classList.contains("open");
+      closeAllMenus(menu);
+      openMenu(willOpen);
     });
-    document.addEventListener("click", function (e) { if (!menu.contains(e.target)) openMenu(false); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") openMenu(false); });
+    // Delegated: works whether the tap lands on the <li> or one of the spans inside it.
+    mList.addEventListener("click", function (e) {
+      var t = e.target;
+      while (t && t !== mList && !(t.tagName === "LI" && t.hasAttribute("data-cur"))) t = t.parentNode;
+      if (!t || t === mList) return;
+      e.preventDefault(); e.stopPropagation();
+      setCurrency(t.getAttribute("data-cur"));
+      openMenu(false);
+      mBtn.focus();
+    });
   });
+  if (menus.length) {
+    document.addEventListener("click", function (e) {
+      var inside = false;
+      menus.forEach(function (m) { if (m.contains(e.target)) inside = true; });
+      if (!inside) closeAllMenus();
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" || e.key === "Esc") closeAllMenus(); });
+  }
 
   /* Form helpers (plan pages) ------------------------------- */
   var industry = document.getElementById("business-type");
