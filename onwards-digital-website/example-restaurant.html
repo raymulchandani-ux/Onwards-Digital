@@ -31,7 +31,7 @@
   a{color:inherit}
   a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid var(--amber);outline-offset:4px}
   p{margin:0}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 48px}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(22px,3.75vw,48px)}
   .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--amber)}
   .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:0 30px;background:var(--amber);color:var(--night);text-decoration:none;font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--amber);transition:background .2s,border-color .2s,color .2s}
   .btn:hover{background:var(--amber-2);border-color:var(--amber-2)}
@@ -67,26 +67,27 @@
   .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
   .photo:has(>img)::before{display:none}
 
-  /* Hero: full-bleed photo, text laid over the lower half */
-  .hero{position:relative;min-height:calc(100vh - 112px);min-height:calc(100svh - 112px);display:flex;align-items:flex-end;isolation:isolate}
-  .hero .photo{position:absolute;inset:0;min-height:0;padding:0;z-index:-1}
-  .hero .photo::before{display:none}
-  .hero .photo>img{object-position:center 60%}
-  .hero .veil{position:absolute;inset:0;z-index:-1;background:
-    linear-gradient(to top, rgba(20,18,15,1) 0%, rgba(20,18,15,.86) 28%, rgba(20,18,15,.35) 62%, rgba(20,18,15,.25) 100%)}
-  .hero .wrap{width:100%;padding-top:140px;padding-bottom:88px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:end}
-  .hero h1{font-size:clamp(72px,10.5vw,164px);font-weight:400;line-height:.88;letter-spacing:.02em;margin:22px 0 28px;text-transform:uppercase}
-  .hero .lede{font-family:var(--display);font-size:clamp(24px,2.3vw,32px);line-height:1.28;max-width:26ch;font-style:italic;font-weight:400;color:var(--cream)}
-  .hero .actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:40px}
-  .hero .side{border-left:1px solid var(--rule-2);padding-left:32px}
-  .hero .side .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:12px}
-  .hero .side .v{font-family:var(--display);font-size:26px;line-height:1.25}
+  /* Hero: text left, dining-room photo right; hours + reserve stay in the first screen */
+  .hero{position:relative;isolation:isolate;padding:0}
+  .hero .veil{display:none}
+  .hero .wrap{width:100%;min-height:min(calc(100vh - 112px),640px);min-height:min(calc(100svh - 112px),640px);padding-top:clamp(40px,6vh,72px);padding-bottom:clamp(32px,5vh,56px);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,64px);align-items:stretch}
+  .hero .text{display:flex;flex-direction:column;justify-content:center}
+  .hero h1{font-size:clamp(56px,8vw,128px);font-weight:400;line-height:.9;letter-spacing:.02em;margin:16px 0 22px;text-transform:uppercase}
+  .hero .lede{font-family:var(--display);font-size:clamp(21px,1.9vw,28px);line-height:1.3;max-width:30ch;font-style:italic;font-weight:400;color:var(--cream)}
+  .hero .actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:32px}
+  .hero .aside{display:flex;flex-direction:column;gap:24px;min-width:0}
+  .hero .aside .photo{flex:1 1 auto;min-height:220px}
+  .hero .aside .photo::before{inset:12px}
+  .hero .aside .photo>img{object-position:center 60%}
+  .hero .side{border-left:1px solid var(--rule-2);padding-left:24px}
+  .hero .side .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:10px}
+  .hero .side .v{font-family:var(--display);font-size:clamp(22px,1.8vw,26px);line-height:1.25}
   .hero .side .v strong{font-weight:500;color:#fff}
-  .hero .side .sub{margin-top:14px;color:var(--cream-2);font-size:15px;max-width:30ch}
+  .hero .side .sub{margin-top:10px;color:var(--cream-2);font-size:15px;max-width:34ch}
 
   /* Section scaffolding — generous */
-  section{padding:140px 0}
-  .sec-head{margin-bottom:64px}
+  section{padding:clamp(72px,9vw,120px) 0}
+  .sec-head{margin-bottom:clamp(40px,4.5vw,56px)}
   .sec-head .eyebrow{display:block;margin-bottom:18px}
   .sec-head h2{font-size:clamp(46px,5.4vw,80px);font-weight:400;max-width:16ch}
   .sec-head p{margin-top:22px;max-width:52ch;color:var(--cream-2);font-size:18px}
@@ -94,20 +95,20 @@
   .link:hover{border-bottom-color:var(--amber)}
 
   /* Full-bleed breathing photo between sections */
-  .bleed{position:relative;height:clamp(420px,72vh,760px)}
+  .bleed{position:relative;height:clamp(380px,60vh,640px)}
   .bleed .photo{position:absolute;inset:0;min-height:0}
   .bleed .photo::before{display:none}
   .bleed .cap{position:absolute;left:0;right:0;bottom:0;padding-bottom:36px;z-index:2;pointer-events:none}
-  .bleed .cap>span{display:block;max-width:var(--max);margin:0 auto;padding:0 48px}
+  .bleed .cap>span{display:block;max-width:var(--max);margin:0 auto;padding:0 clamp(22px,3.75vw,48px)}
   .bleed .photo{align-items:flex-start}
   .bleed .cap span{font-family:var(--display);font-style:italic;font-size:22px;color:var(--cream-2);text-shadow:0 1px 20px rgba(0,0,0,.6)}
   .bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(20,18,15,.75), rgba(20,18,15,0) 40%, rgba(20,18,15,0) 75%, rgba(20,18,15,.55));pointer-events:none}
 
   /* Menu: single wide column, hairline leaders */
-  .menu-sec .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:96px;align-items:start}
+  .menu-sec .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(48px,7vw,96px);align-items:start}
   .menu-sec .sec-head{position:sticky;top:110px;margin-bottom:0}
   .menu-sec .sec-head .photo{margin-top:48px;min-height:420px}
-  .course{margin-bottom:64px}
+  .course{margin-bottom:clamp(40px,4.5vw,56px)}
   .course:last-of-type{margin-bottom:0}
   .course h3{font-size:16px;font-family:var(--body);letter-spacing:.3em;text-transform:uppercase;font-weight:500;color:var(--amber);margin-bottom:22px}
   .dish{display:grid;grid-template-columns:auto 1fr auto;gap:0 14px;align-items:baseline;padding:16px 0}
@@ -122,7 +123,7 @@
 
   /* Hours */
   .hours-sec{background:var(--night-2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
-  .hours-sec .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:96px;align-items:start}
+  .hours-sec .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(48px,7vw,96px);align-items:start}
   .hours-sec .sec-head{margin-bottom:0}
   .hours-sec .btn{margin-top:36px}
   table.hours{width:100%;border-collapse:collapse;font-size:17px}
@@ -141,7 +142,7 @@
   .reviews .sec-head{grid-column:1/-1;margin-bottom:24px}
   blockquote{margin:0;padding-top:28px;border-top:1px solid var(--rule-2)}
   blockquote:nth-of-type(1){grid-column:1/7}
-  blockquote:nth-of-type(2){grid-column:7/13;margin-top:96px}
+  blockquote:nth-of-type(2){grid-column:7/13;margin-top:clamp(48px,7vw,96px)}
   blockquote:nth-of-type(3){grid-column:3/9}
   blockquote p{font-family:var(--display);font-size:clamp(26px,2.4vw,34px);line-height:1.28;font-weight:400}
   blockquote p::before{content:"\201C";color:var(--amber)}
@@ -149,7 +150,7 @@
   blockquote cite{display:block;margin-top:20px;font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-3);font-weight:500}
 
   /* Story — two photos offset around text */
-  .story .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:96px;align-items:center}
+  .story .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(48px,7vw,96px);align-items:center}
   .story .pics{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:20px}
   .story .pics .photo:first-child{grid-column:1/3;min-height:460px}
   .story .pics .photo:last-child{grid-column:2/3;min-height:300px;margin-top:-100px;margin-right:-56px;box-shadow:0 0 0 14px var(--night)}
@@ -160,7 +161,7 @@
 
   /* Reserve */
   .reserve{background:var(--night-2);border-top:1px solid var(--rule)}
-  .reserve .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:96px;align-items:start}
+  .reserve .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(48px,7vw,96px);align-items:start}
   .reserve .sec-head{margin-bottom:0}
   .reserve .aside{margin-top:36px;padding-top:24px;border-top:1px solid var(--rule);color:var(--cream-3);font-size:15px;max-width:40ch}
   .reserve .aside a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
@@ -187,7 +188,7 @@
   form.res.sent .field,form.res.sent .submit{display:none}
 
   /* Footer */
-  footer{padding:96px 0 40px;border-top:1px solid var(--rule)}
+  footer{padding:clamp(64px,7vw,96px) 0 40px;border-top:1px solid var(--rule)}
   footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px;border-bottom:1px solid var(--rule)}
   footer .brand{font-size:40px;border-bottom:0}
   footer .tag{margin-top:16px;color:var(--cream-2);max-width:30ch}
@@ -207,8 +208,6 @@
 
   /* Responsive */
   @media (max-width:1040px){
-    .hero .wrap{grid-template-columns:1fr;gap:44px}
-    .hero .side{border-left:0;border-top:1px solid var(--rule-2);padding:28px 0 0}
     .menu-sec .wrap,.hours-sec .wrap,.story .wrap,.reserve .wrap{grid-template-columns:1fr;gap:64px}
     .menu-sec .sec-head{position:static}
     .menu-sec .sec-head .photo{display:none}
@@ -217,6 +216,12 @@
     blockquote:nth-of-type(3){grid-column:2/10}
     .story .pics .photo:last-child{margin-right:0}
     footer .cols{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;gap:36px;min-height:0;padding-top:56px}
+    .hero .aside{display:contents}
+    .hero .side{border-left:0;border-top:1px solid var(--rule-2);padding:28px 0 0}
+    .hero .aside .photo{order:3;min-height:320px}
   }
   @media (max-width:720px){
     .wrap{padding:0 22px}
@@ -231,7 +236,10 @@
     .nav a:last-child{border-bottom:0}
     .menu-toggle{display:inline-flex}
     .head-cta .btn{display:none}
-    .hero{min-height:calc(100vh - 102px);min-height:calc(100svh - 102px)}
+    .hero{min-height:calc(100vh - 102px);min-height:calc(100svh - 102px);display:flex;align-items:flex-end}
+    .hero .aside .photo{position:absolute;inset:0;min-height:0;z-index:-1}
+    .hero .aside .photo::before,.hero .aside .photo>figcaption{display:none}
+    .hero .veil{display:block;position:absolute;inset:0;z-index:-1;background:linear-gradient(to top, rgba(20,18,15,1) 0%, rgba(20,18,15,.86) 28%, rgba(20,18,15,.35) 62%, rgba(20,18,15,.25) 100%)}
     .hero .wrap{padding-top:120px;padding-bottom:56px;gap:32px}
     .hero h1{font-size:clamp(52px,14.5vw,72px);letter-spacing:0;margin:14px 0 20px}
     .hero .lede{font-size:23px}
@@ -303,15 +311,9 @@
 <main id="top">
 
   <section class="hero" aria-labelledby="hero-title">
-    <figure class="photo" data-photo="the dining room after dark, candles on every table, wide">
-      <img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=2000&q=80"
-           alt="The dining room after dark: low light, a painting on the far wall, candles on the tables" loading="eager"
-           onerror="this.remove()">
-      <figcaption>Photo &middot; Dining room</figcaption>
-    </figure>
     <div class="veil" aria-hidden="true"></div>
     <div class="wrap">
-      <div>
+      <div class="text">
         <span class="eyebrow">Trattoria &middot; Federal Hill, Providence</span>
         <h1 id="hero-title">Ossobello</h1>
         <p class="lede">We roll the pasta at seven, light the oven at three and the candles at five. The Bellandi family, since 1994.</p>
@@ -320,10 +322,18 @@
           <a class="btn ghost" href="#menu">Tonight's menu</a>
         </div>
       </div>
-      <div class="side" id="today" aria-live="polite">
-        <span class="k">Tonight</span>
-        <p class="v" id="today-text"><strong>Dinner 5 – 10 pm</strong><br>walk-ins welcome at the bar</p>
-        <p class="sub">Two doors up from the arch on the Hill. Reservations are online now; the bar stays first come, first served.</p>
+      <div class="aside">
+        <div class="side" id="today" aria-live="polite">
+          <span class="k">Tonight</span>
+          <p class="v" id="today-text"><strong>Dinner 5 – 10 pm</strong><br>walk-ins welcome at the bar</p>
+          <p class="sub">Two doors up from the arch on the Hill. Reservations are online now; the bar stays first come, first served.</p>
+        </div>
+        <figure class="photo" data-photo="the dining room after dark, candles on every table, wide">
+          <img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=2000&q=80"
+               alt="The dining room after dark: low light, a painting on the far wall, candles on the tables" loading="eager"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Dining room</figcaption>
+        </figure>
       </div>
     </div>
   </section>

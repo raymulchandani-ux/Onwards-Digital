@@ -76,17 +76,17 @@ button,input,select{font:inherit;color:inherit}
 .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
 
 /* Hero: one giant image, headline plate overlapping its lower edge */
-.hero{padding-top:clamp(14px,2vw,28px)}
-.hero .bleed{height:clamp(420px,74vh,800px);width:100%}
+.hero{padding-top:clamp(10px,1.2vw,20px)}
+.hero .bleed{height:clamp(260px,40vh,520px);width:100%}
 .plate-row{display:flex;position:relative;z-index:2}
-.plate{background:var(--bone);width:fit-content;max-width:100%;padding:clamp(20px,3vw,44px) clamp(24px,4vw,64px) 0 calc(max(0px,(100% - var(--max)) / 2) + var(--gutter))}
-.hero .plate{margin-top:calc(-1 * clamp(56px,9vw,150px))}
-.hero h1{font-size:clamp(60px,10.4vw,160px);line-height:.86;letter-spacing:-.035em;max-width:8.4ch}
+.plate{background:var(--bone);width:fit-content;max-width:100%;padding:clamp(16px,2vw,32px) clamp(24px,4vw,64px) 0 calc(max(0px,(100% - var(--max)) / 2) + var(--gutter))}
+.hero .plate{margin-top:calc(-1 * clamp(48px,7vw,110px))}
+.hero h1{font-size:clamp(44px,6vw,92px);line-height:.9;letter-spacing:-.03em;max-width:19ch}
 .hero h1 em{font-weight:400;color:var(--clay)}
-.hero .below{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(24px,4vw,72px);align-items:end;padding:clamp(28px,3.5vw,52px) 0 clamp(56px,7vw,110px)}
+.hero .below{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(24px,4vw,72px);align-items:end;padding:clamp(16px,2vw,32px) 0 clamp(40px,5vw,80px)}
 .hero .issue{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;line-height:2}
 .hero .issue b{display:block;color:var(--ink);font-weight:500}
-.hero .lede{font-size:clamp(19px,1.6vw,23px);line-height:1.4;max-width:34ch;color:var(--ink);font-family:var(--display);font-variation-settings:"opsz" 20;letter-spacing:0}
+.hero .lede{font-size:clamp(18px,1.5vw,22px);line-height:1.4;max-width:34ch;color:var(--ink);font-family:var(--display);font-variation-settings:"opsz" 20;letter-spacing:0}
 .hero .cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-self:end}
 
 /* Section frame */
@@ -112,7 +112,7 @@ button,input,select{font:inherit;color:inherit}
 .menu-foot .eyebrow{padding-top:5px}
 
 /* Spread: giant image with a quote plate breaking its lower edge */
-.spread .bleed{height:clamp(380px,72vh,720px);width:100%}
+.spread .bleed{height:clamp(340px,56vh,620px);width:100%}
 .spread .plate-row{justify-content:flex-end}
 .spread .plate{padding:clamp(20px,3vw,44px) calc(max(0px,(100% - var(--max)) / 2) + var(--gutter)) 0 clamp(24px,4vw,64px);margin-top:calc(-1 * clamp(64px,10vw,170px))}
 .spread .plate blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(30px,3.6vw,56px);line-height:1;letter-spacing:-.02em;font-variation-settings:"opsz" 96;max-width:20ch}
@@ -215,9 +215,11 @@ button,input,select{font:inherit;color:inherit}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 
 /* Responsive */
-@media (max-width:1100px){
+@media (max-width:1000px){
   .hero .below{grid-template-columns:1fr 1fr}
   .hero .cta{justify-self:start;grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
+}
+@media (max-width:1100px){
   .spread .rest{grid-template-columns:1fr 1fr}
   .spread .rest .k{grid-column:1/-1;display:flex;gap:40px;align-items:baseline}
   .spread .rest .k b{margin:0}
