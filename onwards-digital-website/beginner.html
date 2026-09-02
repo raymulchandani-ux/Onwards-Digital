@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free mockup — Onwards Digital</title>
+  <meta name="description" content="Tell us about your business and we’ll design a free homepage mockup — no payment, no commitment.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<div class="utility">
+  <div class="wrap">
+    <span class="left">Free mockup on every plan — see your homepage before you pay.</span>
+    <div class="right">
+      <span class="currency" role="button" tabindex="0" aria-label="Switch currency"><span data-cur="USD" class="on">USD</span><span>/</span><span data-cur="AED">AED</span></span>
+      <a href="mailto:contact@onwardsdigital.com">Contact</a>
+    </div>
+  </div>
+</div>
+
+<header class="header compact">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Onwards Digital</a>
+    <a class="back" href="index.html#pricing"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>All plans</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="plan-page">
+    <aside class="plan-aside">
+      <div class="sticky">
+        <div class="plan-head">
+          <span class="cap muted">Beginner</span>
+          <span class="price" data-price="beginner">Free</span>
+          <h1 class="h-sub">A free mockup of your homepage.</h1>
+          <p class="lede">We’ll design your homepage — with your name, your colours and your words on it — and email it within 3–5 business days. No payment, no commitment. If you love it, choose a plan and we’ll build the full site.</p>
+        </div>
+        <ul class="aside-features"><li>One custom homepage design</li><li>Mobile or desktop layout</li><li>Delivered in 3–5 business days</li><li>Upgrade any time to go live</li></ul>
+        <span class="cap muted" data-currency-note>Prices in USD</span>
+      </div>
+    </aside>
+    <div class="plan-main">
+      <div id="form-section">
+        <h2 class="form-title">Tell us about your business</h2>
+        <p class="form-sub">Five minutes. The more you tell us, the closer the first draft.</p>
+        
+        <form id="plan-form" class="form" data-plan="Beginner" data-price="0" data-next="">
+          <div class="field">
+            <label class="cap" for="f-name">Your name</label>
+            <input class="input" type="text" id="f-name" name="name" autocomplete="name" placeholder="Maria Rossi" required>
+          </div>
+          <div class="field">
+            <label class="cap" for="f-email">Email address</label>
+            <input class="input" type="email" id="f-email" name="email" autocomplete="email" placeholder="maria@ossobello.com" required>
+          </div>
+          <div class="field">
+            <label class="cap" for="f-business">Business name</label>
+            <input class="input" type="text" id="f-business" name="business" autocomplete="organization" placeholder="Ossobello Trattoria" required>
+          </div>
+          <div class="field">
+            <label class="cap" for="business-type">What kind of business is it?</label>
+            
+            <select class="select" name="business_type" id="business-type" required>
+              <option value="" disabled selected>Select your industry</option>
+              <option value="restaurant">Restaurant / food &amp; drink</option>
+              <option value="cafe">Café / bakery</option>
+              <option value="beauty">Salon / barber / studio</option>
+              <option value="home_services">Trades (plumbing, electrical, roofing, HVAC…)</option>
+              <option value="retail">Shop / retail / maker</option>
+              <option value="health">Health &amp; wellness</option>
+              <option value="fitness">Fitness / personal training</option>
+              <option value="real_estate">Real estate</option>
+              <option value="legal">Legal / accounting</option>
+              <option value="construction">Construction / contractor</option>
+              <option value="consulting">Consulting / coaching</option>
+              <option value="other">Other</option>
+            </select>
+            <input type="text" class="input" name="business_type_other" id="business-type-other" placeholder="Tell us your industry" style="display:none;">
+
+          </div>
+          <div class="field">
+            <span class="cap">How large is your clientele?</span>
+            <div class="choices" role="radiogroup">
+              <label class="choice"><input type="radio" name="clientele" value="Just starting out" required><span>Just starting out</span></label>
+              <label class="choice"><input type="radio" name="clientele" value="1–50 clients"><span>1–50 clients</span></label>
+              <label class="choice"><input type="radio" name="clientele" value="50–500 clients"><span>50–500 clients</span></label>
+              <label class="choice"><input type="radio" name="clientele" value="500+ clients"><span>500+ clients</span></label>
+            </div>
+          </div>
+          <div class="field">
+            <span class="cap">New website, or upgrading one you have?</span>
+            <div class="choices" role="radiogroup">
+              <label class="choice"><input type="radio" name="website_type" value="new" required><span>Creating new</span></label>
+              <label class="choice"><input type="radio" name="website_type" value="upgrade"><span>Upgrading existing</span></label>
+            </div>
+          </div>
+          <div id="upgrade-fields" style="display:none;">
+            <div class="field">
+              <label class="cap" for="f-url">Your current website</label>
+              <input class="input" type="url" id="f-url" name="current_website_url" placeholder="https://yourwebsite.com">
+            </div>
+            <div class="field">
+              <label class="cap" for="f-upgrade">What would you like changed?</label>
+              <textarea class="textarea" id="f-upgrade" name="upgrade_details" placeholder="What isn’t working on the current site, and what should the new one do better?"></textarea>
+            </div>
+          </div>
+          <div class="field">
+            <label class="cap" for="f-comments">Anything else we should know?</label>
+            <textarea class="textarea" id="f-comments" name="comments" placeholder="Colours you like, websites you admire, what customers usually ask you, what you want people to do on the site…"></textarea>
+          </div>
+          <div class="field">
+            <span class="cap">Inspiration photo or document <span class="muted" style="text-transform:none;letter-spacing:0;">(optional)</span></span>
+            <div class="upload" id="upload-area" role="button" tabindex="0">
+              <span class="t">Upload a photo, logo, or file</span>
+              <span class="h">JPG, PNG, PDF — up to 10 MB</span>
+            </div>
+            <input type="file" id="insp-file" name="attachment" accept="image/*,.pdf,.doc,.docx" style="display:none">
+            <div class="upload-preview" id="upload-preview">
+              <div class="file"><span id="upload-file-name"></span><button type="button" id="upload-remove">Remove</button></div>
+              <textarea class="textarea" name="attachment_caption" placeholder="What do you like about it? e.g. “the calm colours and the big photos”" style="min-height:90px;"></textarea>
+            </div>
+          </div>
+          
+          <div class="field">
+            <label class="check"><input type="checkbox" name="portfolio_consent" value="Yes"><span>I’m happy for Onwards Digital to show my finished website as an example of their work.</span></label>
+          </div>
+          <div class="submit-row">
+            <button type="submit" class="btn btn-block" id="submit-btn" data-base="Free" data-monthly="$12.99/mo">Send my details</button>
+            <p class="submit-note">No payment required. Your mockup arrives by email within 3–5 business days.</p>
+          </div>
+        </form>
+
+      </div>
+      <div class="success" id="success">
+        <h2 class="form-title">We’re on it.</h2>
+        <p class="lede">Thanks — we’ll start on your mockup and have it in your inbox within 3–5 business days. Keep an eye out for an email from contact@onwardsdigital.com.</p>
+        <a href="index.html" class="btn-text cap" style="align-self:flex-start;">Back to the homepage</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div class="wrap footer-wrap">
+  <footer class="footer">
+    <div class="col">
+      <span class="brand">Onwards Digital</span>
+      <span class="about">Websites for small businesses. Built in a week, yours to change.</span>
+    </div>
+    <div class="col"><span class="cap">Plans</span><a href="beginner.html">Free mockup</a><a href="advanced.html">Advanced</a><a href="professional.html">Professional</a><a href="monthly-care.html">Monthly care</a></div>
+    <div class="col"><span class="cap">Examples</span><a href="example-restaurant.html">Restaurant</a><a href="example-cafe.html">Café</a><a href="example-salon.html">Salon</a><a href="example-trades.html">Trades</a><a href="example-shop.html">Shop</a></div>
+    <div class="col"><span class="cap">Contact</span><a href="mailto:contact@onwardsdigital.com">contact@onwardsdigital.com</a><span class="muted">© 2026 Onwards Digital</span></div>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
