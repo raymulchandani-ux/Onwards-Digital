@@ -7,159 +7,202 @@
 <meta name="description" content="Coffee, sourdough and laminated pastries baked on-site from 5am in Portland's East End. Weekend brunch until 2. Open daily 7–3. Walk-in only; order ahead for pickup.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#f8f4ec;
-    --paper-2:#f1ebdf;
-    --paper-3:#e7dfcf;
-    --ink:#1f1b17;
-    --ink-2:#5a534b;
-    --line:#d9d0c0;
-    --rye:#5e3f26;
-    --rye-2:#7a5636;
-    --sans:"Familjen Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
-    --serif:"Newsreader",Georgia,"Times New Roman",serif;
-    --max:1240px;
+    --white:#ffffff;
+    --yolk:#ffcc00;
+    --yolk-2:#f5c000;
+    --ink:#101010;
+    --ink-2:#4a4a4a;
+    --display:"Syne","Arial Black","Helvetica Neue",Arial,sans-serif;
+    --body:"Work Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --max:1280px;
     --gutter:clamp(20px,4vw,56px);
+    --rule:2px solid var(--ink);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;font-feature-settings:"kern","liga"}
+  body{margin:0;background:var(--white);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;font-feature-settings:"kern","liga"}
   h1,h2,h3,p,ul,figure{margin:0}
   a{color:inherit}
   img,svg{display:block}
-  :focus-visible{outline:2px solid var(--rye);outline-offset:3px}
+  :focus-visible{outline:3px solid var(--ink);outline-offset:3px}
   .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
+  .display{font-family:var(--display);font-weight:800;letter-spacing:-.03em;line-height:.92}
+  .label{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.12em;text-transform:uppercase}
 
   /* Onwards top bar */
-  .onwards{height:36px;background:#1a1917;color:#e9e4da;font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center}
+  .onwards{height:36px;background:#1a1917;color:#e9e4da;font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;font-family:var(--body)}
   .onwards .wrap{display:flex;justify-content:space-between;width:100%;gap:16px}
   .onwards span,.onwards a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .onwards a{text-decoration:none;color:#e9e4da;border-bottom:1px solid transparent;flex-shrink:0}
   .onwards a:hover{border-bottom-color:#e9e4da}
+  .onwards .short{display:none}
 
   /* Header */
-  .site-header{position:sticky;top:0;z-index:20;background:rgba(248,244,236,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
-  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:24px}
-  .brand{text-decoration:none;font-weight:600;font-size:18px;letter-spacing:-.01em;display:flex;align-items:baseline;gap:10px}
-  .brand small{font-weight:400;color:var(--ink-2);font-size:14px;letter-spacing:.02em}
-  .nav{display:flex;gap:28px;align-items:center}
-  .nav a{text-decoration:none;font-size:16px;padding:6px 0;border-bottom:1px solid transparent;color:var(--ink)}
-  .nav a:hover{border-bottom-color:var(--ink)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;padding:0 20px;background:var(--rye);color:var(--paper);text-decoration:none;font-weight:500;font-size:16px;border:1px solid var(--rye);border-radius:2px;transition:background .15s,color .15s}
-  .btn:hover{background:var(--ink);border-color:var(--ink)}
-  .btn svg{width:16px;height:16px}
-  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
-  .menu-btn{display:none;width:46px;height:46px;background:none;border:1px solid var(--line);border-radius:2px;color:var(--ink);align-items:center;justify-content:center;cursor:pointer}
-  .menu-btn svg{width:22px;height:22px}
+  .site-header{position:sticky;top:0;z-index:20;background:var(--white);border-bottom:var(--rule)}
+  .site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
+  .brand{text-decoration:none;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:-.02em;display:flex;align-items:baseline;gap:10px;white-space:nowrap}
+  .brand small{font-family:var(--body);font-weight:500;color:var(--ink-2);font-size:14px;letter-spacing:.02em}
+  .nav{display:flex;gap:26px;align-items:center}
+  .nav a{text-decoration:none;font-size:16px;font-weight:500;padding:6px 0;border-bottom:2px solid transparent;color:var(--ink)}
+  .nav a:hover{border-bottom-color:var(--yolk)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 24px;background:var(--yolk);color:var(--ink);text-decoration:none;font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:.01em;border:var(--rule);border-radius:0;transition:background .15s,color .15s;cursor:pointer}
+  .btn:hover{background:var(--ink);color:var(--white)}
+  .btn svg{width:18px;height:18px;flex-shrink:0}
+  .btn-ink{background:var(--ink);color:var(--white)}
+  .btn-ink:hover{background:var(--yolk);color:var(--ink)}
+  .btn-white{background:var(--white)}
+  .menu-btn{display:none;width:50px;height:50px;background:none;border:var(--rule);border-radius:0;color:var(--ink);align-items:center;justify-content:center;cursor:pointer}
+  .menu-btn svg{width:24px;height:24px}
 
-  /* Photo placeholders */
-  .photo{position:relative;background:var(--paper-3);box-shadow:inset 0 0 0 1px rgba(31,27,23,.14);overflow:hidden}
-  .photo::after{content:attr(data-label);position:absolute;left:14px;bottom:12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--rye);font-family:var(--sans)}
-  .photo.deep{background:#d9cdb8}
-  .photo.rye{background:#c9b596}
+  /* Photo slots */
+  .photo{position:relative;background:#f2f2f2;box-shadow:inset 0 0 0 2px var(--ink);overflow:hidden}
+  .photo::after{content:attr(data-label);position:absolute;left:14px;bottom:12px;font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+  .photo.yolk{background:var(--yolk)}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
+  .photo:has(>img)::after{content:none}
 
-  /* Hero */
-  .hero{padding:clamp(40px,6vw,88px) 0 clamp(40px,5vw,72px)}
-  .hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,72px);align-items:end}
-  .kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--rye);margin-bottom:22px}
-  .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(44px,6.2vw,88px);line-height:.98;letter-spacing:-.02em;margin-bottom:26px}
-  .hero h1 em{font-style:italic;color:var(--rye)}
-  .hero .lede{font-size:clamp(18px,1.5vw,21px);max-width:34em;color:var(--ink-2);margin-bottom:34px}
-  .status{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center;margin-bottom:34px;font-size:17px}
-  .status .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#4a7a3b;margin-right:10px;vertical-align:1px}
-  .status .dot.closed{background:#b04a2f}
-  .status a{text-decoration:none;border-bottom:1px solid var(--line)}
-  .status a:hover{border-bottom-color:var(--ink)}
-  .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-  .policy-note{font-size:15px;color:var(--ink-2);margin-top:18px}
-  .hero .photo{aspect-ratio:4/5;min-height:360px}
+  /* Hero: one big yellow band */
+  .hero{background:var(--yolk);border-bottom:var(--rule);overflow:hidden}
+  .hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,64px);align-items:stretch;padding-top:clamp(40px,5vw,72px)}
+  .hero-text{padding-bottom:clamp(40px,5vw,72px);display:flex;flex-direction:column}
+  .hero .kicker{margin-bottom:clamp(28px,4vw,56px)}
+  .hero h1{font-size:clamp(64px,9.6vw,150px);margin-bottom:clamp(24px,3vw,40px)}
+  .hero h1 span{display:block}
+  .hero h1 .two{color:var(--white);-webkit-text-stroke:2px var(--ink);text-stroke:2px var(--ink);paint-order:stroke fill}
+  .hero .lede{font-size:clamp(18px,1.6vw,22px);font-weight:500;max-width:30em;margin-bottom:32px;line-height:1.4}
+  .status{display:inline-flex;align-items:center;gap:14px;background:var(--white);border:var(--rule);padding:10px 16px;width:max-content;max-width:100%;margin-bottom:28px;font-weight:600;font-size:16px}
+  .status .dot{display:inline-block;width:12px;height:12px;background:#1f9d3f;border:2px solid var(--ink);flex-shrink:0}
+  .status .dot.closed{background:#e03e1a}
+  .cta-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin-top:auto}
+  .policy-note{font-size:15px;margin-top:18px;max-width:34em}
+  .hero .photo{aspect-ratio:4/5;min-height:420px;margin-bottom:-2px;border-bottom:0;box-shadow:inset 2px 0 0 var(--ink),inset -2px 0 0 var(--ink),inset 0 2px 0 var(--ink)}
+  .hero .photo.yolk{background:#ffe680}
 
   /* Facts strip */
-  .facts{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .facts{border-bottom:var(--rule)}
   .facts ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr)}
-  .facts li{padding:22px 24px 22px 0;border-right:1px solid var(--line);margin-right:24px;font-size:16px;line-height:1.4}
+  .facts li{padding:26px 28px 26px 0;border-right:var(--rule);margin-right:28px;font-size:16px;line-height:1.4}
   .facts li:last-child{border-right:0;margin-right:0}
-  .facts li strong{display:block;font-weight:500}
-  .facts li span{color:var(--ink-2);font-size:15px}
+  .facts li strong{display:block;font-family:var(--display);font-weight:800;font-size:19px;letter-spacing:-.01em;margin-bottom:6px;line-height:1.15}
+  .facts li span{color:var(--ink-2);font-size:15.5px}
+  .facts li b{font-family:var(--display);font-weight:800;font-size:44px;line-height:1;display:block;margin-bottom:10px;letter-spacing:-.03em}
 
   /* Sections */
   section{padding:clamp(56px,7vw,112px) 0}
-  .sec-head{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:24px clamp(32px,5vw,72px);margin-bottom:clamp(36px,4vw,60px);align-items:end}
-  .sec-head h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.05;letter-spacing:-.015em}
-  .sec-head p{color:var(--ink-2);font-size:17px;max-width:38em}
+  .sec-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px clamp(32px,5vw,72px);margin-bottom:clamp(36px,4vw,60px);align-items:end}
+  .sec-head h2{font-size:clamp(44px,6vw,96px)}
+  .sec-head p{font-size:17px;max-width:34em;color:var(--ink-2);padding-bottom:10px}
 
   /* Menu */
-  .menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(32px,4vw,64px)}
-  .menu h3{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--rye);padding-bottom:12px;border-bottom:1px solid var(--ink);margin-bottom:8px;display:flex;justify-content:space-between;font-weight:500}
-  .menu h3 span{color:var(--ink-2);letter-spacing:.08em;text-transform:none;font-size:13px}
+  .menu{padding-top:clamp(48px,6vw,96px)}
+  .menu-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:var(--rule)}
+  .menu-col{padding:clamp(22px,2.6vw,36px);border-right:var(--rule)}
+  .menu-col:last-child{border-right:0}
+  .menu-col.yolk{background:var(--yolk)}
+  .menu h3{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--display);font-weight:800;font-size:clamp(26px,2.4vw,34px);letter-spacing:-.02em;line-height:1;padding-bottom:16px;border-bottom:var(--rule);margin-bottom:6px}
+  .menu h3 span{font-family:var(--body);font-weight:500;font-size:13px;letter-spacing:.02em;color:var(--ink-2);text-align:right;flex-shrink:0}
+  .menu-col.yolk h3 span{color:var(--ink)}
   .menu ul{list-style:none;padding:0}
-  .menu li{display:flex;align-items:baseline;gap:8px;padding:11px 0;font-family:var(--serif);font-size:19px;line-height:1.3}
-  .menu li .name{flex:0 1 auto}
-  .menu li .lead{flex:1 0 12px;border-bottom:1px dotted #a89e8c;transform:translateY(-5px)}
-  .menu li .price{font-variant-numeric:tabular-nums;white-space:nowrap}
-  .menu li .desc{display:block;font-family:var(--sans);font-size:14.5px;color:var(--ink-2);margin-top:2px}
-  .tag{display:inline-block;font-family:var(--sans);font-size:10.5px;letter-spacing:.12em;padding:1px 5px;border:1px solid var(--line);margin-left:6px;vertical-align:2px;color:var(--ink-2);border-radius:2px}
-  .menu-foot{margin-top:40px;display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:24px;font-size:15px;color:var(--ink-2)}
-  .menu-foot .keys{display:flex;gap:18px}
+  .menu li{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:2px solid rgba(16,16,16,.14);font-size:16.5px;line-height:1.3}
+  .menu-col.yolk li{border-bottom-color:rgba(16,16,16,.28)}
+  .menu li:last-child{border-bottom:0}
+  .menu li .name{flex:1 1 auto;font-weight:500}
+  .menu li .price{font-family:var(--display);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:16px}
+  .menu li .desc{display:block;font-weight:400;font-size:14.5px;color:var(--ink-2);margin-top:2px}
+  .menu-col.yolk li .desc{color:#3a3000}
+  .tag{display:inline-block;font-family:var(--display);font-weight:700;font-size:10px;letter-spacing:.1em;padding:1px 5px;border:1.5px solid var(--ink);margin-left:6px;vertical-align:2px;border-radius:0}
+  .menu-note{font-size:14.5px;color:var(--ink-2);margin-top:14px}
+  .menu-col.yolk .menu-note{color:#3a3000}
+  .menu-foot{margin-top:28px;display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between;font-size:15px;color:var(--ink-2)}
+  .menu-foot .keys{display:flex;gap:18px;flex-wrap:wrap}
+  .menu-foot .keys b{font-family:var(--display);font-weight:700;color:var(--ink);border:1.5px solid var(--ink);padding:1px 5px;font-size:10px;letter-spacing:.1em;margin-right:6px;vertical-align:2px}
+
+  /* Photo strip */
+  .strip{padding:0 0 clamp(56px,7vw,112px)}
+  .strip .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,4fr) minmax(0,3fr);gap:clamp(16px,2vw,28px);align-items:end}
+  .strip .photo{aspect-ratio:1}
+  .strip figure:nth-of-type(1){aspect-ratio:5/4}
+  .strip figure:nth-of-type(3){aspect-ratio:3/4}
+  .strip .bigword{grid-column:1/-1;font-size:clamp(40px,5.6vw,88px);margin-bottom:8px}
+  .strip .bigword em{font-style:normal;background:var(--yolk);padding:0 .12em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 
   /* Owners */
-  .owners{background:var(--paper-2)}
-  .owners .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:center}
-  .owners .photo{aspect-ratio:3/4;min-height:400px}
-  .owners h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.05;letter-spacing:-.015em;margin-bottom:24px}
+  .owners{border-top:var(--rule);border-bottom:var(--rule);padding:0}
+  .owners .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:0;max-width:none;padding:0}
+  .owners .photo{min-height:520px;aspect-ratio:auto;box-shadow:inset -2px 0 0 var(--ink)}
+  .owners .text{padding:clamp(48px,6vw,96px) var(--gutter) clamp(48px,6vw,96px) clamp(32px,5vw,80px);max-width:760px}
+  .owners h2{font-size:clamp(44px,5.6vw,88px);margin-bottom:28px}
+  .owners h2 em{font-style:normal;color:var(--yolk);-webkit-text-stroke:2px var(--ink);paint-order:stroke fill}
   .owners p{font-size:clamp(17px,1.35vw,19px);max-width:34em;margin-bottom:20px}
-  .owners p.big{font-family:var(--serif);font-size:clamp(21px,1.9vw,26px);line-height:1.35}
-  .sig{display:flex;gap:40px;margin-top:32px}
-  .sig div{font-size:15px;color:var(--ink-2)}
-  .sig strong{display:block;color:var(--ink);font-weight:500;font-size:17px}
+  .owners p.big{font-family:var(--display);font-weight:700;font-size:clamp(21px,1.9vw,26px);line-height:1.25;letter-spacing:-.015em}
+  .sig{display:flex;gap:0;margin-top:32px;border:var(--rule)}
+  .sig div{flex:1;padding:16px 18px;font-size:15px;color:var(--ink-2);border-right:var(--rule)}
+  .sig div:last-child{border-right:0}
+  .sig strong{display:block;color:var(--ink);font-family:var(--display);font-weight:800;font-size:19px;margin-bottom:4px}
 
   /* Pre-order */
-  .preorder .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(32px,5vw,80px);align-items:start}
-  .preorder h2{font-family:var(--serif);font-weight:400;font-size:clamp(30px,3vw,42px);line-height:1.08;letter-spacing:-.015em;margin-bottom:18px}
-  .preorder .rule{border-left:2px solid var(--rye);padding:6px 0 6px 18px;margin:22px 0 26px;font-size:17px}
-  .preorder p{color:var(--ink-2);max-width:32em}
-  .preorder .photo{aspect-ratio:16/9;margin-bottom:32px}
-  .preorder .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .preorder h2{font-size:clamp(44px,6vw,96px);margin-bottom:clamp(28px,3vw,44px)}
+  .preorder h2 em{font-style:normal;background:var(--yolk);padding:0 .1em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+  .preorder .grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(32px,4vw,64px);align-items:start}
+  .preorder .rule{border:var(--rule);background:var(--yolk);padding:16px 20px;margin:0 0 28px;font-size:17px;font-weight:500}
+  .preorder .rule strong{font-family:var(--display);font-weight:800;display:block;font-size:20px;margin-bottom:4px;letter-spacing:-.01em}
+  .preorder .intro{font-size:17px;color:var(--ink-2);max-width:32em;margin-bottom:24px}
+  .preorder .lists{padding-top:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:var(--rule)}
+  .preorder .photo{aspect-ratio:16/9;margin-top:clamp(24px,3vw,40px)}
+  /* Form */
+  .form{border:var(--rule);padding:clamp(24px,3vw,40px);background:var(--white);position:relative;box-shadow:12px 12px 0 var(--yolk),12px 12px 0 2px var(--ink);margin-right:14px;margin-bottom:14px}
+  .form h3{font-family:var(--display);font-weight:800;font-size:clamp(26px,2.4vw,34px);letter-spacing:-.02em;line-height:1;margin-bottom:8px}
+  .form .sub{font-size:15px;color:var(--ink-2);margin-bottom:26px}
+  .field{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+  .field label{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+  .field input,.field select,.field textarea{font:inherit;font-size:17px;padding:12px 14px;min-height:50px;border:var(--rule);border-radius:0;background:var(--white);color:var(--ink);width:100%;appearance:none;-webkit-appearance:none}
+  .field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23101010' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:18px;padding-right:44px}
+  .field textarea{min-height:110px;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;box-shadow:0 0 0 3px var(--yolk)}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .form .btn{width:100%;margin-top:6px}
+  .form .fine{font-size:13.5px;color:var(--ink-2);margin-top:14px}
+  .form .done{display:none;border:var(--rule);background:var(--yolk);padding:20px;font-weight:500;margin-top:8px}
+  .form.sent .done{display:block}
+  .form.sent form{display:none}
 
   /* Reviews */
-  .quotes{border-top:1px solid var(--line)}
+  .quotes{background:var(--yolk);border-top:var(--rule);border-bottom:var(--rule)}
   .quotes .wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(32px,5vw,80px)}
-  blockquote{margin:0;font-family:var(--serif);font-size:clamp(21px,2vw,27px);line-height:1.35;letter-spacing:-.005em}
-  blockquote footer{font-family:var(--sans);font-size:14px;color:var(--ink-2);margin-top:14px;letter-spacing:.04em}
+  blockquote{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2.2vw,30px);line-height:1.2;letter-spacing:-.02em}
+  blockquote footer{font-family:var(--body);font-weight:500;font-size:14px;margin-top:18px;letter-spacing:.02em}
+  blockquote footer::before{content:"";display:inline-block;width:28px;height:2px;background:var(--ink);vertical-align:middle;margin-right:12px}
 
   /* Visit */
-  .visit{background:var(--ink);color:var(--paper)}
   .visit .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr);gap:clamp(32px,4vw,64px)}
-  .visit h2{font-family:var(--serif);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.05;letter-spacing:-.015em;margin-bottom:24px}
-  .visit h3{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#cdb79a;margin-bottom:16px;font-weight:500}
+  .visit h2{font-size:clamp(44px,5.6vw,88px);margin-bottom:24px}
+  .visit h3{margin-bottom:16px;padding-bottom:10px;border-bottom:var(--rule)}
+  .visit p{color:var(--ink-2);max-width:30em}
   .visit table{border-collapse:collapse;width:100%;font-size:17px}
-  .visit td{padding:10px 0;border-bottom:1px solid rgba(248,244,236,.18);vertical-align:top}
-  .visit td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-  .visit tr.today td{color:#fff;font-weight:500}
-  .visit tr.today td:first-child::after{content:"today";font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#cdb79a;margin-left:10px;font-weight:400}
-  .visit address{font-style:normal;font-size:17px;line-height:1.6}
-  .visit a{color:var(--paper);text-decoration:none;border-bottom:1px solid rgba(248,244,236,.35)}
-  .visit a:hover{border-bottom-color:#fff}
-  .visit .contact{display:flex;flex-direction:column;gap:14px;margin-top:22px;font-size:17px}
-  .visit .contact a{display:inline-flex;align-items:center;gap:10px;min-height:44px;width:max-content;border-bottom:0}
-  .visit .contact a span{border-bottom:1px solid rgba(248,244,236,.35)}
-  .visit .contact a:hover span{border-bottom-color:#fff}
-  .visit .contact svg{width:18px;height:18px;color:#cdb79a}
-  .visit .btn{background:var(--paper);color:var(--ink);border-color:var(--paper);margin-top:28px}
-  .visit .btn:hover{background:#fff}
-  .onwards .short{display:none}
-  .visit .patio{margin-top:28px;font-size:15px;color:#cdc5b8;max-width:28em}
-  .visit .photo{background:#33291f;box-shadow:inset 0 0 0 1px rgba(248,244,236,.18);aspect-ratio:4/3;margin-top:26px}
-  .visit .photo::after{color:#cdb79a}
+  .visit td{padding:11px 0;border-bottom:2px solid rgba(16,16,16,.14);vertical-align:top}
+  .visit td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;font-family:var(--display);font-weight:700}
+  .visit tr.today td{font-weight:600;background:var(--yolk);box-shadow:-8px 0 0 var(--yolk),8px 0 0 var(--yolk)}
+  .visit tr.today td:first-child::after{content:"today";font-family:var(--display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-left:10px;font-weight:700;border:1.5px solid var(--ink);padding:1px 5px;vertical-align:2px}
+  .visit .contact{display:flex;flex-direction:column;gap:6px;margin-top:6px;font-size:17px}
+  .visit .contact a{display:inline-flex;align-items:center;gap:12px;min-height:44px;width:max-content;text-decoration:none;font-weight:500}
+  .visit .contact a span{border-bottom:2px solid var(--yolk)}
+  .visit .contact a:hover span{border-bottom-color:var(--ink)}
+  .visit .contact svg{width:20px;height:20px}
+  .visit .btn{margin-top:28px}
+  .visit .patio{margin-top:28px;font-size:15px;max-width:28em}
+  .visit .photo{aspect-ratio:4/3;margin-top:26px}
+  .visit .col-hours .photo{aspect-ratio:1;margin-top:30px}
 
   /* Footer */
-  .site-footer{padding:36px 0;font-size:14px;color:var(--ink-2)}
+  .site-footer{background:var(--ink);color:#f2f2f2;padding:40px 0;font-size:14px}
   .site-footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 32px}
-  .site-footer a{text-decoration:none;border-bottom:1px solid var(--line)}
-  .site-footer a:hover{border-bottom-color:var(--ink)}
+  .site-footer a{text-decoration:none;border-bottom:2px solid var(--yolk)}
+  .site-footer a:hover{border-bottom-color:#fff}
+  .site-footer .credit{color:#a0a0a0}
 
   /* Reveal */
   .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
@@ -170,44 +213,57 @@
   @media(max-width:1024px){
     .facts ul{grid-template-columns:repeat(2,1fr)}
     .facts li:nth-child(2){border-right:0}
-    .facts li{border-bottom:1px solid var(--line)}
+    .facts li{border-bottom:var(--rule)}
     .facts li:nth-child(n+3){border-bottom:0}
     .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .menu-col:nth-child(2){border-right:0}
+    .menu-col:nth-child(3){grid-column:1/-1;border-top:var(--rule);border-right:0}
+    .preorder .grid{grid-template-columns:1fr}
     .visit .wrap{grid-template-columns:1fr 1fr}
     .visit .col-hours{grid-column:1}
     .visit .col-find{grid-column:2}
     .visit .col-intro{grid-column:1/-1}
+    .owners .wrap{grid-template-columns:1fr}
+    .owners .photo{min-height:0;aspect-ratio:16/10;box-shadow:inset 0 -2px 0 var(--ink)}
+    .owners .text{padding-left:var(--gutter)}
   }
   @media(max-width:760px){
     .onwards{font-size:11px;letter-spacing:.1em}
     .onwards .short{display:inline}.onwards .long{display:none}.onwards a{letter-spacing:.06em}
     .menu-btn{display:inline-flex}
-    .nav{display:none;position:absolute;left:0;right:0;top:68px;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0;padding:8px var(--gutter) 16px}
+    .brand small{display:none}
+    .nav{display:none;position:absolute;left:0;right:0;top:72px;background:var(--white);border-bottom:var(--rule);flex-direction:column;align-items:stretch;gap:0;padding:0 var(--gutter) 8px}
     .nav.open{display:flex}
-    .nav a{min-height:46px;display:flex;align-items:center;border-bottom:1px solid var(--line);font-size:17px}
+    .nav a{min-height:50px;display:flex;align-items:center;border-bottom:2px solid rgba(16,16,16,.14);font-size:17px}
     .header-cta{display:none}
-    .hero .wrap{grid-template-columns:1fr}
-    .hero .photo{aspect-ratio:4/3;min-height:0;order:-1}
-    .hero .lede{margin-bottom:28px}
+    .hero .wrap{grid-template-columns:1fr;padding-top:0}
+    .hero-text{padding-top:36px;padding-bottom:40px}
+    .hero .photo{aspect-ratio:4/3;min-height:0;order:-1;margin-bottom:0;margin-left:calc(-1 * var(--gutter));margin-right:calc(-1 * var(--gutter));box-shadow:inset 0 -2px 0 var(--ink)}
+    .hero h1{font-size:clamp(56px,17vw,72px)}
     .facts ul{grid-template-columns:1fr}
-    .facts li{border-right:0;margin-right:0;padding:16px 0;border-bottom:1px solid var(--line)}
-    .facts li:nth-child(n+3){border-bottom:1px solid var(--line)}
+    .facts li{border-right:0;margin-right:0;padding:18px 0;border-bottom:var(--rule)}
+    .facts li:nth-child(n+3){border-bottom:var(--rule)}
     .facts li:last-child{border-bottom:0}
     .sec-head{grid-template-columns:1fr}
-    .menu-grid,.preorder .menu-grid{grid-template-columns:1fr}
-    .menu li{font-size:18px}
-    .owners .wrap,.preorder .wrap{grid-template-columns:1fr}
-    .owners .photo{aspect-ratio:4/5;min-height:0}
+    .menu-grid{grid-template-columns:1fr}
+    .menu-col{border-right:0;border-bottom:var(--rule)}
+    .menu-col:nth-child(3){border-top:0}
+    .menu-col:last-child{border-bottom:0}
+    .strip .wrap{grid-template-columns:1fr 1fr}
+    .strip figure:nth-of-type(1){grid-column:1/-1;aspect-ratio:16/10}
+    .preorder .lists{grid-template-columns:1fr}
+    .preorder .lists .menu-col{border-right:0;border-bottom:var(--rule)}
+    .preorder .lists .menu-col:last-child{border-bottom:0}
+    .field-row{grid-template-columns:1fr}
     .quotes .wrap{grid-template-columns:1fr}
     .visit .wrap{grid-template-columns:1fr}
     .visit .col-hours,.visit .col-find,.visit .col-intro{grid-column:auto}
     .cta-row .btn{flex:1 1 100%}
-    .sig{flex-direction:column;gap:16px}
+    .sig{flex-direction:column}
+    .sig div{border-right:0;border-bottom:var(--rule)}
+    .sig div:last-child{border-bottom:0}
+    .form{box-shadow:8px 8px 0 var(--yolk),8px 8px 0 2px var(--ink);margin-right:10px;margin-bottom:10px}
   }
-
-  /* Drop a real photo in: <figure class="photo"><img src=…></figure> */
-  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
 </style>
 </head>
 <body>
@@ -226,12 +282,12 @@
       <a href="#menu">Menu</a>
       <a href="#brunch">Brunch</a>
       <a href="#owners">Jonah &amp; Priya</a>
-      <a href="#preorder">Pre-order</a>
-      <a href="#visit">Hours &amp; find us</a>
+      <a href="#order">Order ahead</a>
+      <a href="#visit">Hours</a>
     </nav>
-    <a class="btn header-cta" href="#preorder" data-note="Replace with the café’s order-ahead link (Square, Toast, etc.)">Order ahead</a>
+    <a class="btn header-cta" href="#order">Order ahead</a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav" aria-label="Open menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
 </header>
@@ -240,36 +296,32 @@
 
   <section class="hero" aria-labelledby="h1">
     <div class="wrap">
-      <div>
-        <p class="kicker">Coffee &middot; Bakery &middot; Weekend brunch &mdash; East End, Portland</p>
-        <h1 id="h1">Bread from five, <em>coffee</em> from seven.</h1>
-        <p class="lede">A small bakehouse on Munjoy Hill. Sourdough and laminated pastry made here every morning, coffee from a roaster ten minutes down the road, and brunch on the weekend until two.</p>
-        <div class="status" aria-live="polite">
-          <span><span class="dot" id="openDot"></span><strong id="openText">Open today 7&ndash;3</strong></span>
-          <a href="#visit">148 Congress Street, at North St</a>
-        </div>
+      <div class="hero-text">
+        <p class="kicker label">Coffee &middot; Bakery &middot; Weekend brunch &mdash; East End, Portland</p>
+        <h1 id="h1" class="display"><span>Bread from five.</span><span class="two">Coffee from seven.</span></h1>
+        <p class="lede">We&rsquo;re a small bakehouse on Munjoy Hill. We make the sourdough and the laminated pastry here every morning, the coffee comes from a roaster ten minutes down the road, and on weekends we do brunch until two.</p>
+        <div class="status" aria-live="polite"><span class="dot" id="openDot"></span><span id="openText">Open today 7&ndash;3</span></div>
         <div class="cta-row">
-          <a class="btn" href="#preorder" data-note="Replace with the café’s order-ahead link (Square, Toast, etc.)">Order ahead for pickup
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <a class="btn btn-ink" href="#order">Order ahead for pickup
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
-          <a class="btn btn-ghost" href="tel:+12075550148">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-            (207) 555-0148
-          </a>
+          <a class="btn btn-white" href="#menu">See the menu</a>
         </div>
-        <p class="policy-note">Walk-in only &mdash; we don&rsquo;t take bookings. Order ahead if you&rsquo;re in a hurry; it&rsquo;s ready in fifteen minutes.</p>
+        <p class="policy-note">Walk-in only &mdash; we don&rsquo;t take bookings. If you&rsquo;re in a hurry, order ahead: it&rsquo;s bagged and waiting in fifteen minutes.</p>
       </div>
-      <figure class="photo rye" data-photo="the counter at opening, pastries in the case, morning light from the east window" data-label="Photo &middot; The counter, 7am"></figure>
+      <figure class="photo yolk" data-photo="the counter at opening, pastries in the case, morning light from the east window" data-label="Photo &middot; The case, 7am">
+        <img src="https://images.unsplash.com/photo-1643944471768-2d2eac3afb6d?auto=format&fit=crop&w=2000&q=80" alt="The pastry case at opening: croissants, buns and kouign-amann lined up on trays" loading="eager" onerror="this.remove()">
+      </figure>
     </div>
   </section>
 
   <div class="facts">
     <div class="wrap">
       <ul>
-        <li><strong>Walk in, no bookings</strong><span>Sit where there&rsquo;s a seat. Weekends fill by ten.</span></li>
-        <li><strong>Order ahead for pickup</strong><span>Coffee, pastry and brunch. Skip the line at the counter.</span></li>
-        <li><strong>Loaves &amp; cakes by pre-order</strong><span>48 hours&rsquo; notice. See what&rsquo;s available below.</span></li>
-        <li><strong>Dog-friendly patio</strong><span>Water bowls out front. Twelve seats, first come.</span></li>
+        <li><b>5am</b><strong>Ovens on</strong><span>Everything in the case was dough this morning.</span></li>
+        <li><b>15 min</b><strong>Order ahead</strong><span>Coffee, pastry and brunch, ready at the counter.</span></li>
+        <li><b>48 hrs</b><strong>Loaves &amp; cakes</strong><span>Whole loaves and cakes by pre-order. Two days&rsquo; notice.</span></li>
+        <li><b>12</b><strong>Patio seats</strong><span>Dog-friendly, first come. Water bowls out front.</span></li>
       </ul>
     </div>
   </div>
@@ -277,66 +329,84 @@
   <section id="menu" class="menu" aria-labelledby="menu-h">
     <div class="wrap">
       <div class="sec-head reveal">
-        <h2 id="menu-h">What&rsquo;s on the counter</h2>
-        <p>The whole menu, no PDF. Pastry changes with the season and sells through by early afternoon; if something matters to you, order ahead. Everything is baked in the back from 5am.</p>
+        <h2 id="menu-h" class="display">What&rsquo;s on the counter.</h2>
+        <p>This is the whole menu, no PDF. Pastry changes with the season and usually sells through by early afternoon &mdash; if something matters to you, order ahead. Oat milk is our default alternative and we don&rsquo;t charge for it.</p>
       </div>
       <div class="menu-grid">
-        <div class="reveal">
-          <h3>Coffee <span>Bramhall Roasters, Portland</span></h3>
+        <div class="menu-col reveal">
+          <h3>Coffee <span>Bramhall Roasters</span></h3>
           <ul>
-            <li><span class="name">Espresso <span class="tag">VE</span></span><span class="lead"></span><span class="price">3.25</span></li>
-            <li><span class="name">Cortado</span><span class="lead"></span><span class="price">4.00</span></li>
-            <li><span class="name">Flat white</span><span class="lead"></span><span class="price">4.75</span></li>
-            <li><span class="name">Batch brew <span class="tag">VE</span><span class="desc">Single origin, changes weekly. Refills 1.00</span></span><span class="lead"></span><span class="price">3.25</span></li>
-            <li><span class="name">Cold brew <span class="tag">VE</span></span><span class="lead"></span><span class="price">4.50</span></li>
-            <li><span class="name">Cardamom latte<span class="desc">House syrup, not too sweet</span></span><span class="lead"></span><span class="price">5.25</span></li>
-            <li><span class="name">Hot chocolate <span class="tag">V</span></span><span class="lead"></span><span class="price">4.50</span></li>
-            <li><span class="name">Loose-leaf tea <span class="tag">VE</span></span><span class="lead"></span><span class="price">3.50</span></li>
-          </ul>
-          <p class="desc" style="font-size:14.5px;color:var(--ink-2);margin-top:10px">Oat milk is the default alternative, no charge.</p>
-        </div>
-        <div class="reveal">
-          <h3>From the oven <span>Baked daily</span></h3>
-          <ul>
-            <li><span class="name">Sourdough croissant <span class="tag">V</span><span class="desc">Three-day dough, Maine butter</span></span><span class="lead"></span><span class="price">4.75</span></li>
-            <li><span class="name">Cardamom bun <span class="tag">V</span></span><span class="lead"></span><span class="price">5.00</span></li>
-            <li><span class="name">Kouign-amann <span class="tag">V</span></span><span class="lead"></span><span class="price">5.25</span></li>
-            <li><span class="name">Morning bun, orange &amp; brown sugar <span class="tag">V</span></span><span class="lead"></span><span class="price">4.75</span></li>
-            <li><span class="name">Ham &amp; gruy&egrave;re croissant</span><span class="lead"></span><span class="price">6.50</span></li>
-            <li><span class="name">Blueberry buckwheat scone <span class="tag">V</span> <span class="tag">GF</span></span><span class="lead"></span><span class="price">4.50</span></li>
-            <li><span class="name">Rye &amp; seed slice, cultured butter <span class="tag">V</span></span><span class="lead"></span><span class="price">4.00</span></li>
-            <li><span class="name">Sourdough loaf, half <span class="tag">VE</span><span class="desc">Whole loaves by pre-order, below</span></span><span class="lead"></span><span class="price">6.00</span></li>
+            <li><span class="name">Espresso <span class="tag">VE</span></span><span class="price">3.25</span></li>
+            <li><span class="name">Cortado</span><span class="price">4.00</span></li>
+            <li><span class="name">Flat white</span><span class="price">4.75</span></li>
+            <li><span class="name">Batch brew <span class="tag">VE</span><span class="desc">Single origin, changes weekly. Refills 1.00</span></span><span class="price">3.25</span></li>
+            <li><span class="name">Cold brew <span class="tag">VE</span></span><span class="price">4.50</span></li>
+            <li><span class="name">Cardamom latte<span class="desc">Our own syrup. Not too sweet</span></span><span class="price">5.25</span></li>
+            <li><span class="name">Hot chocolate <span class="tag">V</span></span><span class="price">4.50</span></li>
+            <li><span class="name">Loose-leaf tea <span class="tag">VE</span></span><span class="price">3.50</span></li>
           </ul>
         </div>
-        <div class="reveal" id="brunch">
+        <div class="menu-col yolk reveal">
+          <h3>From the oven <span>Baked daily from 5</span></h3>
+          <ul>
+            <li><span class="name">Sourdough croissant <span class="tag">V</span><span class="desc">Three-day dough, Maine butter</span></span><span class="price">4.75</span></li>
+            <li><span class="name">Cardamom bun <span class="tag">V</span></span><span class="price">5.00</span></li>
+            <li><span class="name">Kouign-amann <span class="tag">V</span></span><span class="price">5.25</span></li>
+            <li><span class="name">Morning bun, orange &amp; brown sugar <span class="tag">V</span></span><span class="price">4.75</span></li>
+            <li><span class="name">Ham &amp; gruy&egrave;re croissant</span><span class="price">6.50</span></li>
+            <li><span class="name">Blueberry buckwheat scone <span class="tag">V</span> <span class="tag">GF</span></span><span class="price">4.50</span></li>
+            <li><span class="name">Rye &amp; seed slice, cultured butter <span class="tag">V</span></span><span class="price">4.00</span></li>
+            <li><span class="name">Sourdough loaf, half <span class="tag">VE</span><span class="desc">Whole loaves by pre-order, below</span></span><span class="price">6.00</span></li>
+          </ul>
+          <p class="menu-note">When it&rsquo;s gone, it&rsquo;s gone. We don&rsquo;t bake a second round.</p>
+        </div>
+        <div class="menu-col reveal" id="brunch">
           <h3>Brunch <span>Sat &amp; Sun, 8&ndash;2</span></h3>
           <ul>
-            <li><span class="name">Toast, cultured butter &amp; jam <span class="tag">V</span></span><span class="lead"></span><span class="price">7.00</span></li>
-            <li><span class="name">Soft eggs on sourdough <span class="tag">V</span><span class="desc">Herbs, chilli oil, a lot of butter</span></span><span class="lead"></span><span class="price">13.00</span></li>
-            <li><span class="name">Buckwheat pancakes <span class="tag">V</span> <span class="tag">GF</span><span class="desc">Maple, wild blueberries, whipped cream</span></span><span class="lead"></span><span class="price">14.00</span></li>
-            <li><span class="name">Shakshuka <span class="tag">V</span><span class="desc">Two eggs, feta, rye toast. VE without egg or feta</span></span><span class="lead"></span><span class="price">15.00</span></li>
-            <li><span class="name">Smoked haddock hash<span class="desc">Potato, leek, poached egg</span></span><span class="lead"></span><span class="price">16.00</span></li>
-            <li><span class="name">Bakehouse board<span class="desc">Pastry, bread, butter, jam, cheese, fruit. For two</span></span><span class="lead"></span><span class="price">24.00</span></li>
-            <li><span class="name">Bloody Mary / Mimosa</span><span class="lead"></span><span class="price">11.00</span></li>
+            <li><span class="name">Toast, cultured butter &amp; jam <span class="tag">V</span></span><span class="price">7.00</span></li>
+            <li><span class="name">Soft eggs on sourdough <span class="tag">V</span><span class="desc">Herbs, chilli oil, a lot of butter</span></span><span class="price">13.00</span></li>
+            <li><span class="name">Buckwheat pancakes <span class="tag">V</span> <span class="tag">GF</span><span class="desc">Maple, wild blueberries, whipped cream</span></span><span class="price">14.00</span></li>
+            <li><span class="name">Shakshuka <span class="tag">V</span><span class="desc">Two eggs, feta, rye toast. VE without egg or feta</span></span><span class="price">15.00</span></li>
+            <li><span class="name">Smoked haddock hash<span class="desc">Potato, leek, poached egg</span></span><span class="price">16.00</span></li>
+            <li><span class="name">Bakehouse board<span class="desc">Pastry, bread, butter, jam, cheese, fruit. For two</span></span><span class="price">24.00</span></li>
+            <li><span class="name">Bloody Mary / Mimosa</span><span class="price">11.00</span></li>
           </ul>
+          <p class="menu-note">Kitchen closes at 2 sharp. Coffee and the case stay open until 3.</p>
         </div>
       </div>
       <div class="menu-foot reveal">
-        <div class="keys"><span><strong>V</strong> vegetarian</span><span><strong>VE</strong> vegan</span><span><strong>GF</strong> gluten-free</span></div>
-        <span>We bake with wheat, dairy, eggs and nuts in one kitchen. Ask at the counter about anything.</span>
-        <a class="btn" href="#preorder" data-note="Replace with the café’s order-ahead link (Square, Toast, etc.)">Order ahead</a>
+        <div class="keys"><span><b>V</b>vegetarian</span><span><b>VE</b>vegan</span><span><b>GF</b>gluten-free</span></div>
+        <span>We bake with wheat, dairy, eggs and nuts in one small kitchen. Ask us at the counter about anything.</span>
+        <a class="btn" href="#order">Order ahead</a>
       </div>
     </div>
   </section>
 
+  <div class="strip">
+    <div class="wrap">
+      <p class="bigword display reveal">Flat whites, <em>proper crust</em>, and a case that empties by one.</p>
+      <figure class="photo reveal" data-photo="golden buns and pastries on trays" data-label="Photo &middot; Morning buns">
+        <img src="https://images.unsplash.com/photo-1787276694528-93d3c38b2d03?auto=format&fit=crop&w=1600&q=80" alt="Golden morning buns and pastries laid out on trays, fresh from the oven" loading="lazy" onerror="this.remove()">
+      </figure>
+      <figure class="photo reveal" data-photo="latte art from above on a white table" data-label="Photo &middot; Flat white">
+        <img src="https://images.unsplash.com/photo-1545731939-9c302d5d27ed?auto=format&fit=crop&w=1200&q=80" alt="A flat white from above, rosetta poured in the milk, on a white counter" loading="lazy" onerror="this.remove()">
+      </figure>
+      <figure class="photo reveal" data-photo="sourdough crumb, close" data-label="Photo &middot; The crumb">
+        <img src="https://images.unsplash.com/photo-1639622949950-6720d1e5cdd4?auto=format&fit=crop&w=1200&q=80" alt="A close cut of country sourdough showing the open crumb and dark crust" loading="lazy" onerror="this.remove()">
+      </figure>
+    </div>
+  </div>
+
   <section id="owners" class="owners" aria-labelledby="owners-h">
     <div class="wrap">
-      <figure class="photo deep reveal" data-photo="Jonah and Priya behind the counter, flour on aprons, laughing, not posed" data-label="Photo &middot; Jonah &amp; Priya"></figure>
-      <div class="reveal">
-        <h2 id="owners-h">Two of us, one oven, since 2019.</h2>
+      <figure class="photo" data-photo="the counter and shelves stacked with loaves and pastry, no people" data-label="Photo &middot; The counter">
+        <img src="https://images.unsplash.com/photo-1711672284661-bd70e38f31b2?auto=format&fit=crop&w=1600&q=80" alt="The counter at Hollowmere, shelves behind it stacked with loaves and trays of pastry" loading="lazy" onerror="this.remove()">
+      </figure>
+      <div class="text reveal">
+        <h2 id="owners-h" class="display">Two of us. <em>One oven.</em> Since 2019.</h2>
         <p class="big">Jonah does the bread. Priya does the pastry and the coffee. Whoever is less covered in flour talks to you.</p>
         <p>We met working the early shift at a bakery in Boston and moved up the coast because we wanted to bake in a neighborhood, not for one. The oven arrived on a flatbed in March 2019 and we&rsquo;ve lit it every morning since, including the mornings we probably shouldn&rsquo;t have.</p>
-        <p>Hollowmere is the name of the pond Jonah grew up next to. The starter is older than the shop. The playlist is Priya&rsquo;s and not up for discussion.</p>
+        <p>Hollowmere is the pond Jonah grew up next to. The starter is older than the shop. The playlist is Priya&rsquo;s and not up for discussion.</p>
         <div class="sig">
           <div><strong>Jonah</strong>Bread, the 4am shift, the crossword</div>
           <div><strong>Priya</strong>Laminated pastry, the espresso machine, the patio garden</div>
@@ -345,36 +415,76 @@
     </div>
   </section>
 
-  <section id="preorder" class="preorder" aria-labelledby="preorder-h">
+  <section id="order" class="preorder" aria-labelledby="order-h">
     <div class="wrap">
-      <div class="reveal">
-        <h2 id="preorder-h">Whole loaves and cakes, to order</h2>
-        <p>We bake to order so nothing is wasted and everything is fresh on the day. Pick up any morning from 8.</p>
-        <p class="rule"><strong>48 hours&rsquo; notice, please.</strong> Order by Thursday morning for a Saturday pickup. We&rsquo;ll confirm by text.</p>
-        <p>Use the same order link and choose &ldquo;Pre-order&rdquo;, or ring us at <a href="tel:+12075550148" style="text-decoration:none;border-bottom:1px solid var(--line)">(207) 555-0148</a> and talk to a human.</p>
-        <p style="margin-top:26px"><a class="btn" href="#preorder" data-note="Replace with the café’s order-ahead link (Square, Toast, etc.)">Order ahead &mdash; pre-order</a></p>
-      </div>
-      <div class="reveal">
-        <figure class="photo" data-photo="loaves cooling on racks, scored tops, close and warm" data-label="Photo &middot; Loaves on the rack"></figure>
-        <div class="menu menu-grid">
-          <div>
-            <h3>Loaves</h3>
-            <ul>
-              <li><span class="name">Country sourdough, 900g <span class="tag">VE</span></span><span class="lead"></span><span class="price">11.00</span></li>
-              <li><span class="name">Rye &amp; seed, 800g <span class="tag">VE</span></span><span class="lead"></span><span class="price">12.00</span></li>
-              <li><span class="name">Olive &amp; rosemary <span class="tag">VE</span></span><span class="lead"></span><span class="price">12.50</span></li>
-              <li><span class="name">Brioche loaf <span class="tag">V</span></span><span class="lead"></span><span class="price">13.00</span></li>
-            </ul>
+      <h2 id="order-h" class="display reveal">Order ahead. <em>We&rsquo;ll have it ready.</em></h2>
+      <div class="grid">
+        <div class="reveal">
+          <p class="intro">Anything from the counter for pickup today, or whole loaves and cakes with two days&rsquo; notice. We bake to order so nothing is wasted and everything is fresh on the day. Pickup any morning from 8.</p>
+          <p class="rule"><strong>Loaves and cakes: 48 hours&rsquo; notice, please.</strong>Order by Thursday morning for a Saturday pickup. We&rsquo;ll confirm by email the same day.</p>
+          <div class="lists menu">
+            <div class="menu-col">
+              <h3>Loaves</h3>
+              <ul>
+                <li><span class="name">Country sourdough, 900g <span class="tag">VE</span></span><span class="price">11.00</span></li>
+                <li><span class="name">Rye &amp; seed, 800g <span class="tag">VE</span></span><span class="price">12.00</span></li>
+                <li><span class="name">Olive &amp; rosemary <span class="tag">VE</span></span><span class="price">12.50</span></li>
+                <li><span class="name">Brioche loaf <span class="tag">V</span></span><span class="price">13.00</span></li>
+              </ul>
+            </div>
+            <div class="menu-col yolk">
+              <h3>Cakes <span>Serves 8&ndash;10</span></h3>
+              <ul>
+                <li><span class="name">Almond &amp; brown butter <span class="tag">V</span> <span class="tag">GF</span></span><span class="price">42.00</span></li>
+                <li><span class="name">Lemon, olive oil &amp; thyme <span class="tag">V</span></span><span class="price">40.00</span></li>
+                <li><span class="name">Chocolate rye <span class="tag">V</span></span><span class="price">44.00</span></li>
+                <li><span class="name">Seasonal fruit galette <span class="tag">V</span></span><span class="price">36.00</span></li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <h3>Cakes <span>Serves 8&ndash;10</span></h3>
-            <ul>
-              <li><span class="name">Almond &amp; brown butter <span class="tag">V</span> <span class="tag">GF</span></span><span class="lead"></span><span class="price">42.00</span></li>
-              <li><span class="name">Lemon, olive oil &amp; thyme <span class="tag">V</span></span><span class="lead"></span><span class="price">40.00</span></li>
-              <li><span class="name">Chocolate rye <span class="tag">V</span></span><span class="lead"></span><span class="price">44.00</span></li>
-              <li><span class="name">Seasonal fruit galette <span class="tag">V</span></span><span class="lead"></span><span class="price">36.00</span></li>
-            </ul>
-          </div>
+          <figure class="photo" data-photo="loaves cooling on racks, scored tops, close and warm" data-label="Photo &middot; Loaves on the rack">
+            <img src="https://images.unsplash.com/photo-1732565729552-994c6af761e3?auto=format&fit=crop&w=1600&q=80" alt="Scored sourdough loaves cooling on wire racks" loading="lazy" onerror="this.remove()">
+          </figure>
+        </div>
+        <div class="form reveal" id="orderForm">
+          <h3>Tell us what you want.</h3>
+          <p class="sub">Counter orders are ready in fifteen minutes. Loaves and cakes need two days. No payment here &mdash; you pay when you collect.</p>
+          <form id="preorderForm" novalidate>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-name">Your name</label>
+                <input id="f-name" name="name" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="f-email">Email</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-what">What would you like?</label>
+              <textarea id="f-what" name="what" placeholder="Two flat whites, a cardamom bun and a country sourdough for Saturday&hellip;" required></textarea>
+            </div>
+            <div class="field">
+              <label for="f-day">Pickup day</label>
+              <select id="f-day" name="day" required>
+                <option value="">Choose a day</option>
+                <option>Today</option>
+                <option>Tomorrow</option>
+                <option>Monday</option>
+                <option>Tuesday</option>
+                <option>Wednesday</option>
+                <option>Thursday</option>
+                <option>Friday</option>
+                <option>Saturday</option>
+                <option>Sunday</option>
+              </select>
+            </div>
+            <button class="btn btn-ink" type="submit">Send the order
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <p class="fine">We reply from <a href="mailto:hello@hollowmere.example">hello@hollowmere.example</a>. If you don&rsquo;t hear from us within the hour during opening times, email us directly.</p>
+          </form>
+          <p class="done" role="status">Got it &mdash; thank you. We&rsquo;ll email you shortly to confirm your order and pickup time.</p>
         </div>
       </div>
     </div>
@@ -382,21 +492,24 @@
 
   <section class="quotes" aria-label="What people say">
     <div class="wrap">
-      <blockquote class="reveal">&ldquo;The croissant is the reason I moved to the East End. Half joking. Order ahead on Saturdays or accept your fate.&rdquo;<footer>&mdash; K. D., Google review</footer></blockquote>
-      <blockquote class="reveal">&ldquo;Bread with a real crust, coffee that tastes like coffee, and they remembered my dog&rsquo;s name before mine.&rdquo;<footer>&mdash; R. M., Google review</footer></blockquote>
+      <blockquote class="reveal">&ldquo;The croissant is the reason I moved to the East End. Half joking. Order ahead on Saturdays or accept your fate.&rdquo;<footer>K. D., Google review</footer></blockquote>
+      <blockquote class="reveal">&ldquo;Bread with a real crust, coffee that tastes like coffee, and they remembered my dog&rsquo;s name before mine.&rdquo;<footer>R. M., Google review</footer></blockquote>
     </div>
   </section>
 
   <section id="visit" class="visit" aria-labelledby="visit-h">
     <div class="wrap">
       <div class="col-intro">
-        <h2 id="visit-h">Open every day. Come early for the good stuff.</h2>
-        <p style="color:#cdc5b8;max-width:30em">Pastry is usually gone by one. Brunch plates run Saturday and Sunday until two, then it&rsquo;s coffee and whatever&rsquo;s left in the case.</p>
-        <a class="btn" href="#preorder" data-note="Replace with the café’s order-ahead link (Square, Toast, etc.)">Order ahead for pickup</a>
+        <h2 id="visit-h" class="display">Open every day. Come early for the good stuff.</h2>
+        <p>Pastry is usually gone by one. Brunch plates run Saturday and Sunday until two, then it&rsquo;s coffee and whatever&rsquo;s left in the case. You&rsquo;ll find us on Munjoy Hill, in the East End.</p>
+        <a class="btn" href="#order">Order ahead for pickup</a>
         <p class="patio">The patio is dog-friendly and unheated. Bring a coat in March; bring a hat in July.</p>
+        <figure class="photo" data-photo="crusty bread sliced on a board" data-label="Photo &middot; Rye &amp; seed">
+          <img src="https://images.unsplash.com/photo-1772864463642-42c789ab5dbd?auto=format&fit=crop&w=1600&q=80" alt="Thick slices of crusty rye and seed bread on a wooden board" loading="lazy" onerror="this.remove()">
+        </figure>
       </div>
       <div class="col-hours">
-        <h3>Hours</h3>
+        <h3 class="label">Hours</h3>
         <table id="hoursTable">
           <tbody>
             <tr data-day="1"><td>Monday</td><td>7&ndash;3</td></tr>
@@ -408,17 +521,18 @@
             <tr data-day="0"><td>Sunday</td><td>8&ndash;3</td></tr>
           </tbody>
         </table>
-        <p style="font-size:14px;color:#cdc5b8;margin-top:14px">Closed Thanksgiving, Christmas Day and New Year&rsquo;s Day. Brunch kitchen closes at 2.</p>
+        <p style="font-size:14px;margin-top:14px">Closed Thanksgiving, Christmas Day and New Year&rsquo;s Day. Brunch kitchen closes at 2.</p>
       </div>
       <div class="col-find">
-        <h3>Find us</h3>
-        <address>148 Congress Street<br>Portland, ME 04101<br>Corner of North St, Munjoy Hill</address>
+        <h3 class="label">Say hello</h3>
         <div class="contact">
-          <a href="tel:+12075550148"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span>(207) 555-0148</span></a>
-          <a href="https://instagram.com/hollowmerebakehouse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span>@hollowmerebakehouse</span></a>
-          <a href="mailto:hello@hollowmere.example"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 7l9 6 9-6"/></svg><span>hello@hollowmere.example</span></a>
+          <a href="mailto:hello@hollowmere.example"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="M3 7l9 6 9-6"/></svg><span>hello@hollowmere.example</span></a>
+          <a href="https://instagram.com/hollowmerebakehouse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6" fill="currentColor"/></svg><span>@hollowmerebakehouse</span></a>
+          <a href="#order"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16l-1.5 12h-13z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg><span>Order ahead for pickup</span></a>
         </div>
-        <figure class="photo" data-photo="the shopfront from across Congress St, patio tables, a dog" data-label="Photo &middot; The shopfront"></figure>
+        <figure class="photo" data-photo="coffee from above with pastry, flat lay" data-label="Photo &middot; Coffee &amp; a bun">
+          <img src="https://images.unsplash.com/photo-1506188044630-210826194885?auto=format&fit=crop&w=1200&q=80" alt="Two coffees from above, latte art in each, on a wooden table" loading="lazy" onerror="this.remove()">
+        </figure>
       </div>
     </div>
   </section>
@@ -427,9 +541,9 @@
 
 <footer class="site-footer">
   <div class="wrap">
-    <span>&copy; 2026 Hollowmere Coffee &amp; Bakehouse &middot; 148 Congress St, Portland, ME &middot; <a href="tel:+12075550148">(207) 555-0148</a></span>
+    <span>&copy; 2026 Hollowmere Coffee &amp; Bakehouse &middot; East End, Portland, Maine &middot; <a href="mailto:hello@hollowmere.example">hello@hollowmere.example</a></span>
     <span>Daily 7&ndash;3, weekends 8&ndash;3 &middot; <a href="https://instagram.com/hollowmerebakehouse">Instagram</a></span>
-    <span>Site by <a href="index.html">Onwards Digital</a></span>
+    <span class="credit">Photography via Unsplash &middot; Site by <a href="index.html">Onwards Digital</a></span>
   </div>
 </footer>
 
@@ -438,7 +552,6 @@
   // Today's hours in the hero and the hours table
   var d=new Date(), day=d.getDay(), h=d.getHours()+d.getMinutes()/60;
   var open=(day===0||day===6)?8:7, close=15;
-  var label=(open===8?'8':'7')+'–3';
   var t=document.getElementById('openText'), dot=document.getElementById('openDot');
   if(h>=open&&h<close){ t.textContent='Open now, until 3'; }
   else if(h<open){ t.textContent='Opens today at '+open+'am'; dot.classList.add('closed'); }
@@ -451,6 +564,15 @@
     var o=nav.classList.toggle('open'); btn.setAttribute('aria-expanded',o); btn.setAttribute('aria-label',o?'Close menu':'Open menu');
   });
   nav.addEventListener('click',function(e){ if(e.target.tagName==='A'){ nav.classList.remove('open'); btn.setAttribute('aria-expanded','false'); } });
+
+  // Pre-order form (front-end only)
+  var form=document.getElementById('preorderForm'), box=document.getElementById('orderForm');
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    box.classList.add('sent');
+    box.querySelector('.done').focus && box.querySelector('.done').setAttribute('tabindex','-1');
+  });
 
   // One gentle reveal
   var els=document.querySelectorAll('.reveal');

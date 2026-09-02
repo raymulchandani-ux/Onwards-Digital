@@ -4,230 +4,272 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ossobello — Italian Trattoria on Federal Hill, Providence</title>
-<meta name="description" content="Ossobello is the Bellandi family's trattoria on Federal Hill, Providence. Handmade pasta, a wood oven and a short Italian wine list. Dinner Tuesday to Sunday, lunch Friday and Saturday. Reserve a table or call (401) 555-0194.">
+<meta name="description" content="Ossobello is the Bellandi family's trattoria on Federal Hill, Providence. Handmade pasta, a wood oven and a short Italian wine list. Dinner Tuesday to Sunday, lunch Friday and Saturday. Reserve a table online.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Karla:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Karla:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#f3ead9;
-    --paper-2:#eadfc8;
-    --ink:#1c2a21;
-    --green:#1f3d2b;
-    --green-2:#173022;
-    --ox:#6d1f24;
-    --ox-2:#561419;
-    --rule:rgba(28,42,33,.22);
-    --muted:#5a635c;
-    --display:"Bodoni Moda","Bodoni 72","Didot","Playfair Display",Georgia,serif;
+    --night:#14120f;
+    --night-2:#1b1814;
+    --night-3:#221e19;
+    --cream:#efe6d6;
+    --cream-2:rgba(239,230,214,.72);
+    --cream-3:rgba(239,230,214,.5);
+    --amber:#d9a45b;
+    --amber-2:#e7b86f;
+    --rule:rgba(239,230,214,.16);
+    --rule-2:rgba(239,230,214,.32);
+    --display:"Cormorant Garamond","Cormorant","Garamond","Times New Roman",serif;
     --body:"Karla","Helvetica Neue",Helvetica,Arial,sans-serif;
-    --max:1180px;
+    --max:1240px;
   }
   *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  h1,h2,h3{font-family:var(--display);font-weight:500;margin:0;line-height:1.05;letter-spacing:-.005em}
+  html{scroll-behavior:smooth;background:var(--night)}
+  body{margin:0;background:var(--night);color:var(--cream);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:.005em}
   a{color:inherit}
-  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--ox);outline-offset:3px}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid var(--amber);outline-offset:4px}
   p{margin:0}
-  .wrap{max-width:var(--max);margin:0 auto;padding:0 40px}
-  .eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--ox)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;background:var(--ox);color:var(--paper);text-decoration:none;font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--ox);transition:background .15s,color .15s}
-  .btn:hover{background:var(--ox-2);border-color:var(--ox-2)}
-  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
-  .btn.ghost:hover{background:var(--ink);color:var(--paper)}
-  .tel{display:inline-flex;align-items:center;gap:8px;min-height:44px;text-decoration:none;font-weight:600;letter-spacing:.02em;border-bottom:1px solid transparent}
-  .tel:hover{border-bottom-color:currentColor}
-  svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 48px}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--amber)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:52px;padding:0 30px;background:var(--amber);color:var(--night);text-decoration:none;font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--amber);transition:background .2s,border-color .2s,color .2s}
+  .btn:hover{background:var(--amber-2);border-color:var(--amber-2)}
+  .btn.ghost{background:transparent;color:var(--cream);border-color:var(--rule-2)}
+  .btn.ghost:hover{border-color:var(--cream);background:transparent}
+  svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
 
   /* Onwards bar */
-  .onwards{height:36px;background:#1a1917;color:#e8e4dc;font-family:var(--body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center}
+  .onwards{height:36px;background:#1a1917;color:#e8e4dc;font-family:var(--body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;border-bottom:1px solid rgba(232,228,220,.12)}
   .onwards .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
   .onwards a{color:#e8e4dc;text-decoration:none;border-bottom:1px solid rgba(232,228,220,.35)}
   .onwards a:hover{border-bottom-color:#e8e4dc}
   .onwards .short{display:none}
 
   /* Header */
-  .site-head{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--rule)}
-  .site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:72px;gap:24px}
-  .brand{font-family:var(--display);font-size:30px;font-weight:500;text-decoration:none;letter-spacing:.01em;line-height:1}
-  .nav{display:flex;gap:30px;align-items:center}
-  .nav a{text-decoration:none;font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;padding:12px 0;border-bottom:1px solid transparent}
-  .nav a:hover{border-bottom-color:var(--ox)}
+  .site-head{position:sticky;top:0;z-index:20;background:rgba(20,18,15,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+  .site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:76px;gap:24px}
+  .brand{font-family:var(--display);font-size:32px;font-weight:500;text-decoration:none;letter-spacing:.08em;line-height:1;text-transform:uppercase}
+  .nav{display:flex;gap:34px;align-items:center}
+  .nav a{text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;padding:12px 0;color:var(--cream-2);border-bottom:1px solid transparent;transition:color .2s}
+  .nav a:hover{color:var(--amber)}
   .head-cta{display:flex;align-items:center;gap:22px}
-  .head-cta .btn{min-height:44px;padding:0 20px}
-  .menu-toggle{display:none;background:none;border:1px solid var(--ink);width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+  .head-cta .btn{min-height:44px;padding:0 22px;background:transparent;color:var(--amber);border-color:var(--amber)}
+  .head-cta .btn:hover{background:var(--amber);color:var(--night)}
+  .menu-toggle{display:none;background:none;border:1px solid var(--rule-2);width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:var(--cream)}
   .menu-toggle svg.i{width:20px;height:20px}
 
-  /* Hero */
-  .hero{border-bottom:1px solid var(--rule)}
-  .hero .wrap{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;padding-top:64px;padding-bottom:64px;align-items:stretch}
-  .hero h1{font-size:clamp(64px,8vw,116px);font-weight:400;line-height:.92;margin:14px 0 22px}
-  .hero .lede{font-family:var(--display);font-size:26px;line-height:1.3;max-width:24ch;font-style:italic;font-weight:400}
-  .today{margin-top:36px;padding:18px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr;gap:6px 20px;align-items:baseline;max-width:520px}
-  .today .k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--muted)}
-  .today .v{font-size:18px}
-  .today .v strong{font-weight:600;color:var(--green)}
-  .hero .actions{display:flex;align-items:center;gap:28px;flex-wrap:wrap;margin-top:30px}
-  .hero .addr{margin-top:28px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;color:var(--muted);font-size:16px}
-  .hero .addr a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule);display:inline-flex;align-items:center;gap:6px;min-height:44px}
-  .hero .addr a:hover{border-bottom-color:var(--ink)}
-
   /* Photo slots */
-  .photo{margin:0;position:relative;background:var(--green);box-shadow:inset 0 0 0 1px rgba(243,234,217,.28);min-height:280px;display:flex;align-items:flex-end;padding:18px 20px}
-  .photo::before{content:"";position:absolute;inset:12px;border:1px solid rgba(243,234,217,.18);pointer-events:none}
-  .photo figcaption{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(243,234,217,.78);font-weight:600}
-  .photo.tan{background:var(--paper-2);box-shadow:inset 0 0 0 1px rgba(28,42,33,.25)}
-  .photo.tan::before{border-color:rgba(28,42,33,.18)}
-  .photo.tan figcaption{color:var(--muted)}
-  .photo.ox{background:var(--ox)}
-  .hero .photo{min-height:560px}
+  .photo{margin:0;position:relative;background:var(--night-3);min-height:280px;display:flex;align-items:flex-end;padding:20px 24px;overflow:hidden}
+  .photo::before{content:"";position:absolute;inset:14px;border:1px solid rgba(239,230,214,.12);pointer-events:none}
+  .photo figcaption{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-3);font-weight:500;position:relative}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.02)}
+  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
+  .photo:has(>img)::before{display:none}
 
-  /* Section scaffolding */
-  section{padding:88px 0}
-  .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:44px;flex-wrap:wrap}
-  .sec-head h2{font-size:clamp(40px,4.4vw,58px);font-weight:400}
-  .sec-head .eyebrow{display:block;margin-bottom:10px}
-  .link{text-decoration:none;font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--ink);padding-bottom:3px;display:inline-flex;align-items:center;gap:8px}
-  .link:hover{color:var(--ox);border-color:var(--ox)}
+  /* Hero: full-bleed photo, text laid over the lower half */
+  .hero{position:relative;min-height:calc(100vh - 112px);min-height:calc(100svh - 112px);display:flex;align-items:flex-end;isolation:isolate}
+  .hero .photo{position:absolute;inset:0;min-height:0;padding:0;z-index:-1}
+  .hero .photo::before{display:none}
+  .hero .photo>img{object-position:center 60%}
+  .hero .veil{position:absolute;inset:0;z-index:-1;background:
+    linear-gradient(to top, rgba(20,18,15,1) 0%, rgba(20,18,15,.86) 28%, rgba(20,18,15,.35) 62%, rgba(20,18,15,.25) 100%)}
+  .hero .wrap{width:100%;padding-top:140px;padding-bottom:88px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:64px;align-items:end}
+  .hero h1{font-size:clamp(72px,10.5vw,164px);font-weight:400;line-height:.88;letter-spacing:.02em;margin:22px 0 28px;text-transform:uppercase}
+  .hero .lede{font-family:var(--display);font-size:clamp(24px,2.3vw,32px);line-height:1.28;max-width:26ch;font-style:italic;font-weight:400;color:var(--cream)}
+  .hero .actions{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:40px}
+  .hero .side{border-left:1px solid var(--rule-2);padding-left:32px}
+  .hero .side .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:12px}
+  .hero .side .v{font-family:var(--display);font-size:26px;line-height:1.25}
+  .hero .side .v strong{font-weight:500;color:#fff}
+  .hero .side .sub{margin-top:14px;color:var(--cream-2);font-size:15px;max-width:30ch}
 
-  /* Menu */
-  .menu-sec{background:var(--paper)}
-  .menu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0 56px}
-  .course h3{font-size:30px;font-style:italic;font-weight:400;padding-bottom:12px;border-bottom:1px solid var(--ink);margin-bottom:20px}
-  .dish{display:grid;grid-template-columns:1fr auto;gap:0 12px;align-items:baseline;padding:14px 0;border-bottom:1px dotted var(--rule)}
-  .dish:last-child{border-bottom:0}
-  .dish .n{font-family:var(--display);font-size:22px;font-weight:500;line-height:1.15}
-  .dish .p{font-family:var(--display);font-size:22px;font-weight:500;text-align:right;white-space:nowrap}
-  .dish .d{grid-column:1/-1;color:var(--muted);font-size:16px;margin-top:3px;max-width:34ch}
-  .menu-note a{white-space:nowrap}
-  .menu-note{margin-top:44px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--rule);color:var(--muted);font-size:15px}
-  .menu-note .ital{font-family:var(--display);font-style:italic;font-size:20px;color:var(--ink)}
+  /* Section scaffolding — generous */
+  section{padding:140px 0}
+  .sec-head{margin-bottom:64px}
+  .sec-head .eyebrow{display:block;margin-bottom:18px}
+  .sec-head h2{font-size:clamp(46px,5.4vw,80px);font-weight:400;max-width:16ch}
+  .sec-head p{margin-top:22px;max-width:52ch;color:var(--cream-2);font-size:18px}
+  .link{text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--amber);display:inline-flex;align-items:center;gap:10px;border-bottom:1px solid transparent;padding-bottom:4px}
+  .link:hover{border-bottom-color:var(--amber)}
+
+  /* Full-bleed breathing photo between sections */
+  .bleed{position:relative;height:clamp(420px,72vh,760px)}
+  .bleed .photo{position:absolute;inset:0;min-height:0}
+  .bleed .photo::before{display:none}
+  .bleed .cap{position:absolute;left:0;right:0;bottom:0;padding-bottom:36px;z-index:2;pointer-events:none}
+  .bleed .cap>span{display:block;max-width:var(--max);margin:0 auto;padding:0 48px}
+  .bleed .photo{align-items:flex-start}
+  .bleed .cap span{font-family:var(--display);font-style:italic;font-size:22px;color:var(--cream-2);text-shadow:0 1px 20px rgba(0,0,0,.6)}
+  .bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(20,18,15,.75), rgba(20,18,15,0) 40%, rgba(20,18,15,0) 75%, rgba(20,18,15,.55));pointer-events:none}
+
+  /* Menu: single wide column, hairline leaders */
+  .menu-sec .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:96px;align-items:start}
+  .menu-sec .sec-head{position:sticky;top:110px;margin-bottom:0}
+  .menu-sec .sec-head .photo{margin-top:48px;min-height:420px}
+  .course{margin-bottom:64px}
+  .course:last-of-type{margin-bottom:0}
+  .course h3{font-size:16px;font-family:var(--body);letter-spacing:.3em;text-transform:uppercase;font-weight:500;color:var(--amber);margin-bottom:22px}
+  .dish{display:grid;grid-template-columns:auto 1fr auto;gap:0 14px;align-items:baseline;padding:16px 0}
+  .dish .n{font-family:var(--display);font-size:28px;font-weight:500;line-height:1.1;white-space:nowrap}
+  .dish .lead{border-bottom:1px solid var(--rule-2);transform:translateY(-8px);min-width:24px}
+  .dish .p{font-family:var(--display);font-size:26px;font-weight:400;color:var(--cream-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .dish .d{grid-column:1/-1;color:var(--cream-2);font-size:16px;margin-top:4px;max-width:46ch}
+  .menu-note{margin-top:56px;padding-top:28px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:baseline;color:var(--cream-3);font-size:15px}
+  .menu-note .ital{font-family:var(--display);font-style:italic;font-size:22px;color:var(--cream)}
+  .menu-note a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .menu-note a:hover{color:var(--amber);border-color:var(--amber)}
 
   /* Hours */
-  .hours-sec{background:var(--green);color:var(--paper)}
-  .hours-sec .eyebrow{color:#d9c3a0}
-  .hours-sec .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:64px;align-items:start}
-  .hours-sec h2{font-size:clamp(40px,4.4vw,58px);font-weight:400;margin:10px 0 22px}
-  .hours-sec p{max-width:38ch;color:rgba(243,234,217,.85)}
-  .hours-sec .btn{background:var(--paper);color:var(--green);border-color:var(--paper);margin-top:30px}
-  .hours-sec .btn:hover{background:#fff;border-color:#fff}
+  .hours-sec{background:var(--night-2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .hours-sec .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:96px;align-items:start}
+  .hours-sec .sec-head{margin-bottom:0}
+  .hours-sec .btn{margin-top:36px}
   table.hours{width:100%;border-collapse:collapse;font-size:17px}
-  table.hours th{text-align:left;font-weight:600;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#d9c3a0;padding:0 0 14px;border-bottom:1px solid rgba(243,234,217,.35)}
+  table.hours th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);padding:0 0 18px;border-bottom:1px solid var(--rule-2)}
   table.hours th:not(:first-child){text-align:right}
-  table.hours td{padding:15px 0;border-bottom:1px solid rgba(243,234,217,.18);vertical-align:baseline}
-  table.hours td:first-child{font-family:var(--display);font-size:22px;width:38%}
-  table.hours td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;padding-left:20px;white-space:nowrap}
-  table.hours td.off{color:rgba(243,234,217,.5)}
+  table.hours td{padding:20px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
+  table.hours td:first-child{font-family:var(--display);font-size:26px;width:40%}
+  table.hours td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;padding-left:20px;white-space:nowrap;color:var(--cream-2)}
+  table.hours td.off{color:var(--cream-3)}
   table.hours tr.now td{color:#fff}
-  table.hours tr.now td:first-child::after{content:"Today";font-family:var(--body);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d9c3a0;margin-left:12px;vertical-align:middle}
-  .hours-foot{margin-top:22px;font-size:15px;color:rgba(243,234,217,.7)}
+  table.hours tr.now td:first-child::after{content:"Tonight";font-family:var(--body);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);margin-left:14px;vertical-align:middle}
+  .hours-foot{margin-top:26px;font-size:15px;color:var(--cream-3)}
 
-  /* Reviews */
-  .reviews .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:56px}
-  .reviews h2{grid-column:1/-1;font-size:clamp(40px,4.4vw,58px);font-weight:400;margin-bottom:8px}
-  blockquote{margin:0;padding-top:24px;border-top:1px solid var(--ink)}
-  blockquote p{font-family:var(--display);font-size:25px;line-height:1.3;font-weight:400}
-  blockquote p::before{content:"\201C";color:var(--ox)}
-  blockquote p::after{content:"\201D";color:var(--ox)}
-  blockquote cite{display:block;margin-top:18px;font-style:normal;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  /* Reviews — three quotes stacked, staggered */
+  .reviews .wrap{display:grid;grid-template-columns:repeat(12,1fr);gap:48px 32px}
+  .reviews .sec-head{grid-column:1/-1;margin-bottom:24px}
+  blockquote{margin:0;padding-top:28px;border-top:1px solid var(--rule-2)}
+  blockquote:nth-of-type(1){grid-column:1/7}
+  blockquote:nth-of-type(2){grid-column:7/13;margin-top:96px}
+  blockquote:nth-of-type(3){grid-column:3/9}
+  blockquote p{font-family:var(--display);font-size:clamp(26px,2.4vw,34px);line-height:1.28;font-weight:400}
+  blockquote p::before{content:"\201C";color:var(--amber)}
+  blockquote p::after{content:"\201D";color:var(--amber)}
+  blockquote cite{display:block;margin-top:20px;font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-3);font-weight:500}
 
-  /* Story */
-  .story{border-top:1px solid var(--rule)}
-  .story .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:80px;align-items:center}
-  .story .photo{min-height:620px}
-  .story h2{font-size:clamp(40px,4.4vw,58px);font-weight:400;margin:10px 0 28px;line-height:1.02}
-  .story .text p{margin-bottom:20px;max-width:52ch}
-  .story .text p:first-of-type{font-family:var(--display);font-size:24px;line-height:1.3;font-style:italic}
-  .story .sig{margin-top:8px;font-family:var(--display);font-size:22px;font-style:italic}
-  .story .sig small{display:block;font-family:var(--body);font-style:normal;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+  /* Story — two photos offset around text */
+  .story .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:96px;align-items:center}
+  .story .pics{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:minmax(0,1fr);gap:20px}
+  .story .pics .photo:first-child{grid-column:1/3;min-height:460px}
+  .story .pics .photo:last-child{grid-column:2/3;min-height:300px;margin-top:-100px;margin-right:-56px;box-shadow:0 0 0 14px var(--night)}
+  .story .text p{margin-bottom:22px;max-width:50ch;color:var(--cream-2)}
+  .story .text p:first-of-type{font-family:var(--display);font-size:27px;line-height:1.3;font-style:italic;color:var(--cream)}
+  .story .sig{margin-top:12px;font-family:var(--display);font-size:24px;font-style:italic;color:var(--cream)}
+  .story .sig small{display:block;font-family:var(--body);font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-top:6px}
 
-  /* Private dining / newsletter */
-  .quiet{padding:0 0 88px}
-  .quiet .wrap>div{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:36px 0;display:grid;grid-template-columns:1fr auto;gap:24px 48px;align-items:center}
-  .quiet h3{font-size:28px;font-weight:400;font-style:italic;margin-bottom:6px}
-  .quiet p{color:var(--muted);max-width:60ch}
-  .quiet form{display:flex;gap:0;align-items:stretch}
-  .quiet label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
-  .quiet input{font:inherit;font-size:16px;padding:0 16px;min-height:48px;min-width:260px;border:1px solid var(--ink);background:transparent;color:var(--ink);border-right:0}
-  .quiet input::placeholder{color:var(--muted)}
-  .quiet button{font:inherit;font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;min-height:48px;padding:0 20px;background:var(--ink);color:var(--paper);border:1px solid var(--ink);cursor:pointer}
-  .quiet button:hover{background:var(--green-2)}
+  /* Reserve */
+  .reserve{background:var(--night-2);border-top:1px solid var(--rule)}
+  .reserve .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:96px;align-items:start}
+  .reserve .sec-head{margin-bottom:0}
+  .reserve .aside{margin-top:36px;padding-top:24px;border-top:1px solid var(--rule);color:var(--cream-3);font-size:15px;max-width:40ch}
+  .reserve .aside a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .reserve .aside a:hover{color:var(--amber);border-color:var(--amber)}
+  form.res{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px}
+  form.res .field{display:flex;flex-direction:column;gap:10px}
+  form.res .field.full{grid-column:1/-1}
+  form.res label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);font-weight:500}
+  form.res input,form.res select,form.res textarea{font:inherit;font-size:18px;font-family:var(--display);color:var(--cream);background:transparent;border:0;border-bottom:1px solid var(--rule-2);padding:10px 0 12px;min-height:48px;border-radius:0;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+  form.res input::placeholder,form.res textarea::placeholder{color:var(--cream-3)}
+  form.res input:hover,form.res select:hover,form.res textarea:hover{border-bottom-color:var(--cream-2)}
+  form.res input:focus,form.res select:focus,form.res textarea:focus{border-bottom-color:var(--amber);outline:none}
+  form.res select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9a45b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;background-size:18px;padding-right:28px;cursor:pointer}
+  form.res select option{background:var(--night-2);color:var(--cream)}
+  form.res input[type=date],form.res input[type=time]{color-scheme:dark}
+  form.res input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.6) saturate(2) hue-rotate(-10deg);cursor:pointer}
+  form.res textarea{resize:vertical;min-height:72px;line-height:1.4}
+  form.res .submit{grid-column:1/-1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
+  form.res button{font:inherit;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;min-height:52px;padding:0 34px;background:var(--amber);color:var(--night);border:1px solid var(--amber);cursor:pointer;transition:background .2s}
+  form.res button:hover{background:var(--amber-2)}
+  form.res .fine{font-size:14px;color:var(--cream-3)}
+  form.res .done{display:none;grid-column:1/-1;font-family:var(--display);font-size:26px;font-style:italic;padding-top:8px}
+  form.res.sent .done{display:block}
+  form.res.sent .field,form.res.sent .submit{display:none}
 
   /* Footer */
-  footer{background:var(--ink);color:#d8d2c4;padding:64px 0 32px}
-  footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(243,234,217,.18)}
-  footer .brand{color:var(--paper);font-size:40px;border-bottom:0}
-  footer .tag{margin-top:12px;color:rgba(216,210,196,.75);max-width:30ch}
-  footer h4{margin:0 0 14px;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#d9c3a0;font-weight:600}
-  footer address{font-style:normal;line-height:1.6}
-  footer a{color:#e9e3d5;text-decoration:none;border-bottom:1px solid rgba(233,227,213,.3)}
-  footer a:hover{border-bottom-color:#e9e3d5}
-  footer ul{list-style:none;margin:0;padding:0;line-height:1.9}
-  footer .foot-hours{font-size:16px;line-height:1.7}
-  footer .bottom{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-top:24px;font-size:13px;letter-spacing:.06em;color:rgba(216,210,196,.6)}
-  footer .bottom a{border-bottom-color:rgba(216,210,196,.3)}
+  footer{padding:96px 0 40px;border-top:1px solid var(--rule)}
+  footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;padding-bottom:56px;border-bottom:1px solid var(--rule)}
+  footer .brand{font-size:40px;border-bottom:0}
+  footer .tag{margin-top:16px;color:var(--cream-2);max-width:30ch}
+  footer h4{margin:0 0 16px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500}
+  footer a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s}
+  footer a:hover{color:var(--amber)}
+  footer ul{list-style:none;margin:0;padding:0;line-height:2}
+  footer .foot-hours{font-size:16px;line-height:1.8;color:var(--cream-2)}
+  footer .bottom{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-top:28px;font-size:12px;letter-spacing:.08em;color:var(--cream-3)}
+  footer .bottom a{color:var(--cream-3)}
+  footer .bottom a:hover{color:var(--amber)}
 
   /* Reveal */
-  .reveal{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .7s ease}
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .9s ease,transform .9s ease}
   .reveal.in{opacity:1;transform:none}
   @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 
   /* Responsive */
-  @media (max-width:1000px){
-    .menu-grid{grid-template-columns:1fr 1fr}
-    .reviews .wrap{grid-template-columns:1fr 1fr}
-    .hero .wrap{grid-template-columns:1fr;gap:40px}
-    .hero .photo{min-height:420px}
-    .hours-sec .wrap,.story .wrap{grid-template-columns:1fr;gap:44px}
-    .story .photo{min-height:460px}
+  @media (max-width:1040px){
+    .hero .wrap{grid-template-columns:1fr;gap:44px}
+    .hero .side{border-left:0;border-top:1px solid var(--rule-2);padding:28px 0 0}
+    .menu-sec .wrap,.hours-sec .wrap,.story .wrap,.reserve .wrap{grid-template-columns:1fr;gap:64px}
+    .menu-sec .sec-head{position:static}
+    .menu-sec .sec-head .photo{display:none}
+    blockquote:nth-of-type(1){grid-column:1/8}
+    blockquote:nth-of-type(2){grid-column:6/13;margin-top:48px}
+    blockquote:nth-of-type(3){grid-column:2/10}
+    .story .pics .photo:last-child{margin-right:0}
     footer .cols{grid-template-columns:1fr 1fr}
   }
   @media (max-width:720px){
-    .wrap{padding:0 20px}
+    .wrap{padding:0 22px}
     .onwards{font-size:10px;letter-spacing:.1em;white-space:nowrap}
     .onwards .long{display:none}
     .onwards .short{display:inline}
-    .site-head .wrap{height:64px}
-    .brand{font-size:26px}
-    .nav{display:none;position:absolute;left:0;right:0;top:64px;background:var(--paper);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 16px}
+    .site-head .wrap{height:66px}
+    .brand{font-size:24px}
+    .nav{display:none;position:absolute;left:0;right:0;top:66px;background:var(--night);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0;padding:8px 22px 16px}
     .nav.open{display:flex}
-    .nav a{padding:14px 0;border-bottom:1px solid var(--rule);font-size:15px}
+    .nav a{padding:15px 0;border-bottom:1px solid var(--rule);font-size:13px;color:var(--cream)}
     .nav a:last-child{border-bottom:0}
     .menu-toggle{display:inline-flex}
     .head-cta .btn{display:none}
-    .hero .wrap{padding-top:40px;padding-bottom:48px}
-    .hero h1{font-size:clamp(58px,17vw,72px);margin:10px 0 18px}
-    .hero .lede{font-size:22px}
-    .today{grid-template-columns:1fr;gap:2px;margin-top:28px}
-    .today .v{font-size:17px}
-    .hero .actions{gap:14px}
+    .hero{min-height:calc(100vh - 102px);min-height:calc(100svh - 102px)}
+    .hero .wrap{padding-top:120px;padding-bottom:56px;gap:32px}
+    .hero h1{font-size:clamp(52px,14.5vw,72px);letter-spacing:0;margin:14px 0 20px}
+    .hero .lede{font-size:23px}
+    .hero .actions{gap:12px;margin-top:30px}
     .hero .actions .btn{width:100%}
-    .hero .photo{min-height:340px}
-    section{padding:64px 0}
-    .sec-head{margin-bottom:28px}
-    .menu-grid{grid-template-columns:1fr;gap:36px 0}
-    .course h3{font-size:28px}
-    .dish .n,.dish .p{font-size:20px}
-    .dish .d{max-width:none}
-    .reviews .wrap{grid-template-columns:1fr;gap:36px}
-    blockquote p{font-size:22px}
-    table.hours td:first-child{font-size:19px;width:auto}
+    .hero .side .v{font-size:22px}
+    section{padding:88px 0}
+    .sec-head{margin-bottom:40px}
+    .sec-head h2{font-size:clamp(40px,11vw,52px)}
+    .bleed{height:60vh;min-height:360px}
+    .bleed .cap{padding-bottom:24px}
+    .bleed .cap>span{padding:0 22px}
+    .bleed .cap span{font-size:18px}
+    .course{margin-bottom:48px}
+    .dish{grid-template-columns:1fr auto;gap:0 12px}
+    .dish .n{white-space:normal;font-size:24px}
+    .dish .lead{display:none}
+    .dish .p{font-size:22px}
+    .dish .d{max-width:none;font-size:15px}
+    .menu-note{margin-top:40px}
+    table.hours td:first-child{font-size:21px;width:auto}
+    table.hours td:first-child::after{display:block;margin:2px 0 0}
     table.hours{font-size:15px}
-    table.hours th{font-size:11px}
-    .story .photo{min-height:360px}
-    .story .text p:first-of-type{font-size:21px}
-    .quiet .wrap>div{grid-template-columns:1fr}
-    .quiet form{flex-direction:column}
-    .quiet input{min-width:0;border-right:1px solid var(--ink);border-bottom:0}
-    .quiet button{width:100%}
-    footer .cols{grid-template-columns:1fr;gap:32px}
-    footer .brand{font-size:34px}
+    table.hours th{font-size:10px}
+    .reviews .wrap{grid-template-columns:1fr;gap:40px}
+    blockquote:nth-of-type(1),blockquote:nth-of-type(2),blockquote:nth-of-type(3){grid-column:auto;margin-top:0}
+    blockquote p{font-size:24px}
+    .story .pics{gap:14px}
+    .story .pics .photo:first-child{min-height:320px}
+    .story .pics .photo:last-child{min-height:220px;margin-top:-60px;margin-right:-22px;box-shadow:0 0 0 10px var(--night)}
+    .story .text p:first-of-type{font-size:23px}
+    form.res{grid-template-columns:1fr;gap:22px}
+    form.res .submit{flex-direction:column;align-items:stretch}
+    form.res button{width:100%}
+    footer{padding-top:64px}
+    footer .cols{grid-template-columns:1fr;gap:36px}
+    footer .brand{font-size:32px}
   }
-
-  /* Drop a real photo in: <figure class="photo"><img src=…></figure> */
-  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
 </style>
 </head>
 <body>
@@ -247,10 +289,10 @@
       <a href="#hours">Hours</a>
       <a href="#reviews">Reviews</a>
       <a href="#story">The Family</a>
-      <a href="#visit">Visit</a>
+      <a href="#reserve">Reserve</a>
     </nav>
     <div class="head-cta">
-      <a class="btn" href="#visit">Reserve a table</a>
+      <a class="btn" href="#reserve">Reserve a table</a>
       <button class="menu-toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="Open menu">
         <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -260,85 +302,91 @@
 
 <main id="top">
 
-  <section class="hero" id="reserve" aria-labelledby="hero-title">
+  <section class="hero" aria-labelledby="hero-title">
+    <figure class="photo" data-photo="the dining room after dark, candles on every table, wide">
+      <img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=2000&q=80"
+           alt="The dining room after dark: low light, a painting on the far wall, candles on the tables" loading="eager"
+           onerror="this.remove()">
+      <figcaption>Photo &middot; Dining room</figcaption>
+    </figure>
+    <div class="veil" aria-hidden="true"></div>
     <div class="wrap">
       <div>
         <span class="eyebrow">Trattoria &middot; Federal Hill, Providence</span>
         <h1 id="hero-title">Ossobello</h1>
-        <p class="lede">Handmade pasta, a wood oven and a short list of Italian wine. The Bellandi family, since 1994.</p>
-
-        <div class="today" id="today" aria-live="polite">
-          <span class="k">Today</span>
-          <span class="v" id="today-text"><strong>Dinner 5–10 pm</strong> &middot; walk-ins welcome at the bar</span>
-        </div>
-
+        <p class="lede">We roll the pasta at seven, light the oven at three and the candles at five. The Bellandi family, since 1994.</p>
         <div class="actions">
-          <a class="btn" href="#visit">Reserve a table</a>
-          <a class="tel" href="tel:+14015550194">
-            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-            (401) 555-0194
-          </a>
+          <a class="btn" href="#reserve">Reserve a table</a>
+          <a class="btn ghost" href="#menu">Tonight's menu</a>
         </div>
-
-        <p class="addr">
-          <a href="https://maps.google.com/?q=218+Atwells+Avenue+Providence+RI+02903" target="_blank" rel="noopener">
-            <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2.2"/></svg>
-            218 Atwells Avenue, Providence, RI 02903
-          </a>
-          <span>Two doors up from the arch. Street parking on Atwells and Dean.</span>
-        </p>
       </div>
-
-      <figure class="photo" data-photo="the dining room at dusk, candles lit, wide">
-        <figcaption>Photo &middot; Dining room</figcaption>
-      </figure>
+      <div class="side" id="today" aria-live="polite">
+        <span class="k">Tonight</span>
+        <p class="v" id="today-text"><strong>Dinner 5 – 10 pm</strong><br>walk-ins welcome at the bar</p>
+        <p class="sub">Two doors up from the arch on the Hill. Reservations are online now; the bar stays first come, first served.</p>
+      </div>
     </div>
   </section>
 
   <section class="menu-sec" id="menu" aria-labelledby="menu-title">
     <div class="wrap">
       <div class="sec-head reveal">
-        <div>
-          <span class="eyebrow">From tonight's menu</span>
-          <h2 id="menu-title">What we're cooking</h2>
-        </div>
-        <a class="link" href="#menu">See the full menu <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <span class="eyebrow">Tonight's menu</span>
+        <h2 id="menu-title">What we're cooking this week</h2>
+        <p>Nine things, done properly. The board by the bar has whatever the fish man and the market talked us into this morning.</p>
+        <figure class="photo" data-photo="tagliatelle al ragù on a dark plate, close">
+          <img src="https://images.unsplash.com/photo-1727005217349-66276af3aa7d?auto=format&fit=crop&w=1200&q=80"
+               alt="A plate of ribbon pasta under ragù and shaved Parmigiano, shot close on dark wood" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Tagliatelle al ragù</figcaption>
+        </figure>
       </div>
 
-      <div class="menu-grid reveal">
+      <div class="reveal">
         <div class="course">
           <h3>Antipasti</h3>
-          <div class="dish"><span class="n">Carciofi alla giudia</span><span class="p">14</span><span class="d">Twice-fried artichokes, lemon, sea salt.</span></div>
-          <div class="dish"><span class="n">Burrata &amp; peaches</span><span class="p">17</span><span class="d">Rhode Island peaches while they last, basil, aged balsamic.</span></div>
-          <div class="dish"><span class="n">Polpette della nonna</span><span class="p">13</span><span class="d">Veal and pork meatballs in Sunday sauce, grilled bread.</span></div>
+          <div class="dish"><span class="n">Carciofi alla giudia</span><span class="lead" aria-hidden="true"></span><span class="p">14</span><span class="d">Twice-fried artichokes, lemon, sea salt. Eat the leaves.</span></div>
+          <div class="dish"><span class="n">Burrata &amp; peaches</span><span class="lead" aria-hidden="true"></span><span class="p">17</span><span class="d">Rhode Island peaches while they last, basil, aged balsamic.</span></div>
+          <div class="dish"><span class="n">Polpette della nonna</span><span class="lead" aria-hidden="true"></span><span class="p">13</span><span class="d">Veal and pork meatballs in Sunday sauce, grilled bread. Our mother's, made on Sundays by our mother.</span></div>
         </div>
         <div class="course">
           <h3>Primi</h3>
-          <div class="dish"><span class="n">Tagliatelle al ragù</span><span class="p">26</span><span class="d">Egg pasta rolled this morning, three-meat Bolognese, Parmigiano.</span></div>
-          <div class="dish"><span class="n">Tortelli di zucca</span><span class="p">24</span><span class="d">Squash and amaretti, brown butter, sage.</span></div>
-          <div class="dish"><span class="n">Spaghetti alle vongole</span><span class="p">28</span><span class="d">Point Judith littlenecks, garlic, white wine, chili.</span></div>
+          <div class="dish"><span class="n">Tagliatelle al ragù</span><span class="lead" aria-hidden="true"></span><span class="p">26</span><span class="d">Egg pasta rolled this morning, three-meat Bolognese, Parmigiano.</span></div>
+          <div class="dish"><span class="n">Tortelli di zucca</span><span class="lead" aria-hidden="true"></span><span class="p">24</span><span class="d">Squash and amaretti, brown butter, sage. Our father's Sunday lunch from Mantua.</span></div>
+          <div class="dish"><span class="n">Spaghetti alle vongole</span><span class="lead" aria-hidden="true"></span><span class="p">28</span><span class="d">Point Judith littlenecks, garlic, white wine, a little chili.</span></div>
         </div>
         <div class="course">
           <h3>Secondi</h3>
-          <div class="dish"><span class="n">Ossobuco</span><span class="p">42</span><span class="d">Braised veal shank, saffron risotto, gremolata. The house dish.</span></div>
-          <div class="dish"><span class="n">Branzino al forno</span><span class="p">36</span><span class="d">Whole sea bass from the wood oven, fennel, olives, lemon.</span></div>
+          <div class="dish"><span class="n">Ossobuco</span><span class="lead" aria-hidden="true"></span><span class="p">42</span><span class="d">Veal shank braised since the afternoon, saffron risotto, gremolata. The house dish; the name comes from it.</span></div>
+          <div class="dish"><span class="n">Branzino al forno</span><span class="lead" aria-hidden="true"></span><span class="p">36</span><span class="d">Whole sea bass from the wood oven, fennel, olives, lemon. We'll bone it at the table if you ask.</span></div>
+          <div class="dish"><span class="n">Bistecca per due</span><span class="lead" aria-hidden="true"></span><span class="p">88</span><span class="d">A thick rib steak over the coals, rosemary, salt, olive oil. For two, with the bones.</span></div>
         </div>
-      </div>
 
-      <div class="menu-note reveal">
-        <span class="ital">The menu changes with the market. Tonight's is on the chalkboard by the bar.</span>
-        <span>Takeout available Tue–Sun from 5 pm &middot; call <a href="tel:+14015550194">(401) 555-0194</a></span>
+        <div class="menu-note">
+          <span class="ital">The menu moves with the market. What's here is what we're proud of tonight.</span>
+          <span>Takeout Tue–Sun from 5 pm &middot; <a href="mailto:ciao@ossobello.example">email us your order</a></span>
+        </div>
       </div>
     </div>
   </section>
 
+  <div class="bleed reveal" aria-hidden="false">
+    <figure class="photo" data-photo="a glass of red wine beside a candle, dark table, wide">
+      <img src="https://images.unsplash.com/photo-1642501500606-b56852b10732?auto=format&fit=crop&w=2000&q=80"
+           alt="A glass of red wine next to a lit candle on a dark table" loading="lazy" style="object-position:center 55%"
+           onerror="this.remove()">
+      <figcaption>Photo &middot; Wine by candlelight</figcaption>
+    </figure>
+    <div class="cap"><span>Most of the list is from small growers in Lombardy and Piedmont. Marco will pour you a taste before you commit.</span></div>
+  </div>
+
   <section class="hours-sec" id="hours" aria-labelledby="hours-title">
     <div class="wrap">
-      <div class="reveal">
+      <div class="sec-head reveal">
         <span class="eyebrow">Hours &amp; reservations</span>
         <h2 id="hours-title">Dinner six nights. Lunch on the weekend.</h2>
-        <p>Reservations are recommended Friday through Sunday. The bar seats twelve and is always first come, first served. Parties of seven or more, please call.</p>
-        <a class="btn" href="#visit" id="hours-cta">Reserve a table</a>
+        <p>Book ahead Friday through Sunday; we're a small room and we fill. The bar seats twelve and never takes a reservation. For a party of seven or more, use the form and tell us the occasion.</p>
+        <a class="btn" href="#reserve" id="hours-cta">Reserve a table</a>
       </div>
       <div class="reveal">
         <table class="hours" id="hours-table">
@@ -353,14 +401,17 @@
             <tr data-day="0"><td>Sunday</td><td class="off">—</td><td>4 – 9 pm</td></tr>
           </tbody>
         </table>
-        <p class="hours-foot">Kitchen closes thirty minutes before the room. Closed Christmas Day and the first two weeks of August.</p>
+        <p class="hours-foot">The kitchen closes half an hour before the room. We close Christmas Day and the first two weeks of August, when we go home to Mantua.</p>
       </div>
     </div>
   </section>
 
   <section class="reviews" id="reviews" aria-labelledby="reviews-title">
     <div class="wrap">
-      <h2 id="reviews-title" class="reveal">What people say</h2>
+      <div class="sec-head reveal">
+        <span class="eyebrow">Guests</span>
+        <h2 id="reviews-title">What people say when they leave</h2>
+      </div>
       <blockquote class="reveal">
         <p>The tagliatelle is the reason we drive in from Warwick. Thirty years and it hasn't changed, which is the point.</p>
         <cite>— D. F., Google review</cite>
@@ -376,37 +427,104 @@
     </div>
   </section>
 
+  <div class="bleed reveal">
+    <figure class="photo" data-photo="candle on a table against a brick wall in the back room">
+      <img src="https://images.unsplash.com/photo-1675583635076-6eac784dbf41?auto=format&fit=crop&w=2000&q=80"
+           alt="A single candle on a set table against the brick wall of the back room" loading="lazy" style="object-position:center 45%"
+           onerror="this.remove()">
+      <figcaption>Photo &middot; The back room</figcaption>
+    </figure>
+    <div class="cap"><span>The back room seats twenty-two. Ask for it when you book if it's a birthday, a rehearsal supper, or a long argument.</span></div>
+  </div>
+
   <section class="story" id="story" aria-labelledby="story-title">
     <div class="wrap">
-      <figure class="photo tan reveal" data-photo="Rosa and Marco Bellandi at the pasta table, morning light">
-        <figcaption>Photo &middot; Rosa &amp; Marco at the pasta table</figcaption>
-      </figure>
+      <div class="pics reveal">
+        <figure class="photo" data-photo="filled pasta and rolling pin on a floured board, morning">
+          <img src="https://images.unsplash.com/photo-1569767143908-1342240550ce?auto=format&fit=crop&w=1600&q=80"
+               alt="Filled pasta and a rolling pin on a floured board" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; The pasta table</figcaption>
+        </figure>
+        <figure class="photo" data-photo="ravioli under grated cheese, close">
+          <img src="https://images.unsplash.com/photo-1650223164911-1274a3d15700?auto=format&fit=crop&w=1200&q=80"
+               alt="Ravioli under a fall of grated cheese" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Tortelli</figcaption>
+        </figure>
+      </div>
       <div class="text reveal">
         <span class="eyebrow">The family</span>
-        <h2 id="story-title">Two generations, one pasta table.</h2>
-        <p>Our parents, Giuseppe and Anna, opened Ossobello in the spring of 1994 with a second-hand wood oven and a menu written on butcher paper.</p>
-        <p>Giuseppe came from Mantua, where tortelli di zucca is Sunday lunch. Anna is from Federal Hill, three streets over. The room you sit in was a shoe repair shop; the oven has never moved.</p>
-        <p>We took over the kitchen in 2016. Rosa rolls the pasta every morning at seven. Marco runs the floor and buys the wine, most of it from small growers in Lombardy and Piedmont, a few from friends further south. Our mother still makes the polpette on Sundays and will tell you if you're eating too fast.</p>
+        <h2 id="story-title" style="margin:18px 0 30px;font-size:clamp(46px,5vw,72px)">Two generations, one pasta table.</h2>
+        <p>Our parents opened Ossobello in the spring of 1994 with a second-hand wood oven and a menu written on butcher paper.</p>
+        <p>Giuseppe came from Mantua, where tortelli di zucca is Sunday lunch. Anna is from the Hill, three streets over. The room you sit in was a shoe repair shop. The oven has never moved.</p>
+        <p>We took the kitchen in 2016. Rosa rolls the pasta every morning at seven on the same board our father used. Marco runs the floor and buys the wine. Our mother still makes the polpette on Sundays and will tell you if you're eating too fast.</p>
         <p class="sig">Rosa &amp; Marco Bellandi<small>Owners</small></p>
       </div>
     </div>
   </section>
 
-  <div class="quiet reveal" id="private">
+  <section class="reserve" id="reserve" aria-labelledby="reserve-title">
     <div class="wrap">
-      <div>
-        <div>
-          <h3>Private dining &amp; the occasional letter</h3>
-          <p>The back room seats twenty-two for family dinners and rehearsal suppers; ask for Marco. We write a few times a year about truffle season, the August closure and the odd wine dinner.</p>
+      <div class="sec-head reveal">
+        <span class="eyebrow">Reserve</span>
+        <h2 id="reserve-title">Hold a table</h2>
+        <p>Tell us when and how many. We confirm by email the same day, usually within the hour while we're in the kitchen.</p>
+        <div class="aside">
+          <p>Something we should know: an allergy, a birthday, someone who needs the quiet corner? Put it in the note. For the back room or a party over twelve, <a href="mailto:ciao@ossobello.example">email Marco directly</a>.</p>
         </div>
-        <form action="#" method="post" onsubmit="event.preventDefault();this.querySelector('button').textContent='Grazie';">
-          <label for="email">Email address</label>
-          <input id="email" name="email" type="email" placeholder="Your email" autocomplete="email" required>
-          <button type="submit">Subscribe</button>
-        </form>
+        <figure class="photo" data-photo="candles and wine glasses on a dimly lit table" style="margin-top:44px;min-height:300px">
+          <img src="https://images.unsplash.com/photo-1756925974940-fbf149fa0fd2?auto=format&fit=crop&w=1200&q=80"
+               alt="Candles and wine glasses on a dimly lit table" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; A table, set</figcaption>
+        </figure>
       </div>
+
+      <form class="res reveal" action="#" method="post" novalidate onsubmit="event.preventDefault();this.classList.add('sent');">
+        <div class="field">
+          <label for="r-name">Name</label>
+          <input id="r-name" name="name" type="text" placeholder="Who's the table under?" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="r-email">Email</label>
+          <input id="r-email" name="email" type="email" placeholder="We'll confirm here" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="r-date">Date</label>
+          <input id="r-date" name="date" type="date" required>
+        </div>
+        <div class="field">
+          <label for="r-time">Time</label>
+          <input id="r-time" name="time" type="time" min="12:00" max="21:30" step="900" required>
+        </div>
+        <div class="field">
+          <label for="r-party">Party size</label>
+          <select id="r-party" name="party" required>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+            <option value="4">Four</option>
+            <option value="5">Five</option>
+            <option value="6">Six</option>
+            <option value="7">Seven or more</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="r-occasion">Occasion <span style="color:var(--cream-3);letter-spacing:.1em">(optional)</span></label>
+          <input id="r-occasion" name="occasion" type="text" placeholder="Birthday, anniversary, a Tuesday">
+        </div>
+        <div class="field full">
+          <label for="r-note">Note</label>
+          <textarea id="r-note" name="note" rows="2" placeholder="Allergies, a high chair, the corner table by the oven"></textarea>
+        </div>
+        <div class="submit">
+          <button type="submit">Request a table</button>
+          <span class="fine">Nothing is charged. We hold tables for fifteen minutes past the time.</span>
+        </div>
+        <p class="done" aria-live="polite">Grazie. We've got it, and we'll write back before service.</p>
+      </form>
     </div>
-  </div>
+  </section>
 
 </main>
 
@@ -415,16 +533,16 @@
     <div class="cols">
       <div>
         <a class="brand" href="#top">Ossobello</a>
-        <p class="tag">A family trattoria on Federal Hill. Handmade pasta, wood oven, Italian wine.</p>
-        <p style="margin-top:22px"><a class="btn" href="tel:+14015550194" style="border-color:var(--paper);background:var(--paper);color:var(--ink)">Call to reserve &middot; (401) 555-0194</a></p>
+        <p class="tag">A family trattoria on Federal Hill, Providence. Handmade pasta, wood oven, Italian wine.</p>
+        <p style="margin-top:26px"><a class="btn" href="#reserve">Reserve a table</a></p>
       </div>
       <div>
-        <h4>Find us</h4>
-        <address>
-          <a href="https://maps.google.com/?q=218+Atwells+Avenue+Providence+RI+02903" target="_blank" rel="noopener">218 Atwells Avenue<br>Providence, RI 02903</a><br>
-          <a href="tel:+14015550194">(401) 555-0194</a><br>
-          <a href="mailto:ciao@ossobello.com">ciao@ossobello.com</a>
-        </address>
+        <h4>Write to us</h4>
+        <ul>
+          <li><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></li>
+          <li><a href="#reserve">Reservations</a></li>
+          <li><a href="#menu">Takeout</a></li>
+        </ul>
       </div>
       <div>
         <h4>Hours</h4>
@@ -440,14 +558,14 @@
         <h4>Elsewhere</h4>
         <ul>
           <li><a href="#">Instagram</a></li>
-          <li><a href="#">Google Maps</a></li>
           <li><a href="#">OpenTable</a></li>
-          <li><a href="#menu">Takeout menu</a></li>
+          <li><a href="#story">Our story</a></li>
         </ul>
       </div>
     </div>
     <div class="bottom">
       <span>&copy; 2026 Ossobello &middot; Bellandi Family Restaurants LLC</span>
+      <span>Photography via Unsplash</span>
       <span>Site by <a href="index.html">Onwards Digital</a></span>
     </div>
   </div>
@@ -455,7 +573,7 @@
 
 <script>
 (function(){
-  // Today's hours, computed from the table so the owner edits one place.
+  // Tonight's hours, computed from the table so the owner edits one place.
   var day = new Date().getDay();
   var row = document.querySelector('#hours-table tr[data-day="'+day+'"]');
   var out = document.getElementById('today-text');
@@ -464,11 +582,19 @@
     var cells = row.querySelectorAll('td');
     var lunch = cells[1].textContent.trim(), dinner = cells[2].textContent.trim();
     var parts = [];
-    if(lunch !== '—' && lunch !== 'Closed') parts.push('<strong>Lunch '+lunch.replace(/\s/g,'')+'</strong>');
-    if(dinner !== 'Closed') parts.push('<strong>Dinner '+dinner.replace(/\s/g,'')+'</strong>');
-    out.innerHTML = parts.length ? parts.join(' &middot; ')+' &middot; walk-ins welcome at the bar'
-                                 : '<strong>Closed Mondays</strong> &middot; back tomorrow at 5 pm';
+    if(lunch !== '—' && lunch !== 'Closed') parts.push('<strong>Lunch '+lunch+'</strong>');
+    if(dinner !== 'Closed') parts.push('<strong>Dinner '+dinner+'</strong>');
+    out.innerHTML = parts.length ? parts.join(' &middot; ')+'<br>walk-ins welcome at the bar'
+                                 : '<strong>Closed Mondays</strong><br>back tomorrow at 5 pm';
   }
+
+  // Reservation form: default the date to today, earliest bookable time
+  var d = document.getElementById('r-date');
+  if(d && !d.value){
+    var n = new Date(), m = n.getMonth()+1, dd = n.getDate();
+    d.min = d.value = n.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dd<10?'0':'')+dd;
+  }
+  var t0 = document.getElementById('r-time'); if(t0 && !t0.value) t0.value = '19:30';
 
   // Mobile nav
   var t = document.querySelector('.menu-toggle'), nav = document.getElementById('nav');

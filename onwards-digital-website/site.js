@@ -14,6 +14,16 @@
     reveals.forEach(function (el) { el.classList.add("in"); });
   }
 
+  /* Scaled live previews (homepage) --------------------------- */
+  var frames = document.querySelectorAll(".frame iframe");
+  function fitFrames() {
+    frames.forEach(function (f) {
+      var w = f.parentElement.clientWidth;
+      if (w) f.style.transform = "scale(" + (w / 1440) + ")";
+    });
+  }
+  if (frames.length) { fitFrames(); window.addEventListener("resize", fitFrames); setTimeout(fitFrames, 300); }
+
   /* Mobile nav ---------------------------------------------- */
   var toggle = document.querySelector(".nav-toggle");
   var nav = document.querySelector(".nav");

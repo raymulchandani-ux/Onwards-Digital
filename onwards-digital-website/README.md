@@ -42,9 +42,16 @@ asking the customer to email you rather than sending them to a dead link.
 
 ## 2. Photos
 
-The homepage hero mockup and the five example sites use designed photo slots
-(`<figure class="photo" data-photo="…">`). The `data-photo` text describes the
-shot to take. To drop a real photo in, put the image inside the figure:
+The homepage tiles and the five example sites use photographs hot-linked from
+Unsplash (free licence, no watermark, no attribution required — a quiet
+"Photography via Unsplash" line sits in each footer anyway). Every `<img>` has
+`onerror="this.remove()"`, so if a photo is ever taken down the designed
+placeholder shows instead of a broken image. For a real client site, download
+the photos (or use the client's own) and reference them locally — don't rely on
+hot-linking for paying customers.
+
+Each slot is `<figure class="photo" data-photo="…">`; the `data-photo` text
+describes the shot. To swap a photo, replace the `src`:
 
 ```html
 <figure class="photo" data-photo="dining room at dusk">
@@ -52,8 +59,11 @@ shot to take. To drop a real photo in, put the image inside the figure:
 </figure>
 ```
 
-Each example site's CSS already makes an `img` inside `.photo` fill the slot
-(`object-fit: cover`). Aim for 1600px-wide JPGs under 300 KB.
+The CSS makes any `img` inside `.photo` fill the slot (`object-fit: cover`).
+Aim for 1600px-wide JPGs under 300 KB.
+
+The "Recent work" section on the homepage shows the example sites in scaled
+live frames (iframes), so it always reflects the current version of each site.
 
 ## 3. Things deliberately left out
 
@@ -70,9 +80,9 @@ Each example site's CSS already makes an `img` inside `.photo` fill the slot
 ## 4. The example sites
 
 `example-restaurant.html` (Ossobello), `example-cafe.html` (Hollowmere), `example-salon.html` (Tessaline), `example-trades.html` (Northgale), `example-shop.html` (Quillmont).
-Every business,
-person, address, phone number and review is fictional; phone numbers use the
-reserved 555 range. Each page is self-contained, so you can copy one as the
+Every business, person
+and review is fictional, and the sites deliberately carry no phone numbers or
+street addresses — only a neighbourhood and city. Each page is self-contained, so you can copy one as the
 starting point for a real client's site. Forms on the example pages are
 front-end only (they confirm on the page and send nothing).
 

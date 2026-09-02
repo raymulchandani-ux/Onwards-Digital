@@ -4,37 +4,39 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tessaline — Hair salon &amp; colour studio, South Congress, Austin</title>
-<meta name="description" content="Tessaline is a four-chair hair salon and colour studio on South Congress in Austin. Precision cuts, balayage, curly hair and vivid colour. Open Tue–Sat 9–7. Book online or call (512) 555-0134.">
+<meta name="description" content="Tessaline is a four-chair hair salon and colour studio on South Congress in Austin. Precision cuts, balayage, curly hair and vivid colour. Open Tue–Sat 9–7. Book online.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bone:#f3efe6;
-  --bone-2:#e9e3d6;
-  --bone-3:#ddd5c4;
-  --ink:#171512;
-  --ink-2:#4a463f;
-  --ink-3:#7d776c;
-  --rule:rgba(23,21,18,.18);
-  --olive:#6b6e4b;
-  --olive-deep:#4f5236;
+  --bone:#f4f0e8;
+  --bone-2:#ebe6db;
+  --bone-3:#dcd5c7;
+  --ink:#121110;
+  --ink-2:#45423d;
+  --ink-3:#7b766d;
+  --rule:rgba(18,17,16,.16);
+  --rule-2:rgba(18,17,16,.5);
+  --clay:#8d5f4e;
   --display:"Bodoni Moda","Bodoni 72","Didot","Playfair Display",Georgia,"Times New Roman",serif;
-  --body:"Archivo","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --max:1360px;
-  --gutter:clamp(20px,4vw,56px);
+  --body:"Hanken Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --max:1400px;
+  --gutter:clamp(20px,5vw,72px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--bone);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{background:var(--bone);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,svg{display:block}
 a{color:inherit}
-h1,h2,h3{font-family:var(--display);font-weight:400;letter-spacing:-.01em}
+h1,h2,h3{font-family:var(--display);font-weight:400;font-variation-settings:"opsz" 96;letter-spacing:-.02em}
+em{font-style:italic}
 button,input,select{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+:focus-visible{outline:2px solid var(--clay);outline-offset:3px}
 .wrap{max-width:var(--max);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter)}
-.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
-.rule{border:0;border-top:1px solid var(--rule)}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.eyebrow b{font-weight:500;color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 /* Onwards bar */
 .onwards{height:36px;background:#1a1917;color:#e6e2da;font-size:12px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);font-family:var(--body)}
@@ -43,202 +45,223 @@ button,input,select{font:inherit;color:inherit}
 .onwards span,.onwards a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:480px){.onwards{font-size:10px;letter-spacing:.08em}.onwards span{flex:1 1 auto}.onwards a{flex:none}}
 
-/* Header */
-.site-head{position:sticky;top:0;z-index:20;background:var(--bone);border-bottom:1px solid var(--rule)}
-.site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:68px;gap:24px}
-.brand{font-family:var(--display);font-size:28px;letter-spacing:.02em;text-decoration:none;line-height:1}
-.brand span{color:var(--olive)}
-.nav{display:flex;gap:28px;align-items:center}
-.nav a{text-decoration:none;font-size:14px;letter-spacing:.06em;text-transform:uppercase;font-weight:500;color:var(--ink-2);padding:12px 0;border-bottom:1px solid transparent}
+/* Masthead */
+.site-head{position:sticky;top:0;z-index:20;background:var(--bone)}
+.site-head .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px;gap:24px;border-bottom:1px solid var(--ink)}
+.brand{font-family:var(--display);font-size:30px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1;font-variation-settings:"opsz" 60}
+.nav{display:flex;gap:34px;align-items:center;justify-content:center}
+.nav a{text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--ink-2);padding:12px 0;border-bottom:1px solid transparent}
 .nav a:hover{color:var(--ink);border-color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 26px;background:var(--ink);color:var(--bone);text-decoration:none;font-size:14px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border:1px solid var(--ink);cursor:pointer;transition:background .15s,color .15s}
-.btn:hover{background:var(--olive-deep);border-color:var(--olive-deep)}
+.site-head .right{justify-self:end}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 30px;background:var(--ink);color:var(--bone);text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border:1px solid var(--ink);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn:hover{background:var(--clay);border-color:var(--clay);color:#fff}
 .btn.ghost{background:transparent;color:var(--ink)}
-.btn.ghost:hover{background:var(--ink);color:var(--bone)}
-.btn.sm{min-height:44px;padding:0 18px;font-size:13px}
-.strip{border-bottom:1px solid var(--rule);background:var(--bone-2)}
-.strip .wrap{display:flex;justify-content:space-between;gap:16px;min-height:44px;align-items:center;font-size:13px;letter-spacing:.05em;color:var(--ink-2)}
-.strip a{text-decoration:none;border-bottom:1px solid var(--rule)}
-.strip a:hover{border-color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:var(--bone);border-color:var(--ink)}
+.btn.sm{min-height:44px;padding:0 20px}
+.link{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--ink)}
+.link:hover{color:var(--clay);border-color:var(--clay)}
+.link svg{width:14px;height:14px}
 
-/* Photo placeholders */
-.photo{position:relative;background:var(--bone-3);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(23,21,18,.14)}
-.photo::before{content:"";position:absolute;inset:0;background:
-  linear-gradient(115deg,rgba(23,21,18,.05) 0,transparent 55%),
-  linear-gradient(0deg,rgba(23,21,18,.08),transparent 60%)}
-.photo figcaption{position:absolute;left:14px;bottom:12px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2);font-family:var(--body);font-weight:500}
-.photo.dark{background:#2b2924}
-.photo.dark figcaption{color:rgba(243,239,230,.7)}
-.photo.olive{background:#8b8d6c}
-.photo.olive figcaption{color:rgba(243,239,230,.85)}
+/* Folio lines between sections */
+.folio{border-top:1px solid var(--rule-2);display:flex;justify-content:space-between;gap:16px;padding:12px 0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.folio i{font-family:var(--display);font-style:italic;text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink);font-variation-settings:"opsz" 20}
 
-/* Hero */
-.hero{padding:clamp(40px,6vw,88px) 0 clamp(40px,5vw,72px)}
-.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:end}
-.hero h1{font-size:clamp(56px,8.2vw,124px);line-height:.92;letter-spacing:-.025em;margin:18px 0 26px}
-.hero h1 em{font-style:italic;font-weight:400;color:var(--olive)}
-.hero p.lede{font-size:19px;color:var(--ink-2);max-width:34ch;margin-bottom:34px}
-.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
-.hero .meta{margin-top:34px;display:flex;gap:28px;font-size:13px;letter-spacing:.05em;color:var(--ink-3)}
-.hero .photo{aspect-ratio:4/5;width:100%}
-.hero-photo{height:100%}
+/* Photo slots */
+.photo{position:relative;background:var(--bone-3);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(18,17,16,.12)}
+.photo::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(18,17,16,.05) 0,transparent 55%),linear-gradient(0deg,rgba(18,17,16,.08),transparent 60%)}
+.photo figcaption{position:absolute;left:14px;bottom:12px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-2);font-family:var(--body);font-weight:500}
+.photo.dark{background:#252320}
+.photo.dark figcaption{color:rgba(244,240,232,.7)}
+.photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
 
-/* Section heads */
-.sec{padding:clamp(56px,7vw,110px) 0}
-.sec-head{display:grid;grid-template-columns:1fr 2fr;gap:24px;align-items:baseline;padding-bottom:22px;border-bottom:1px solid var(--ink);margin-bottom:40px}
-.sec-head h2{font-size:clamp(38px,4.6vw,64px);line-height:1;letter-spacing:-.02em}
-.sec-head p{color:var(--ink-2);max-width:52ch;font-size:17px;justify-self:end;align-self:end}
+/* Hero: one giant image, headline plate overlapping its lower edge */
+.hero{padding-top:clamp(14px,2vw,28px)}
+.hero .bleed{height:clamp(420px,74vh,800px);width:100%}
+.plate-row{display:flex;position:relative;z-index:2}
+.plate{background:var(--bone);width:fit-content;max-width:100%;padding:clamp(20px,3vw,44px) clamp(24px,4vw,64px) 0 calc(max(0px,(100% - var(--max)) / 2) + var(--gutter))}
+.hero .plate{margin-top:calc(-1 * clamp(56px,9vw,150px))}
+.hero h1{font-size:clamp(60px,10.4vw,160px);line-height:.86;letter-spacing:-.035em;max-width:8.4ch}
+.hero h1 em{font-weight:400;color:var(--clay)}
+.hero .below{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(24px,4vw,72px);align-items:end;padding:clamp(28px,3.5vw,52px) 0 clamp(56px,7vw,110px)}
+.hero .issue{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;line-height:2}
+.hero .issue b{display:block;color:var(--ink);font-weight:500}
+.hero .lede{font-size:clamp(19px,1.6vw,23px);line-height:1.4;max-width:34ch;color:var(--ink);font-family:var(--display);font-variation-settings:"opsz" 20;letter-spacing:0}
+.hero .cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-self:end}
 
-/* Services / price list */
-.menu{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(40px,6vw,96px);row-gap:44px}
-.menu h3{font-size:14px;font-family:var(--body);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
-.menu dl{margin:0}
-.menu .row{display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:10px;padding:11px 0}
-.menu dt{font-family:var(--display);font-size:22px;line-height:1.1;white-space:nowrap}
-.menu .lead{border-bottom:1px dotted rgba(23,21,18,.45);transform:translateY(-6px);min-width:24px}
-.menu dd{font-size:15px;font-weight:500;letter-spacing:.02em;white-space:nowrap;font-variant-numeric:tabular-nums}
-.menu .note{grid-column:1/-1;font-size:14px;color:var(--ink-3);margin-top:-6px;padding:0 0 8px}
-.menu-foot{margin-top:40px;font-size:14px;color:var(--ink-3);max-width:70ch}
+/* Section frame */
+.sec{padding:clamp(64px,8vw,128px) 0}
+.sec-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,64px);align-items:start;margin-bottom:clamp(40px,5vw,72px)}
+.sec-head .num{font-family:var(--display);font-size:clamp(64px,9vw,150px);line-height:.8;letter-spacing:-.04em;color:var(--bone-3);font-variation-settings:"opsz" 96}
+.sec-head h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em}
+.sec-head h2 em{color:var(--clay)}
+.sec-head .lede{margin-top:18px;max-width:52ch;color:var(--ink-2);font-size:16px}
 
-/* Stylists */
-.team{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,2.5vw,36px)}
-.stylist .photo{aspect-ratio:3/4;margin-bottom:18px}
-.stylist h3{font-size:34px;line-height:1;margin-bottom:6px}
-.stylist .spec{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--olive);font-weight:500;margin-bottom:12px}
-.stylist p{font-size:15px;color:var(--ink-2);margin-bottom:16px;min-height:0}
-.stylist a.book{display:inline-flex;align-items:center;gap:8px;min-height:44px;text-decoration:none;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--ink)}
-.stylist a.book:hover{color:var(--olive);border-color:var(--olive)}
-.stylist a.book svg{width:14px;height:14px}
+/* Price list */
+.menu{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(48px,8vw,140px);row-gap:52px}
+.menu h3{font-family:var(--body);font-size:11px;letter-spacing:.24em;text-transform:uppercase;font-weight:500;color:var(--ink-3);margin-bottom:8px;display:flex;justify-content:space-between;border-bottom:1px solid var(--ink);padding-bottom:10px}
+.menu h3 span{color:var(--ink)}
+.menu dl{margin:0 0 44px}
+.menu dl:last-child{margin-bottom:0}
+.menu .row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.menu dt{font-family:var(--display);font-size:clamp(22px,1.9vw,27px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
+.menu dt small{display:block;font-family:var(--body);font-size:13px;color:var(--ink-3);letter-spacing:.02em;margin-top:4px}
+.menu dd{font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
+.menu dd i{font-style:normal;color:var(--ink-3);font-weight:400;letter-spacing:.06em;text-transform:none;font-size:13px;margin-right:6px}
+.menu-foot{margin-top:52px;display:grid;grid-template-columns:auto 1fr;gap:20px;font-size:14px;color:var(--ink-2);max-width:74ch;line-height:1.7}
+.menu-foot .eyebrow{padding-top:5px}
 
-/* Reviews */
-.reviews{background:var(--ink);color:var(--bone)}
-.reviews .sec-head{border-color:rgba(243,239,230,.35)}
-.reviews .sec-head p,.reviews .eyebrow{color:rgba(243,239,230,.6)}
-.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,64px)}
-.quotes blockquote{border-left:1px solid rgba(243,239,230,.35);padding-left:22px}
-.quotes blockquote p{font-family:var(--display);font-size:clamp(24px,2.1vw,30px);line-height:1.2;letter-spacing:-.01em}
-.quotes cite{display:block;margin-top:18px;font-style:normal;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:rgba(243,239,230,.6)}
+/* Spread: giant image with a quote plate breaking its lower edge */
+.spread .bleed{height:clamp(380px,72vh,720px);width:100%}
+.spread .plate-row{justify-content:flex-end}
+.spread .plate{padding:clamp(20px,3vw,44px) calc(max(0px,(100% - var(--max)) / 2) + var(--gutter)) 0 clamp(24px,4vw,64px);margin-top:calc(-1 * clamp(64px,10vw,170px))}
+.spread .plate blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(30px,3.6vw,56px);line-height:1;letter-spacing:-.02em;font-variation-settings:"opsz" 96;max-width:20ch}
+.spread .plate cite{display:block;margin-top:22px;font-style:normal;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.spread .rest{display:grid;grid-template-columns:2fr 5fr 5fr;gap:clamp(24px,5vw,96px);padding:clamp(40px,5vw,72px) 0 clamp(64px,8vw,128px);align-items:start}
+.spread .rest blockquote{border-top:1px solid var(--ink);padding-top:20px}
+.spread .rest blockquote p{font-family:var(--display);font-size:clamp(21px,1.8vw,26px);line-height:1.2;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
+.spread .rest cite{display:block;margin-top:16px;font-style:normal;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.spread .rest .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;line-height:2;padding-top:20px;border-top:1px solid var(--ink)}
+.spread .rest .k b{display:block;font-family:var(--display);font-weight:400;font-size:42px;letter-spacing:-.02em;text-transform:none;color:var(--ink);line-height:1;margin-top:6px;font-variation-settings:"opsz" 96}
 
-/* FAQ / new clients */
-.faq .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,5vw,96px)}
-.faq h2{font-size:clamp(38px,4.6vw,64px);line-height:1;letter-spacing:-.02em;margin:8px 0 22px}
-.faq .intro{color:var(--ink-2);max-width:38ch}
-.faq details{border-top:1px solid var(--rule)}
-.faq details:last-of-type{border-bottom:1px solid var(--rule)}
-.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-family:var(--display);font-size:26px;line-height:1.1}
+/* Stylists: two columns, tall 3:4 rectangles, staggered */
+.team{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(32px,8vw,140px);row-gap:clamp(56px,7vw,110px)}
+.stylist{display:flex;flex-direction:column;align-items:flex-start}
+.stylist .photo,.stylist .cap{width:100%}
+.stylist:nth-child(even){margin-top:clamp(60px,12vw,200px)}
+.stylist .photo{aspect-ratio:3/4}
+.stylist .cap{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:12px 0 0;border-top:1px solid var(--ink);margin-top:14px}
+.stylist h3{font-size:clamp(40px,4.4vw,68px);line-height:.95;letter-spacing:-.03em;margin:24px 0 8px}
+.stylist h3 em{color:var(--clay);font-size:.55em;letter-spacing:0;vertical-align:.25em;margin-left:.2em}
+.stylist .spec{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--ink-2);margin-bottom:16px}
+.stylist p.bio{font-size:16px;color:var(--ink-2);max-width:40ch;margin-bottom:20px}
+
+/* New clients */
+.faq .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,120px)}
+.faq h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
+.faq .intro{color:var(--ink-2);max-width:36ch;font-size:16px}
+.faq details{border-top:1px solid var(--rule-2)}
+.faq details:last-of-type{border-bottom:1px solid var(--rule-2)}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:20px;padding:22px 0;font-family:var(--display);font-size:clamp(22px,2.1vw,30px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
 .faq summary::-webkit-details-marker{display:none}
-.faq summary svg{width:18px;height:18px;flex:none;transition:transform .2s}
+.faq summary .n{font-family:var(--body);font-size:11px;letter-spacing:.22em;color:var(--ink-3);font-weight:500}
+.faq summary svg{width:16px;height:16px;flex:none;transition:transform .2s;align-self:center}
 .faq details[open] summary svg{transform:rotate(45deg)}
-.faq details p{padding:0 0 22px;color:var(--ink-2);max-width:58ch}
-.faq .hours{margin-top:36px;width:100%;border-collapse:collapse;font-size:15px}
-.faq .hours th,.faq .hours td{text-align:left;padding:9px 0;border-bottom:1px solid var(--rule)}
-.faq .hours th{font-weight:500;color:var(--ink-2);width:48%}
-.faq .hours td{font-variant-numeric:tabular-nums}
-.faq .hours .closed td{color:var(--ink-3)}
+.faq details p{padding:0 0 24px 0;color:var(--ink-2);max-width:56ch;font-size:16px}
+.faq details p a{text-decoration:none;border-bottom:1px solid var(--rule-2)}
+.faq details p a:hover{color:var(--clay);border-color:var(--clay)}
+.hours{margin-top:44px;width:100%;border-collapse:collapse;font-size:15px}
+.hours caption{text-align:left;padding-bottom:12px}
+.hours th,.hours td{text-align:left;padding:11px 0;border-top:1px solid var(--rule-2)}
+.hours tr:last-child th,.hours tr:last-child td{border-bottom:1px solid var(--rule-2)}
+.hours th{font-weight:400;color:var(--ink-2);width:56%}
+.hours td{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:20px;font-variation-settings:"opsz" 20}
+.hours .closed td{color:var(--ink-3);font-style:italic}
 
-/* Gallery */
-.work .grid{display:grid;grid-template-columns:repeat(6,1fr);grid-auto-rows:minmax(160px,18vw);gap:10px}
-.work .grid .photo:nth-child(1){grid-column:span 2;grid-row:span 2}
-.work .grid .photo:nth-child(2){grid-column:span 2}
-.work .grid .photo:nth-child(3){grid-column:span 2;grid-row:span 2}
-.work .grid .photo:nth-child(4){grid-column:span 1}
-.work .grid .photo:nth-child(5){grid-column:span 1}
-.work .grid .photo:nth-child(6){grid-column:span 3}
-.work .grid .photo:nth-child(7){grid-column:span 3}
-.work .ig{margin-top:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.work .ig a{display:inline-flex;align-items:center;gap:10px;min-height:44px;text-decoration:none;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--ink)}
-.work .ig a:hover{color:var(--olive);border-color:var(--olive)}
-.work .ig svg{width:16px;height:16px}
+/* Work: a spread laid out like a magazine feature */
+.work .layout{display:grid;grid-template-columns:repeat(12,1fr);column-gap:clamp(12px,2vw,32px);row-gap:clamp(48px,6vw,96px)}
+.work .item{display:flex;flex-direction:column}
+.work .item .photo{width:100%}
+.work .item .cap{display:flex;justify-content:space-between;gap:12px;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding-top:12px;border-top:1px solid var(--ink);margin-top:14px}
+.work .item .cap span:last-child{color:var(--ink)}
+.work .i1{grid-column:1/6}.work .i1 .photo{aspect-ratio:3/4}
+.work .i2{grid-column:7/13;align-self:end}.work .i2 .photo{aspect-ratio:4/3}
+.work .i3{grid-column:2/6;margin-top:clamp(-40px,-2vw,-16px)}.work .i3 .photo{aspect-ratio:1/1}
+.work .i4{grid-column:7/12;margin-top:clamp(40px,8vw,140px)}.work .i4 .photo{aspect-ratio:4/5}
+.work .ig{margin-top:clamp(40px,5vw,72px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:22px}
 
 /* Booking */
-.booking{background:var(--bone-2);border-top:1px solid var(--rule)}
-.booking .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,5vw,96px)}
-.booking h2{font-size:clamp(38px,4.6vw,64px);line-height:1;letter-spacing:-.02em;margin:8px 0 22px}
-.booking .aside p{color:var(--ink-2);max-width:38ch;margin-bottom:22px}
-.booking .call{display:inline-flex;align-items:center;gap:12px;font-family:var(--display);font-size:34px;text-decoration:none;line-height:1;min-height:48px}
-.booking .call svg{width:22px;height:22px}
-.booking .call:hover{color:var(--olive)}
-.form{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px}
+.booking{border-top:3px solid var(--ink)}
+.booking .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,120px)}
+.booking h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
+.booking h2 em{color:var(--clay)}
+.booking .aside p{color:var(--ink-2);max-width:36ch;margin-bottom:22px;font-size:16px}
+.booking .aside .mail{font-family:var(--display);font-size:clamp(22px,2vw,30px);text-decoration:none;line-height:1.2;display:inline-block;border-bottom:1px solid var(--ink);font-variation-settings:"opsz" 40;word-break:break-all}
+.booking .aside .mail:hover{color:var(--clay);border-color:var(--clay)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:26px 32px}
 .field{display:flex;flex-direction:column;gap:8px}
 .field.full{grid-column:1/-1}
-.field label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--ink-2)}
-.field input,.field select{height:50px;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:0 2px;border-radius:0;-webkit-appearance:none;appearance:none;font-size:17px}
-.field select{background:transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23171512' stroke-width='1.5'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 4px center;padding-right:28px}
-.field input:focus,.field select:focus{outline:0;border-bottom-color:var(--olive);box-shadow:0 1px 0 var(--olive)}
-.field input::placeholder{color:var(--ink-3)}
-.days{display:flex;flex-wrap:wrap;gap:8px}
-.days label{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:44px;padding:0 14px;border:1px solid var(--ink);font-size:14px;letter-spacing:.06em;text-transform:none;cursor:pointer;color:var(--ink);user-select:none}
+.field label,.field legend{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--ink-2)}
+.field input,.field select{height:52px;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:0 2px;border-radius:0;-webkit-appearance:none;appearance:none;font-size:18px;font-family:var(--display);font-variation-settings:"opsz" 20}
+.field select{background:transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23121110' stroke-width='1.5'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 4px center;padding-right:28px}
+.field input:focus,.field select:focus{outline:0;border-bottom-color:var(--clay);box-shadow:0 1px 0 var(--clay)}
+.field input::placeholder{color:var(--ink-3);font-style:italic}
+.days{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.days label{position:relative;display:inline-flex;align-items:center;justify-content:center;min-width:64px;min-height:44px;padding:0 16px;border:1px solid var(--ink);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;cursor:pointer;color:var(--ink);user-select:none;transition:background .15s,color .15s}
 .days input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
-.days input:checked+span{color:var(--bone)}
-.days label:has(input:checked){background:var(--ink)}
-.days label:has(input:focus-visible){outline:2px solid var(--olive);outline-offset:3px}
-.form .actions{grid-column:1/-1;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-top:6px}
-.form .actions small{font-size:13px;color:var(--ink-3)}
-.form .sent{grid-column:1/-1;padding:18px 0;border-top:1px solid var(--ink);font-family:var(--display);font-size:24px;line-height:1.2}
+.days label:has(input:checked){background:var(--ink);color:var(--bone)}
+.days label:has(input:focus-visible){outline:2px solid var(--clay);outline-offset:3px}
+.form .actions{grid-column:1/-1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
+.form .actions small{font-size:13px;color:var(--ink-3);max-width:34ch;line-height:1.5}
+.form .sent{grid-column:1/-1;padding:22px 0;border-top:1px solid var(--ink);font-family:var(--display);font-size:clamp(22px,2vw,28px);line-height:1.2;font-variation-settings:"opsz" 40}
 
-/* Footer */
-.foot{border-top:1px solid var(--ink);padding:48px 0 32px}
+/* Footer / colophon */
+.foot{border-top:1px solid var(--ink);padding:clamp(40px,5vw,72px) 0 28px}
 .foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
-.foot h4{font-family:var(--display);font-size:30px;font-weight:400;margin-bottom:10px}
-.foot .k{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:12px}
-.foot p,.foot li{font-size:15px;color:var(--ink-2);line-height:1.6}
+.foot h4{font-family:var(--display);font-size:34px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-variation-settings:"opsz" 60}
+.foot .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:14px}
+.foot p,.foot li{font-size:15px;color:var(--ink-2);line-height:1.7}
 .foot ul{list-style:none}
-.foot a{text-decoration:none;border-bottom:1px solid var(--rule);display:inline-block;padding:2px 0}
+.foot a{text-decoration:none;border-bottom:1px solid var(--rule);display:inline-block;padding:1px 0}
 .foot a:hover{border-color:var(--ink);color:var(--ink)}
 .foot .hrs{width:100%;border-collapse:collapse;font-size:15px;color:var(--ink-2)}
 .foot .hrs td{padding:3px 0;vertical-align:top}
 .foot .hrs td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-.foot .base{margin-top:40px;padding-top:18px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-3)}
+.foot .base{margin-top:48px;padding-top:16px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12px;letter-spacing:.06em;color:var(--ink-3)}
 
 /* Reveal */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .8s ease,transform .8s ease}
 .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
 
 /* Responsive */
-@media (max-width:1024px){
-  .team{grid-template-columns:repeat(2,1fr);gap:28px 24px}
-  .quotes{grid-template-columns:1fr;gap:36px}
+@media (max-width:1100px){
+  .hero .below{grid-template-columns:1fr 1fr}
+  .hero .cta{justify-self:start;grid-column:1/-1;flex-direction:row;flex-wrap:wrap}
+  .spread .rest{grid-template-columns:1fr 1fr}
+  .spread .rest .k{grid-column:1/-1;display:flex;gap:40px;align-items:baseline}
+  .spread .rest .k b{margin:0}
   .foot .cols{grid-template-columns:1fr 1fr}
 }
 @media (max-width:820px){
   .nav{display:none}
-  .site-head .wrap{height:60px}
+  .site-head .wrap{grid-template-columns:1fr auto;height:64px}
   .brand{font-size:24px}
-  .strip .wrap{flex-direction:column;align-items:flex-start;gap:2px;padding-top:8px;padding-bottom:8px}
-  .hero{padding-top:36px}
-  .hero .wrap{grid-template-columns:1fr;gap:32px}
-  .hero .photo{aspect-ratio:4/3}
-  .hero h1{font-size:clamp(58px,17vw,84px)}
+  .hero .bleed{height:clamp(340px,58vh,520px)}
+  .hero .plate{margin-top:-52px;padding-right:var(--gutter)}
+  .hero h1{font-size:clamp(58px,16vw,84px);max-width:100%}
+  .hero .below{grid-template-columns:1fr;gap:24px;padding-bottom:64px}
   .hero .cta .btn{flex:1 1 100%}
-  .hero .meta{flex-direction:column;gap:8px}
-  .sec-head{grid-template-columns:1fr;gap:12px}
-  .sec-head p{justify-self:start}
+  .sec-head{grid-template-columns:1fr;gap:8px}
+  .sec-head .num{font-size:64px;color:var(--bone-3)}
   .menu{grid-template-columns:1fr;row-gap:36px}
-  .menu dt{font-size:20px;white-space:normal}
-  .faq .wrap,.booking .wrap{grid-template-columns:1fr;gap:36px}
-  .faq summary{font-size:22px}
-  .work .grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:44vw}
-  .work .grid .photo:nth-child(n){grid-column:span 1;grid-row:span 1}
-  .work .grid .photo:nth-child(1),.work .grid .photo:nth-child(6),.work .grid .photo:nth-child(7){grid-column:span 2}
+  .menu-foot{grid-template-columns:1fr;gap:8px}
+  .spread .bleed{height:clamp(320px,52vh,460px)}
+  .spread .plate-row{justify-content:flex-start}
+  .spread .plate{margin-top:-48px;padding-left:var(--gutter)}
+  .spread .rest{grid-template-columns:1fr;gap:32px}
+  .team{grid-template-columns:1fr 1fr;column-gap:20px;row-gap:48px}
+  .stylist:nth-child(even){margin-top:56px}
+  .stylist h3{font-size:34px}
+  .stylist p.bio{font-size:15px}
+  .faq .wrap,.booking .wrap{grid-template-columns:1fr;gap:40px}
+  .faq summary{font-size:21px;gap:14px}
+  .work .layout{grid-template-columns:1fr 1fr;column-gap:16px;row-gap:40px}
+  .work .i1,.work .i2,.work .i3,.work .i4{grid-column:auto;margin-top:0}
+  .work .i1{grid-column:1/-1}
+  .work .i4{grid-column:1/-1}
   .form{grid-template-columns:1fr}
   .form .actions .btn{width:100%}
   .foot .cols{grid-template-columns:1fr;gap:28px}
 }
 @media (max-width:480px){
-  .team{grid-template-columns:1fr;gap:0}
-  .stylist{display:grid;grid-template-columns:38% 1fr;gap:0 18px;padding:22px 0;border-bottom:1px solid var(--rule);align-items:start}
-  .stylist:last-child{border-bottom:0}
-  .stylist .photo{grid-row:1/span 4;aspect-ratio:3/4;margin:0}
-  .stylist a.book{justify-self:start;align-self:start}
-  .stylist h3{font-size:30px}
-  .stylist p{font-size:15px}
-  .quotes blockquote p{font-size:22px}
+  .team{grid-template-columns:1fr;row-gap:44px}
+  .stylist:nth-child(even){margin-top:0}
+  .stylist .photo{aspect-ratio:3/4}
+  .work .layout{grid-template-columns:1fr}
+  .folio{font-size:10px;letter-spacing:.16em}
+  .folio span:last-child{display:none}
 }
-
-  /* Drop a real photo in: <figure class="photo"><img src=…></figure> */
-  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
 </style>
 </head>
 <body>
@@ -250,214 +273,278 @@ button,input,select{font:inherit;color:inherit}
 
 <header class="site-head">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Tessaline, home">Tessaline<span>.</span></a>
+    <a class="brand" href="#top" aria-label="Tessaline, home">Tessaline</a>
     <nav class="nav" aria-label="Sections">
-      <a href="#services">Services</a>
+      <a href="#services">Prices</a>
       <a href="#stylists">Stylists</a>
-      <a href="#work">Our work</a>
-      <a href="#new">New clients</a>
+      <a href="#work">Work</a>
+      <a href="#new">First visit</a>
     </nav>
-    <a class="btn sm" href="#book">Book</a>
+    <div class="right"><a class="btn sm" href="#book">Book a chair</a></div>
   </div>
 </header>
-
-<div class="strip">
-  <div class="wrap">
-    <span>1417 S Congress Ave, Austin TX 78704 &middot; Tue&ndash;Sat 9&ndash;7 &middot; Closed Sun &amp; Mon</span>
-    <a href="tel:+15125550134">(512) 555-0134</a>
-  </div>
-</div>
 
 <main id="top">
 
 <section class="hero" aria-labelledby="hero-h">
+  <figure class="photo dark bleed" data-photo="salon chairs and round mirrors, dark wall, wide">
+    <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?auto=format&fit=crop&w=2000&q=80"
+         alt="Three empty salon chairs facing round mirrors on a dark wall, the studio before we open" loading="eager"
+         style="object-position:center 60%" onerror="this.remove()">
+    <figcaption>Photo &middot; The studio, before opening</figcaption>
+  </figure>
+  <div class="plate-row">
+    <div class="plate">
+      <h1 id="hero-h">Hair that looks like <em>you,</em> on a good day.</h1>
+    </div>
+  </div>
   <div class="wrap">
-    <div>
-      <p class="eyebrow">Hair salon &amp; colour studio &middot; South Congress</p>
-      <h1 id="hero-h">Hair that looks like <em>you</em>, on a good day.</h1>
-      <p class="lede">Four chairs, four specialists. Precision cuts, lived-in colour, real curl work and the occasional brave correction. No upsell, no rush.</p>
+    <div class="below">
+      <p class="issue">Hair salon &amp; colour studio<b>South Congress, Austin</b>Tuesday to Saturday, nine to seven</p>
+      <p class="lede">Four chairs, four people who each do one thing extremely well. Precision cuts, lived-in colour, curls cut dry, and the occasional brave correction. Nobody sells you anything.</p>
       <div class="cta">
-        <a class="btn" href="#book">Book online</a>
-        <a class="btn ghost" href="tel:+15125550134">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-          Call (512) 555-0134
-        </a>
-      </div>
-      <div class="meta">
-        <span>New clients: 15-min consultation first</span>
-        <span>Parking behind the building</span>
+        <a class="btn" href="#book">Book a chair</a>
+        <a class="link" href="#services">Starting prices <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
       </div>
     </div>
-    <figure class="photo hero-photo" data-photo="salon interior, morning light, chairs by the window, wide">
-      <figcaption>Photo &middot; The studio, morning</figcaption>
-    </figure>
   </div>
 </section>
+
+<div class="wrap"><div class="folio"><span>Tessaline</span><i>No. 1 &mdash; Prices</i><span>Quoted before we start</span></div></div>
 
 <section class="sec" id="services" aria-labelledby="services-h">
   <div class="wrap">
     <div class="sec-head reveal">
-      <h2 id="services-h">Services</h2>
-      <p>Starting prices. Every service is quoted before we start &mdash; length, density and how far you're travelling from your current colour all matter, so the number you agree to is the number you pay.</p>
+      <div class="num" aria-hidden="true">I</div>
+      <div>
+        <h2 id="services-h">What it <em>costs.</em></h2>
+        <p class="lede">These are starting prices. Length, density and how far you're travelling from your current colour all change the number, so we quote every service before we pick up a brush. The price you agree to is the price you pay.</p>
+      </div>
     </div>
     <div class="menu reveal">
       <div>
-        <h3>Cuts</h3>
+        <h3>Cuts <span>from $55</span></h3>
         <dl>
-          <div class="row"><dt>Haircut &amp; finish</dt><span class="lead"></span><dd>from $75</dd></div>
-          <div class="row"><dt>Curly cut, dry</dt><span class="lead"></span><dd>from $95</dd></div>
-          <div class="row"><dt>Short &amp; clipper</dt><span class="lead"></span><dd>from $55</dd></div>
-          <div class="row"><dt>Fringe or neckline trim</dt><span class="lead"></span><dd>$20</dd></div>
-          <div class="row"><dt>Kids under 12</dt><span class="lead"></span><dd>from $40</dd></div>
+          <div class="row"><dt>Haircut &amp; finish</dt><dd><i>from</i>$75</dd></div>
+          <div class="row"><dt>Curly cut, dry<small>Cut curl by curl, the way you wear it</small></dt><dd><i>from</i>$95</dd></div>
+          <div class="row"><dt>Short &amp; clipper</dt><dd><i>from</i>$55</dd></div>
+          <div class="row"><dt>Fringe or neckline trim</dt><dd>$20</dd></div>
+          <div class="row"><dt>Under twelves</dt><dd><i>from</i>$40</dd></div>
         </dl>
-        <h3 style="margin-top:36px">Styling &amp; care</h3>
+        <h3>Styling &amp; care <span>from $45</span></h3>
         <dl>
-          <div class="row"><dt>Blowout</dt><span class="lead"></span><dd>from $55</dd></div>
-          <div class="row"><dt>Event styling</dt><span class="lead"></span><dd>from $110</dd></div>
-          <div class="row"><dt>Bond-repair treatment</dt><span class="lead"></span><dd>$45</dd></div>
-          <div class="row"><dt>Scalp &amp; steam treatment</dt><span class="lead"></span><dd>$60</dd></div>
+          <div class="row"><dt>Blowout</dt><dd><i>from</i>$55</dd></div>
+          <div class="row"><dt>Event styling</dt><dd><i>from</i>$110</dd></div>
+          <div class="row"><dt>Bond-repair treatment</dt><dd>$45</dd></div>
+          <div class="row"><dt>Scalp &amp; steam treatment</dt><dd>$60</dd></div>
         </dl>
       </div>
       <div>
-        <h3>Colour</h3>
+        <h3>Colour <span>from $60</span></h3>
         <dl>
-          <div class="row"><dt>Gloss or toner</dt><span class="lead"></span><dd>from $60</dd></div>
-          <div class="row"><dt>Root touch-up</dt><span class="lead"></span><dd>from $95</dd></div>
-          <div class="row"><dt>All-over colour</dt><span class="lead"></span><dd>from $140</dd></div>
-          <div class="row"><dt>Partial highlights</dt><span class="lead"></span><dd>from $170</dd></div>
-          <div class="row"><dt>Full highlights</dt><span class="lead"></span><dd>from $220</dd></div>
-          <div class="row"><dt>Balayage</dt><span class="lead"></span><dd>from $240</dd></div>
-          <div class="row"><dt>Vivid colour</dt><span class="lead"></span><dd>from $260</dd></div>
-          <div class="row"><dt>Colour correction</dt><span class="lead"></span><dd>$120 / hr</dd></div>
-          <p class="note">Corrections are booked after a consultation and quoted in hours. Most take two to four.</p>
+          <div class="row"><dt>Gloss or toner</dt><dd><i>from</i>$60</dd></div>
+          <div class="row"><dt>Root touch-up</dt><dd><i>from</i>$95</dd></div>
+          <div class="row"><dt>All-over colour</dt><dd><i>from</i>$140</dd></div>
+          <div class="row"><dt>Partial highlights</dt><dd><i>from</i>$170</dd></div>
+          <div class="row"><dt>Full highlights</dt><dd><i>from</i>$220</dd></div>
+          <div class="row"><dt>Balayage<small>Hand-painted; grows out without a line</small></dt><dd><i>from</i>$240</dd></div>
+          <div class="row"><dt>Vivid colour<small>Copper, oxblood, silver, blue</small></dt><dd><i>from</i>$260</dd></div>
+          <div class="row"><dt>Colour correction<small>Booked after a consultation, quoted in hours. Most take two to four.</small></dt><dd>$120<i style="margin:0 0 0 6px">/ hr</i></dd></div>
         </dl>
       </div>
     </div>
-    <p class="menu-foot">Colour prices include a gloss and a blow-dry. A haircut with colour is $60 on the same visit. Prices are per stylist and Kit's vivid work runs about 15% above the menu.</p>
-  </div>
-</section>
-
-<section class="sec" id="stylists" aria-labelledby="stylists-h" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 id="stylists-h">The stylists</h2>
-      <p>Each chair has one thing it is known for. Book by name, or tell us what you're after and we'll match you.</p>
-    </div>
-    <div class="team reveal">
-      <article class="stylist">
-        <figure class="photo" data-photo="Dana, portrait at her chair, natural light"><figcaption>Photo &middot; Dana</figcaption></figure>
-        <h3>Dana</h3>
-        <p class="spec">Precision cuts</p>
-        <p>Bobs, blunt lines, grown-out pixies. Trained in London, cuts with the shears, not the razor. Twelve years in.</p>
-        <a class="book" href="#book" data-stylist="Dana">Book with Dana <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-      <article class="stylist">
-        <figure class="photo" data-photo="Marisol, portrait, painting balayage on a client"><figcaption>Photo &middot; Marisol</figcaption></figure>
-        <h3>Marisol</h3>
-        <p class="spec">Balayage &amp; lived-in colour</p>
-        <p>Hand-painted, low-maintenance blondes and brunettes that grow out without a line. Two visits a year is the goal.</p>
-        <a class="book" href="#book" data-stylist="Marisol">Book with Marisol <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-      <article class="stylist">
-        <figure class="photo" data-photo="Theo, portrait, dry-cutting curls"><figcaption>Photo &middot; Theo</figcaption></figure>
-        <h3>Theo</h3>
-        <p class="spec">Curly hair</p>
-        <p>Every curl cut is done dry, curl by curl, so it falls the way you actually wear it. Types 2A through 4C.</p>
-        <a class="book" href="#book" data-stylist="Theo">Book with Theo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
-      <article class="stylist">
-        <figure class="photo" data-photo="Kit, portrait, mixing vivid colour at the bar"><figcaption>Photo &middot; Kit</figcaption></figure>
-        <h3>Kit</h3>
-        <p class="spec">Vivid colour &amp; corrections</p>
-        <p>Copper, oxblood, silver, blue. Also the person you call when a box dye or a bad bleach went wrong.</p>
-        <a class="book" href="#book" data-stylist="Kit">Book with Kit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </article>
+    <div class="menu-foot reveal">
+      <p class="eyebrow">Notes</p>
+      <p>Every colour price includes a gloss and a blow-dry. A haircut on the same visit as colour is $60. Prices are per stylist; Kit's vivid work runs about fifteen per cent above the list, because it takes about fifteen per cent longer.</p>
     </div>
   </div>
 </section>
 
-<section class="sec reviews" aria-labelledby="reviews-h">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 id="reviews-h">Word of mouth</h2>
-      <p>4.9 across 300-odd reviews. These three say it shorter than we can.</p>
-    </div>
-    <div class="quotes reveal">
+<section class="spread" aria-labelledby="reviews-h">
+  <h2 id="reviews-h" class="sr">What clients say</h2>
+  <figure class="photo dark bleed" data-photo="hair texture close-up, dark, glossy waves">
+    <img src="https://images.unsplash.com/photo-1620939391250-eb822ac0818a?auto=format&fit=crop&w=2000&q=80"
+         alt="Close-up of glossy brown hair against a black background" loading="lazy" onerror="this.remove()">
+    <figcaption>Photo &middot; Balayage, detail</figcaption>
+  </figure>
+  <div class="plate-row">
+    <div class="plate">
       <blockquote>
         <p>&ldquo;Marisol did my balayage in March. It's September and I still haven't needed to go back. That's the whole review.&rdquo;</p>
-        <cite>&mdash; J. A., Google review</cite>
+        <cite>J. A. &mdash; Google review</cite>
       </blockquote>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="rest reveal">
+      <p class="k">Across three hundred-odd reviews<b>4.9</b></p>
       <blockquote>
         <p>&ldquo;First salon in Austin that cut my curls dry and didn't try to sell me eleven products on the way out.&rdquo;</p>
-        <cite>&mdash; R. O., Yelp</cite>
+        <cite>R. O. &mdash; Yelp</cite>
       </blockquote>
       <blockquote>
         <p>&ldquo;Kit took me from orange box-dye to a real copper in one long afternoon. They quoted the hours up front and hit them.&rdquo;</p>
-        <cite>&mdash; L. M., Google review</cite>
+        <cite>L. M. &mdash; Google review</cite>
       </blockquote>
     </div>
   </div>
 </section>
+
+<div class="wrap"><div class="folio"><span>Tessaline</span><i>No. 2 &mdash; The stylists</i><span>Book by name</span></div></div>
+
+<section class="sec" id="stylists" aria-labelledby="stylists-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="num" aria-hidden="true">II</div>
+      <div>
+        <h2 id="stylists-h">Four chairs, <em>four</em> specialists.</h2>
+        <p class="lede">We don't do faces on the website; we'd rather show you what's on the trolley. Each of us has one thing we're known for. Book by name, or tell us what you're after and we'll put you in the right chair.</p>
+      </div>
+    </div>
+    <div class="team reveal">
+      <article class="stylist">
+        <figure class="photo" data-photo="Dana's shears and comb on the station, top-down">
+          <img src="https://images.unsplash.com/photo-1596362601603-b74f6ef166e4?auto=format&fit=crop&w=1200&q=80"
+               alt="Dana's steel shears and a cutting comb laid on the station" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Dana's shears</figcaption>
+        </figure>
+        <div class="cap"><span>01</span><span>Her shears, not the razor</span></div>
+        <h3>Dana</h3>
+        <p class="spec">Precision cuts</p>
+        <p class="bio">Bobs, blunt lines, grown-out pixies brought back into shape. Dana trained in London and has cut with the shears, never the razor, for twelve years. If you want a line you can see from across the room, this is the chair.</p>
+        <a class="link" href="#book" data-stylist="Dana">Book with Dana <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+      <article class="stylist">
+        <figure class="photo" data-photo="hand-painted balayage, hair laid on linen, detail">
+          <img src="https://images.unsplash.com/photo-1602549179763-ce6c9df961b7?auto=format&fit=crop&w=1200&q=80"
+               alt="Lengths of hand-painted brown-to-blonde hair laid across white linen" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Marisol's balayage</figcaption>
+        </figure>
+        <div class="cap"><span>02</span><span>Two visits a year</span></div>
+        <h3>Marisol</h3>
+        <p class="spec">Balayage &amp; lived-in colour</p>
+        <p class="bio">Hand-painted blondes and brunettes that grow out without a line. Marisol's aim is that you come in twice a year and look like you didn't. She'll tell you if what you want won't survive Austin sun.</p>
+        <a class="link" href="#book" data-stylist="Marisol">Book with Marisol <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+      <article class="stylist">
+        <figure class="photo" data-photo="defined dark curls, close-up, no face">
+          <img src="https://images.unsplash.com/photo-1560264641-1b5191cc63e2?auto=format&fit=crop&w=1200&q=80"
+               alt="Close-up of defined dark curls after a dry cut" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Theo's curls</figcaption>
+        </figure>
+        <div class="cap"><span>03</span><span>Cut dry, curl by curl</span></div>
+        <h3>Theo</h3>
+        <p class="spec">Curly hair</p>
+        <p class="bio">Every curl cut here is done dry, one curl at a time, so it falls the way you actually wear it rather than the way it looked wet. Theo works types 2A through 4C and will not, under any circumstances, brush it out.</p>
+        <a class="link" href="#book" data-stylist="Theo">Book with Theo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+      <article class="stylist">
+        <figure class="photo" data-photo="colour brushes standing in a cup at the colour bar">
+          <img src="https://images.unsplash.com/photo-1705517120329-770cbe54accc?auto=format&fit=crop&w=1200&q=80"
+               alt="Three tint brushes standing in a cup at Kit's colour bar" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Kit's brushes</figcaption>
+        </figure>
+        <div class="cap"><span>04</span><span>Quoted in hours, kept to</span></div>
+        <h3>Kit</h3>
+        <p class="spec">Vivid colour &amp; corrections</p>
+        <p class="bio">Copper, oxblood, silver, blue, and the colours that don't have names yet. Kit is also who you come to when a box dye or a bad bleach went wrong. Corrections are quoted in hours after a consultation, and the quote holds.</p>
+        <a class="link" href="#book" data-stylist="Kit">Book with Kit <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="folio"><span>Tessaline</span><i>No. 3 &mdash; Recent chairs</i><span>Nothing filtered</span></div></div>
+
+<section class="sec work" id="work" aria-labelledby="work-h">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="num" aria-hidden="true">III</div>
+      <div>
+        <h2 id="work-h">From the <em>chairs.</em></h2>
+        <p class="lede">A few recent ones, and the room they were done in. We photograph the hair, not the person, unless you ask us to.</p>
+      </div>
+    </div>
+    <div class="layout reveal">
+      <div class="item i1">
+        <figure class="photo" data-photo="salon chair and mirror, morning light">
+          <img src="https://images.unsplash.com/photo-1626379501846-0df4067b8bb9?auto=format&fit=crop&w=1200&q=80"
+               alt="A single salon chair in front of a tall mirror, morning light" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Chair two</figcaption>
+        </figure>
+        <div class="cap"><span>Fig. 1</span><span>Chair two, nine a.m.</span></div>
+      </div>
+      <div class="item i2">
+        <figure class="photo" data-photo="hair laid on blue linen, wave texture">
+          <img src="https://images.unsplash.com/photo-1588703782464-28dcda543cf2?auto=format&fit=crop&w=1600&q=80"
+               alt="Lengths of brown hair with soft waves laid across blue linen" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Gloss, Marisol</figcaption>
+        </figure>
+        <div class="cap"><span>Fig. 2</span><span>Gloss over grown-out balayage, Marisol</span></div>
+      </div>
+      <div class="item i3">
+        <figure class="photo" data-photo="shears resting on a folded towel, detail">
+          <img src="https://images.unsplash.com/photo-1549271568-e87e07c5406b?auto=format&fit=crop&w=1200&q=80"
+               alt="Steel shears resting on a folded grey towel" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; Between clients</figcaption>
+        </figure>
+        <div class="cap"><span>Fig. 3</span><span>Between clients, Dana</span></div>
+      </div>
+      <div class="item i4">
+        <figure class="photo" data-photo="retail shelf, product bottles, quiet">
+          <img src="https://images.unsplash.com/photo-1776105609708-3d8908ab4dc2?auto=format&fit=crop&w=1200&q=80"
+               alt="Shelves of the hair care we actually use, lined up by the door" loading="lazy" onerror="this.remove()">
+          <figcaption>Photo &middot; The shelf by the door</figcaption>
+        </figure>
+        <div class="cap"><span>Fig. 4</span><span>The shelf. We use it; you don't have to buy it</span></div>
+      </div>
+    </div>
+    <div class="ig">
+      <p class="eyebrow">Every week's chairs, as they leave</p>
+      <a class="link" href="https://instagram.com/" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/></svg>
+        @tessaline.atx
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="folio"><span>Tessaline</span><i>No. 4 &mdash; First visit</i><span>Fifteen minutes, free</span></div></div>
 
 <section class="sec faq" id="new" aria-labelledby="new-h">
   <div class="wrap">
     <div>
       <p class="eyebrow">New clients</p>
-      <h2 id="new-h">Before your first visit</h2>
-      <p class="intro">A few things worth knowing so the first appointment goes the way you hoped.</p>
+      <h2 id="new-h">Before you <em>sit down.</em></h2>
+      <p class="intro">A few things we'd rather you knew now than found out in the chair.</p>
       <table class="hours">
-        <caption class="eyebrow" style="text-align:left;padding-bottom:10px">Hours</caption>
-        <tr><th scope="row">Tuesday &ndash; Saturday</th><td>9:00 &ndash; 7:00</td></tr>
+        <caption class="eyebrow">Hours</caption>
+        <tr><th scope="row">Tuesday to Saturday</th><td>9 &ndash; 7</td></tr>
         <tr><th scope="row">Last colour booking</th><td>4:00</td></tr>
         <tr class="closed"><th scope="row">Sunday &amp; Monday</th><td>Closed</td></tr>
       </table>
     </div>
     <div class="reveal">
       <details open>
-        <summary>Every new client starts with a 15-minute consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>It's free and it happens before we book the service, either in the chair or on the phone. We look at your hair, talk about what it does on a Tuesday, and agree on a plan and a price. For colour, bring a photo or two of what you like &mdash; and one of what you don't.</p>
+        <summary><span class="n">01</span>Every new client starts with a fifteen-minute consultation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>It's free and it happens before we book the service, in the chair or over email. We look at your hair, talk about what it does on an ordinary Tuesday, and agree on a plan and a price. For colour, bring a photo or two of what you like, and one of what you don't.</p>
       </details>
       <details>
-        <summary>24-hour cancellation policy <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Cancel or move your appointment up to 24 hours before and there's no charge. Inside 24 hours we charge half the booked service; no-shows are charged in full. Colour appointments hold a chair for three hours, so we hold to this one.</p>
+        <summary><span class="n">02</span>Twenty-four hours to cancel <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Cancel or move your appointment up to twenty-four hours before and there's no charge. Inside that window we charge half the booked service; no-shows are charged in full. A colour appointment holds a chair for three hours, so we hold to this one.</p>
       </details>
       <details>
-        <summary>Parking is behind the building <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Turn in from Gibson Street; the lot has six spaces marked Tessaline and the back door is unlocked during hours. Street parking on South Congress is metered and mostly full by ten, so use the lot.</p>
+        <summary><span class="n">03</span>Parking is behind us <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>There's a small lot at the back with six spaces marked Tessaline, and the back door is unlocked during hours. South Congress is metered and mostly full by ten, so use the lot. We'll send the way in with your confirmation.</p>
       </details>
       <details>
-        <summary>What to arrive with <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>For curly cuts, come with your hair down, dry, and styled the way you normally wear it. For everything else, arrive as you are. Coffee and sparkling water are on us; the espresso machine is the loud thing in the corner.</p>
+        <summary><span class="n">04</span>What to arrive with <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>For a curly cut, come with your hair down, dry, and styled the way you normally wear it. For everything else, come as you are. Coffee and sparkling water are on us; the espresso machine is the loud thing in the corner.</p>
       </details>
       <details>
-        <summary>Running late, or need to reschedule? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
-        <p>Call or text <a href="tel:+15125550134">(512) 555-0134</a>. More than 15 minutes late and we may need to shorten the service or move you to the next opening.</p>
+        <summary><span class="n">05</span>Running late, or need to move it? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>
+        <p>Reply to your confirmation text, or email <a href="mailto:hello@tessaline.example">hello@tessaline.example</a>. More than fifteen minutes late and we may need to shorten the service or move you to the next opening.</p>
       </details>
-    </div>
-  </div>
-</section>
-
-<section class="sec work" id="work" aria-labelledby="work-h" style="padding-top:0">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <h2 id="work-h">Our work</h2>
-      <p>Recent chairs. Nothing filtered, nothing from a stock library.</p>
-    </div>
-    <div class="grid reveal">
-      <figure class="photo dark" data-photo="lived-in blonde balayage, back view, waves"><figcaption>Photo &middot; Balayage, Marisol</figcaption></figure>
-      <figure class="photo" data-photo="sharp chin-length bob, profile"><figcaption>Photo &middot; Bob, Dana</figcaption></figure>
-      <figure class="photo olive" data-photo="defined 3B curls, dry cut, front"><figcaption>Photo &middot; Curly cut, Theo</figcaption></figure>
-      <figure class="photo" data-photo="copper vivid, close crop"><figcaption>Photo &middot; Copper, Kit</figcaption></figure>
-      <figure class="photo dark" data-photo="colour bar detail, bowls and brushes"><figcaption>Photo &middot; Colour bar</figcaption></figure>
-      <figure class="photo" data-photo="oxblood correction, before and after, side by side"><figcaption>Photo &middot; Correction, Kit</figcaption></figure>
-      <figure class="photo olive" data-photo="clipper cut with textured top, back of head"><figcaption>Photo &middot; Short cut, Dana</figcaption></figure>
-    </div>
-    <div class="ig">
-      <p class="eyebrow">Every week's chairs, as they leave</p>
-      <a href="https://instagram.com/" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18"/><circle cx="12" cy="12" r="4"/><path d="M17 7h.01"/></svg>
-        @tessaline.atx on Instagram
-      </a>
     </div>
   </div>
 </section>
@@ -466,13 +553,10 @@ button,input,select{font:inherit;color:inherit}
   <div class="wrap">
     <div class="aside">
       <p class="eyebrow">Book</p>
-      <h2 id="book-h">Request a time</h2>
-      <p>Tell us what you're after and when suits. We confirm by text within the working day, usually within the hour. New clients: we'll book your consultation first.</p>
-      <p>Prefer to talk?</p>
-      <a class="call" href="tel:+15125550134">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
-        (512) 555-0134
-      </a>
+      <h2 id="book-h">Request <em>a time.</em></h2>
+      <p>Tell us what you're after and when suits. We confirm by text within the working day, usually inside the hour. If you're new, we'll book the consultation first and the service after it.</p>
+      <p>Prefer to write?</p>
+      <a class="mail" href="mailto:hello@tessaline.example">hello@tessaline.example</a>
     </div>
     <form class="form reveal" id="request" novalidate>
       <div class="field">
@@ -480,8 +564,8 @@ button,input,select{font:inherit;color:inherit}
         <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
       </div>
       <div class="field">
-        <label for="f-phone">Mobile</label>
-        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="(512) 555-0100">
+        <label for="f-phone">Mobile, for the confirmation text</label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="Your number">
       </div>
       <div class="field">
         <label for="f-service">Service</label>
@@ -511,7 +595,7 @@ button,input,select{font:inherit;color:inherit}
         </select>
       </div>
       <fieldset class="field full" style="border:0;padding:0">
-        <legend style="font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--ink-2);margin-bottom:10px">Preferred days</legend>
+        <legend>Preferred days</legend>
         <div class="days">
           <label><input type="checkbox" name="days" value="Tue"><span>Tue</span></label>
           <label><input type="checkbox" name="days" value="Wed"><span>Wed</span></label>
@@ -537,8 +621,8 @@ button,input,select{font:inherit;color:inherit}
     <div class="cols">
       <div>
         <h4>Tessaline</h4>
-        <p>Hair salon &amp; colour studio<br>1417 S Congress Ave<br>Austin, TX 78704</p>
-        <p style="margin-top:12px"><a href="tel:+15125550134">(512) 555-0134</a><br><a href="mailto:hello@tessaline.example">hello@tessaline.example</a></p>
+        <p>Hair salon &amp; colour studio<br>South Congress, Austin</p>
+        <p style="margin-top:12px"><a href="mailto:hello@tessaline.example">hello@tessaline.example</a></p>
       </div>
       <div>
         <p class="k">Hours</p>
@@ -548,25 +632,24 @@ button,input,select{font:inherit;color:inherit}
         </table>
       </div>
       <div>
-        <p class="k">Find</p>
+        <p class="k">On this page</p>
         <ul>
-          <li><a href="#services">Services &amp; prices</a></li>
+          <li><a href="#services">Prices</a></li>
           <li><a href="#stylists">Stylists</a></li>
-          <li><a href="#new">New clients</a></li>
-          <li><a href="#book">Book</a></li>
+          <li><a href="#new">First visit</a></li>
+          <li><a href="#book">Book a chair</a></li>
         </ul>
       </div>
       <div>
         <p class="k">Elsewhere</p>
         <ul>
           <li><a href="https://instagram.com/" rel="noopener">Instagram</a></li>
-          <li><a href="https://maps.google.com/" rel="noopener">Google Maps</a></li>
           <li><a href="https://yelp.com/" rel="noopener">Yelp</a></li>
         </ul>
       </div>
     </div>
     <div class="base">
-      <span>&copy; 2026 Tessaline. Parking behind the building, off Gibson St.</span>
+      <span>&copy; 2026 Tessaline &middot; Photography via Unsplash</span>
       <span>Site by <a href="index.html">Onwards Digital</a></span>
     </div>
   </div>
@@ -582,7 +665,7 @@ button,input,select{font:inherit;color:inherit}
   }else{els.forEach(function(e){e.classList.add('in');});}
 
   // "Book with X" preselects the stylist
-  document.querySelectorAll('a.book[data-stylist]').forEach(function(a){
+  document.querySelectorAll('a[data-stylist]').forEach(function(a){
     a.addEventListener('click',function(){
       var s=document.getElementById('f-stylist');
       if(s){s.value=a.getAttribute('data-stylist');}
@@ -597,17 +680,17 @@ button,input,select{font:inherit;color:inherit}
     ['f-name','f-phone','f-service'].forEach(function(id){
       var el=document.getElementById(id);
       var bad=!el.value.trim();
-      el.style.borderBottomColor=bad?'#9a3f3f':'';
+      el.style.borderBottomColor=bad?'#8d5f4e':'';
       el.setAttribute('aria-invalid',bad?'true':'false');
       if(bad){ok=false;}
     });
     if(!ok){document.querySelector('[aria-invalid="true"]').focus();return;}
     var name=document.getElementById('f-name').value.trim().split(' ')[0];
-    var who=document.getElementById('f-stylist').value||'whoever suits your service';
+    var who=document.getElementById('f-stylist').value||'whoever suits the service';
     var msg=document.createElement('p');
     msg.className='sent';
     msg.setAttribute('role','status');
-    msg.textContent='Thanks, '+name+'. We’ll text you within the working day with times for '+who+'.';
+    msg.textContent='Thank you, '+name+'. We’ll text you within the working day with times for '+who+'.';
     form.querySelector('.actions').replaceWith(msg);
   });
 })();
