@@ -321,9 +321,9 @@ ul { padding: 0; list-style: none; }
 .case-list li:last-child { border-bottom: 1px solid var(--hair); }
 .case-copy .btn-text { align-self: flex-start; }
 
-.need { display: flex; flex-direction: column; gap: 12px; margin-top: 56px; border-top: 1px solid var(--ink); padding-top: 28px; }
+.need { display: flex; flex-direction: column; gap: 8px; margin-top: 56px; border-top: 1px solid var(--ink); padding-top: 28px; }
 .need-title { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.2vw, 30px); letter-spacing: 0.01em; }
-.need-list { display: flex; flex-direction: column; max-width: 640px; }
+.need-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 40px; max-width: 1040px; }
 .need-list li { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--hair); font-size: 15px; }
 .need-list li .muted { font-size: 14px; }
 
@@ -582,3 +582,10 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 .cur-list .sym { font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 15px; display: inline-flex; align-items: center; }
 .cur-list .dh { width: 0.9em; height: 0.9em; }
 #pricing .section-head { position: relative; z-index: 30; }
+
+/* Bare variant of the currency menu (top-right utility bar) */
+.cur-menu.bare .cur-btn { border: 0; padding: 4px 0 4px 8px; min-width: 0; color: var(--muted); gap: 8px; }
+.cur-menu.bare .cur-btn:hover { color: var(--ink); }
+.cur-menu.bare .cur-btn:focus-visible { box-shadow: none; outline: 1px dotted var(--muted); outline-offset: 2px; }
+.cur-menu.bare .cur-list { top: calc(100% + 6px); }
+.utility .right { position: relative; z-index: 40; }

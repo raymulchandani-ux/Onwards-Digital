@@ -58,12 +58,9 @@
       el.innerHTML = txt + (suffix ? '<small> ' + suffix + '</small>' : "");
     });
     document.querySelectorAll(".cur-dd").forEach(function (dd) { dd.value = cur; });
-    var btnLabel = document.querySelector(".cur-btn-label");
-    if (btnLabel) {
-      var symHtml = { USD: "$", EUR: "€", GBP: "£", AED: DIRHAM }[cur] || "";
-      btnLabel.innerHTML = cur + " " + symHtml;
-      document.querySelectorAll(".cur-list li").forEach(function (li) { li.setAttribute("aria-selected", li.getAttribute("data-cur") === cur ? "true" : "false"); });
-    }
+    var symHtml = { USD: "$", EUR: "€", GBP: "£", AED: DIRHAM }[cur] || "";
+    document.querySelectorAll(".cur-btn-label").forEach(function (el) { el.innerHTML = cur + " " + symHtml; });
+    document.querySelectorAll(".cur-list li").forEach(function (li) { li.setAttribute("aria-selected", li.getAttribute("data-cur") === cur ? "true" : "false"); });
     document.querySelectorAll("[data-currency-note]").forEach(function (el) {
       el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
@@ -78,12 +75,11 @@
   });
   paintCurrency();
 
-  /* Custom currency menu (pricing section) */
-  var menu = document.getElementById("cur-menu");
-  if (menu) {
+  /* Custom currency menus (top bar and pricing section) */
+  document.querySelectorAll(".cur-menu").forEach(function (menu) {
     var mBtn = menu.querySelector(".cur-btn"), mList = menu.querySelector(".cur-list");
     function openMenu(o) { mList.hidden = !o; mBtn.setAttribute("aria-expanded", o ? "true" : "false"); }
-    mBtn.addEventListener("click", function () { openMenu(mList.hidden); });
+    mBtn.addEventListener("click", function (e) { e.stopPropagation(); openMenu(mList.hidden); });
     mList.querySelectorAll("li").forEach(function (li) {
       li.addEventListener("click", function () {
         cur = li.getAttribute("data-cur");
@@ -93,7 +89,7 @@
     });
     document.addEventListener("click", function (e) { if (!menu.contains(e.target)) openMenu(false); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") openMenu(false); });
-  }
+  });
 
   /* Form helpers (plan pages) ------------------------------- */
   var industry = document.getElementById("business-type");
