@@ -115,8 +115,8 @@
     : addon ? "One-time build fee · Monthly Care billed separately at $12.99 / mo, starting at launch"
     : "One-time payment · no hidden fees";
   var s3 = document.getElementById("step-3");
-  if (key === "advanced") s3.textContent = "Your site is ready within 3–5 business days, with two rounds of revisions.";
-  else if (key === "professional") s3.textContent = "Your site is ready within 5–7 business days, with five rounds of revisions.";
+  if (key === "advanced") s3.textContent = "Your site is ready within 3–5 business days, with two rounds of revisions (bug fixes don’t count).";
+  else if (key === "professional") s3.textContent = "Your site is ready within 5–7 business days, with five rounds of revisions (bug fixes don’t count).";
   else s3.textContent = "Your editor login arrives by email, and care starts right away.";
 
   /* Methods */

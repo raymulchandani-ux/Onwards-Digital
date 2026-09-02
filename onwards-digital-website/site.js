@@ -36,34 +36,34 @@
   }
 
   /* Currency (display only) --------------------------------- */
-  function fmt(n, aed) {
-    if (aed) return "AED " + (n % 1 ? n.toFixed(2) : n.toLocaleString("en-US"));
-    return "$" + (n % 1 ? n.toFixed(2) : n.toLocaleString("en-US"));
+  var SYM = CFG.currencies || { USD: "$" };
+  var cur = "USD";
+  try { var saved = localStorage.getItem("onwards-currency"); if (saved && SYM[saved]) cur = saved; } catch (e) {}
+  function fmt(n) {
+    var s = SYM[cur] || "";
+    var v = (n % 1) ? n.toFixed(2) : n.toLocaleString("en-US");
+    return s + v;
   }
-  var isAED = false;
-  try { isAED = localStorage.getItem("onwards-currency") === "AED"; } catch (e) {}
   function paintCurrency() {
     document.querySelectorAll("[data-price]").forEach(function (el) {
       var key = el.getAttribute("data-price");
       var p = CFG.prices && CFG.prices[key];
       if (!p) return;
-      var v = isAED ? p.aed : p.usd;
-      var txt = (key === "beginner") ? "Free" : fmt(v, isAED);
+      var v = p[cur]; if (v == null) v = p.USD;
+      var txt = (key === "beginner") ? "Free" : fmt(v);
       var suffix = el.getAttribute("data-suffix") || "";
       el.innerHTML = txt + (suffix ? '<small> ' + suffix + '</small>' : "");
     });
-    document.querySelectorAll(".currency").forEach(function (c) {
-      var spans = c.querySelectorAll("span[data-cur]");
-      spans.forEach(function (s) { s.classList.toggle("on", s.getAttribute("data-cur") === (isAED ? "AED" : "USD")); });
-    });
+    document.querySelectorAll(".cur-dd").forEach(function (dd) { dd.value = cur; });
     document.querySelectorAll("[data-currency-note]").forEach(function (el) {
-      el.textContent = isAED ? "Prices shown in AED · charged in USD" : "Prices in USD";
+      el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
   }
-  document.querySelectorAll(".currency").forEach(function (c) {
-    c.addEventListener("click", function () {
-      isAED = !isAED;
-      try { localStorage.setItem("onwards-currency", isAED ? "AED" : "USD"); } catch (e) {}
+  document.querySelectorAll(".cur-dd").forEach(function (dd) {
+    dd.addEventListener("change", function () {
+      if (!SYM[dd.value]) return;
+      cur = dd.value;
+      try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
       paintCurrency();
     });
   });

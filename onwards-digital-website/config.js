@@ -31,12 +31,13 @@ window.ONWARDS = {
   },
 
   // ── Prices ─────────────────────────────────────────────────
-  // USD is the source of truth; AED figures are shown when the visitor
-  // switches currency (display only — checkout is charged in USD).
+  // USD is the source of truth and what checkout charges. The other
+  // currencies are display-only conversions — update them whenever you like.
   prices: {
-    beginner:     { usd: 0,     aed: 0    },
-    advanced:     { usd: 299,   aed: 1099 },
-    professional: { usd: 599,   aed: 2200 },
-    monthlyCare:  { usd: 12.99, aed: 48   }
-  }
+    beginner:     { USD: 0,     AED: 0,    GBP: 0,    EUR: 0     },
+    advanced:     { USD: 299,   AED: 1099, GBP: 225,  EUR: 255   },
+    professional: { USD: 599,   AED: 2200, GBP: 450,  EUR: 510   },
+    monthlyCare:  { USD: 12.99, AED: 48,   GBP: 9.99, EUR: 11.49 }
+  },
+  currencies: { USD: "$", AED: "AED ", GBP: "£", EUR: "€" }
 };

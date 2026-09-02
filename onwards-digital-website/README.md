@@ -34,8 +34,9 @@ example-*.html        Five demo homepages for fictional businesses
    URL into `stripe.advanced`, `stripe.professional`, `stripe.monthlyCare`.
    Any that is left empty shows Stripe as "coming soon" on the checkout page
    while PayPal keeps working — so nothing breaks in the meantime.
-4. **Prices** — `prices` holds USD (charged) and AED (display only). Change a
-   number here and every page updates.
+4. **Prices** — `prices` holds USD (what checkout charges) plus AED, GBP and EUR
+   display conversions for the currency dropdown. Change a number here and
+   every page updates.
 
 Until PayPal/Stripe links are filled in, the Pay button shows a polite message
 asking the customer to email you rather than sending them to a dead link.
@@ -76,6 +77,8 @@ live frames (iframes), so it always reflects the current version of each site.
   it's a separate build. Until it does, Monthly Care is fulfilled by you making
   the changes (the page also promises "up to 3 changes a month done for you",
   so the offer is still honest).
+- **Hosting.** The site says, everywhere, that Onwards builds websites and does
+  not host them. Keep it that way in any copy you add.
 
 ## 4. The example sites
 
