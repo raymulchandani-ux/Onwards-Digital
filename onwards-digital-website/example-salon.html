@@ -21,12 +21,12 @@
   --clay:#8d5f4e;
   --display:"Bodoni Moda","Bodoni 72","Didot","Playfair Display",Georgia,"Times New Roman",serif;
   --body:"Hanken Grotesk","Helvetica Neue",Helvetica,Arial,sans-serif;
-  --max:1400px;
-  --gutter:clamp(20px,5vw,72px);
+  --max:1200px;
+  --gutter:clamp(20px,4vw,56px);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-body{background:var(--bone);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{background:var(--bone);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,svg{display:block}
 a{color:inherit}
 h1,h2,h3{font-family:var(--display);font-weight:400;font-variation-settings:"opsz" 96;letter-spacing:-.02em}
@@ -48,12 +48,12 @@ button,input,select{font:inherit;color:inherit}
 /* Masthead */
 .site-head{position:sticky;top:0;z-index:20;background:var(--bone)}
 .site-head .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:76px;gap:24px;border-bottom:1px solid var(--ink)}
-.brand{font-family:var(--display);font-size:30px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1;font-variation-settings:"opsz" 60}
+.brand{font-family:var(--display);font-size:26px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1;font-variation-settings:"opsz" 60}
 .nav{display:flex;gap:34px;align-items:center;justify-content:center}
 .nav a{text-decoration:none;font-size:12px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--ink-2);padding:12px 0;border-bottom:1px solid transparent}
 .nav a:hover{color:var(--ink);border-color:var(--ink)}
 .site-head .right{justify-self:end}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:50px;padding:0 30px;background:var(--ink);color:var(--bone);text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border:1px solid var(--ink);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:46px;padding:0 26px;background:var(--ink);color:var(--bone);text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;border:1px solid var(--ink);cursor:pointer;transition:background .2s,color .2s,border-color .2s}
 .btn:hover{background:var(--clay);border-color:var(--clay);color:#fff}
 .btn.ghost{background:transparent;color:var(--ink)}
 .btn.ghost:hover{background:var(--ink);color:var(--bone);border-color:var(--ink)}
@@ -81,19 +81,19 @@ button,input,select{font:inherit;color:inherit}
 .plate-row{display:flex;position:relative;z-index:2}
 .plate{background:var(--bone);width:fit-content;max-width:100%;padding:clamp(16px,2vw,32px) clamp(24px,4vw,64px) 0 calc(max(0px,(100% - var(--max)) / 2) + var(--gutter))}
 .hero .plate{margin-top:calc(-1 * clamp(48px,7vw,110px))}
-.hero h1{font-size:clamp(44px,6vw,92px);line-height:.9;letter-spacing:-.03em;max-width:19ch}
+.hero h1{font-size:clamp(40px,4.6vw,66px);line-height:.9;letter-spacing:-.03em;max-width:19ch}
 .hero h1 em{font-weight:400;color:var(--clay)}
-.hero .below{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(24px,4vw,72px);align-items:end;padding:clamp(16px,2vw,32px) 0 clamp(40px,5vw,80px)}
+.hero .below{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(24px,4vw,72px);align-items:end;padding:clamp(14px,1.6vw,24px) 0 clamp(32px,4vw,56px)}
 .hero .issue{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;line-height:2}
 .hero .issue b{display:block;color:var(--ink);font-weight:500}
-.hero .lede{font-size:clamp(18px,1.5vw,22px);line-height:1.4;max-width:34ch;color:var(--ink);font-family:var(--display);font-variation-settings:"opsz" 20;letter-spacing:0}
+.hero .lede{font-size:clamp(17px,1.3vw,19px);line-height:1.4;max-width:34ch;color:var(--ink);font-family:var(--display);font-variation-settings:"opsz" 20;letter-spacing:0}
 .hero .cta{display:flex;flex-direction:column;gap:14px;align-items:flex-start;justify-self:end}
 
 /* Section frame */
-.sec{padding:clamp(64px,8vw,128px) 0}
+.sec{padding:clamp(48px,6vw,88px) 0}
 .sec-head{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,64px);align-items:start;margin-bottom:clamp(40px,5vw,72px)}
-.sec-head .num{font-family:var(--display);font-size:clamp(64px,9vw,150px);line-height:.8;letter-spacing:-.04em;color:var(--bone-3);font-variation-settings:"opsz" 96}
-.sec-head h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em}
+.sec-head .num{font-family:var(--display);font-size:clamp(56px,6.5vw,96px);line-height:.8;letter-spacing:-.04em;color:var(--bone-3);font-variation-settings:"opsz" 96}
+.sec-head h2{font-size:clamp(36px,4vw,58px);line-height:.9;letter-spacing:-.03em}
 .sec-head h2 em{color:var(--clay)}
 .sec-head .lede{margin-top:18px;max-width:52ch;color:var(--ink-2);font-size:16px}
 
@@ -104,45 +104,45 @@ button,input,select{font:inherit;color:inherit}
 .menu dl{margin:0 0 44px}
 .menu dl:last-child{margin-bottom:0}
 .menu .row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:20px;padding:14px 0;border-bottom:1px solid var(--rule)}
-.menu dt{font-family:var(--display);font-size:clamp(22px,1.9vw,27px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
+.menu dt{font-family:var(--display);font-size:clamp(20px,1.6vw,23px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
 .menu dt small{display:block;font-family:var(--body);font-size:13px;color:var(--ink-3);letter-spacing:.02em;margin-top:4px}
 .menu dd{font-size:14px;letter-spacing:.12em;text-transform:uppercase;font-weight:500;white-space:nowrap;font-variant-numeric:tabular-nums}
 .menu dd i{font-style:normal;color:var(--ink-3);font-weight:400;letter-spacing:.06em;text-transform:none;font-size:13px;margin-right:6px}
-.menu-foot{margin-top:52px;display:grid;grid-template-columns:auto 1fr;gap:20px;font-size:14px;color:var(--ink-2);max-width:74ch;line-height:1.7}
+.menu-foot{margin-top:40px;display:grid;grid-template-columns:auto 1fr;gap:20px;font-size:14px;color:var(--ink-2);max-width:74ch;line-height:1.7}
 .menu-foot .eyebrow{padding-top:5px}
 
 /* Spread: giant image with a quote plate breaking its lower edge */
-.spread .bleed{height:clamp(340px,56vh,620px);width:100%}
+.spread .bleed{height:clamp(300px,46vh,500px);width:100%}
 .spread .plate-row{justify-content:flex-end}
-.spread .plate{padding:clamp(20px,3vw,44px) calc(max(0px,(100% - var(--max)) / 2) + var(--gutter)) 0 clamp(24px,4vw,64px);margin-top:calc(-1 * clamp(64px,10vw,170px))}
-.spread .plate blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(30px,3.6vw,56px);line-height:1;letter-spacing:-.02em;font-variation-settings:"opsz" 96;max-width:20ch}
+.spread .plate{padding:clamp(20px,2.5vw,36px) calc(max(0px,(100% - var(--max)) / 2) + var(--gutter)) 0 clamp(24px,3vw,48px);margin-top:calc(-1 * clamp(48px,7vw,110px))}
+.spread .plate blockquote p{font-family:var(--display);font-style:italic;font-size:clamp(26px,2.7vw,40px);line-height:1;letter-spacing:-.02em;font-variation-settings:"opsz" 96;max-width:20ch}
 .spread .plate cite{display:block;margin-top:22px;font-style:normal;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
-.spread .rest{display:grid;grid-template-columns:2fr 5fr 5fr;gap:clamp(24px,5vw,96px);padding:clamp(40px,5vw,72px) 0 clamp(64px,8vw,128px);align-items:start}
+.spread .rest{display:grid;grid-template-columns:2fr 5fr 5fr;gap:clamp(24px,4vw,72px);padding:clamp(32px,4vw,56px) 0 clamp(48px,6vw,88px);align-items:start}
 .spread .rest blockquote{border-top:1px solid var(--ink);padding-top:20px}
-.spread .rest blockquote p{font-family:var(--display);font-size:clamp(21px,1.8vw,26px);line-height:1.2;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
+.spread .rest blockquote p{font-family:var(--display);font-size:clamp(19px,1.5vw,22px);line-height:1.2;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
 .spread .rest cite{display:block;margin-top:16px;font-style:normal;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
 .spread .rest .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;line-height:2;padding-top:20px;border-top:1px solid var(--ink)}
-.spread .rest .k b{display:block;font-family:var(--display);font-weight:400;font-size:42px;letter-spacing:-.02em;text-transform:none;color:var(--ink);line-height:1;margin-top:6px;font-variation-settings:"opsz" 96}
+.spread .rest .k b{display:block;font-family:var(--display);font-weight:400;font-size:34px;letter-spacing:-.02em;text-transform:none;color:var(--ink);line-height:1;margin-top:6px;font-variation-settings:"opsz" 96}
 
 /* Stylists: two columns, tall 3:4 rectangles, staggered */
-.team{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(32px,8vw,140px);row-gap:clamp(56px,7vw,110px)}
+.team{display:grid;grid-template-columns:1fr 1fr;column-gap:clamp(32px,6vw,96px);row-gap:clamp(40px,5vw,72px);max-width:960px}
 .stylist{display:flex;flex-direction:column;align-items:flex-start}
 .stylist .photo,.stylist .cap{width:100%}
-.stylist:nth-child(even){margin-top:clamp(60px,12vw,200px)}
+.stylist:nth-child(even){margin-top:clamp(48px,8vw,120px)}
 .stylist .photo{aspect-ratio:3/4}
 .stylist .cap{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;padding:12px 0 0;border-top:1px solid var(--ink);margin-top:14px}
-.stylist h3{font-size:clamp(40px,4.4vw,68px);line-height:.95;letter-spacing:-.03em;margin:24px 0 8px}
+.stylist h3{font-size:clamp(32px,3.2vw,46px);line-height:.95;letter-spacing:-.03em;margin:24px 0 8px}
 .stylist h3 em{color:var(--clay);font-size:.55em;letter-spacing:0;vertical-align:.25em;margin-left:.2em}
 .stylist .spec{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--ink-2);margin-bottom:16px}
 .stylist p.bio{font-size:16px;color:var(--ink-2);max-width:40ch;margin-bottom:20px}
 
 /* New clients */
 .faq .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,120px)}
-.faq h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
+.faq h2{font-size:clamp(36px,4vw,58px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
 .faq .intro{color:var(--ink-2);max-width:36ch;font-size:16px}
 .faq details{border-top:1px solid var(--rule-2)}
 .faq details:last-of-type{border-bottom:1px solid var(--rule-2)}
-.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:20px;padding:22px 0;font-family:var(--display);font-size:clamp(22px,2.1vw,30px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
+.faq summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;align-items:baseline;gap:20px;padding:18px 0;font-family:var(--display);font-size:clamp(20px,1.7vw,24px);line-height:1.05;letter-spacing:-.01em;font-variation-settings:"opsz" 40}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary .n{font-family:var(--body);font-size:11px;letter-spacing:.22em;color:var(--ink-3);font-weight:500}
 .faq summary svg{width:16px;height:16px;flex:none;transition:transform .2s;align-self:center}
@@ -155,7 +155,7 @@ button,input,select{font:inherit;color:inherit}
 .hours th,.hours td{text-align:left;padding:11px 0;border-top:1px solid var(--rule-2)}
 .hours tr:last-child th,.hours tr:last-child td{border-bottom:1px solid var(--rule-2)}
 .hours th{font-weight:400;color:var(--ink-2);width:56%}
-.hours td{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:20px;font-variation-settings:"opsz" 20}
+.hours td{font-variant-numeric:tabular-nums;font-family:var(--display);font-size:18px;font-variation-settings:"opsz" 20}
 .hours .closed td{color:var(--ink-3);font-style:italic}
 
 /* Work: a spread laid out like a magazine feature */
@@ -167,22 +167,22 @@ button,input,select{font:inherit;color:inherit}
 .work .i1{grid-column:1/6}.work .i1 .photo{aspect-ratio:3/4}
 .work .i2{grid-column:7/13;align-self:end}.work .i2 .photo{aspect-ratio:4/3}
 .work .i3{grid-column:2/6;margin-top:clamp(-40px,-2vw,-16px)}.work .i3 .photo{aspect-ratio:1/1}
-.work .i4{grid-column:7/12;margin-top:clamp(40px,8vw,140px)}.work .i4 .photo{aspect-ratio:4/5}
+.work .i4{grid-column:7/12;margin-top:clamp(32px,6vw,96px)}.work .i4 .photo{aspect-ratio:4/5}
 .work .ig{margin-top:clamp(40px,5vw,72px);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:22px}
 
 /* Booking */
 .booking{border-top:3px solid var(--ink)}
 .booking .wrap{display:grid;grid-template-columns:5fr 7fr;gap:clamp(32px,6vw,120px)}
-.booking h2{font-size:clamp(44px,5.6vw,88px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
+.booking h2{font-size:clamp(36px,4vw,58px);line-height:.9;letter-spacing:-.03em;margin:10px 0 24px}
 .booking h2 em{color:var(--clay)}
 .booking .aside p{color:var(--ink-2);max-width:36ch;margin-bottom:22px;font-size:16px}
-.booking .aside .mail{font-family:var(--display);font-size:clamp(22px,2vw,30px);text-decoration:none;line-height:1.2;display:inline-block;border-bottom:1px solid var(--ink);font-variation-settings:"opsz" 40;word-break:break-all}
+.booking .aside .mail{font-family:var(--display);font-size:clamp(20px,1.7vw,24px);text-decoration:none;line-height:1.2;display:inline-block;border-bottom:1px solid var(--ink);font-variation-settings:"opsz" 40;word-break:break-all}
 .booking .aside .mail:hover{color:var(--clay);border-color:var(--clay)}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:26px 32px}
 .field{display:flex;flex-direction:column;gap:8px}
 .field.full{grid-column:1/-1}
 .field label,.field legend{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--ink-2)}
-.field input,.field select{height:52px;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:0 2px;border-radius:0;-webkit-appearance:none;appearance:none;font-size:18px;font-family:var(--display);font-variation-settings:"opsz" 20}
+.field input,.field select{height:48px;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:0 2px;border-radius:0;-webkit-appearance:none;appearance:none;font-size:18px;font-family:var(--display);font-variation-settings:"opsz" 20}
 .field select{background:transparent url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23121110' stroke-width='1.5'><path d='M6 9l6 6 6-6'/></svg>") no-repeat right 4px center;padding-right:28px}
 .field input:focus,.field select:focus{outline:0;border-bottom-color:var(--clay);box-shadow:0 1px 0 var(--clay)}
 .field input::placeholder{color:var(--ink-3);font-style:italic}
@@ -193,12 +193,12 @@ button,input,select{font:inherit;color:inherit}
 .days label:has(input:focus-visible){outline:2px solid var(--clay);outline-offset:3px}
 .form .actions{grid-column:1/-1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
 .form .actions small{font-size:13px;color:var(--ink-3);max-width:34ch;line-height:1.5}
-.form .sent{grid-column:1/-1;padding:22px 0;border-top:1px solid var(--ink);font-family:var(--display);font-size:clamp(22px,2vw,28px);line-height:1.2;font-variation-settings:"opsz" 40}
+.form .sent{grid-column:1/-1;padding:20px 0;border-top:1px solid var(--ink);font-family:var(--display);font-size:clamp(20px,1.7vw,24px);line-height:1.2;font-variation-settings:"opsz" 40}
 
 /* Footer / colophon */
-.foot{border-top:1px solid var(--ink);padding:clamp(40px,5vw,72px) 0 28px}
+.foot{border-top:1px solid var(--ink);padding:clamp(36px,4vw,56px) 0 24px}
 .foot .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px}
-.foot h4{font-family:var(--display);font-size:34px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-variation-settings:"opsz" 60}
+.foot h4{font-family:var(--display);font-size:28px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-variation-settings:"opsz" 60}
 .foot .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3);font-weight:500;margin-bottom:14px}
 .foot p,.foot li{font-size:15px;color:var(--ink-2);line-height:1.7}
 .foot ul{list-style:none}
