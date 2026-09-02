@@ -64,6 +64,7 @@
     document.querySelectorAll("[data-currency-note]").forEach(function (el) {
       el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
+    paintSubmit();
   }
   // One entry point for every control on the page (top bar, pricing section, plain <select>).
   function setCurrency(c) {
@@ -160,12 +161,22 @@
   var addonInput = document.getElementById("care-input");
   var submitBtn = document.getElementById("submit-btn");
   var addonOn = false;
+  // The button reads the plan from data-plan-key ("advanced" | "professional" | "monthlyCare")
+  // and shows the price in whatever currency is selected. Charging still happens in USD.
   function paintSubmit() {
-    if (!submitBtn) return;
-    var base = submitBtn.getAttribute("data-base");
-    var mo = submitBtn.getAttribute("data-monthly") || "$12.99/mo";
-    submitBtn.textContent = addonOn ? ("Continue to payment — " + base + " + " + mo) : ("Continue to payment — " + base);
+    var btn = document.getElementById("submit-btn");
+    if (!btn) return;
+    var key = btn.getAttribute("data-plan-key");
+    if (!key || !CFG.prices || !CFG.prices[key]) return;
+    function priceOf(k) { var p = CFG.prices[k]; var v = p[cur]; if (v == null) v = p.USD; return '<span style="white-space:nowrap">' + fmt(v) + (k === "monthlyCare" ? "/mo" : "") + "</span>"; }
+    var withAddon = addonOn || btn.getAttribute("data-addon") === "yes";
+    if (key === "monthlyCare") {
+      btn.innerHTML = "<span>Subscribe — " + priceOf("monthlyCare") + "</span>";
+    } else {
+      btn.innerHTML = "<span>Continue to payment — " + priceOf(key) + (withAddon ? " + " + priceOf("monthlyCare") : "") + "</span>";
+    }
   }
+  window.__paintSubmit = paintSubmit;
   if (addon && addonInput) {
     addon.addEventListener("click", function () {
       addonOn = !addonOn;
