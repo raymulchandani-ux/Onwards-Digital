@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Onwards Digital</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<div class="utility">
+  <div class="wrap">
+    <span class="left">Secure checkout — you’ll finish paying on PayPal or Stripe, never on this page.</span>
+    <div class="right"><a href="mailto:contact@onwardsdigital.com">Need help? Email us</a></div>
+  </div>
+</div>
+
+<header class="header compact">
+  <div class="wrap">
+    <a class="wordmark" href="index.html">Onwards Digital</a>
+    <a class="back" href="javascript:history.back()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Go back</a>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="pay">
+    <div class="pay-main">
+      <div>
+        <span class="cap muted">Step 2 of 2</span>
+        <h1 class="form-title" style="margin-top:10px;">Choose how you’d like to pay</h1>
+        <p class="form-sub">Both are secure and take a minute. You can pay by card with either — no account needed.</p>
+      </div>
+
+      <div class="methods" role="radiogroup" aria-label="Payment method">
+        <div class="method on" id="m-paypal" role="radio" aria-checked="true" tabindex="0">
+          <span class="radio"></span>
+          <div class="logo"><svg viewBox="0 0 100 24" aria-label="PayPal" role="img"><text x="0" y="19" font-family="Instrument Serif, Georgia, serif" font-size="24" fill="#1a1917">PayPal</text></svg></div>
+          <p class="d">Pay with your PayPal balance, a debit card or a credit card. You’ll get a receipt from PayPal straight away.</p>
+        </div>
+        <div class="method" id="m-stripe" role="radio" aria-checked="false" tabindex="0">
+          <span class="radio"></span>
+          <div class="logo"><svg viewBox="0 0 100 24" aria-label="Stripe" role="img"><text x="0" y="19" font-family="Instrument Serif, Georgia, serif" font-size="24" fill="#1a1917">Stripe</text></svg></div>
+          <p class="d" id="stripe-desc">Card, Apple Pay or Google Pay on a Stripe checkout page. Subscriptions renew automatically.</p>
+        </div>
+      </div>
+
+      <div class="submit-row" style="padding-top:0;">
+        <a href="#" class="btn btn-block" id="pay-btn">Pay with PayPal</a>
+        <p class="submit-note" id="pay-note">You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours.</p>
+        <p class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="secure-text">Encrypted by PayPal. We never see your card details.</span></p>
+      </div>
+    </div>
+
+    <aside class="pay-aside">
+      <div class="summary">
+        <div class="top">
+          <span class="cap muted">Order summary</span>
+          <span class="serif" style="font-size:32px;line-height:1.1;" id="s-plan">—</span>
+          <span class="muted" style="font-size:13px;" id="s-type">—</span>
+        </div>
+        <div class="rows">
+          <div class="row"><span id="r-plan-label">Plan</span><span id="r-plan">—</span></div>
+          <div class="row" id="r-addon-wrap" style="display:none;"><span>Monthly Care</span><span>$12.99 / mo</span></div>
+          <div class="row total"><span>Due today</span><span id="r-total">—</span></div>
+        </div>
+      </div>
+      <div>
+        <span class="cap muted">What happens next</span>
+        <ul class="next-steps" style="margin-top:12px;">
+          <li><span class="n">1</span><span>You get a receipt by email from PayPal or Stripe.</span></li>
+          <li><span class="n">2</span><span>We email you within 24 hours to confirm details and ask for anything we still need — logo, photos, menu.</span></li>
+          <li><span class="n">3</span><span id="step-3">Your site is ready within 3–7 business days, with revisions until you’re happy.</span></li>
+        </ul>
+      </div>
+      <p class="muted" style="font-size:13px;line-height:1.5;">Prices are charged in US dollars. Monthly Care renews monthly and can be cancelled any time by emailing <a href="mailto:contact@onwardsdigital.com" class="ul">contact@onwardsdigital.com</a>.</p>
+    </aside>
+  </div>
+</main>
+
+<div class="wrap footer-wrap">
+  <footer class="footer">
+    <div class="col">
+      <span class="brand">Onwards Digital</span>
+      <span class="about">Websites for small businesses. Built in a week, yours to change.</span>
+    </div>
+    <div class="col"><span class="cap">Plans</span><a href="beginner.html">Free mockup</a><a href="advanced.html">Advanced</a><a href="professional.html">Professional</a><a href="monthly-care.html">Monthly care</a></div>
+    <div class="col"><span class="cap">Examples</span><a href="examples/restaurant.html">Restaurant</a><a href="examples/cafe.html">Café</a><a href="examples/salon.html">Salon</a><a href="examples/trades.html">Trades</a><a href="examples/shop.html">Shop</a></div>
+    <div class="col"><span class="cap">Contact</span><a href="mailto:contact@onwardsdigital.com">contact@onwardsdigital.com</a><span class="muted">© 2026 Onwards Digital</span></div>
+  </footer>
+</div>
+
+<script src="assets/config.js"></script>
+<script>
+(function () {
+  var CFG = window.ONWARDS || {};
+  var q = new URLSearchParams(location.search);
+  var plan = q.get("plan") || "Website plan";
+  var price = parseFloat(q.get("price") || "0");
+  var addon = q.get("addon") === "true";
+  var monthly = q.get("monthly") === "true";
+  var key = /professional/i.test(plan) ? "professional" : /advanced/i.test(plan) ? "advanced" : "monthlyCare";
+  var money = function (n) { return "$" + (n % 1 ? n.toFixed(2) : n.toLocaleString("en-US")); };
+
+  /* Summary */
+  document.getElementById("s-plan").textContent = plan + (addon ? " + Monthly Care" : "");
+  document.getElementById("r-plan").textContent = money(price) + (monthly ? " / mo" : "");
+  document.getElementById("r-plan-label").textContent = monthly ? "Subscription" : "One-time build";
+  document.getElementById("r-total").textContent = money(price);
+  if (addon) document.getElementById("r-addon-wrap").style.display = "flex";
+  document.getElementById("s-type").textContent = monthly ? "Billed monthly · cancel any time"
+    : addon ? "One-time build fee · Monthly Care billed separately at $12.99 / mo, starting at launch"
+    : "One-time payment · no hidden fees";
+  var s3 = document.getElementById("step-3");
+  if (key === "advanced") s3.textContent = "Your site is ready within 3–5 business days, with two rounds of revisions.";
+  else if (key === "professional") s3.textContent = "Your site is ready within 5–7 business days, with five rounds of revisions.";
+  else s3.textContent = "Your editor login arrives by email, and care starts right away.";
+
+  /* Methods */
+  var stripeLink = (CFG.stripe || {})[key] || "";
+  var paypalMe = CFG.paypalMe || "";
+  var paypalSub = CFG.paypalMonthlyCare || "";
+  var method = "paypal";
+  var mP = document.getElementById("m-paypal"), mS = document.getElementById("m-stripe");
+  var btn = document.getElementById("pay-btn"), note = document.getElementById("pay-note"), sec = document.getElementById("secure-text");
+
+  if (!stripeLink) {
+    mS.classList.add("unavailable");
+    document.getElementById("stripe-desc").textContent = "Stripe checkout is coming soon. For now, PayPal takes cards too.";
+  }
+  function paint() {
+    var pp = method === "paypal";
+    mP.classList.toggle("on", pp); mS.classList.toggle("on", !pp);
+    mP.setAttribute("aria-checked", pp); mS.setAttribute("aria-checked", !pp);
+    btn.textContent = (pp ? "Pay " : "Pay ") + money(price) + (monthly ? " / mo" : "") + (pp ? " with PayPal" : " with Stripe");
+    note.textContent = pp
+      ? (monthly && !paypalSub
+          ? "PayPal takes your first month now; we email you a subscription link for the months after. Cancel any time."
+          : "You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours.")
+      : "You’ll be taken to a Stripe checkout page. We’ll be in touch within 24 hours of payment.";
+    sec.textContent = pp ? "Encrypted by PayPal. We never see your card details." : "Encrypted by Stripe. We never see your card details.";
+  }
+  function choose(m) { if (m === "stripe" && !stripeLink) return; method = m; paint(); }
+  [["paypal", mP], ["stripe", mS]].forEach(function (pair) {
+    pair[1].addEventListener("click", function () { choose(pair[0]); });
+    pair[1].addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(pair[0]); } });
+  });
+  paint();
+
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    var dest;
+    if (method === "stripe") dest = stripeLink;
+    else if (monthly && paypalSub) dest = paypalSub;
+    else dest = paypalMe.replace(/\/$/, "") + "/" + price.toFixed(2) + "USD";
+    if (!dest || /YOURUSERNAME/.test(dest)) {
+      alert("Payments aren’t switched on yet — please email contact@onwardsdigital.com and we’ll send you a payment link.");
+      return;
+    }
+    location.href = dest;
+  });
+})();
+</script>
+</body>
+</html>
