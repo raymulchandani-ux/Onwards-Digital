@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="site.css?v=20260902c">
 </head>
 <body>
 
@@ -71,7 +71,7 @@
           </div>
         </div>
 
-        <form id="plan-form" class="form" data-plan="Monthly Care" data-price="12.99" data-next="payment">
+        <form id="plan-form" class="form" novalidate data-plan="Monthly Care" data-price="12.99" data-next="payment">
           <div class="field">
             <label class="cap" for="f-name">Your name</label>
             <input class="input" type="text" id="f-name" name="name" autocomplete="name" placeholder="Maria Rossi" required>
@@ -124,8 +124,9 @@
             </div>
           </div>
           <input type="hidden" name="selected_plan" id="selected-plan-input" value="">
+          <p class="form-error" id="form-error" role="alert"></p>
           <div class="submit-row">
-            <button type="submit" class="btn btn-block" id="submit-btn" disabled>Choose a plan above to continue</button>
+            <button type="submit" class="btn btn-block" id="submit-btn">Choose a plan above to continue</button>
             <p class="submit-note">Next: choose PayPal or Stripe on a secure checkout page. Cancel any time.</p>
           </div>
         </form>
@@ -146,7 +147,7 @@
   </footer>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=20260902c"></script>
 <script>
   // Plan picker — sets window.__selectedPlan, which site.js uses on submit.
   (function () {
@@ -167,7 +168,6 @@
         });
         window.__selectedPlan = { label: plans[k].label, paymentUrl: plans[k].url };
         hidden.value = plans[k].label;
-        btn.disabled = false;
         btn.textContent = plans[k].btn;
       }
       el.addEventListener("click", choose);
@@ -175,6 +175,6 @@
     });
   })();
 </script>
-<script src="site.js"></script>
+<script src="site.js?v=20260902c"></script>
 </body>
 </html>

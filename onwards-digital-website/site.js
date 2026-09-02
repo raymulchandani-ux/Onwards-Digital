@@ -132,9 +132,71 @@
 
   /* Submit ---------------------------------------------------- */
   var form = document.getElementById("plan-form");
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+  function fieldOf(el) { return el.closest(".field") || el.parentElement; }
+  function setError(el, msg) {
+    var f = fieldOf(el); if (!f) return;
+    var err = f.querySelector(".err");
+    if (!err) { err = document.createElement("p"); err.className = "err"; err.setAttribute("aria-live", "polite"); f.appendChild(err); }
+    err.textContent = msg; f.classList.add("invalid");
+    el.setAttribute("aria-invalid", "true");
+  }
+  function clearError(el) {
+    var f = fieldOf(el); if (!f) return;
+    f.classList.remove("invalid"); el.removeAttribute("aria-invalid");
+  }
+  function validate(form) {
+    var first = null, seenRadio = {};
+    form.querySelectorAll("[required]").forEach(function (el) {
+      if (el.offsetParent === null && el.type !== "radio") return;   // hidden (e.g. collapsed "other" field)
+      var ok = true, msg = "This field is required";
+      if (el.type === "radio") {
+        if (seenRadio[el.name]) return; seenRadio[el.name] = true;
+        ok = !!form.querySelector('input[name="' + el.name + '"]:checked');
+        msg = "Please choose one option";
+      } else if (el.type === "email") {
+        var v = el.value.trim();
+        if (!v) { ok = false; }
+        else if (!EMAIL_RE.test(v)) { ok = false; msg = "Please enter a valid email address, like name@gmail.com"; }
+      } else if (el.tagName === "SELECT") {
+        ok = !!el.value; msg = "Please select an option";
+      } else {
+        ok = !!el.value.trim();
+      }
+      if (ok) clearError(el); else { setError(el, msg); if (!first) first = el; }
+    });
+    return first;
+  }
   if (form) {
+    // live re-check once a field has been flagged
+    form.addEventListener("input", function (e) {
+      var el = e.target; var f = fieldOf(el);
+      if (!f || !f.classList.contains("invalid")) return;
+      if (el.type === "email") { if (EMAIL_RE.test(el.value.trim())) clearError(el); }
+      else if (el.value && el.value.trim()) clearError(el);
+    });
+    form.addEventListener("change", function (e) {
+      var el = e.target; if (el.type === "radio" || el.tagName === "SELECT") { if (el.value) clearError(el); }
+    });
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      var bad = validate(form);
+      var banner = document.getElementById("form-error");
+      var picker = document.querySelector(".picker");
+      if (picker && !window.__selectedPlan) {
+        if (banner) { banner.textContent = "Please choose a plan above to continue."; banner.classList.add("show"); }
+        picker.style.outline = "1px solid #9a3b2a";
+        picker.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (picker) picker.style.outline = "";
+      if (bad) {
+        if (banner) { banner.textContent = "Please fix the highlighted fields to continue."; banner.classList.add("show"); }
+        fieldOf(bad).scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(function () { try { bad.focus({ preventScroll: true }); } catch (x) { bad.focus(); } }, 350);
+        return;
+      }
+      if (banner) banner.classList.remove("show");
       var plan = form.getAttribute("data-plan");          // "Beginner" | "Advanced" | "Professional" | "Monthly Care"
       var price = form.getAttribute("data-price");        // "0" | "299" | "599" | "12.99"
       var next = form.getAttribute("data-next");          // "" for beginner, "payment" otherwise

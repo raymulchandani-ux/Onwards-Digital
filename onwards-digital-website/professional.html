@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css">
+  <link rel="stylesheet" href="site.css?v=20260902c">
 </head>
 <body>
 
@@ -48,7 +48,7 @@
         <h2 class="form-title">Tell us about your business</h2>
         <p class="form-sub">Fill this in, then choose how to pay. We start as soon as payment lands.</p>
         
-        <form id="plan-form" class="form" data-plan="Professional" data-price="599" data-next="payment">
+        <form id="plan-form" class="form" novalidate data-plan="Professional" data-price="599" data-next="payment">
           <div class="field">
             <label class="cap" for="f-name">Your name</label>
             <input class="input" type="text" id="f-name" name="name" autocomplete="name" placeholder="Maria Rossi" required>
@@ -140,6 +140,7 @@
           <div class="field">
             <label class="check"><input type="checkbox" name="portfolio_consent" value="Yes"><span>I’m happy for Onwards Digital to show my finished website as an example of their work.</span></label>
           </div>
+          <p class="form-error" id="form-error" role="alert"></p>
           <div class="submit-row">
             <button type="submit" class="btn btn-block" id="submit-btn" data-base="$599" data-monthly="$12.99/mo">Continue to payment — $599</button>
             <p class="submit-note">Next: choose PayPal or Stripe on a secure checkout page.</p>
@@ -163,7 +164,7 @@
   </footer>
 </div>
 
-<script src="config.js"></script>
-<script src="site.js"></script>
+<script src="config.js?v=20260902c"></script>
+<script src="site.js?v=20260902c"></script>
 </body>
 </html>
