@@ -362,8 +362,11 @@ ul { padding: 0; list-style: none; }
   .pov-cols { grid-template-columns: 1fr; gap: 20px; }
   .case { padding: 40px 0; }
   .need-list { grid-template-columns: 1fr; }
-  .included { grid-template-columns: 1fr; border-left: 0; }
-  .inc { border-right: 0; padding: 22px 0; }
+  .included { grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 0; }
+  .inc { padding: 18px 14px 20px 0; }
+  .inc:nth-child(even) { border-right: 0; padding-left: 14px; }
+  .inc .t { font-size: 15px; }
+  .inc p { font-size: 13px; }
   .faq summary { font-size: 20px; padding: 18px 0; }
 }
 
@@ -412,11 +415,25 @@ ul { padding: 0; list-style: none; }
   .section { padding-top: 64px; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 12px; }
   .grid-5, .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  .plans, .steps { grid-template-columns: 1fr; }
-  .plan { border-right: 0; border-bottom: 1px solid var(--ink); padding: 28px 20px; }
+  /* an odd last tile sits centred on its own row, same size as the others */
+  .grid-5 .tile:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 8px); margin: 0 auto; }
+  .plans, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .plan { padding: 22px 14px 24px; gap: 18px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .plan:nth-child(even) { border-right: 0; }
+  .plan:nth-child(3), .plan:nth-child(4) { border-bottom: 0; }
+  .plan-head .row { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .plan .price { font-size: 30px; }
+  .plan .price small { font-size: 14px; }
+  .plan-desc, .features { font-size: 13px; }
+  .features li { padding: 9px 0; }
+  .plan .btn, .plan .btn-line { padding: 0 8px; font-size: 11px; min-height: 42px; white-space: normal; text-align: center; line-height: 1.2; }
   .plan:last-child { border-bottom: 0; }
-  .step { border-right: 0; padding: 24px 0 8px; }
-  .step + .step { padding-left: 0; border-top: 1px solid var(--hair); }
+  .step { padding: 20px 14px 20px 0; border-right: 1px solid var(--hair); border-bottom: 1px solid var(--hair); gap: 10px; }
+  .step:nth-child(even) { border-right: 0; padding-left: 14px; }
+  .step:nth-child(3), .step:nth-child(4) { border-bottom: 0; }
+  .step .n { font-size: 30px; }
+  .step .t { font-size: 15px; }
+  .step .d { font-size: 13px; }
   .band { grid-template-columns: 1fr; }
   .band-visual { padding: 40px 0; border-right: 0; border-bottom: 1px solid var(--hair); }
   .band-copy { padding: 40px 0 8px; }
