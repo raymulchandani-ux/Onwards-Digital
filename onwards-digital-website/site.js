@@ -1,3 +1,38 @@
+/* Pending request store: holds a paid-plan form (including any uploaded file)
+   between the plan page and checkout, so nothing is emailed before payment. */
+window.ONWARDS_PENDING = (function () {
+  var DB = "onwards", STORE = "pending", KEY = "request";
+  function open() {
+    return new Promise(function (res, rej) {
+      if (!window.indexedDB) return rej();
+      var r = indexedDB.open(DB, 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore(STORE); };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error); };
+    });
+  }
+  function tx(mode, fn) {
+    return open().then(function (db) {
+      return new Promise(function (res, rej) {
+        var t = db.transaction(STORE, mode), s = t.objectStore(STORE), req = fn(s);
+        t.oncomplete = function () { res(req && req.result); };
+        t.onerror = function () { rej(t.error); };
+      });
+    });
+  }
+  function ssSave(obj) { try { var c = { label: obj.label, savedAt: obj.savedAt, fields: obj.fields.filter(function (f) { return !(f[1] instanceof Blob); }) }; sessionStorage.setItem("onwards-pending", JSON.stringify(c)); } catch (e) {} }
+  return {
+    save: function (obj) { ssSave(obj); return tx("readwrite", function (s) { return s.put(obj, KEY); }).catch(function () {}); },
+    load: function () {
+      return tx("readonly", function (s) { return s.get(KEY); }).catch(function () { return null; }).then(function (v) {
+        if (v) return v;
+        try { return JSON.parse(sessionStorage.getItem("onwards-pending") || "null"); } catch (e) { return null; }
+      });
+    },
+    clear: function () { try { sessionStorage.removeItem("onwards-pending"); } catch (e) {} return tx("readwrite", function (s) { return s.delete(KEY); }).catch(function () {}); }
+  };
+})();
+
 /* Onwards Digital — shared behaviour (no dependencies) */
 (function () {
   "use strict";
@@ -297,6 +332,19 @@
       var fileEl = form.querySelector('input[type="file"]');
       var hasFile = !!(fileEl && fileEl.files && fileEl.files.length);
 
+      /* Paid plans: nothing is sent yet. The details are parked in the browser and
+         only emailed from the checkout page at the moment the visitor goes off to pay. */
+      if (next === "payment") {
+        var fields = [];
+        new FormData(form).forEach(function (v, k) { fields.push([k, v]); });
+        window.ONWARDS_PENDING.save({ label: label, fields: fields, savedAt: Date.now() }).then(
+          function () { window.location.href = dest; },
+          function () { window.location.href = dest; }
+        );
+        return;
+      }
+
+      /* Free plan: send straight away */
       if (hasFile) {
         // Attachments only arrive on a normal (non-AJAX) submission, so post the
         // form itself; FormSubmit then redirects the visitor to _next.

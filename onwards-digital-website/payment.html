@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260903f">
+  <link rel="stylesheet" href="site.css?v=20260903g">
 </head>
 <body>
 
@@ -66,6 +66,7 @@
 
       <div class="submit-row" style="padding-top:0;">
         <a href="#" class="btn btn-block" id="pay-btn">Pay with PayPal</a>
+        <p class="submit-note" id="pending-note" style="display:none;">We couldn’t find your project details in this browser — please <a href="javascript:history.back()">go back</a> and fill in the form again so we know what to build.</p>
         <p class="submit-note" style="margin-bottom:0;">By paying you agree to our <a href="terms.html" class="ul">Terms of Service</a> and <a href="refunds.html" class="ul">Refunds &amp; Cancellations</a> policy. Monthly Care renews automatically each month until cancelled by email.</p>
         <p class="submit-note" id="pay-note">You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours.</p>
         <p class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="11"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="secure-text">Encrypted by PayPal. We never see your card details.</span></p>
@@ -110,8 +111,8 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260903f"></script>
-<script src="site.js?v=20260903f"></script>
+<script src="config.js?v=20260903g"></script>
+<script src="site.js?v=20260903g"></script>
 <script>
 (function () {
   var CFG = window.ONWARDS || {};
@@ -185,6 +186,48 @@
   paint();
   document.addEventListener("onwards:currency", function () { paintSummary(); paint(); });
 
+  /* The visitor's form is parked in the browser (see ONWARDS_PENDING in site.js) and
+     is only emailed here, at the moment they head off to PayPal/Stripe. */
+  var pending = null;
+  var pendNote = document.getElementById("pending-note");
+  window.ONWARDS_PENDING.load().then(function (p) {
+    pending = p;
+    if (!pending && pendNote) { pendNote.style.display = "block"; }
+  });
+  function sendPending(dest) {
+    var fields = pending.fields, file = null;
+    fields.forEach(function (f) { if (f[1] instanceof Blob && f[1].size) file = f; });
+    var payLabel = (method === "stripe" ? "Stripe" : "PayPal") + " checkout started for " + usd(price) + " USD" + (monthly ? " / month" : "") + " — confirm the payment arrived before starting work";
+    if (file) {
+      // Attachments need a real form post; FormSubmit forwards to _next (the payment page) afterwards.
+      var f = document.createElement("form");
+      f.method = "POST"; f.enctype = "multipart/form-data"; f.style.display = "none";
+      f.action = (CFG.formEndpoint || "").replace("/ajax/", "/");
+      fields.forEach(function (pair) {
+        if (pair[1] instanceof Blob) {
+          var inp = document.createElement("input"); inp.type = "file"; inp.name = pair[0];
+          try { var dt = new DataTransfer(); dt.items.add(new File([pair[1]], pair[1].name || "upload", { type: pair[1].type })); inp.files = dt.files; } catch (e) { return; }
+          f.appendChild(inp);
+        } else {
+          var i2 = document.createElement("input"); i2.type = "hidden"; i2.name = pair[0]; i2.value = pair[1]; f.appendChild(i2);
+        }
+      });
+      [["payment", payLabel], ["_next", dest], ["_captcha", "false"]].forEach(function (pair) {
+        var i3 = document.createElement("input"); i3.type = "hidden"; i3.name = pair[0]; i3.value = pair[1]; f.appendChild(i3);
+      });
+      document.body.appendChild(f);
+      window.ONWARDS_PENDING.clear().then(function () { f.submit(); }, function () { f.submit(); });
+      return;
+    }
+    var data = new FormData();
+    fields.forEach(function (pair) { if (!(pair[1] instanceof Blob)) data.append(pair[0], pair[1]); });
+    data.append("payment", payLabel);
+    var done = false;
+    var go = function () { if (done) return; done = true; window.ONWARDS_PENDING.clear().then(function () { location.href = dest; }, function () { location.href = dest; }); };
+    setTimeout(go, 4000);
+    fetch(CFG.formEndpoint, { method: "POST", body: data, headers: { "Accept": "application/json" } }).then(go, go);
+  }
+
   btn.addEventListener("click", function (e) {
     e.preventDefault();
     var dest;
@@ -195,7 +238,9 @@
       alert("Payments aren’t switched on yet — please email contactonwardsdigital@gmail.com and we’ll send you a payment link.");
       return;
     }
-    location.href = dest;
+    if (btn.classList.contains("busy")) return;
+    btn.classList.add("busy"); btn.innerHTML = "<span>Sending your details…</span>";
+    if (pending && pending.fields) sendPending(dest); else location.href = dest;
   });
 })();
 </script>
