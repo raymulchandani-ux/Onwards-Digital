@@ -66,6 +66,8 @@
       el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
     });
     paintSubmit();
+    window.ONWARDS_CUR = { code: cur, fmt: fmt, dirham: DIRHAM };
+    try { document.dispatchEvent(new CustomEvent("onwards:currency", { detail: { code: cur } })); } catch (e) {}
   }
   // One entry point for every control on the page (top bar, pricing section, plain <select>).
   function setCurrency(c) {
@@ -118,6 +120,14 @@
     });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" || e.key === "Esc") closeAllMenus(); });
   }
+
+  /* On phones the "Our work" section is folded into the tiles, so its nav link lands there instead */
+  document.querySelectorAll('a[href="#work"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var w = document.getElementById("work"), b = document.getElementById("build");
+      if (w && b && w.offsetParent === null) { e.preventDefault(); b.scrollIntoView({ behavior: "smooth" }); }
+    });
+  });
 
   /* Form helpers (plan pages) ------------------------------- */
   var industry = document.getElementById("business-type");

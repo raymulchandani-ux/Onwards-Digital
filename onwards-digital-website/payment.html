@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260902z">
+  <link rel="stylesheet" href="site.css?v=20260903c">
 </head>
 <body>
 
@@ -27,7 +27,18 @@
 <header class="header compact">
   <div class="wrap">
     <a class="wordmark" href="index.html"><svg class="mark" viewBox="0 0 100 100" width="26" height="26" aria-hidden="true"><path d="M72 24 A36 36 0 1 0 72 76" fill="none" stroke="currentColor" stroke-width="9"/><path d="M50 50 H94" fill="none" stroke="currentColor" stroke-width="9"/><path d="M80 38 L94 50 L80 62" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter"/></svg>Onwards Digital</a>
-    <a class="back" href="javascript:history.back()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Go back</a>
+    <div class="head-right">
+      <a class="back" href="javascript:history.back()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Go back</a>
+      <div class="cur-menu head-cur">
+      <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <ul class="cur-list" role="listbox" hidden>
+        <li role="option" data-cur="USD" aria-selected="true"><span>USD</span><span class="sym">$</span></li>
+        <li role="option" data-cur="EUR"><span>EUR</span><span class="sym">€</span></li>
+        <li role="option" data-cur="GBP"><span>GBP</span><span class="sym">£</span></li>
+        <li role="option" data-cur="AED"><span>AED</span><span class="sym"><svg class="dh" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg></span></li>
+      </ul>
+    </div>
+    </div>
   </div>
 </header>
 
@@ -70,7 +81,7 @@
         </div>
         <div class="rows">
           <div class="row"><span id="r-plan-label">Plan</span><span id="r-plan">—</span></div>
-          <div class="row" id="r-addon-wrap" style="display:none;"><span>Monthly Care</span><span>$12.99 / mo</span></div>
+          <div class="row" id="r-addon-wrap" style="display:none;"><span>Monthly Care</span><span id="r-addon">$12.99 / mo</span></div>
           <div class="row total"><span>Due today</span><span id="r-total">—</span></div>
         </div>
       </div>
@@ -99,7 +110,8 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260902z"></script>
+<script src="config.js?v=20260903c"></script>
+<script src="site.js?v=20260903c"></script>
 <script>
 (function () {
   var CFG = window.ONWARDS || {};
@@ -109,17 +121,32 @@
   var addon = q.get("addon") === "true";
   var monthly = q.get("monthly") === "true";
   var key = /professional/i.test(plan) ? "professional" : /advanced/i.test(plan) ? "advanced" : "monthlyCare";
-  var money = function (n) { return "$" + (n % 1 ? n.toFixed(2) : n.toLocaleString("en-US")); };
+  // Prices are charged in USD (the PayPal/Stripe links carry the USD amount); what's
+  // shown on the page follows the currency menu, using the same table as the rest of the site.
+  var P = CFG.prices || {};
+  function curCode() { return (window.ONWARDS_CUR || {}).code || "USD"; }
+  function usd(n) { return "$" + (n % 1 ? n.toFixed(2) : n.toLocaleString("en-US")); }
+  function money(k) {
+    var C = window.ONWARDS_CUR, p = P[k];
+    if (!C || !p) return usd(k === "monthlyCare" ? 12.99 : price);
+    var v = p[C.code]; if (v == null) v = p.USD;
+    return C.fmt(v);
+  }
+  var planKey = monthly ? "monthlyCare" : key;
 
   /* Summary */
   document.getElementById("s-plan").textContent = plan + (addon ? " + Monthly Care" : "");
-  document.getElementById("r-plan").textContent = money(price) + (monthly ? " / mo" : "");
   document.getElementById("r-plan-label").textContent = monthly ? "Subscription" : "One-time build";
-  document.getElementById("r-total").textContent = money(price);
   if (addon) document.getElementById("r-addon-wrap").style.display = "flex";
-  document.getElementById("s-type").textContent = monthly ? "Billed monthly · cancel any time"
-    : addon ? "One-time build fee · Monthly Care billed separately at $12.99 / mo, starting at launch"
-    : "One-time payment · no hidden fees";
+  function paintSummary() {
+    document.getElementById("r-plan").innerHTML = money(planKey) + (monthly ? " / mo" : "");
+    document.getElementById("r-total").innerHTML = money(planKey);
+    document.getElementById("r-addon").innerHTML = money("monthlyCare") + " / mo";
+    document.getElementById("s-type").innerHTML = monthly ? "Billed monthly · cancel any time"
+      : addon ? "One-time build fee · Monthly Care billed separately at " + money("monthlyCare") + " / mo, starting at launch"
+      : "One-time payment · no hidden fees";
+  }
+  paintSummary();
   var s3 = document.getElementById("step-3");
   if (key === "advanced") s3.textContent = "Your site is ready within 3–5 business days, with two rounds of revisions (bug fixes don’t count).";
   else if (key === "professional") s3.textContent = "Your site is ready within 5–7 business days, with five rounds of revisions (bug fixes don’t count).";
@@ -141,12 +168,13 @@
     var pp = method === "paypal";
     mP.classList.toggle("on", pp); mS.classList.toggle("on", !pp);
     mP.setAttribute("aria-checked", pp); mS.setAttribute("aria-checked", !pp);
-    btn.textContent = (pp ? "Pay " : "Pay ") + money(price) + (monthly ? " / mo" : "") + (pp ? " with PayPal" : " with Stripe");
-    note.textContent = pp
+    btn.innerHTML = "<span>Pay " + money(planKey) + (monthly ? " / mo" : "") + (pp ? " with PayPal" : " with Stripe") + "</span>";
+    var charged = curCode() === "USD" ? "" : " You’ll be charged " + usd(price) + " USD" + (monthly ? " a month" : "") + " through " + (pp ? "PayPal" : "Stripe") + ".";
+    note.textContent = (pp
       ? (monthly && !paypalSub
           ? "PayPal takes your first month now; we email you a subscription link for the months after. Cancel any time."
           : "You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours.")
-      : "You’ll be taken to a Stripe checkout page. We’ll be in touch within 24 hours of payment.";
+      : "You’ll be taken to a Stripe checkout page. We’ll be in touch within 24 hours of payment.") + charged;
     sec.textContent = pp ? "Encrypted by PayPal. We never see your card details." : "Encrypted by Stripe. We never see your card details.";
   }
   function choose(m) { if (m === "stripe" && !stripeLink) return; method = m; paint(); }
@@ -155,6 +183,7 @@
     pair[1].addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(pair[0]); } });
   });
   paint();
+  document.addEventListener("onwards:currency", function () { paintSummary(); paint(); });
 
   btn.addEventListener("click", function (e) {
     e.preventDefault();

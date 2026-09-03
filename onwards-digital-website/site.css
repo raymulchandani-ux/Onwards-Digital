@@ -622,3 +622,19 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 /* Dirham symbol inside the black submit button */
 .btn .dh { width: 0.95em; height: 0.95em; max-width: none; vertical-align: -0.16em; margin-right: 0.06em; }
 .btn .dh path { stroke-width: 6.5; }
+.summary .dh, .submit-note .dh { width: 0.8em; height: 0.8em; max-width: none; vertical-align: -0.08em; }
+
+/* Phone only: the five demo tiles carry their "Our work, up close" text directly
+   under the photo, and the separate Our work section is hidden to cut scrolling. */
+.tile-copy { display: none; }
+@media (max-width: 760px) {
+  #work { display: none; }
+  .grid-5 { grid-template-columns: 1fr; gap: 0; }
+  .grid-5 .tile:last-child:nth-child(odd) { width: auto; margin: 0; }
+  .tile-wrap { display: flex; flex-direction: column; gap: 14px; padding: 24px 0; border-top: 1px solid var(--hair); }
+  .tile-wrap:first-child { border-top: 1px solid var(--ink); }
+  .tile-wrap:last-child { border-bottom: 1px solid var(--hair); }
+  .tile-wrap .tile .ph { aspect-ratio: 16 / 10; }
+  .tile-wrap .tile .meta { display: none; }
+  .tile-copy { display: flex; }
+}
