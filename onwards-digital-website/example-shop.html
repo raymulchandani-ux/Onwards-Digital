@@ -157,7 +157,7 @@
   .story .body p:first-of-type::first-letter{font-family:var(--display);font-size:3em;float:left;line-height:.8;padding:5px 10px 0 0;color:var(--marigold-deep)}
   .story .diff{font-family:var(--display);font-size:clamp(20px,1.8vw,24px);line-height:1.25;margin:22px 0 8px;color:var(--green);max-width:26em}
   .story .sig{font-family:var(--display);font-style:italic;font-size:18px;color:var(--marigold-deep);margin:0}
-  .story-side{position:sticky;top:84px}
+  .story-side{position:sticky;top:120px}
   .story-side .photo{aspect-ratio:1/1;max-height:400px}
   .facts{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;margin-top:16px}
   .facts div{border-top:1px solid var(--green);padding:10px 0 12px}
@@ -315,6 +315,10 @@
 
   /* Phone: keep only the back link in the top bar */
   @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
+  /* The Onwards Digital bar stays pinned above the site's own sticky header */
+  .onwards{position:sticky;top:0;z-index:21}
+  html{scroll-padding-top:112px}
+  .site-head{top:36px}
 </style>
 </head>
 <body>

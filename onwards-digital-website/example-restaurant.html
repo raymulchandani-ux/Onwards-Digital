@@ -112,7 +112,7 @@
 
   /* Menu: single wide column, hairline leaders */
   .menu-sec .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(40px,5vw,72px);align-items:start}
-  .menu-sec .sec-head{position:sticky;top:96px;margin-bottom:0}
+  .menu-sec .sec-head{position:sticky;top:132px;margin-bottom:0}
   .menu-sec .sec-head .photo{margin-top:32px;min-height:0;height:300px}
   .course{margin-bottom:clamp(28px,3vw,36px)}
   .course:last-of-type{margin-bottom:0}
@@ -308,6 +308,46 @@
   /* Phone: keep only the back link in the top bar */
   @media (max-width:640px){.head-tel{display:none}}
   @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
+  /* The Onwards Digital bar stays pinned above the site's own sticky header */
+  .onwards{position:sticky;top:0;z-index:21}
+  html{scroll-padding-top:112px}
+  .site-head{top:36px}
+  /* Custom date & time pickers (reservation) */
+  .pick-field{position:relative}
+  form.res .pick{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;font:inherit;font-size:18px;font-family:var(--display);color:var(--cream);background:transparent;border:0;border-bottom:1px solid var(--rule-2);padding:8px 0 10px;min-height:44px;border-radius:0;cursor:pointer;transition:border-color .2s;letter-spacing:0;text-transform:none;font-weight:400}
+  form.res .pick:hover{border-bottom-color:var(--cream-2);background:transparent}
+  form.res .pick[aria-expanded="true"],form.res .pick:focus{border-bottom-color:var(--amber);outline:none}
+  form.res .pick svg{width:20px;height:20px;flex:none;color:var(--amber);opacity:.85;transition:opacity .2s}
+  form.res .pick:hover svg{opacity:1}
+  form.res .pick .pick-val.empty{color:var(--cream-3)}
+  .pop{position:absolute;left:0;top:calc(100% + 10px);z-index:30;min-width:100%;width:max-content;max-width:min(360px,calc(100vw - 2*var(--gutter,20px)));background:#221e19;border:1px solid var(--rule-2);box-shadow:0 18px 40px rgba(0,0,0,.45);padding:16px;opacity:0;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease;pointer-events:none}
+  .pop.open{opacity:1;transform:none;pointer-events:auto}
+  .cal{width:300px}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cal-month{font-family:var(--display);font-size:20px;color:var(--cream)}
+  form.res .cal-nav{letter-spacing:0;min-height:0;font:inherit;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;color:var(--cream-2);cursor:pointer;padding:0;transition:color .15s,border-color .15s}
+  .cal-nav svg{width:18px;height:18px}
+  form.res .cal-nav:hover{color:var(--amber);border-color:var(--rule-2)}
+  form.res .cal-nav:disabled{opacity:.3;cursor:default;border-color:transparent;color:var(--cream-2)}
+  .cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal-dow span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-3);text-align:center;padding:4px 0 8px}
+  form.res .cal-grid button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:36px;background:transparent;border:1px solid transparent;color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s;font-variant-numeric:tabular-nums}
+  form.res .cal-grid button:hover{border-color:var(--rule-2)}
+  form.res .cal-grid button.today{border-color:var(--rule-2)}
+  form.res .cal-grid button.sel,form.res .cal-grid button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  form.res .cal-grid button:disabled{color:var(--cream-3);opacity:.35;cursor:default;border-color:transparent;text-decoration:line-through;text-decoration-color:rgba(239,230,214,.4)}
+  .cal-grid .blank{height:36px}
+  .pop-note{margin:12px 0 0;font-size:12.5px;color:var(--cream-3);border-top:1px solid var(--rule);padding-top:10px}
+  .times{width:300px;max-height:340px;overflow:auto;overscroll-behavior:contain}
+  .tg+.tg{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule)}
+  .tg .k{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+  .tg .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  form.res .tg button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:38px;background:transparent;border:1px solid var(--rule);color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s;font-variant-numeric:tabular-nums}
+  form.res .tg button:hover{border-color:var(--cream-2)}
+  form.res .tg button.sel,form.res .tg button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  .times .closed{font-family:var(--display);font-style:italic;color:var(--cream-2);font-size:17px;margin:4px 0}
+  @media (max-width:600px){.pop{left:0;right:0;width:auto;max-width:none;min-width:0}.cal,.times{width:auto}}
+  @media (prefers-reduced-motion:reduce){.pop{transition:none;transform:none}}
 </style>
 </head>
 <body>
@@ -545,13 +585,34 @@
           <label for="r-email">Email</label>
           <input id="r-email" name="email" type="email" placeholder="We'll confirm here" autocomplete="email" required>
         </div>
-        <div class="field">
-          <label for="r-date">Date</label>
-          <input id="r-date" name="date" type="date" required>
+        <div class="field pick-field">
+          <label for="r-date-btn">Date</label>
+          <button type="button" class="pick" id="r-date-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-date-pop">
+            <span class="pick-val" id="r-date-text">Choose a date</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>
+          </button>
+          <input type="hidden" id="r-date" name="date" required>
+          <div class="pop cal" id="r-date-pop" role="dialog" aria-label="Choose a date" hidden>
+            <div class="cal-head">
+              <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <span class="cal-month" id="cal-month" aria-live="polite"></span>
+              <button type="button" class="cal-nav" id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+            <div class="cal-dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <p class="pop-note">Closed Mondays. Lunch Friday &amp; Saturday.</p>
+          </div>
         </div>
-        <div class="field">
-          <label for="r-time">Time</label>
-          <input id="r-time" name="time" type="time" min="12:00" max="21:30" step="900" required>
+        <div class="field pick-field">
+          <label for="r-time-btn">Time</label>
+          <button type="button" class="pick" id="r-time-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-time-pop">
+            <span class="pick-val" id="r-time-text">Choose a time</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+          </button>
+          <input type="hidden" id="r-time" name="time" required>
+          <div class="pop times" id="r-time-pop" role="dialog" aria-label="Choose a time" hidden>
+            <div id="time-groups"></div>
+          </div>
         </div>
         <div class="field">
           <label for="r-party">Party size</label>
@@ -644,13 +705,92 @@
                                  : '<strong>Closed Mondays</strong><br>back tomorrow at 5 pm';
   }
 
-  // Reservation form: default the date to today, earliest bookable time
-  var d = document.getElementById('r-date');
-  if(d && !d.value){
-    var n = new Date(), m = n.getMonth()+1, dd = n.getDate();
-    d.min = d.value = n.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dd<10?'0':'')+dd;
-  }
-  var t0 = document.getElementById('r-time'); if(t0 && !t0.value) t0.value = '19:30';
+  // Reservation form: custom date and time pickers
+  (function(){
+    var dateBtn=document.getElementById('r-date-btn'), dateText=document.getElementById('r-date-text'), dateIn=document.getElementById('r-date'), datePop=document.getElementById('r-date-pop');
+    var timeBtn=document.getElementById('r-time-btn'), timeText=document.getElementById('r-time-text'), timeIn=document.getElementById('r-time'), timePop=document.getElementById('r-time-pop');
+    if(!dateBtn||!timeBtn) return;
+    var grid=document.getElementById('cal-grid'), monthEl=document.getElementById('cal-month'), prev=document.getElementById('cal-prev'), next=document.getElementById('cal-next'), groupsEl=document.getElementById('time-groups');
+    var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    // Service by weekday (0 = Sunday): [label, first seating, last seating] in minutes from midnight
+    var SERVICE={0:[['Dinner',16*60,20*60+30]],2:[['Dinner',17*60,21*60+30]],3:[['Dinner',17*60,21*60+30]],4:[['Dinner',17*60,21*60+30]],5:[['Lunch',12*60,14*60],['Dinner',17*60,22*60+30]],6:[['Lunch',12*60,14*60],['Dinner',17*60,22*60+30]]};
+    var today=new Date(); today.setHours(0,0,0,0);
+    var sel=null, view=new Date(today.getFullYear(),today.getMonth(),1), selTime=null;
+
+    function iso(d){var m=d.getMonth()+1,dd=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dd<10?'0':'')+dd;}
+    function fmtTime(mins){var h=Math.floor(mins/60),m=mins%60,ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
+    function open(btn,pop){closeAll(); pop.hidden=false; requestAnimationFrame(function(){pop.classList.add('open');}); btn.setAttribute('aria-expanded','true');}
+    function close(btn,pop){pop.classList.remove('open'); btn.setAttribute('aria-expanded','false'); setTimeout(function(){ if(!pop.classList.contains('open')) pop.hidden=true; },200);}
+    function closeAll(){close(dateBtn,datePop);close(timeBtn,timePop);}
+
+    function drawCal(){
+      monthEl.textContent=MONTHS[view.getMonth()]+' '+view.getFullYear();
+      prev.disabled = view.getFullYear()===today.getFullYear() && view.getMonth()===today.getMonth();
+      grid.innerHTML='';
+      var first=new Date(view.getFullYear(),view.getMonth(),1);
+      var lead=(first.getDay()+6)%7; // Monday first
+      for(var i=0;i<lead;i++){var b=document.createElement('span');b.className='blank';grid.appendChild(b);}
+      var n=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+      for(var d=1;d<=n;d++){
+        var dt=new Date(view.getFullYear(),view.getMonth(),d);
+        var btn=document.createElement('button'); btn.type='button'; btn.textContent=d;
+        var past=dt<today, closed=dt.getDay()===1;
+        if(past||closed){btn.disabled=true; btn.title=closed?'Closed Mondays':'';}
+        if(iso(dt)===iso(today)) btn.classList.add('today');
+        if(sel&&iso(dt)===iso(sel)) btn.classList.add('sel');
+        btn.setAttribute('aria-label',DAYS[dt.getDay()]+' '+d+' '+MONTHS[dt.getMonth()]);
+        (function(dt){btn.addEventListener('click',function(){pickDate(dt);});})(dt);
+        grid.appendChild(btn);
+      }
+    }
+    function pickDate(dt){
+      sel=dt; dateIn.value=iso(dt);
+      dateText.textContent=DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS[dt.getMonth()].slice(0,3)+' '+dt.getFullYear();
+      dateText.classList.remove('empty');
+      drawCal(); drawTimes(); close(dateBtn,datePop);
+      // if the chosen time no longer fits the day's service, clear it
+      if(selTime!=null && !timeAvailable(selTime)){selTime=null; timeIn.value=''; timeText.textContent='Choose a time'; timeText.classList.add('empty');}
+      if(!timeIn.value) setTimeout(function(){open(timeBtn,timePop);},220);
+    }
+    function timeAvailable(m){var svc=sel?SERVICE[sel.getDay()]:null; if(!svc) return false; return svc.some(function(g){return m>=g[1]&&m<=g[2];});}
+    function drawTimes(){
+      groupsEl.innerHTML='';
+      var svc=sel?SERVICE[sel.getDay()]:SERVICE[2];
+      if(!svc){var p=document.createElement('p');p.className='closed';p.textContent="We're closed that day.";groupsEl.appendChild(p);return;}
+      svc.forEach(function(g){
+        var tg=document.createElement('div'); tg.className='tg';
+        var k=document.createElement('span'); k.className='k'; k.textContent=g[0]; tg.appendChild(k);
+        var opts=document.createElement('div'); opts.className='opts';
+        for(var m=g[1];m<=g[2];m+=15){
+          var b=document.createElement('button'); b.type='button'; b.textContent=fmtTime(m); b.dataset.m=m;
+          if(selTime===m) b.classList.add('sel');
+          b.addEventListener('click',function(){pickTime(+this.dataset.m);});
+          opts.appendChild(b);
+        }
+        tg.appendChild(opts); groupsEl.appendChild(tg);
+      });
+    }
+    function pickTime(m){
+      selTime=m; var h=Math.floor(m/60),mm=m%60; timeIn.value=(h<10?'0':'')+h+':'+(mm<10?'0':'')+mm;
+      timeText.textContent=fmtTime(m); timeText.classList.remove('empty');
+      drawTimes(); close(timeBtn,timePop);
+    }
+
+    // Whole control opens the picker: the words and the icon are one button
+    dateBtn.addEventListener('click',function(e){e.stopPropagation(); if(datePop.classList.contains('open')) close(dateBtn,datePop); else open(dateBtn,datePop);});
+    timeBtn.addEventListener('click',function(e){e.stopPropagation(); if(timePop.classList.contains('open')) close(timeBtn,timePop); else open(timeBtn,timePop);});
+    prev.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()-1,1);drawCal();});
+    next.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()+1,1);drawCal();});
+    [datePop,timePop].forEach(function(p){p.addEventListener('click',function(e){e.stopPropagation();});});
+    document.addEventListener('click',function(e){ if(!datePop.contains(e.target)&&!timePop.contains(e.target)) closeAll(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeAll();} });
+
+    // Defaults: next open day, 7:30 pm (or the day's first dinner seating)
+    var start=new Date(today); if(start.getDay()===1) start.setDate(start.getDate()+1);
+    pickDateQuiet(start);
+    function pickDateQuiet(dt){ sel=dt; dateIn.value=iso(dt); dateText.textContent=DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS[dt.getMonth()].slice(0,3)+' '+dt.getFullYear(); view=new Date(dt.getFullYear(),dt.getMonth(),1); drawCal(); var pref=19*60+30; var svc=SERVICE[dt.getDay()]; var m=timeAvailable(pref)?pref:svc[svc.length-1][1]; selTime=m; var h=Math.floor(m/60),mm=m%60; timeIn.value=(h<10?'0':'')+h+':'+(mm<10?'0':'')+mm; timeText.textContent=fmtTime(m); drawTimes(); }
+  })();
 
   // Mobile nav
   var t = document.querySelector('.menu-toggle'), nav = document.getElementById('nav');

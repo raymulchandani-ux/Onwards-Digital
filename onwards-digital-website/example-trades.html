@@ -397,6 +397,10 @@
 
   /* Phone: keep only the back link in the top bar */
   @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
+  /* The Onwards Digital bar stays pinned above the site's own sticky header */
+  .onwards{position:sticky;top:0;z-index:21}
+  html{scroll-padding-top:112px}
+  .hdr{top:36px}
 </style>
 </head>
 <body>
