@@ -345,8 +345,14 @@
   form.res .tg button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:38px;background:transparent;border:1px solid var(--rule);color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s;font-variant-numeric:tabular-nums}
   form.res .tg button:hover{border-color:var(--cream-2)}
   form.res .tg button.sel,form.res .tg button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  .party{width:300px}
+  .party .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  form.res .party .opts button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:38px;background:transparent;border:1px solid var(--rule);color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s}
+  form.res .party .opts button:hover{border-color:var(--cream-2)}
+  form.res .party .opts button.sel,form.res .party .opts button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  form.res .party .opts button.wide{grid-column:1/-1}
   .times .closed{font-family:var(--display);font-style:italic;color:var(--cream-2);font-size:17px;margin:4px 0}
-  @media (max-width:600px){.pop{left:0;right:0;width:auto;max-width:none;min-width:0}.cal,.times{width:auto}}
+  @media (max-width:600px){.pop{left:0;right:0;width:auto;max-width:none;min-width:0}.cal,.times,.party{width:auto}}
   @media (prefers-reduced-motion:reduce){.pop{transition:none;transform:none}}
 </style>
 </head>
@@ -614,16 +620,17 @@
             <div id="time-groups"></div>
           </div>
         </div>
-        <div class="field">
-          <label for="r-party">Party size</label>
-          <select id="r-party" name="party" required>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-            <option value="4">Four</option>
-            <option value="5">Five</option>
-            <option value="6">Six</option>
-            <option value="7">Seven or more</option>
-          </select>
+        <div class="field pick-field">
+          <label for="r-party-btn">Party size</label>
+          <button type="button" class="pick" id="r-party-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-party-pop">
+            <span class="pick-val" id="r-party-text">Two</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <input type="hidden" id="r-party" name="party" value="2" required>
+          <div class="pop party" id="r-party-pop" role="dialog" aria-label="Party size" hidden>
+            <div class="opts" id="party-opts"></div>
+            <p class="pop-note">Seven or more? Say so and we'll ring you about the back room.</p>
+          </div>
         </div>
         <div class="field">
           <label for="r-occasion">Occasion <span style="color:var(--cream-3);letter-spacing:.1em">(optional)</span></label>
@@ -709,7 +716,8 @@
   (function(){
     var dateBtn=document.getElementById('r-date-btn'), dateText=document.getElementById('r-date-text'), dateIn=document.getElementById('r-date'), datePop=document.getElementById('r-date-pop');
     var timeBtn=document.getElementById('r-time-btn'), timeText=document.getElementById('r-time-text'), timeIn=document.getElementById('r-time'), timePop=document.getElementById('r-time-pop');
-    if(!dateBtn||!timeBtn) return;
+    var partyBtn=document.getElementById('r-party-btn'), partyText=document.getElementById('r-party-text'), partyIn=document.getElementById('r-party'), partyPop=document.getElementById('r-party-pop'), partyOpts=document.getElementById('party-opts');
+    if(!dateBtn||!timeBtn||!partyBtn) return;
     var grid=document.getElementById('cal-grid'), monthEl=document.getElementById('cal-month'), prev=document.getElementById('cal-prev'), next=document.getElementById('cal-next'), groupsEl=document.getElementById('time-groups');
     var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
     var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -722,7 +730,7 @@
     function fmtTime(mins){var h=Math.floor(mins/60),m=mins%60,ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
     function open(btn,pop){closeAll(); pop.hidden=false; requestAnimationFrame(function(){pop.classList.add('open');}); btn.setAttribute('aria-expanded','true');}
     function close(btn,pop){pop.classList.remove('open'); btn.setAttribute('aria-expanded','false'); setTimeout(function(){ if(!pop.classList.contains('open')) pop.hidden=true; },200);}
-    function closeAll(){close(dateBtn,datePop);close(timeBtn,timePop);}
+    function closeAll(){close(dateBtn,datePop);close(timeBtn,timePop);close(partyBtn,partyPop);}
 
     function drawCal(){
       monthEl.textContent=MONTHS[view.getMonth()]+' '+view.getFullYear();
@@ -777,13 +785,28 @@
       drawTimes(); close(timeBtn,timePop);
     }
 
+    // Party size
+    var PARTY=[['2','Two'],['3','Three'],['4','Four'],['5','Five'],['6','Six'],['7','Seven or more']];
+    function drawParty(){
+      partyOpts.innerHTML='';
+      PARTY.forEach(function(o){
+        var b=document.createElement('button'); b.type='button'; b.textContent=o[1]; b.dataset.v=o[0];
+        if(o[0]==='7') b.classList.add('wide');
+        if(partyIn.value===o[0]) b.classList.add('sel');
+        b.addEventListener('click',function(){partyIn.value=this.dataset.v; partyText.textContent=this.textContent; drawParty(); close(partyBtn,partyPop);});
+        partyOpts.appendChild(b);
+      });
+    }
+    drawParty();
+    partyBtn.addEventListener('click',function(e){e.stopPropagation(); if(partyPop.classList.contains('open')) close(partyBtn,partyPop); else open(partyBtn,partyPop);});
+
     // Whole control opens the picker: the words and the icon are one button
     dateBtn.addEventListener('click',function(e){e.stopPropagation(); if(datePop.classList.contains('open')) close(dateBtn,datePop); else open(dateBtn,datePop);});
     timeBtn.addEventListener('click',function(e){e.stopPropagation(); if(timePop.classList.contains('open')) close(timeBtn,timePop); else open(timeBtn,timePop);});
     prev.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()-1,1);drawCal();});
     next.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()+1,1);drawCal();});
-    [datePop,timePop].forEach(function(p){p.addEventListener('click',function(e){e.stopPropagation();});});
-    document.addEventListener('click',function(e){ if(!datePop.contains(e.target)&&!timePop.contains(e.target)) closeAll(); });
+    [datePop,timePop,partyPop].forEach(function(p){p.addEventListener('click',function(e){e.stopPropagation();});});
+    document.addEventListener('click',function(e){ if(!datePop.contains(e.target)&&!timePop.contains(e.target)&&!partyPop.contains(e.target)) closeAll(); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeAll();} });
 
     // Defaults: next open day, 7:30 pm (or the day's first dinner seating)
