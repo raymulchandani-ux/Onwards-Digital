@@ -141,6 +141,7 @@
   .homes{padding-left:0;padding-right:0}
   .homes .head-row{padding:0 var(--gutter)}
   .track{position:relative;margin-top:clamp(28px,5vh,56px)}
+  .strip.gliding{scroll-snap-type:none}
   .strip{display:flex;gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:var(--gutter);padding:0 var(--gutter) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .strip::-webkit-scrollbar{display:none}
   .strip{--gap:clamp(12px,1.6vw,22px)}
@@ -249,6 +250,7 @@
   .pop2.open{opacity:1;transform:none;pointer-events:auto}
   .pop2 button{display:block;width:100%;text-align:left;background:transparent;border:0;color:var(--fg);font:inherit;font-size:15px;font-weight:300;padding:10px 14px;border-radius:10px;cursor:pointer;transition:background .12s}
   .pop2 button:hover,.pop2 button.sel{background:rgba(244,242,237,.08)}
+  .pop2 button b{font-weight:400;color:var(--brass)}
   .input,.sel{width:100%;font:inherit;font-size:15.5px;color:var(--fg);background:transparent;border:0;border-bottom:1px solid rgba(244,242,237,.22);padding:10px 0;min-height:44px;font-weight:300;border-radius:0}
   .input::placeholder{color:var(--fg-3)}
   .input:focus,.sel:focus{outline:none;border-bottom-color:var(--fg)}
@@ -306,10 +308,8 @@
 
 <header class="head" id="head">
   <a class="wordmark" href="#top">Noor &amp; Vale</a>
-  <span class="now" id="now"><i></i><span id="now-t">—</span></span>
   <nav>
-    <a href="#homes">Homes</a><a href="#where">Cities</a><a href="#how">How we work</a>
-    <a class="btn" href="#enquire">Speak to an advisor</a>
+    <a href="#homes">Homes</a><a href="#where">Cities</a>    <a class="btn" href="#enquire">Speak to an advisor</a>
   </nav>
 </header>
 
@@ -319,7 +319,7 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="copy">
     <h1><span class="l"><span>The right home,</span></span><span class="l"><span><em>anywhere.</em></span></span></h1>
-    <p class="sub"><b>Homes from two million dollars, in forty cities.</b> One advisor who knows you, wherever the house happens to be.</p>
+    <p class="sub"><b>Over 500 homes across 40 cities.</b></p>
     <form class="ask" id="ask" aria-label="Start a search">
       <label class="type field" id="f-where"><span>Where</span><input id="a-where" name="where" placeholder=" " autocomplete="off" aria-autocomplete="list" aria-controls="pop-where" aria-expanded="false"><em class="ghost" id="ghost">Lake Como</em>
         <div class="pop" id="pop-where" role="listbox" hidden></div>
@@ -348,7 +348,7 @@
 <section id="homes" aria-labelledby="homes-h" class="homes">
   <div class="rv">
     <div class="head-row">
-      <div><p class="k">Selected this month</p><h2 class="h lines" id="homes-h"><span class="l"><span>Homes we'd</span></span><span class="l"><span>show a friend.</span></span></h2></div>
+      <div><p class="k">Selected this month</p><h2 class="h lines" id="homes-h"><span class="l"><span>Latest</span></span><span class="l"><span>properties.</span></span></h2></div>
     </div>
     <div class="track">
       <button type="button" class="glass prev" id="h-prev" aria-label="Previous homes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
@@ -373,8 +373,7 @@
   <div class="where rv">
     <div>
       <p class="k">Cities</p>
-      <h2 class="h lines" id="where-h" style="font-size:clamp(28px,3.4vw,46px)"><span class="l"><span>Forty cities.</span></span><span class="l"><span>One phone number.</span></span></h2>
-      <p class="lead">Move along the list and the picture follows. Choose a city and it's already filled in when you speak to us.</p>
+      <h2 class="h lines" id="where-h" style="font-size:clamp(28px,3.4vw,46px)"><span class="l"><span>Across six</span></span><span class="l"><span>real estate capitals.</span></span></h2>
       <ul class="list" id="city-list">
         <li><button type="button" class="on" data-i="0" data-city="New York"><b>New York</b><span data-tz="America/New_York">—</span><span>212 homes</span></button></li>
         <li><button type="button" data-i="1" data-city="London"><b>London</b><span data-tz="Europe/London">—</span><span>146 homes</span></button></li>
@@ -396,32 +395,6 @@
   </div>
 </section>
 
-<section id="how" aria-labelledby="how-h">
-  <div class="rv">
-    <p class="k">How we work</p>
-    <h2 class="h lines" id="how-h"><span class="l"><span>From the first call</span></span><span class="l"><span>to the keys.</span></span></h2>
-    <div class="how">
-      <figure class="media" id="media">
-        <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm room in low light" loading="lazy">
-        <img data-step="2" src="https://images.unsplash.com/photo-1599409637219-d04e9a2db432?auto=format&fit=crop&w=1400&q=80" alt="A white house among trees under a blue sky" loading="lazy">
-        <img data-step="3" src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1400&q=80" alt="A white mansion with clipped topiary and palms" loading="lazy">
-        <img data-step="4" src="https://images.unsplash.com/photo-1686342123879-241c6349e8c7?auto=format&fit=crop&w=1400&q=80" alt="A staircase in black and white" loading="lazy">
-        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
-        <span class="count-pill" id="how-count">1 / 4</span>
-      </figure>
-      <div class="steps-wrap">
-        <button type="button" class="glass up" id="s-up" aria-label="Previous step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
-        <ol id="steps">
-          <li class="on" data-step="1"><button type="button"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></button></li>
-          <li data-step="2"><button type="button"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></button></li>
-          <li data-step="3"><button type="button"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, a colleague in that city has already checked the paperwork.</p></button></li>
-          <li data-step="4"><button type="button"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></button></li>
-        </ol>
-        <button type="button" class="glass down" id="s-down" aria-label="Next step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <div class="numbers rv" aria-label="The house in numbers">
   <div class="stat"><b>$<span class="count" data-to="4.2" data-dec="1">0</span><small>bn</small></b><span>of homes sold since 2014, in nineteen currencies</span></div>
@@ -445,8 +418,7 @@
   <div class="enq rv">
     <div>
       <p class="k">Speak to an advisor</p>
-      <h2 class="h lines" id="enq-h"><span class="l"><span>Tell us the city.</span></span><span class="l"><span>We'll call <em>within a day.</em></span></span></h2>
-      <p class="lead">One advisor, who reads this before they dial. No newsletters, no list, nothing shared outside the desk.</p>
+      <h2 class="h lines" id="enq-h"><span class="l"><span>Tell us the city.</span></span><span class="l"><span><em>24-hour</em> response time.</span></span></h2>
     </div>
     <form class="req" novalidate>
       <div class="q">
@@ -458,7 +430,7 @@
         </div>
       </div>
       <div class="two">
-        <div class="q"><label for="city">City</label><input class="input" id="city" name="city" placeholder="Where the home is, or should be" list="cities"><datalist id="cities"><option>New York</option><option>London</option><option>Dubai</option><option>Los Angeles</option><option>Lake Como</option><option>Singapore</option><option>Paris</option><option>Miami</option><option>Lisbon</option><option>Sydney</option></datalist></div>
+        <div class="q pickq" id="q-city"><label for="city">City</label><input class="input" id="city" name="search-destination" placeholder="Where the home is, or should be" autocomplete="off" autocorrect="off" spellcheck="false" data-lpignore="true" aria-autocomplete="list" aria-controls="pop-city"><div class="pop2" id="pop-city" role="listbox" hidden></div></div>
         <div class="q pickq" id="q-kind"><span class="lbl">Kind of home</span><button type="button" class="pickbtn2" id="kind-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="pop-kind2"><b id="kind-text" class="empty">Choose</b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button><input type="hidden" id="kind" name="kind">
           <div class="pop2" id="pop-kind2" role="listbox" hidden><button type="button" role="option" data-v="House">House</button><button type="button" role="option" data-v="Apartment">Apartment</button><button type="button" role="option" data-v="Penthouse">Penthouse</button><button type="button" role="option" data-v="Estate">Estate</button><button type="button" role="option" data-v="Waterfront">Waterfront</button></div></div>
       </div>
@@ -473,7 +445,7 @@
         <div class="q"><label for="em">Email</label><input class="input" id="em" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
       </div>
       <div class="q"><label for="ph">Phone <span style="color:var(--fg-3)">(optional)</span></label><input class="input" id="ph" name="phone" type="tel" autocomplete="tel" placeholder="With the country code"></div>
-      <div class="send"><button class="btn" type="submit">Request a call</button><small>Nothing is shared with anyone outside the desk.</small></div>
+      <div class="send"><button class="btn" type="submit">Request a call</button></div>
       <p class="done">Thank you. An advisor will call within one business day, from the city you chose.</p>
     </form>
   </div>
@@ -523,8 +495,6 @@
   function tick(){
     var html='';CITIES.concat(CITIES).forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;
     document.querySelectorAll('[data-tz]').forEach(function(s){s.textContent=timeIn(s.dataset.tz);});
-    var local=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date());
-    document.getElementById('now-t').textContent='Advisors awake · '+local;
     var on=document.querySelector('#city-list button.on'); if(on) document.getElementById('pic-time').textContent=timeIn(on.querySelector('[data-tz]').dataset.tz)+' local';
   }
   tick(); setInterval(tick,30000);
@@ -556,19 +526,22 @@
 
   /* Homes strip: arrows, keyboard, and the arrows dim at the ends */
   var strip=document.getElementById('strip'), hp=document.getElementById('h-prev'), hn=document.getElementById('h-next');
-  function stepStrip(dir){var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=520?1:window.innerWidth<=960?2:3;strip.scrollBy({left:dir*per*(card.getBoundingClientRect().width+gap),behavior:reduce?'auto':'smooth'});}
+  var glide=null;
+  function stepStrip(dir){
+    var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=520?1:window.innerWidth<=960?2:3;
+    var page=per*(card.getBoundingClientRect().width+gap), from=strip.scrollLeft, max=strip.scrollWidth-strip.clientWidth;
+    var to=Math.max(0,Math.min(max,Math.round((from+dir*page)/page)*page));
+    if(reduce){strip.scrollLeft=to;return;}
+    if(glide)cancelAnimationFrame(glide);
+    var t0=null,dur=720;
+    function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+    (function run(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);strip.scrollLeft=from+(to-from)*ease(p);if(p<1)glide=requestAnimationFrame(run);else glide=null;})(performance.now());
+    strip.classList.add('gliding');setTimeout(function(){strip.classList.remove('gliding');},dur);
+  }
   function ends(){hp.disabled=strip.scrollLeft<8;hn.disabled=strip.scrollLeft+strip.clientWidth>strip.scrollWidth-8;}
   hp.addEventListener('click',function(){stepStrip(-1);}); hn.addEventListener('click',function(){stepStrip(1);});
   strip.addEventListener('scroll',ends,{passive:true}); window.addEventListener('resize',ends); ends();
   strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
-
-  /* Process: arrows or a click choose the step; the picture follows */
-  var steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), bar=document.getElementById('bar'), howCount=document.getElementById('how-count'), curStep=1;
-  function setStep(n){n=Math.max(1,Math.min(4,n));curStep=n;var k=String(n);steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===k);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===k);});bar.style.width=(n*25)+'%';howCount.textContent=n+' / 4';document.getElementById('s-up').disabled=n===1;document.getElementById('s-down').disabled=n===4;}
-  steps.forEach(function(li){li.querySelector('button').addEventListener('click',function(){setStep(+li.dataset.step);});});
-  document.getElementById('s-up').addEventListener('click',function(){setStep(curStep-1);});
-  document.getElementById('s-down').addEventListener('click',function(){setStep(curStep+1);});
-  setStep(1);
 
   /* Villas: slow rotation, dots you can press */
   var slides=document.querySelectorAll('#slides figure'), dots=document.getElementById('dots'), si=0, st;
@@ -587,13 +560,15 @@
   // Where: suggestions as you type
   var PLACES=[['Dubai','United Arab Emirates'],['Dublin','Ireland'],['Düsseldorf','Germany'],['New York','United States'],['Newport Beach','California'],['London','United Kingdom'],['Los Angeles','California'],['Lake Como','Italy'],['Lisbon','Portugal'],['Paris','France'],['Palm Beach','Florida'],['Palm Jumeirah','Dubai'],['Miami','Florida'],['Marbella','Spain'],['Monaco','Monaco'],['Milan','Italy'],['Singapore','Singapore'],['Sydney','Australia'],['St Barts','French West Indies'],['St Tropez','France'],['Aspen','Colorado'],['Ibiza','Spain'],['Geneva','Switzerland'],['Hong Kong','Hong Kong'],['Tokyo','Japan'],['Cape Town','South Africa'],['Cotswolds','England'],['Hudson Valley','New York'],['Byron Bay','Australia'],['Mykonos','Greece'],['Riyadh','Saudi Arabia'],['Vancouver','Canada'],['Zurich','Switzerland']];
   var whereIn=document.getElementById('a-where'), fWhere=document.getElementById('f-where'), popWhere=document.getElementById('pop-where'), hl=-1;
+  function matches(q){return PLACES.filter(function(p){return p[0].toLowerCase().indexOf(q)===0||p[0].toLowerCase().indexOf(' '+q)>0||p[1].toLowerCase().indexOf(q)===0;}).slice(0,6);}
+  function optionHtml(p,q){var i=p[0].toLowerCase().indexOf(q);var name=i>=0?esc(p[0].slice(0,i))+'<b>'+esc(p[0].slice(i,i+q.length))+'</b>'+esc(p[0].slice(i+q.length)):esc(p[0]);return '<button type="button" role="option" data-v="'+esc(p[0])+'">'+name+', '+esc(p[1])+'</button>';}
   function esc(t){return t.replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
   function suggest(){
     var q=whereIn.value.trim().toLowerCase(); hl=-1;
     if(!q){closePops();return;}
-    var hits=PLACES.filter(function(p){return p[0].toLowerCase().indexOf(q)===0||p[0].toLowerCase().indexOf(' '+q)>0||p[1].toLowerCase().indexOf(q)===0;}).slice(0,6);
+    var hits=matches(q);
     if(!hits.length){closePops();return;}
-    popWhere.innerHTML=hits.map(function(p){var i=p[0].toLowerCase().indexOf(q);var name=i>=0?esc(p[0].slice(0,i))+'<b>'+esc(p[0].slice(i,i+q.length))+'</b>'+esc(p[0].slice(i+q.length)):esc(p[0]);return '<button type="button" role="option" data-v="'+esc(p[0])+'">'+name+', '+esc(p[1])+'</button>';}).join('');
+    popWhere.innerHTML=hits.map(function(p){return optionHtml(p,q);}).join('');
     popWhere.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){whereIn.value=b.dataset.v;closePops();whereIn.setAttribute('aria-expanded','false');});});
     openPop(fWhere,popWhere,null); whereIn.setAttribute('aria-expanded','true');
   }
@@ -617,6 +592,17 @@
   budBtn.addEventListener('click',function(e){e.stopPropagation();open&&open.pop===popBud?closePops():openPop(fBud,popBud,budBtn);});
   popBud.addEventListener('click',function(e){e.stopPropagation();});
   aRange.addEventListener('input',function(){budIn.value=aRange.value;budText.textContent=fmtM(+aRange.value);aBig.textContent=fmtM(+aRange.value);});
+
+  /* Bottom form: city suggestions (ours, not the browser's saved addresses) */
+  var cPop=document.getElementById('pop-city'), cHl=-1;
+  function openCity(){cPop.hidden=false;requestAnimationFrame(function(){cPop.classList.add('open');});}
+  function closeCity(){if(cPop.hidden)return;cPop.classList.remove('open');setTimeout(function(){if(!cPop.classList.contains('open'))cPop.hidden=true;},220);}
+  function suggestCity(){var q=cityIn.value.trim().toLowerCase();cHl=-1;if(!q){closeCity();return;}var hits=matches(q);if(!hits.length){closeCity();return;}cPop.innerHTML=hits.map(function(p){return optionHtml(p,q);}).join('');cPop.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(e){e.stopPropagation();cityIn.value=b.dataset.v;closeCity();});});openCity();}
+  cityIn.addEventListener('input',suggestCity);
+  cityIn.addEventListener('focus',function(){if(cityIn.value.trim())suggestCity();});
+  cityIn.addEventListener('keydown',function(e){var opts=cPop.querySelectorAll('button');if(!opts.length||cPop.hidden)return;if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();cHl=(cHl+(e.key==='ArrowDown'?1:-1)+opts.length)%opts.length;opts.forEach(function(o,i){o.classList.toggle('sel',i===cHl);});}else if(e.key==='Enter'&&cHl>=0){e.preventDefault();opts[cHl].click();}});
+  document.addEventListener('click',function(e){if(!document.getElementById('q-city').contains(e.target))closeCity();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCity();});
 
   /* Bottom form: kind of home */
   var kBtn=document.getElementById('kind-btn'), kPop=document.getElementById('pop-kind2'), kText=document.getElementById('kind-text'), kIn=document.getElementById('kind');

@@ -90,6 +90,29 @@
   .rv.in .step:nth-child(2) .draw *{transition-delay:.25s}.rv.in .step:nth-child(3) .draw *{transition-delay:.5s}
   @media (prefers-reduced-motion:reduce){.draw *{stroke-dashoffset:0!important;transition:none}}
 
+  /* The model: text on the left, an orbit of what it reads on the right */
+  .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+  .orbit{position:relative;aspect-ratio:1;max-width:520px;margin:0 auto;width:100%}
+  .orbit .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(242,242,240,.08)}
+  .orbit .ring.r2{inset:19%}
+  .orbit .item{position:absolute;left:50%;top:50%;width:0;height:0}
+  .orbit .item .chip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(calc(-1*var(--a)));width:74px;height:74px}
+  .orbit .cd{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:50%;background:rgba(12,13,16,.85);border:1px solid rgba(242,242,240,.14);color:var(--fg);text-align:center;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s,background .3s,box-shadow .3s;cursor:default;backdrop-filter:blur(6px)}
+  .orbit .cd:hover{transform:scale(1.34);border-color:var(--signal);background:rgba(12,13,16,.98);box-shadow:0 12px 40px rgba(0,0,0,.6);position:relative;z-index:3}
+  .orbit .cd b{font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.05}
+  .orbit .cd span{font-size:10px;color:var(--fg-2);font-variant-numeric:tabular-nums}
+  .orbit .cd svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:2px}
+  .orbit .ring,.orbit .chip{will-change:transform}
+  .orbit .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:50%;background:rgba(12,13,16,.9);border:1px solid rgba(143,182,255,.35);box-shadow:0 0 0 12px rgba(143,182,255,.05),0 0 60px rgba(143,182,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;overflow:hidden}
+  .orbit .core .face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;opacity:0;transform:scale(.9);transition:opacity .5s,transform .5s}
+  .orbit .core .face.on{opacity:1;transform:none}
+  .orbit .core b{font-size:15px;font-weight:600;letter-spacing:-.02em}
+  .orbit .core span{font-size:11.5px;color:var(--fg-2)}
+  .orbit .core i{font-style:normal;font-size:11px;color:#5fd28a;font-variant-numeric:tabular-nums}
+  .orbit .core i.down{color:#e5646a}
+  .orbit .core svg{width:22px;height:22px;stroke:var(--signal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  @media (max-width:900px){.model-grid{grid-template-columns:1fr}.orbit{max-width:360px}.orbit .item .chip{width:60px;height:60px}.orbit .cd b{font-size:10.5px}.orbit .core{width:108px;height:108px}}
+
   /* The model: numbers that count in, plus a trade tape */
   .model{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(40px,6vh,72px)}
@@ -105,8 +128,8 @@
   @keyframes tape{to{transform:translateX(-50%)}}
   .tape .t{display:inline-flex;gap:14px;align-items:baseline;padding:16px 28px;border-right:1px solid var(--line);font-size:14.5px;font-variant-numeric:tabular-nums}
   .tape .t b{font-weight:500}
-  .tape .t .side{color:var(--signal)}
-  .tape .t .side.sell{color:var(--fg-2)}
+  .tape .t .side{color:#5fd28a}
+  .tape .t .side.sell{color:#e5646a}
   .tape .t .when{color:var(--fg-3)}
   .tape-note{margin-top:12px;font-size:13px;color:var(--fg-3)}
   @media (prefers-reduced-motion:reduce){.tape .row{animation:none}}
@@ -150,11 +173,20 @@
 
   /* Plan */
   .plan{border-top:1px solid var(--line)}
-  .plan-card{margin-top:clamp(36px,6vh,64px);display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,4vw,56px);background:var(--bg-2);align-items:center}
+  .plan-wrap{position:relative;margin-top:clamp(36px,6vh,64px)}
+  .plan-line{position:absolute;inset:-4% 0;width:100%;height:108%;overflow:visible;opacity:.95}
+  .plan-line .pline{stroke-dasharray:3000;stroke-dashoffset:3000;transition:stroke-dashoffset 2.8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in .plan-line .pline{stroke-dashoffset:0}
+  .plan-line .pfill{opacity:0;transition:opacity 1.2s 1.8s}
+  .rv.in .plan-line .pfill{opacity:1}
+  @media (prefers-reduced-motion:reduce){.plan-line .pline{stroke-dashoffset:0;transition:none}.plan-line .pfill{opacity:1}}
+  .plan-card{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);border:1px solid rgba(255,255,255,.22);border-radius:24px;padding:clamp(24px,4vw,56px);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55);align-items:center}
+  .plan-card::before{content:"";position:absolute;inset:0;border-radius:24px;background:rgba(0,0,0,.12);pointer-events:none}
+  .plan-card>*{position:relative}
   .price{font-size:clamp(56px,7vw,104px);font-weight:500;letter-spacing:-.05em;line-height:1}
   .price small{font-size:.28em;color:var(--fg-2);letter-spacing:-.01em;margin-left:8px}
   .plan-card ul{list-style:none;margin:0;padding:0}
-  .plan-card li{padding:12px 0;border-bottom:1px solid var(--line);font-size:16px;color:var(--fg-2);display:flex;gap:12px}
+  .plan-card li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:16px;color:var(--fg);display:flex;gap:12px}
   .plan-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--fg);flex:none;margin-top:9px}
   .plan-card li:last-child{border-bottom:0}
   .plan-card .cta{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
@@ -222,8 +254,8 @@
   <canvas id="field" aria-hidden="true"></canvas>
   <div class="live" aria-hidden="true"><i></i><span id="live-text">Model active · reviewing 412 positions</span></div>
   <div class="copy">
-    <h1>Invest like<br>the machine.</h1>
-    <p>Veyra mirrors the trades of an AI trained on twenty years of markets into your own brokerage account, in seconds. You keep custody. It does the watching.</p>
+    <h1>Invest with<br>confidence.</h1>
+    <p>Veyra mirrors the trades of an AI trained on twenty years of markets into your own brokerage account, in seconds.</p>
     <div class="cta"><a class="pill" href="#start">Start copying</a><a class="pill ghost" href="#how">How it works</a><small>$29 a month · cancel any time</small></div>
   </div>
 </section>
@@ -231,25 +263,25 @@
 <section id="how" aria-labelledby="how-h">
   <div class="rv">
     <p class="k">How it works</p>
-    <h2 class="h" id="how-h">Three steps. Then nothing to do.</h2>
+    <h2 class="h" id="how-h">Begin in three steps.</h2>
     <div class="steps">
       <div class="step">
         <p class="n">Step 1</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="100" height="80" rx="10"/><rect x="150" y="20" width="100" height="80" rx="10"/><path d="M110 60h40M138 50l12 10-12 10"/><path d="M30 45h60M30 60h40M30 75h50"/><circle cx="200" cy="60" r="18"/><path d="M191 60l6 6 12-12"/></svg></div>
         <h3>Connect your broker</h3>
-        <p>Schwab, Fidelity, Interactive Brokers, Robinhood and twelve others. Read-and-trade access, revocable in one tap. Your money never moves to us.</p>
+        <p>16 brokerage accounts supported, including Schwab, Fidelity, Interactive Brokers, eToro and Robinhood.</p>
       </div>
       <div class="step">
         <p class="n">Step 2</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 60h220"/><circle cx="150" cy="60" r="14"/><path d="M20 90h90M20 30h60"/><path d="M40 60v-12M80 60v-12M110 60v-12M190 60v-12M220 60v-12"/><path d="M150 20v18M150 82v18"/></svg></div>
         <h3>Set how much</h3>
-        <p>Choose the amount Veyra can trade and how far it can lean. A floor you set is a floor it can't cross.</p>
+        <p>Choose the amount Veyra can trade and how far it can lean.</p>
       </div>
       <div class="step">
         <p class="n">Step 3</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,95 40,80 65,86 90,60 120,66 150,40 180,48 210,25 250,30"/><circle cx="150" cy="40" r="5"/><circle cx="210" cy="25" r="5"/><path d="M150 40v-24M210 25v-14"/><path d="M143 14h14M203 8h14"/></svg></div>
         <h3>Every trade, mirrored</h3>
-        <p>When the model buys, you buy, sized to your amount, usually within four seconds. When it sells, so do you. You see every order before and after.</p>
+        <p>When the model buys, you buy, sized to your amount, within just seconds. When it sells, so do you. You see every order before and after.</p>
       </div>
     </div>
   </div>
@@ -258,8 +290,17 @@
 <section class="model" aria-labelledby="model-h">
   <div class="rv">
     <p class="k">The model</p>
-    <h2 class="h" id="model-h">It reads everything. It reacts to almost nothing.</h2>
+    <div class="model-grid">
+    <div>
+    <h2 class="h" id="model-h">Human-level decisions, without the panic.</h2>
     <p class="lead">Trained on twenty years of prices, filings, earnings calls and rates, Veyra looks at more than any analyst could and trades less than most. Most days it changes one position, or none.</p>
+    </div>
+    <div class="orbit" id="orbit" aria-label="Some of what the model reads: newspapers, companies and commodities">
+      <div class="ring r1" id="ring1"></div>
+      <div class="ring r2" id="ring2"></div>
+      <div class="core" id="core"></div>
+    </div>
+    </div>
     <div class="stats">
       <div class="stat"><b><span class="count" data-to="20">0</span><small>years</small></b><span>of market data in the training set, through three recessions and one pandemic.</span></div>
       <div class="stat"><b><span class="count" data-to="1400">0</span></b><span>signals reviewed each trading day, from prices to the wording of a CFO on a call.</span></div>
@@ -276,7 +317,7 @@
   <div class="control rv">
     <div>
       <p class="k">Control</p>
-      <h2 class="h" id="control-h">You set the leash.</h2>
+      <h2 class="h" id="control-h">You set the limit.</h2>
       <p class="lead">One dial decides how far the model can lean. Everything else, from position size to the cash it keeps back, follows from it. Move it and watch what changes.</p>
     </div>
     <div class="dial" data-d="1">
@@ -311,7 +352,7 @@
         <g fill="#f2f2f0" font-size="14" font-family="Geist,system-ui"><text x="1000" y="90" text-anchor="end">$23,400</text><text x="1000" y="170" text-anchor="end" fill="#a4a6ab">$18,400</text></g>
       </svg>
       <div class="legend"><span class="m"><i></i>Veyra model, Balanced</span><span class="b"><i></i>S&amp;P 500, dividends reinvested</span></div>
-      <p class="fine">Hypothetical back-test of the current model on historical data from January 2021 to December 2025, starting from $10,000, before the subscription fee and brokerage costs. Back-tested results are produced with hindsight and do not reflect real trading; the model did not exist for most of this period. Past performance, real or simulated, does not predict future results. You can lose money.</p>
+      <p class="fine">Hypothetical back-test of the current model on historical data from January 2021 to December 2025, starting from $10,000, before the subscription fee and brokerage costs. Back-tested results are produced with hindsight and do not reflect real trading; the model did not exist for most of this period. Past performance, real or simulated, does not predict future results.</p>
     </div>
   </div>
 </section>
@@ -320,6 +361,12 @@
   <div class="rv">
     <p class="k">Plan</p>
     <h2 class="h" id="plan-h">One plan. One price.</h2>
+    <div class="plan-wrap">
+      <svg class="plan-line" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="pl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e5646a"/><stop offset=".12" stop-color="#5fd28a"/><stop offset=".3" stop-color="#5fd28a"/><stop offset=".36" stop-color="#e5646a"/><stop offset=".44" stop-color="#5fd28a"/><stop offset=".58" stop-color="#5fd28a"/><stop offset=".62" stop-color="#e5646a"/><stop offset=".68" stop-color="#5fd28a"/><stop offset="1" stop-color="#5fd28a"/></linearGradient><linearGradient id="pf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fd28a" stop-opacity=".18"/><stop offset="1" stop-color="#5fd28a" stop-opacity="0"/></linearGradient></defs>
+        <path class="pfill" fill="url(#pf)" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28 L1200,420 L0,420 Z"/>
+        <path class="pline" fill="none" stroke="url(#pl)" stroke-width="3.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28"/>
+      </svg>
     <div class="plan-card">
       <div>
         <p class="price">$29<small>per month</small></p>
@@ -332,6 +379,7 @@
         <li>No commissions from us, no minimums, no lock-in</li>
         <li>Your money stays at your broker, in your name</li>
       </ul>
+    </div>
     </div>
   </div>
 </section>
@@ -385,7 +433,12 @@
   var cv=document.getElementById('field'), ctx=cv.getContext('2d'), W,H,pts=[],t=0, dpr=Math.min(window.devicePixelRatio||1,2);
   function size(){W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);pts=[];for(var i=0;i<90;i++)pts.push({x:Math.random()*W,y:Math.random()*H,v:.08+Math.random()*.18,r:.6+Math.random()*1.2});}
   size(); window.addEventListener('resize',size);
-  var seed=[]; for(var i=0;i<=60;i++){seed.push(Math.sin(i*.7)*.6+Math.sin(i*.23)*1.1+i*.08);}
+  // A price series: a seeded random walk with drift, so it reads as a market, not a sine wave
+  var seed=[], ghosts=[];
+  (function(){var r=7; function rnd(){r=(r*16807)%2147483647;return r/2147483647;}
+    var v=0; for(var i=0;i<=140;i++){v+=(rnd()-.44)*.42+ (rnd()<.06?(rnd()-.5)*1.6:0); v=Math.max(-1.5,v); seed.push(v);}
+    for(var g=0;g<3;g++){var arr=[],w=0;for(var i=0;i<=140;i++){w+=(rnd()-.47)*.3;arr.push(w);}ghosts.push(arr);}
+  })();
   function frame(){
     ctx.clearRect(0,0,W,H);
     // grid
@@ -395,13 +448,16 @@
     ctx.fillStyle='rgba(242,242,240,.55)';
     pts.forEach(function(p){p.y-=p.v;if(p.y<-4){p.y=H+4;p.x=Math.random()*W;}ctx.globalAlpha=.25+Math.sin((p.y/H)*3.14)*.5;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();});
     ctx.globalAlpha=1;
-    // the line
-    var n=seed.length, base=H*.36, amp=H*.06, prog=reduce?1:Math.min(1,t/220);
+    // faint market lines behind: other series, barely there
+    var n=seed.length, base=H*.46, amp=H*.07;
+    ghosts.forEach(function(g,k){ctx.beginPath();for(var i=0;i<n;i++){var x=(i/(n-1))*W*1.02,y=base+H*.08*(k-1)-(g[i]+Math.sin(t*.006+i*.3+k)*.12)*amp*.8;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='rgba(242,242,240,'+(0.05+k*0.012)+')';ctx.lineWidth=1;ctx.stroke();});
+    // the line: drawn once, then it keeps breathing
+    var prog=reduce?1:Math.min(1,t/260);
     ctx.beginPath();
-    for(var i=0;i<n*prog;i++){var x=(i/(n-1))*W*1.02, y=base-(seed[i]+Math.sin(t*.01+i*.5)*.15)*amp;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
-    ctx.strokeStyle='rgba(143,182,255,.85)';ctx.lineWidth=1.5;ctx.stroke();
+    for(var i=0;i<n*prog;i++){var x=(i/(n-1))*W*1.02, y=base-(seed[i]+Math.sin(t*.008+i*.4)*.08)*amp;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.strokeStyle='rgba(143,182,255,.9)';ctx.lineWidth=1.6;ctx.lineJoin='round';ctx.stroke();
     // glow tip
-    if(prog<1){var li=Math.floor(n*prog),lx=(li/(n-1))*W*1.02,ly=base-(seed[Math.min(li,n-1)])*amp;ctx.beginPath();ctx.arc(lx,ly,3,0,6.283);ctx.fillStyle='#8fb6ff';ctx.fill();}
+    if(prog<1){var li=Math.floor(n*prog),lx=(li/(n-1))*W*1.02,ly=base-(seed[Math.min(li,n-1)]+Math.sin(t*.008+li*.4)*.08)*amp;ctx.beginPath();ctx.arc(lx,ly,3,0,6.283);ctx.fillStyle='#8fb6ff';ctx.fill();}
     t++; if(!reduce) requestAnimationFrame(frame);
   }
   frame();
@@ -429,6 +485,35 @@
   var tape=document.getElementById('tape'), html='';
   function cell(t){return '<span class="t"><span class="side'+(t[0]==='Sell'||t[0]==='Trim'?' sell':'')+'">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span><span class="when">'+t[3]+'</span></span>';}
   trades.concat(trades).forEach(function(t){html+=cell(t);}); tape.innerHTML=html;
+
+  /* Orbit: what the model reads. Names are set as plain type, not logos. */
+  var ICON={news:'<svg viewBox="0 0 24 24"><path d="M4 5h13v14H6a2 2 0 0 1-2-2V5z"/><path d="M17 8h3v9a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12h7M7 15h5"/></svg>',chip:'<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>',car:'<svg viewBox="0 0 24 24"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v4H3z"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>',ingot:'<svg viewBox="0 0 24 24"><path d="M6 9h12l3 8H3z"/><path d="M9 9l1-3h4l1 3"/></svg>',index:'<svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 4-6 5 4"/><path d="M3 21h18"/></svg>',oil:'<svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',energy:'<svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4"/></svg>'};
+  var ITEMS=[['The New York Times','news',null],['Wall Street Journal','news',null],['Economic Times','news',null],['Nvidia','chip','NVDA'],['Tesla','car','TSLA'],['Gold','ingot','XAU'],['Silver','ingot','XAG'],['S&P 500','index','SPX'],['Crude oil','oil','CL'],['Chevron','energy','CVX']];
+  var ring1=document.getElementById('ring1'), ring2=document.getElementById('ring2'), core=document.getElementById('core'), orbit=document.getElementById('orbit');
+  function place(ring,list,radiusPct){list.forEach(function(it,i){var a=(360/list.length)*i;var d=document.createElement('div');d.className='item';d.style.transform='rotate('+a+'deg) translate('+radiusPct+'%)';d.innerHTML='<div class="chip" style="--a:'+a+'deg"><div class="cd" title="'+it[0]+'">'+ICON[it[1]]+'<b>'+it[0]+'</b>'+(it[2]?'<span>'+it[2]+'</span>':'')+'</div></div>';ring.appendChild(d);});}
+  // outer ring: six; inner ring: four. Radius is a percentage of the orbit box (translate is relative to the item, so use px via CSS var)
+  function layout(){ring1.innerHTML='';ring2.innerHTML='';var R=orbit.clientWidth/2;place(ring1,ITEMS.slice(0,6),0);place(ring2,ITEMS.slice(6),0);
+    ring1.querySelectorAll('.item').forEach(function(el,i){var a=(360/6)*i;el.style.transform='rotate('+a+'deg) translate('+(R-38)+'px)';});
+    ring2.querySelectorAll('.item').forEach(function(el,i){var a=(360/4)*i+45;el.style.transform='rotate('+a+'deg) translate('+(R*.62-36)+'px)';el.querySelector('.chip').style.setProperty('--a',a+'deg');});
+  }
+  layout(); window.addEventListener('resize',layout);
+  // The rings turn in script so a hover can slow them to a stop and the chips always stay upright
+  var ang1=0, ang2=0, speed=1, target=1, lastT=null;
+  orbit.addEventListener('mouseenter',function(){target=0;}); orbit.addEventListener('mouseleave',function(){target=1;});
+  function turn(ts){
+    if(lastT==null)lastT=ts; var dt=Math.min(64,ts-lastT); lastT=ts;
+    speed+=(target-speed)*.08;
+    if(!reduce){ang1=(ang1+dt*.006*speed)%360; ang2=(ang2-dt*.0082*speed+360)%360;}
+    ring1.style.transform='rotate('+ang1+'deg)'; ring2.style.transform='rotate('+ang2+'deg)';
+    ring1.querySelectorAll('.chip').forEach(function(c){c.style.transform='translate(-50%,-50%) rotate('+(-ang1-parseFloat(c.style.getPropertyValue('--a')))+'deg)';});
+    ring2.querySelectorAll('.chip').forEach(function(c){c.style.transform='translate(-50%,-50%) rotate('+(-ang2-parseFloat(c.style.getPropertyValue('--a')))+'deg)';});
+    requestAnimationFrame(turn);
+  }
+  requestAnimationFrame(turn);
+  var FACES=[['Nvidia','NVDA · reading Q3 call','+1.8%'],['S&P 500','SPX · breadth check','+0.4%'],['Crude oil','CL · inventories, Wednesday','−1.1%'],['Wall Street Journal','Fed minutes, page one',''],['Tesla','TSLA · delivery numbers','−2.3%'],['Gold','XAU · real yields','+0.6%'],['The New York Times','Trade policy, front section',''],['Chevron','CVX · buyback filing','+0.9%']];
+  var faceIdx=0; core.innerHTML=FACES.map(function(f,i){return '<div class="face'+(i===0?' on':'')+'"><b>'+f[0]+'</b><span>'+f[1]+'</span>'+(f[2]?'<i class="'+(f[2].charAt(0)==='−'?'down':'')+'">'+f[2]+'</i>':'')+'</div>';}).join('');
+  var faces=core.querySelectorAll('.face');
+  if(!reduce) setInterval(function(){faceIdx=(faceIdx+1)%faces.length;faces.forEach(function(f,i){f.classList.toggle('on',i===faceIdx);});},3200);
 
   /* Risk dial */
   var risk=document.getElementById('risk'), nameEl=document.getElementById('dial-name'), eq=document.getElementById('a-eq'), cash=document.getElementById('a-cash'), rMax=document.getElementById('r-max'), rDd=document.getElementById('r-dd'), rTurn=document.getElementById('r-turn');
