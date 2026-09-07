@@ -90,7 +90,7 @@ live frames (iframes), so it always reflects the current version of each site.
 
 ## 4. The example sites
 
-`example-restaurant.html` (Ossobello), `example-cafe.html` (Hollowmere), `example-salon.html` (Tessaline), `example-veyra.html` (Veyra, a fictional AI investing startup).
+`example-restaurant.html` (Ossobello), `example-cafe.html` (Hollowmere), `example-salon.html` (Tessaline), `example-veyra.html` (Veyra, a fictional AI investing startup), `example-noorvale.html` (Noor & Vale, a fictional luxury real estate house).
 Every business, person
 and review is fictional, and the sites deliberately carry no phone numbers or
 street addresses — only a neighbourhood and city. Each page is self-contained, so you can copy one as the

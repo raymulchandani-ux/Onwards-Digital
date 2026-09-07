@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Noor &amp; Vale — Homes from two million, in the cities that matter</title>
+<meta name="description" content="A global residential brokerage for homes from $2 million, with desks in New York and Dubai and advisors in thirty-eight cities. Fictional example website by Onwards Digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0c;
+    --bg-2:#131315;
+    --fg:#f4f2ed;
+    --fg-2:#aaa7a0;
+    --fg-3:#6b6964;
+    --line:#26262a;
+    --brass:#cfae6b;
+    --gutter:clamp(20px,5vw,80px);
+    --serif:'Newsreader',Georgia,serif;
+    --sans:'Geist',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:100px;background:var(--bg)}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.5;font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{margin:0;font-family:var(--serif);font-weight:300;letter-spacing:-.015em;line-height:1.02;font-variation-settings:"opsz" 72}
+  p{margin:0}
+  a{color:inherit}
+  button{font:inherit}
+  img{display:block}
+  :focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  .onwards{position:sticky;top:0;z-index:50;height:36px;background:#1a1917;color:#e6e2da;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);font-weight:400}
+  .onwards a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(230,226,218,.4)}
+  @media (max-width:600px){.onwards>span{display:none}}
+
+  .head{position:sticky;top:36px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);height:64px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+  .head.solid{background:rgba(11,11,12,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+  .wordmark{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:.01em;text-decoration:none;font-variation-settings:"opsz" 24}
+  .wordmark em{font-style:italic;font-weight:300}
+  .head nav{display:flex;align-items:center;gap:26px}
+  .head nav a{text-decoration:none;font-size:14px;color:var(--fg-2);transition:color .15s;font-weight:400}
+  .head nav a:hover{color:var(--fg)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--fg);color:#0b0b0c;text-decoration:none;font-weight:500;font-size:14px;padding:11px 20px;border-radius:2px;border:1px solid var(--fg);cursor:pointer;transition:background .15s,color .15s;min-height:42px;font-family:var(--sans)}
+  .btn:hover{background:transparent;color:var(--fg)}
+  .btn.ghost{background:transparent;color:var(--fg);border-color:rgba(244,242,237,.35)}
+  .btn.ghost:hover{border-color:var(--fg)}
+  .head nav .btn{color:#0b0b0c}.head nav .btn:hover{color:var(--fg)}
+  .clock{font-size:13px;color:var(--fg-2);display:flex;gap:16px;font-variant-numeric:tabular-nums;font-weight:400}
+  .clock b{font-weight:400;color:var(--fg)}
+  .clock i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brass);margin-right:8px;vertical-align:1px}
+
+  /* Hero: two cities, crossfading */
+  .hero{position:relative;height:calc(100vh - 100px);min-height:560px;overflow:hidden;display:flex;align-items:flex-end}
+  .hero .bg{position:absolute;inset:0}
+  .hero .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.6s ease,transform 12s linear}
+  .hero .bg img.on{opacity:1;transform:scale(1)}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.35) 0%,rgba(11,11,12,0) 35%,rgba(11,11,12,.88) 100%);pointer-events:none}
+  .hero .copy{position:relative;z-index:1;padding:0 var(--gutter) clamp(44px,7vh,88px);width:100%;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end}
+  .hero h1{font-size:clamp(46px,7vw,112px);max-width:11ch}
+  .hero h1 em{font-style:italic}
+  .hero .sub{color:var(--fg-2);font-size:clamp(16px,1.3vw,19px);max-width:36ch}
+  .hero .sub p b{color:var(--fg);font-weight:400}
+  .hero .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+  .cities{position:absolute;z-index:1;top:clamp(20px,5vh,48px);left:var(--gutter);display:flex;gap:6px}
+  .cities button{background:rgba(11,11,12,.35);backdrop-filter:blur(8px);border:1px solid rgba(244,242,237,.22);color:var(--fg-2);padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:color .2s,border-color .2s;font-weight:400}
+  .cities button b{font-weight:400;color:var(--fg)}
+  .cities button span{font-variant-numeric:tabular-nums}
+  .cities button.on{border-color:var(--fg);color:var(--fg)}
+  .hero .copy>*{opacity:0;transform:translateY(14px);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero .copy>*:nth-child(2){animation-delay:.18s}
+  .cities{opacity:0;animation:up 1s .5s forwards}
+  @keyframes up{to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.hero .copy>*,.cities{animation:none;opacity:1;transform:none}.hero .bg img{transition:opacity .4s;transform:none}}
+
+  section{padding:clamp(72px,12vh,140px) var(--gutter)}
+  .k{font-size:13px;color:var(--fg-3);margin-bottom:18px;font-weight:400}
+  .h{font-size:clamp(34px,4.8vw,72px);max-width:16ch}
+  .h em{font-style:italic}
+  .lead{margin-top:18px;color:var(--fg-2);font-size:clamp(16px,1.25vw,19px);max-width:50ch}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* Two desks */
+  .desks{display:flex;gap:2px;margin-top:clamp(36px,6vh,64px);height:clamp(420px,60vh,640px)}
+  .desk{position:relative;flex:1;overflow:hidden;background:var(--bg-2);transition:flex 1s cubic-bezier(.2,.7,.2,1);text-decoration:none;color:inherit;display:flex;align-items:flex-end}
+  .desk:hover,.desk:focus-visible{flex:1.7}
+  .desk img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;transition:transform 1.4s cubic-bezier(.2,.7,.2,1),opacity .6s}
+  .desk:hover img{transform:scale(1.04);opacity:.95}
+  .desk::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 30%,rgba(11,11,12,.85) 100%)}
+  .desk .in{position:relative;z-index:1;padding:clamp(20px,3vw,40px);display:grid;gap:8px;width:100%}
+  .desk h3{font-size:clamp(34px,4vw,60px)}
+  .desk .meta{display:flex;justify-content:space-between;gap:16px;color:var(--fg-2);font-size:14px;font-variant-numeric:tabular-nums;flex-wrap:wrap;font-weight:400}
+  .desk .meta b{color:var(--fg);font-weight:400}
+
+  /* Featured homes: a strip you scroll sideways */
+  .homes{padding-right:0;padding-left:0}
+  .homes .head-row{padding:0 var(--gutter);display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+  .arrows{display:flex;gap:8px}
+  .arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
+  .arrows button:hover{border-color:var(--fg)}
+  .arrows svg{width:18px;height:18px}
+  .strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:clamp(32px,5vh,56px) var(--gutter) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .strip::-webkit-scrollbar{display:none}
+  .home{flex:0 0 clamp(300px,34vw,520px);scroll-snap-align:start;text-decoration:none;color:inherit;display:block}
+  .home .ph{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .home .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+  .home:hover .ph img{transform:scale(1.04)}
+  .home .ph span{position:absolute;left:14px;top:14px;background:rgba(11,11,12,.55);backdrop-filter:blur(8px);color:var(--fg);font-size:12px;padding:6px 10px;border-radius:999px;font-weight:400}
+  .home .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:14px}
+  .home .row b{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;font-variation-settings:"opsz" 24}
+  .home .row span{color:var(--fg-2);font-size:14px;font-variant-numeric:tabular-nums}
+  .home .name{color:var(--fg-2);font-size:14.5px;margin-top:4px}
+  .home .name b{color:var(--fg);font-weight:400}
+  .strip-note{padding:14px var(--gutter) 0;font-size:13px;color:var(--fg-3)}
+
+  /* How we work: sticky media on the left, steps on the right */
+  .how{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:start}
+  .how .media{position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .how .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .9s ease,transform 1.6s ease}
+  .how .media img.on{opacity:1;transform:none}
+  .how .media figcaption{position:absolute;left:16px;bottom:14px;font-size:12.5px;color:var(--fg-2);z-index:1}
+  .how ol{list-style:none;margin:0;padding:0}
+  .how li{padding:clamp(36px,8vh,88px) 0;border-top:1px solid var(--line);opacity:.35;transition:opacity .5s}
+  .how li.on{opacity:1}
+  .how li:first-child{border-top:0;padding-top:12px}
+  .how li h3{font-size:clamp(30px,3.4vw,50px)}
+  .how li p{margin-top:14px;color:var(--fg-2);max-width:40ch;font-size:17px}
+  .how li .n{font-size:13px;color:var(--brass);margin-bottom:12px;font-weight:400}
+
+  /* Numbers */
+  .numbers{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(36px,6vh,64px)}
+  .stat b{display:block;font-family:var(--serif);font-size:clamp(52px,6.4vw,100px);font-weight:300;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 72}
+  .stat b small{font-size:.5em;color:var(--fg-2);margin-left:4px}
+  .stat>span{display:block;margin-top:12px;color:var(--fg-2);font-size:15px;max-width:28ch}
+
+  /* Cities marquee with live times */
+  .cities-run{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:0;position:relative}
+  .cities-run::before,.cities-run::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none}
+  .cities-run::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+  .cities-run::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+  .cities-run .row{display:inline-flex;animation:run 70s linear infinite}
+  .cities-run:hover .row{animation-play-state:paused}
+  @keyframes run{to{transform:translateX(-50%)}}
+  .cities-run .c{display:inline-flex;align-items:baseline;gap:14px;padding:26px 36px;border-right:1px solid var(--line)}
+  .cities-run .c b{font-family:var(--serif);font-size:30px;font-weight:300;font-variation-settings:"opsz" 30}
+  .cities-run .c span{font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;font-weight:400}
+  @media (prefers-reduced-motion:reduce){.cities-run .row{animation:none}}
+
+  /* Enquiry */
+  .enq{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(24px,5vw,80px);align-items:start}
+  .enq .quote{margin-top:34px;border-top:1px solid var(--line);padding-top:20px;font-family:var(--serif);font-size:22px;font-weight:300;max-width:34ch;line-height:1.3;font-variation-settings:"opsz" 22}
+  .enq .quote cite{display:block;font-family:var(--sans);font-style:normal;color:var(--fg-2);font-size:13.5px;margin-top:10px}
+  form.ask{display:grid;gap:26px}
+  .q{display:grid;gap:10px}
+  .q>label,.q>.lbl{font-size:13.5px;color:var(--fg-2);font-weight:400}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips label{position:relative}
+  .chips input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .chips span{display:inline-flex;align-items:center;padding:10px 16px;border:1px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer;transition:background .12s,color .12s,border-color .12s;font-weight:400}
+  .chips input:checked+span{background:var(--fg);color:#0b0b0c;border-color:var(--fg)}
+  .chips input:focus-visible+span{outline:2px solid var(--brass);outline-offset:2px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .input,.sel{width:100%;font:inherit;font-size:16px;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:2px;padding:12px 14px;min-height:48px;font-weight:300}
+  .input::placeholder{color:var(--fg-3)}
+  .input:focus,.sel:focus{outline:none;border-color:var(--fg-2)}
+  .sel{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa7a0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;background-color:var(--bg)}
+  .sel option{background:var(--bg)}
+  .budget{display:flex;justify-content:space-between;align-items:baseline}
+  .budget b{font-family:var(--serif);font-size:28px;font-weight:300;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 28}
+  .range{-webkit-appearance:none;appearance:none;width:100%;height:1px;background:var(--line);margin:14px 0 6px;outline:none}
+  .range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
+  .range::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--fg);border:0;cursor:pointer}
+  .range:focus-visible{outline:none}.range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--brass)}
+  .ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--fg-3)}
+  .send{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .send small{color:var(--fg-3);font-size:13px}
+  form.ask.sent>*{display:none}
+  .done{display:none;padding:22px;border:1px solid var(--line);font-family:var(--serif);font-size:24px;font-weight:300;font-variation-settings:"opsz" 24}
+  form.ask.sent .done{display:block}
+
+  footer{padding:36px var(--gutter) 44px;border-top:1px solid var(--line);color:var(--fg-3);font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-weight:400}
+  footer .links{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+  footer a{color:var(--fg-2);text-decoration:none}
+  footer a:hover{color:var(--fg)}
+  footer .disc{grid-column:1/-1;max-width:90ch;line-height:1.55}
+
+  @media (max-width:900px){
+    html{scroll-padding-top:90px}
+    .head nav a:not(.btn),.head .clock{display:none}
+    .hero{height:calc(100svh - 100px);min-height:520px}
+    .hero .copy{grid-template-columns:1fr;gap:18px}
+    .hero h1{font-size:clamp(44px,11vw,64px)}
+    .cities{left:var(--gutter);right:var(--gutter);overflow-x:auto;scrollbar-width:none}
+    .cities button span{display:none}
+    .desks{flex-direction:column;height:auto}
+    .desk{min-height:300px;flex:none}
+    .desk:hover{flex:none}
+    .how{grid-template-columns:1fr}
+    .how .media{position:relative;top:0;aspect-ratio:4/3}
+    .how li{padding:28px 0}
+    .stats{grid-template-columns:1fr;gap:28px}
+    .enq{grid-template-columns:1fr}
+    .two{grid-template-columns:1fr}
+    footer{grid-template-columns:1fr}
+    footer .links{justify-content:flex-start}
+  }
+</style>
+</head>
+<body>
+
+<div class="onwards"><a href="index.html">← Back to Onwards Digital</a><span>Example site by Onwards Digital · Noor &amp; Vale is fictional</span></div>
+
+<header class="head" id="head">
+  <a class="wordmark" href="#top">Noor <em>&amp;</em> Vale</a>
+  <div class="clock" aria-label="Office times"><span><i></i>New York <b id="c-ny">—</b></span><span><i></i>Dubai <b id="c-db">—</b></span></div>
+  <nav>
+    <a href="#desks">The desks</a><a href="#homes">Homes</a><a href="#how">How we work</a>
+    <a class="btn" href="#ask">Speak to an advisor</a>
+  </nav>
+</header>
+
+<section class="hero" id="top" aria-label="Introduction" style="padding:0">
+  <div class="bg" aria-hidden="true">
+    <img id="bg-ny" class="on" src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=2400&q=80" alt="">
+    <img id="bg-db" src="https://images.unsplash.com/photo-1767041743706-fa96a08187a3?auto=format&fit=crop&w=2400&q=80" alt="">
+  </div>
+  <div class="cities" role="tablist" aria-label="City">
+    <button type="button" class="on" data-city="ny" role="tab" aria-selected="true"><b>New York</b><span id="t-ny">—</span></button>
+    <button type="button" data-city="db" role="tab" aria-selected="false"><b>Dubai</b><span id="t-db">—</span></button>
+  </div>
+  <div class="copy">
+    <h1>Homes from two million, in the cities <em>that matter.</em></h1>
+    <div class="sub">
+      <p><b>A residential brokerage with two desks and one standard.</b> New York and Dubai, then thirty-six cities through advisors we've worked with for years. Every home we show, someone here has walked.</p>
+      <div class="cta"><a class="btn" href="#ask">Speak to an advisor</a><a class="btn ghost" href="#homes">See what's listed</a></div>
+    </div>
+  </div>
+</section>
+
+<section id="desks" aria-labelledby="desks-h">
+  <div class="rv">
+    <p class="k">The desks</p>
+    <h2 class="h" id="desks-h">Two cities. Always one of them <em>awake.</em></h2>
+    <p class="lead">Nine hours apart, so a question asked at midnight in Manhattan is answered over morning coffee in Dubai. One file, one advisor who knows both.</p>
+    <div class="desks">
+      <a class="desk" href="#ask">
+        <img src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=1600&q=80" alt="Manhattan at dusk from across the water" loading="lazy">
+        <div class="in"><h3>New York</h3><div class="meta"><span><b id="d-ny">—</b> local time</span><span><b>212</b> homes listed</span><span>Tribeca to the Upper East Side</span></div></div>
+      </a>
+      <a class="desk" href="#ask">
+        <img src="https://images.unsplash.com/photo-1745750434535-5943ef2fd31a?auto=format&fit=crop&w=1600&q=80" alt="Downtown Dubai skyline in daylight" loading="lazy">
+        <div class="in"><h3>Dubai</h3><div class="meta"><span><b id="d-db">—</b> local time</span><span><b>168</b> homes listed</span><span>Palm Jumeirah to Al Barari</span></div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="homes" id="homes" aria-labelledby="homes-h">
+  <div class="rv">
+    <div class="head-row">
+      <div><p class="k">Listed this month</p><h2 class="h" id="homes-h">A few of the homes.</h2></div>
+      <div class="arrows"><button type="button" id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    </div>
+    <div class="strip" id="strip" tabindex="0" aria-label="Featured homes, scroll sideways">
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1200&q=80" alt="Living room with a wall of glass over the city" loading="lazy"><span>New York</span></div><div class="row"><b>$8,900,000</b><span>4 bed · 3,860 sq ft</span></div><p class="name"><b>Tribeca loft</b>, forty-first floor, corner exposure</p></a>
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80" alt="A modern white villa with a pool and lounge terrace" loading="lazy"><span>Dubai</span></div><div class="row"><b>$6,400,000</b><span>5 bed · 7,100 sq ft</span></div><p class="name"><b>Palm Jumeirah villa</b>, garden homes, private beach</p></a>
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1776362355123-ca966d36e29c?auto=format&fit=crop&w=1200&q=80" alt="Double-height living room with a sculptural staircase" loading="lazy"><span>New York</span></div><div class="row"><b>$14,750,000</b><span>5 bed · 5,200 sq ft</span></div><p class="name"><b>West Village townhouse</b>, 1899, rebuilt 2024</p></a>
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1762732793012-8bdab3af00b4?auto=format&fit=crop&w=1200&q=80" alt="A bath set against a window over the skyline at sunset" loading="lazy"><span>Dubai</span></div><div class="row"><b>$3,200,000</b><span>3 bed · 2,900 sq ft</span></div><p class="name"><b>Downtown penthouse</b>, Burj view, sixty-second floor</p></a>
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80" alt="Modern house with a long pool in clear light" loading="lazy"><span>Dubai</span></div><div class="row"><b>$11,000,000</b><span>6 bed · 12,400 sq ft</span></div><p class="name"><b>Al Barari estate</b>, on the water, staff wing</p></a>
+      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1642976975710-1d8890dbf5ab?auto=format&fit=crop&w=1200&q=80" alt="A formal living room with a chandelier" loading="lazy"><span>New York</span></div><div class="row"><b>$5,250,000</b><span>3 bed · 2,650 sq ft</span></div><p class="name"><b>Upper East Side classic seven</b>, Park Avenue, pre-war</p></a>
+    </div>
+    <p class="strip-note">Prices in US dollars. Details on request; every listing is shared with the owner's consent.</p>
+  </div>
+</section>
+
+<section id="how" aria-labelledby="how-h">
+  <div class="rv">
+    <p class="k">How we work</p>
+    <h2 class="h" id="how-h">From the first call to the keys.</h2>
+    <div class="how" style="margin-top:clamp(36px,6vh,64px)">
+      <figure class="media" id="media">
+        <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm living room in low light" loading="lazy">
+        <img data-step="2" src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1400&q=80" alt="A modern house lit from within at dusk" loading="lazy">
+        <img data-step="3" src="https://images.unsplash.com/photo-1745750434535-5943ef2fd31a?auto=format&fit=crop&w=1400&q=80" alt="Dubai skyline in daylight" loading="lazy">
+        <img data-step="4" src="https://images.unsplash.com/photo-1686342123879-241c6349e8c7?auto=format&fit=crop&w=1400&q=80" alt="A staircase in black and white" loading="lazy">
+        <figcaption id="media-cap">The brief</figcaption>
+      </figure>
+      <ol id="steps">
+        <li class="on" data-step="1" data-cap="The brief"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, in person or on a call, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></li>
+        <li data-step="2" data-cap="The shortlist"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></li>
+        <li data-step="3" data-cap="The visits"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, the second desk has already checked the paperwork.</p></li>
+        <li data-step="4" data-cap="The keys"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="numbers" aria-labelledby="num-h">
+  <div class="rv">
+    <p class="k">The house</p>
+    <h2 class="h" id="num-h">Small on purpose.</h2>
+    <p class="lead">Fourteen advisors, two desks, and no franchise. We take fewer clients so that the one on the phone knows your file.</p>
+    <div class="stats">
+      <div class="stat"><b>$<span class="count" data-to="4.2" data-dec="1">0</span><small>bn</small></b><span>of homes sold since 2014, in nineteen currencies.</span></div>
+      <div class="stat"><b><span class="count" data-to="38">0</span></b><span>cities where an advisor we've worked with for years will meet you.</span></div>
+      <div class="stat"><b><span class="count" data-to="11">0</span></b><span>languages spoken across the two desks, before we call a translator.</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="cities-run" aria-label="Cities and their local times"><div class="row" id="run"></div></div>
+
+<section id="ask" aria-labelledby="ask-h">
+  <div class="enq rv">
+    <div>
+      <p class="k">Speak to an advisor</p>
+      <h2 class="h" id="ask-h">Tell us the city. We'll call <em>within a day.</em></h2>
+      <p class="lead">One advisor, who reads this before they dial. No newsletters, no list.</p>
+      <blockquote class="quote">“They showed us six apartments and told us to buy the fourth. We bought the fourth.”<cite>A client, Tribeca, 2025</cite></blockquote>
+    </div>
+    <form class="ask" novalidate>
+      <div class="q">
+        <span class="lbl">I'm looking to</span>
+        <div class="chips">
+          <label><input type="radio" name="intent" value="Buy" checked><span>Buy</span></label>
+          <label><input type="radio" name="intent" value="Sell"><span>Sell</span></label>
+          <label><input type="radio" name="intent" value="Let"><span>Let</span></label>
+        </div>
+      </div>
+      <div class="two">
+        <div class="q"><label for="city">City</label><select class="sel" id="city" name="city"><option>New York</option><option>Dubai</option><option>London</option><option>Paris</option><option>Miami</option><option>Singapore</option><option>Lisbon</option><option>Somewhere else</option></select></div>
+        <div class="q"><label for="kind">Kind of home</label><select class="sel" id="kind" name="kind"><option>Apartment</option><option>Penthouse</option><option>Townhouse</option><option>Villa</option><option>Not sure yet</option></select></div>
+      </div>
+      <div class="q">
+        <div class="budget"><span class="lbl">Budget</span><b id="bud">$5m</b></div>
+        <label class="sr" for="budget">Budget</label>
+        <input class="range" type="range" id="budget" min="2" max="50" step="1" value="5">
+        <div class="ends"><span>$2m</span><span>$50m and above</span></div>
+      </div>
+      <div class="two">
+        <div class="q"><label for="nm">Name</label><input class="input" id="nm" name="name" autocomplete="name" placeholder="Your name"></div>
+        <div class="q"><label for="em">Email</label><input class="input" id="em" name="email" type="email" autocomplete="email" placeholder="you@example.com"></div>
+      </div>
+      <div class="q"><label for="ph">Phone <span style="color:var(--fg-3)">(optional)</span></label><input class="input" id="ph" name="phone" type="tel" autocomplete="tel" placeholder="With the country code"></div>
+      <div class="send"><button class="btn" type="submit">Request a call</button><small>Nothing is shared with anyone outside the desk.</small></div>
+      <p class="done">Thank you. An advisor will call within one business day, from the city you chose.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Noor &amp; Vale, a fictional company · New York · Dubai · <a href="mailto:desk@noorvale.example">desk@noorvale.example</a></div>
+  <div class="links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Licensing</a><a href="#">Careers</a></div>
+  <p class="disc">This is an example website built by Onwards Digital to show what's possible. Noor &amp; Vale does not exist; the homes, prices and figures are invented, and the photographs are stock images of places that are not for sale.</p>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Header to glass after the hero */
+  var head=document.getElementById('head');
+  function onScroll(){head.classList.toggle('solid',window.scrollY>40);}
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* Live times: the two desks, and the cities run */
+  function timeIn(tz,opts){try{return new Intl.DateTimeFormat('en-US',Object.assign({hour:'numeric',minute:'2-digit',timeZone:tz},opts||{})).format(new Date());}catch(e){return '';}}
+  var CITIES=[['New York','America/New_York'],['Dubai','Asia/Dubai'],['London','Europe/London'],['Paris','Europe/Paris'],['Miami','America/New_York'],['Singapore','Asia/Singapore'],['Lisbon','Europe/Lisbon'],['Milan','Europe/Rome'],['Hong Kong','Asia/Hong_Kong'],['Los Angeles','America/Los_Angeles'],['Riyadh','Asia/Riyadh'],['Geneva','Europe/Zurich']];
+  var run=document.getElementById('run');
+  function drawRun(){var html='';CITIES.concat(CITIES).forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;}
+  function tick(){
+    var ny=timeIn('America/New_York'), db=timeIn('Asia/Dubai');
+    ['c-ny','t-ny','d-ny'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=ny;});
+    ['c-db','t-db','d-db'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=db;});
+    drawRun();
+  }
+  tick(); setInterval(tick,30000);
+
+  /* Hero: pick a city, or let it drift between the two */
+  var bgs={ny:document.getElementById('bg-ny'),db:document.getElementById('bg-db')}, tabs=document.querySelectorAll('.cities button'), cur='ny', timer;
+  function show(c){cur=c;Object.keys(bgs).forEach(function(k){bgs[k].classList.toggle('on',k===c);});tabs.forEach(function(t){var on=t.dataset.city===c;t.classList.toggle('on',on);t.setAttribute('aria-selected',on?'true':'false');});}
+  function drift(){clearInterval(timer);if(reduce)return;timer=setInterval(function(){show(cur==='ny'?'db':'ny');},7000);}
+  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.city);drift();});});
+  drift();
+
+  /* Reveal once per section; count numbers when they arrive */
+  var rvs=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);if(e.target.querySelector('.count'))countUp(e.target);}});},{threshold:.06,rootMargin:'0px 0px -10% 0px'});
+    rvs.forEach(function(r){io.observe(r);});
+  } else { rvs.forEach(function(r){r.classList.add('in');}); document.querySelectorAll('.count').forEach(function(c){c.textContent=c.dataset.to;}); }
+  function countUp(scope){
+    scope.querySelectorAll('.count').forEach(function(c){
+      var to=+c.dataset.to, dec=+(c.dataset.dec||0), start=null, dur=1500;
+      function step(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/dur);p=1-Math.pow(1-p,3);c.textContent=(to*p).toFixed(dec);if(p<1)requestAnimationFrame(step);}
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* Homes strip arrows */
+  var strip=document.getElementById('strip');
+  function stepStrip(dir){var card=strip.querySelector('.home');strip.scrollBy({left:dir*(card.getBoundingClientRect().width+16),behavior:reduce?'auto':'smooth'});}
+  document.getElementById('prev').addEventListener('click',function(){stepStrip(-1);});
+  document.getElementById('next').addEventListener('click',function(){stepStrip(1);});
+  strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
+
+  /* How we work: the picture follows the step you're reading */
+  var steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), cap=document.getElementById('media-cap');
+  function setStep(n,c){steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===n);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===n);});cap.textContent=c;}
+  if('IntersectionObserver' in window){
+    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setStep(e.target.dataset.step,e.target.dataset.cap);});},{rootMargin:'-45% 0px -45% 0px'});
+    steps.forEach(function(s){so.observe(s);});
+  }
+
+  /* Budget */
+  var b=document.getElementById('budget'), bud=document.getElementById('bud');
+  function money(){var v=+b.value;bud.textContent=v>=50?'$50m+':'$'+v+'m';}
+  b.addEventListener('input',money); money();
+
+  /* Demo only: nothing is sent anywhere */
+  var f=document.querySelector('form.ask');
+  f.addEventListener('submit',function(e){e.preventDefault();f.classList.add('sent');});
+})();
+</script>
+</body>
+</html>
