@@ -354,6 +354,28 @@
   .times .closed{font-family:var(--display);font-style:italic;color:var(--cream-2);font-size:17px;margin:4px 0}
   @media (max-width:600px){.pop{left:0;right:0;width:auto;max-width:none;min-width:0}.cal,.times,.party{width:auto}}
   @media (prefers-reduced-motion:reduce){.pop{transition:none;transform:none}}
+
+  /* Phone: less scrolling — pairs stay side by side, sections breathe less */
+  @media (max-width:720px){
+    section,.section{padding-top:36px!important;padding-bottom:36px!important}
+    .menu-sec .wrap,.reviews .wrap,.reserve .wrap{padding-top:32px;padding-bottom:32px}
+    .reviews .wrap{grid-template-columns:1fr 1fr;gap:14px}
+    .reviews blockquote,.review{font-size:13.5px}
+    form.res{grid-template-columns:1fr 1fr;gap:14px 12px}
+    form.res .field.wide,form.res .note-field,form.res textarea{grid-column:1/-1}
+    footer .cols{grid-template-columns:1fr 1fr;gap:16px}
+    .hero .wrap{padding-top:40px;padding-bottom:28px}
+  }
+
+  @media (max-width:720px){
+    .sec-head p{font-size:14px}
+    .dish{padding:9px 0}.dish .d{font-size:12.5px;line-height:1.4}
+    .course{padding-top:18px}
+    .hours td,.hours th{padding:6px 0;font-size:13px}
+    .reserve .sec-head .photo,.reserve .contact-direct.m{display:none}
+    .story .wrap{gap:14px}.story p{font-size:14px}
+    .bleed{height:200px}
+  }
 </style>
 </head>
 <body>

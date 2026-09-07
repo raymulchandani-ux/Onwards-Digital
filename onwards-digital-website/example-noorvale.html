@@ -279,28 +279,53 @@
 
   @media (max-width:960px){
     html{scroll-padding-top:90px}
+    section{padding:40px var(--gutter)}
     .head nav a:not(.btn),.head .now{display:none}
-    .hero{height:calc(100svh - 100px);min-height:560px}
-    .hero h1{font-size:clamp(42px,11vw,64px)}
-    .ask{grid-template-columns:1fr;border-radius:18px}
-    .ask label,.ask .field{border-right:0;border-bottom:1px solid rgba(244,242,237,.12);border-radius:0}
+    .hero{height:calc(88svh - 100px);min-height:520px}
+    .hero h1{font-size:clamp(40px,10.5vw,60px)}
+    .hero .sub{font-size:14.5px;margin-top:12px}
+    .h{font-size:clamp(28px,7.4vw,40px)}
+    .lead{font-size:14.5px;margin-top:12px}
+    /* Ask bar: Where on top, kind and budget side by side, then Begin */
+    .ask{grid-template-columns:1fr 1fr;border-radius:18px;margin-top:18px}
+    .ask .field{border-right:0;border-bottom:1px solid rgba(244,242,237,.12);padding:10px 16px;border-radius:0}
+    .ask .field:first-child{grid-column:1/-1}
+    .ask #f-kind{border-right:1px solid rgba(244,242,237,.12)}
+    .ask .go{grid-column:1/-1;margin:10px;border-radius:999px}
     .ask .pop{width:100%;max-width:none}
-    .ask .go{margin:10px;border-radius:999px}
+    .ask .pop-slider{width:100%}
     .scroll-hint{display:none}
+    .run .c{padding:12px 18px;font-size:12.5px}.run .c b{font-size:16px}
+    .track{margin-top:20px}
     .home{flex:0 0 calc((100% - var(--gap))/2)}
-    .glass{width:48px;height:48px;top:calc(50% - 56px)}
-    .glass.prev{left:8px}.glass.next{right:8px}
-    .where,.how,.enq{grid-template-columns:1fr}
-    .where .pic{aspect-ratio:4/3.4;max-height:none;order:-1}
-    .how .media{position:relative;top:0;aspect-ratio:4/3;max-height:none}
-    .how li h3{font-size:22px}
-    .numbers{grid-template-columns:1fr 1fr}
-    .two{grid-template-columns:1fr}
-    footer{grid-template-columns:1fr}
+    .home .row b{font-size:17px}.home .row span{font-size:11.5px}.home .name{font-size:12.5px}
+    .glass{width:44px;height:44px;top:calc(50% - 60px)}
+    .glass.prev{left:6px}.glass.next{right:6px}
+    .grid-note{font-size:12px;margin-top:10px}
+    .where,.enq{grid-template-columns:1fr;gap:18px}
+    .where .pic{aspect-ratio:16/10;max-height:none;order:-1}
+    .where .list{margin-top:10px}
+    .where .list button{padding:7px 0;gap:12px}
+    .where .list button b{font-size:18px}
+    .where .list button span{font-size:11.5px}
+    /* Four numbers across */
+    .numbers{grid-template-columns:repeat(4,1fr);gap:10px;padding:32px var(--gutter)}
+    .stat b{font-size:26px}
+    .stat b small{font-size:.5em}
+    .stat>span{font-size:11px;margin-top:6px;line-height:1.35}
+    .said{height:48vh;min-height:320px}
+    .slides figcaption b{font-size:34px}
+    .slides figcaption{bottom:28px}
+    .dots{bottom:28px}
+    form.req{gap:16px}
+    .two{grid-template-columns:1fr 1fr;gap:12px}
+    .chips span{padding:8px 13px;font-size:13px}
+    .pop2{width:100%}
+    footer{grid-template-columns:1fr;padding:26px var(--gutter) 32px;gap:12px}
     footer .links{justify-content:flex-start}
   }
   @media (max-width:520px){
-    .home{flex:0 0 78vw}
+    .home{flex:0 0 calc((100% - var(--gap))/2)}
   }
 </style>
 </head>
@@ -531,7 +556,7 @@
   var strip=document.getElementById('strip'), hp=document.getElementById('h-prev'), hn=document.getElementById('h-next');
   var glide=null;
   function stepStrip(dir){
-    var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=520?1:window.innerWidth<=960?2:3;
+    var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=960?2:3;
     var page=per*(card.getBoundingClientRect().width+gap), from=strip.scrollLeft, max=strip.scrollWidth-strip.clientWidth;
     var to=Math.max(0,Math.min(max,Math.round((from+dir*page)/page)*page));
     if(reduce){strip.scrollLeft=to;return;}

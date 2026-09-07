@@ -354,6 +354,32 @@
   .onwards{position:sticky;top:0;z-index:21}
   html{scroll-padding-top:112px}
   .site-header{top:36px}
+
+  /* Phone: less scrolling */
+  @media(max-width:760px){
+    section,.section{padding-top:36px!important;padding-bottom:36px!important}
+    .facts ul{grid-template-columns:1fr 1fr;gap:10px 14px}
+    .menu-grid{grid-template-columns:1fr 1fr;gap:12px}
+    .strip .wrap{grid-template-columns:1fr 1fr;gap:12px}
+    .preorder .lists{grid-template-columns:1fr 1fr;gap:12px}
+    .field-row{grid-template-columns:1fr 1fr;gap:10px}
+    .quotes .wrap{grid-template-columns:1fr 1fr;gap:12px}
+    .quotes blockquote,.quote{font-size:13.5px}
+    .visit .wrap{grid-template-columns:1fr 1fr;gap:14px}
+    footer .cols,.foot .cols{grid-template-columns:1fr 1fr;gap:14px}
+  }
+
+  @media(max-width:760px){
+    .menu-col{padding-top:10px}
+    .menu-col li,.menu-col .row,.menu-col .item{padding:5px 0;font-size:13px}
+    .menu-col p,.menu-col small{font-size:12px}
+    .visit .col-intro .photo,.visit .col-find .photo,.visit .patio{display:none}
+    .visit table td,.visit table th{padding:5px 0;font-size:13px}
+    .owners .wrap{gap:12px}.owners p{font-size:14px}
+    .preorder .grid>div:first-child{font-size:13.5px}
+    .preorder .grid>div:first-child p{margin-bottom:8px}
+    .strip{height:auto}
+  }
 </style>
 </head>
 <body>

@@ -222,18 +222,44 @@
   @media (max-width:600px){.perf svg text{font-size:24px}}
   @media (max-width:900px){
     html{scroll-padding-top:90px}
+    section{padding:44px var(--gutter)}
     .head nav a:not(.pill){display:none}
-    .hero{min-height:calc(100svh - 100px)}
-    .hero h1{font-size:clamp(40px,11vw,64px)}
-    .live{top:20px;right:var(--gutter)}
-    .steps,.stats{grid-template-columns:1fr;gap:32px}
-    .step .art{height:120px}
-    .control,.plan-card{grid-template-columns:1fr}
-    .readout{grid-template-columns:1fr 1fr 1fr;gap:10px}
-    .readout b{font-size:22px}
-    .start form{grid-template-columns:1fr}
-    .start form .pill{width:100%}
-    footer{grid-template-columns:1fr}
+    .hero{min-height:calc(78svh - 100px);padding-bottom:36px}
+    .hero h1{font-size:clamp(40px,11vw,60px)}
+    .hero p{font-size:15px;margin-top:14px}
+    .live{top:16px;right:var(--gutter);font-size:12px}
+    .h{font-size:clamp(28px,7.6vw,40px)}
+    .lead{font-size:15px;margin-top:12px}
+    .steps{display:flex;gap:12px;margin-top:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-left:calc(-1*var(--gutter));margin-right:calc(-1*var(--gutter));padding:0 var(--gutter)}
+    .steps::-webkit-scrollbar{display:none}
+    .step{flex:0 0 68vw;scroll-snap-align:start;padding-top:14px}
+    .step .art{height:74px;margin-bottom:12px}
+    .step h3{font-size:18px}
+    .step p{font-size:13.5px;margin-top:6px}
+    .model-grid{grid-template-columns:1fr;gap:20px}
+    .orbit{max-width:280px}.orbit .item .chip{width:56px;height:56px}.orbit .cd b{font-size:10px}.orbit .cd span{font-size:9px}.orbit .cd svg{width:14px;height:14px}.orbit .core{width:100px;height:100px}.orbit .core b{font-size:13px}.orbit .core span{font-size:10.5px}
+    .stats{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+    .stat b{font-size:30px}
+    .stat b small{font-size:.5em}
+    .stat>span{font-size:12px;margin-top:8px}
+    .tape{margin-top:32px}
+    .tape .t{padding:12px 18px;font-size:13px}
+    .control{grid-template-columns:1fr;gap:20px}
+    .dial{padding:20px}
+    .range{margin:24px 0 8px}
+    .readout{grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px;padding-top:16px}
+    .readout b{font-size:20px}.readout span{font-size:12px}
+    .perf .chart{padding:14px;margin-top:24px}
+    .perf .fine{font-size:12px}
+    .plan-wrap{padding:24px 0}
+    .plan-card{grid-template-columns:1fr;gap:18px;padding:22px}
+    .price{font-size:56px}
+    .plan-card li{padding:9px 0;font-size:14.5px}
+    .start form{grid-template-columns:1fr 1fr;gap:10px}
+    .start form .pill{grid-column:1/-1;width:100%}
+    .faq summary{padding:14px 0;font-size:17px}
+    .faq details p{padding-bottom:16px;font-size:15px}
+    footer{grid-template-columns:1fr;padding:28px var(--gutter) 32px;gap:14px}
     footer .links{justify-content:flex-start}
   }
 </style>
