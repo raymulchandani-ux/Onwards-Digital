@@ -52,7 +52,7 @@
   .btn:hover{background:transparent;color:var(--fg);transform:translateY(-1px)}
   .btn.ghost{background:transparent;color:var(--fg);border-color:rgba(244,242,237,.3)}
   .btn.ghost:hover{border-color:var(--fg)}
-  .head nav .btn{color:#0a0a0b}.head nav .btn:hover{color:var(--fg)}
+  .head nav .btn{color:#0a0a0b;flex:none;height:46px;padding:0 30px;font-size:14px;line-height:1;letter-spacing:.01em}.head nav .btn:hover{color:var(--fg)}
   .head .now{font-size:12.5px;color:var(--fg-2);font-variant-numeric:tabular-nums;display:flex;gap:8px;align-items:center;font-weight:400}
   .head .now i{width:6px;height:6px;border-radius:50%;background:var(--brass);display:inline-block}
 
@@ -141,9 +141,10 @@
   .homes{padding-left:0;padding-right:0}
   .homes .head-row{padding:0 var(--gutter)}
   .track{position:relative;margin-top:clamp(28px,5vh,56px)}
-  .strip{display:flex;gap:clamp(12px,1.6vw,22px);overflow-x:auto;scroll-snap-type:x mandatory;padding:0 var(--gutter) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .strip{display:flex;gap:var(--gap);overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:var(--gutter);padding:0 var(--gutter) 6px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   .strip::-webkit-scrollbar{display:none}
-  .home{flex:0 0 clamp(280px,30vw,440px);scroll-snap-align:start;position:relative;text-decoration:none;color:inherit;display:block}
+  .strip{--gap:clamp(12px,1.6vw,22px)}
+  .home{flex:0 0 calc((100% - 2*var(--gap))/3);scroll-snap-align:start;position:relative;text-decoration:none;color:inherit;display:block}
   .home .ph{position:relative;overflow:hidden;background:var(--bg-2);aspect-ratio:4/5;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
   .rv.in .home .ph{clip-path:inset(0 0 0 0)}
   .rv.in .home:nth-child(2) .ph{transition-delay:.1s}.rv.in .home:nth-child(3) .ph{transition-delay:.2s}.rv.in .home:nth-child(4) .ph{transition-delay:.3s}
@@ -167,37 +168,42 @@
   .grid-note{margin-top:16px;font-size:12.5px;color:var(--fg-3)}
 
   /* Where: a list of cities; the picture follows your hand */
-  .where{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:start}
-  .where .list{list-style:none;margin:clamp(24px,4vh,40px) 0 0;padding:0;border-top:1px solid var(--line)}
+  .where{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+  .where .list{list-style:none;margin:clamp(18px,3vh,28px) 0 0;padding:0;border-top:1px solid var(--line)}
   .where .list li{border-bottom:1px solid var(--line)}
-  .where .list button{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:baseline;text-align:left;background:transparent;border:0;color:var(--fg-2);padding:14px 0;cursor:pointer;transition:color .2s,padding-left .35s var(--ease)}
-  .where .list button b{font-family:var(--serif);font-size:clamp(24px,2.4vw,34px);font-weight:300;color:var(--fg);font-variation-settings:"opsz" 34;transition:transform .35s var(--ease)}
-  .where .list button span{font-size:13px;font-variant-numeric:tabular-nums;font-weight:400}
+  .where .list button{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:baseline;text-align:left;background:transparent;border:0;color:var(--fg-2);padding:9px 0;cursor:pointer;transition:color .2s,padding-left .35s var(--ease)}
+  .where .list button b{font-family:var(--serif);font-size:clamp(20px,1.7vw,24px);font-weight:300;color:var(--fg);font-variation-settings:"opsz" 34;transition:transform .35s var(--ease)}
+  .where .list button span{font-size:12.5px;font-variant-numeric:tabular-nums;font-weight:400}
   .where .list button.on{padding-left:14px;color:var(--fg)}
   .where .list button:hover b,.where .list button.on b{color:var(--brass)}
-  .where .pic{position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .where .pic{position:relative;aspect-ratio:4/4.6;max-height:calc(100vh - 220px);overflow:hidden;background:var(--bg-2);margin:0}
   .where .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s var(--ease),transform 1.6s var(--ease)}
   .where .pic img.on{opacity:1;transform:none}
   .where .pic .cap{position:absolute;left:16px;bottom:14px;right:16px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--fg);text-shadow:0 1px 10px rgba(0,0,0,.6);z-index:1;font-weight:400}
 
-  /* Process: the section pins and the four steps play through as you scroll, quickly */
-  .how-sec{padding:0}
-  .how-track{height:calc(100vh + 3 * 34vh)}
-  .how-pin{position:sticky;top:100px;height:calc(100vh - 100px);padding:clamp(28px,5vh,48px) var(--gutter);display:flex;flex-direction:column;justify-content:center;gap:clamp(20px,3vh,32px)}
-  .how{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:center}
-  .how .media{position:relative;height:min(58vh,560px);overflow:hidden;background:var(--bg-2);margin:0}
-  .how .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .55s var(--ease),transform 1.2s var(--ease)}
+  /* Process: four steps beside a picture; arrows or a click move between them */
+  .how{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center;margin-top:clamp(28px,5vh,56px)}
+  .how .media{position:sticky;top:120px;aspect-ratio:4/5;max-height:calc(100vh - 160px);overflow:hidden;background:var(--bg-2);margin:0}
+  .how .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .6s var(--ease),transform 1.4s var(--ease)}
   .how .media img.on{opacity:1;transform:none}
   .how .media .bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(244,242,237,.15)}
-  .how .media .bar i{display:block;height:100%;background:var(--brass);width:25%;transition:width .35s var(--ease)}
+  .how .media .bar i{display:block;height:100%;background:var(--brass);width:25%;transition:width .4s var(--ease)}
   .count-pill{position:absolute;right:14px;top:14px;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-variant-numeric:tabular-nums;font-weight:400}
-  .how ol{list-style:none;margin:0;padding:0;position:relative;min-height:220px}
-  .how li{position:absolute;inset:0;opacity:0;transform:translateY(14px);transition:opacity .45s var(--ease),transform .45s var(--ease);pointer-events:none}
-  .how li.on{opacity:1;transform:none;pointer-events:auto}
-  .how li h3{font-size:clamp(26px,3vw,42px)}
-  .how li p{margin-top:12px;color:var(--fg-2);max-width:40ch;font-size:16px}
-  .how li .n{font-size:12.5px;color:var(--brass);margin-bottom:10px;font-weight:400}
-  @media (prefers-reduced-motion:reduce){.how .media img,.how li{transition:none}}
+  .steps-wrap{display:flex;flex-direction:column;align-items:flex-start;gap:14px;min-width:0}
+  .steps-wrap .glass{position:static;width:48px;height:48px;top:auto}
+  .steps-wrap .glass svg{width:18px;height:18px}
+  .how ol{list-style:none;margin:0;padding:0;width:100%}
+  .how li{border-top:1px solid var(--line)}
+  .how li:first-child{border-top:0}
+  .how li button{width:100%;text-align:left;background:transparent;border:0;color:inherit;padding:18px 0 18px 0;cursor:pointer;opacity:.35;transition:opacity .4s,padding-left .4s var(--ease);border-left:2px solid transparent}
+  .how li.on button{opacity:1;padding-left:16px;border-left-color:var(--brass)}
+  .how li button:hover{opacity:.8}
+  .how li.on button:hover{opacity:1}
+  .how li h3{font-size:clamp(22px,2.2vw,30px)}
+  .how li p{margin-top:8px;color:var(--fg-2);max-width:44ch;font-size:15px}
+  .how li .n{font-size:12px;color:var(--brass);margin-bottom:8px;font-weight:400}
+  .how li:not(.on) button p:last-child{display:none}
+  @media (prefers-reduced-motion:reduce){.how .media img,.how li button{transition:none}}
   /* Numbers as a quiet line */
   .numbers{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(40px,7vh,72px) var(--gutter);display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
   .stat b{display:block;font-family:var(--serif);font-size:clamp(40px,4.6vw,68px);font-weight:300;line-height:1;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 72}
@@ -277,23 +283,20 @@
     .ask .pop{width:100%;max-width:none}
     .ask .go{margin:10px;border-radius:999px}
     .scroll-hint{display:none}
+    .home{flex:0 0 calc((100% - var(--gap))/2)}
     .glass{width:48px;height:48px;top:calc(50% - 56px)}
     .glass.prev{left:8px}.glass.next{right:8px}
     .where,.how,.enq{grid-template-columns:1fr}
-    .where .pic{position:relative;top:0;aspect-ratio:4/3;order:-1}
-    .how-track{height:calc(100svh + 3 * 30vh)}
-    .how-pin{top:90px;height:calc(100svh - 90px);justify-content:flex-start;gap:14px;padding-top:14px}
-    .how .media{height:34svh}
-    .how ol{min-height:200px}
-    .how li h3{font-size:24px}
-    .how li p{font-size:14.5px}
+    .where .pic{aspect-ratio:4/3;max-height:none;order:-1}
+    .how .media{position:relative;top:0;aspect-ratio:4/3;max-height:none}
+    .how li h3{font-size:22px}
     .numbers{grid-template-columns:1fr 1fr}
     .two{grid-template-columns:1fr}
     footer{grid-template-columns:1fr}
     footer .links{justify-content:flex-start}
   }
   @media (max-width:520px){
-    .home{flex-basis:78vw}
+    .home{flex:0 0 78vw}
   }
 </style>
 </head>
@@ -360,7 +363,6 @@
         <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1561027509-ec65ce5574f9?auto=format&fit=crop&w=1600&q=85" alt="A white house in the hills" loading="lazy"><span class="tag">Ibiza</span></div><div class="row"><b>€7,800,000</b><span>5 bed · hillside</span></div><p class="name"><b>Es Cubells finca</b>, sunset side, olive terraces</p></a>
         <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1583765748076-cac46b8c98c1?auto=format&fit=crop&w=1600&q=85" alt="A white house on a wide lawn" loading="lazy"><span class="tag">Cotswolds</span></div><div class="row"><b>£8,250,000</b><span>7 bed · 22 acres</span></div><p class="name"><b>Georgian rectory</b>, walled garden, stables</p></a>
         <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85" alt="A modern house with a long pool" loading="lazy"><span class="tag">Sydney</span></div><div class="row"><b>A$18,500,000</b><span>5 bed · harbour view</span></div><p class="name"><b>Vaucluse house</b>, north-facing, pool to the water</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1600&q=85" alt="A lounge with the city beyond the glass" loading="lazy"><span class="tag">Singapore</span></div><div class="row"><b>S$14,200,000</b><span>4 bed · 3,900 sq ft</span></div><p class="name"><b>Sentosa Cove penthouse</b>, marina side, roof pool</p></a>
       </div>
     </div>
     <p class="grid-note">Prices in local currency. Every home here has been walked by someone on the desk.</p>
@@ -371,7 +373,7 @@
   <div class="where rv">
     <div>
       <p class="k">Cities</p>
-      <h2 class="h lines" id="where-h"><span class="l"><span>Forty cities.</span></span><span class="l"><span>One phone number.</span></span></h2>
+      <h2 class="h lines" id="where-h" style="font-size:clamp(28px,3.4vw,46px)"><span class="l"><span>Forty cities.</span></span><span class="l"><span>One phone number.</span></span></h2>
       <p class="lead">Move along the list and the picture follows. Choose a city and it's already filled in when you speak to us.</p>
       <ul class="list" id="city-list">
         <li><button type="button" class="on" data-i="0" data-city="New York"><b>New York</b><span data-tz="America/New_York">—</span><span>212 homes</span></button></li>
@@ -394,28 +396,28 @@
   </div>
 </section>
 
-<section id="how" aria-labelledby="how-h" class="how-sec">
-  <div class="how-track" id="how-track">
-    <div class="how-pin">
-      <div class="how-head">
-        <p class="k">How we work</p>
-        <h2 class="h" id="how-h">From the first call to the keys.</h2>
-      </div>
-      <div class="how">
-        <figure class="media" id="media">
-          <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm room in low light" loading="lazy">
-          <img data-step="2" src="https://images.unsplash.com/photo-1599409637219-d04e9a2db432?auto=format&fit=crop&w=1400&q=80" alt="A white house among trees under a blue sky" loading="lazy">
-          <img data-step="3" src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1400&q=80" alt="A white mansion with clipped topiary and palms" loading="lazy">
-          <img data-step="4" src="https://images.unsplash.com/photo-1686342123879-241c6349e8c7?auto=format&fit=crop&w=1400&q=80" alt="A staircase in black and white" loading="lazy">
-          <div class="bar" aria-hidden="true"><i id="bar"></i></div>
-          <span class="count-pill" id="how-count">1 / 4</span>
-        </figure>
+<section id="how" aria-labelledby="how-h">
+  <div class="rv">
+    <p class="k">How we work</p>
+    <h2 class="h lines" id="how-h"><span class="l"><span>From the first call</span></span><span class="l"><span>to the keys.</span></span></h2>
+    <div class="how">
+      <figure class="media" id="media">
+        <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm room in low light" loading="lazy">
+        <img data-step="2" src="https://images.unsplash.com/photo-1599409637219-d04e9a2db432?auto=format&fit=crop&w=1400&q=80" alt="A white house among trees under a blue sky" loading="lazy">
+        <img data-step="3" src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1400&q=80" alt="A white mansion with clipped topiary and palms" loading="lazy">
+        <img data-step="4" src="https://images.unsplash.com/photo-1686342123879-241c6349e8c7?auto=format&fit=crop&w=1400&q=80" alt="A staircase in black and white" loading="lazy">
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+        <span class="count-pill" id="how-count">1 / 4</span>
+      </figure>
+      <div class="steps-wrap">
+        <button type="button" class="glass up" id="s-up" aria-label="Previous step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg></button>
         <ol id="steps">
-          <li class="on" data-step="1"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></li>
-          <li data-step="2"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></li>
-          <li data-step="3"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, a colleague in that city has already checked the paperwork.</p></li>
-          <li data-step="4"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></li>
+          <li class="on" data-step="1"><button type="button"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></button></li>
+          <li data-step="2"><button type="button"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></button></li>
+          <li data-step="3"><button type="button"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, a colleague in that city has already checked the paperwork.</p></button></li>
+          <li data-step="4"><button type="button"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></button></li>
         </ol>
+        <button type="button" class="glass down" id="s-down" aria-label="Next step"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button>
       </div>
     </div>
   </div>
@@ -554,21 +556,19 @@
 
   /* Homes strip: arrows, keyboard, and the arrows dim at the ends */
   var strip=document.getElementById('strip'), hp=document.getElementById('h-prev'), hn=document.getElementById('h-next');
-  function stepStrip(dir){var card=strip.querySelector('.home');strip.scrollBy({left:dir*(card.getBoundingClientRect().width+16),behavior:reduce?'auto':'smooth'});}
+  function stepStrip(dir){var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=520?1:window.innerWidth<=960?2:3;strip.scrollBy({left:dir*per*(card.getBoundingClientRect().width+gap),behavior:reduce?'auto':'smooth'});}
   function ends(){hp.disabled=strip.scrollLeft<8;hn.disabled=strip.scrollLeft+strip.clientWidth>strip.scrollWidth-8;}
   hp.addEventListener('click',function(){stepStrip(-1);}); hn.addEventListener('click',function(){stepStrip(1);});
   strip.addEventListener('scroll',ends,{passive:true}); window.addEventListener('resize',ends); ends();
   strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
 
-  /* Process: pinned; the step is a function of how far you've scrolled through the track */
-  var track=document.getElementById('how-track'), steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), bar=document.getElementById('bar'), howCount=document.getElementById('how-count'), curStep=1;
-  function setStep(n){if(n===curStep)return;curStep=n;var k=String(n);steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===k);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===k);});bar.style.width=(n*25)+'%';howCount.textContent=n+' / 4';}
-  function howScroll(){
-    var r=track.getBoundingClientRect(), pinH=window.innerHeight, total=r.height-pinH+100; // distance the pin travels
-    var p=Math.min(1,Math.max(0,(-r.top+100)/Math.max(1,total)));
-    setStep(1+Math.min(3,Math.floor(p*4)));
-  }
-  window.addEventListener('scroll',howScroll,{passive:true}); window.addEventListener('resize',howScroll); howScroll();
+  /* Process: arrows or a click choose the step; the picture follows */
+  var steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), bar=document.getElementById('bar'), howCount=document.getElementById('how-count'), curStep=1;
+  function setStep(n){n=Math.max(1,Math.min(4,n));curStep=n;var k=String(n);steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===k);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===k);});bar.style.width=(n*25)+'%';howCount.textContent=n+' / 4';document.getElementById('s-up').disabled=n===1;document.getElementById('s-down').disabled=n===4;}
+  steps.forEach(function(li){li.querySelector('button').addEventListener('click',function(){setStep(+li.dataset.step);});});
+  document.getElementById('s-up').addEventListener('click',function(){setStep(curStep-1);});
+  document.getElementById('s-down').addEventListener('click',function(){setStep(curStep+1);});
+  setStep(1);
 
   /* Villas: slow rotation, dots you can press */
   var slides=document.querySelectorAll('#slides figure'), dots=document.getElementById('dots'), si=0, st;
