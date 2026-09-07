@@ -146,16 +146,16 @@
   .strip::-webkit-scrollbar{display:none}
   .strip{--gap:clamp(12px,1.6vw,22px)}
   .home{flex:0 0 calc((100% - 2*var(--gap))/3);scroll-snap-align:start;position:relative;text-decoration:none;color:inherit;display:block}
-  .home .ph{position:relative;overflow:hidden;background:var(--bg-2);aspect-ratio:4/5;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
+  .home .ph{position:relative;overflow:hidden;background:var(--bg-2);aspect-ratio:4/3.4;border-radius:6px;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
   .rv.in .home .ph{clip-path:inset(0 0 0 0)}
   .rv.in .home:nth-child(2) .ph{transition-delay:.1s}.rv.in .home:nth-child(3) .ph{transition-delay:.2s}.rv.in .home:nth-child(4) .ph{transition-delay:.3s}
   .home .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
   .home:hover .ph img{transform:scale(1.04)}
   .home .tag{position:absolute;left:14px;top:14px;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-weight:400}
   .home .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:12px}
-  .home .row b{font-family:var(--serif);font-size:22px;font-weight:400;font-variation-settings:"opsz" 22}
+  .home .row b{font-family:var(--serif);font-size:24px;font-weight:400;font-variation-settings:"opsz" 24;letter-spacing:-.01em}
   .home .row span{color:var(--fg-2);font-size:13.5px;font-variant-numeric:tabular-nums;font-weight:400}
-  .home .name{color:var(--fg-2);font-size:14px;margin-top:2px}
+  .home .name{color:var(--fg-2);font-size:14px;margin-top:4px}
   .home .name b{color:var(--fg);font-weight:400}
   .glass{position:absolute;top:calc(50% - 60px);z-index:3;width:60px;height:60px;border-radius:50%;border:1px solid rgba(255,255,255,.28);color:var(--fg);cursor:pointer;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -8px 16px rgba(255,255,255,.06),0 10px 30px rgba(0,0,0,.45);transition:transform .25s var(--ease),background .25s,opacity .3s}
   .glass:hover{transform:scale(1.06);background:linear-gradient(135deg,rgba(255,255,255,.32),rgba(255,255,255,.1))}
@@ -354,15 +354,15 @@
       <button type="button" class="glass prev" id="h-prev" aria-label="Previous homes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
       <button type="button" class="glass next" id="h-next" aria-label="More homes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
       <div class="strip" id="strip" tabindex="0" aria-label="Homes, scroll sideways">
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=1600&q=85" alt="A modern house with two pools, lit at dusk" loading="lazy"><span class="tag">Los Angeles</span></div><div class="row"><b>$24,500,000</b><span>7 bed · 11,200 sq ft</span></div><p class="name"><b>Trousdale estate</b>, two pools, the whole city below</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1600&q=85" alt="A white villa and pool in clear light" loading="lazy"><span class="tag">Dubai</span></div><div class="row"><b>AED 30,100,000</b><span>6 bed · 9,400 sq ft</span></div><p class="name"><b>Palm Jumeirah villa</b>, private beach, staff wing</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1578439297699-eb414262c2de?auto=format&fit=crop&w=1600&q=85" alt="A house at the water's edge" loading="lazy"><span class="tag">Lake Como</span></div><div class="row"><b>€9,400,000</b><span>6 bed · lakefront</span></div><p class="name"><b>Villa at Tremezzo</b>, boathouse, terraced gardens</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1600&q=85" alt="A white mansion with clipped topiary and palms" loading="lazy"><span class="tag">Palm Beach</span></div><div class="row"><b>$31,000,000</b><span>8 bed · 14,600 sq ft</span></div><p class="name"><b>Ocean Boulevard</b>, 1928, restored, deep-water dock</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1416331108676-a22ccb276e35?auto=format&fit=crop&w=1600&q=85" alt="A white house among old trees" loading="lazy"><span class="tag">Hudson Valley</span></div><div class="row"><b>$6,900,000</b><span>5 bed · 48 acres</span></div><p class="name"><b>Stone farmhouse</b>, 1840, two hours from Manhattan</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1776362355123-ca966d36e29c?auto=format&fit=crop&w=1600&q=85" alt="A double-height living room with a sculptural stair" loading="lazy"><span class="tag">London</span></div><div class="row"><b>£11,750,000</b><span>4 bed · 4,100 sq ft</span></div><p class="name"><b>Belgravia lateral</b>, garden square, rebuilt 2024</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1561027509-ec65ce5574f9?auto=format&fit=crop&w=1600&q=85" alt="A white house in the hills" loading="lazy"><span class="tag">Ibiza</span></div><div class="row"><b>€7,800,000</b><span>5 bed · hillside</span></div><p class="name"><b>Es Cubells finca</b>, sunset side, olive terraces</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1583765748076-cac46b8c98c1?auto=format&fit=crop&w=1600&q=85" alt="A white house on a wide lawn" loading="lazy"><span class="tag">Cotswolds</span></div><div class="row"><b>£8,250,000</b><span>7 bed · 22 acres</span></div><p class="name"><b>Georgian rectory</b>, walled garden, stables</p></a>
-        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1600&q=85" alt="A modern house with a long pool" loading="lazy"><span class="tag">Sydney</span></div><div class="row"><b>A$18,500,000</b><span>5 bed · harbour view</span></div><p class="name"><b>Vaucluse house</b>, north-facing, pool to the water</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1600&q=85" alt="A white mansion with clipped topiary and palms" loading="lazy"><span class="tag">Palm Beach</span></div><div class="row"><b>$31,000,000</b><span>8 bed · 14,600 sq ft</span></div><p class="name"><b>Ocean Boulevard</b> · 1928 estate, restored</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1776362355123-ca966d36e29c?auto=format&fit=crop&w=1600&q=85" alt="A double-height living room with a sculptural stair" loading="lazy"><span class="tag">London</span></div><div class="row"><b>£11,750,000</b><span>4 bed · 4,100 sq ft</span></div><p class="name"><b>Belgravia</b> · lateral apartment, rebuilt 2024</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=1600&q=85" alt="A modern house with two pools, lit at dusk" loading="lazy"><span class="tag">Los Angeles</span></div><div class="row"><b>$24,500,000</b><span>7 bed · 11,200 sq ft</span></div><p class="name"><b>Trousdale Estates</b> · two pools, city below</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1778910554261-837b19e25c26?auto=format&fit=crop&w=1600&q=85" alt="A large modern house with manicured gardens and trees" loading="lazy"><span class="tag">Hudson Valley</span></div><div class="row"><b>$9,800,000</b><span>6 bed · 8,900 sq ft</span></div><p class="name"><b>Rhinebeck</b> · modern estate, 40 acres</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1785433080094-86a20fcc7129?auto=format&fit=crop&w=1600&q=85" alt="A grand white house with a red roof on the waterfront" loading="lazy"><span class="tag">Lake Como</span></div><div class="row"><b>€14,200,000</b><span>7 bed · 9,600 sq ft</span></div><p class="name"><b>Tremezzo</b> · waterfront villa, boathouse</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1600&q=85" alt="A lounge with the city beyond the glass" loading="lazy"><span class="tag">Dubai</span></div><div class="row"><b>AED 41,500,000</b><span>4 bed · 6,200 sq ft</span></div><p class="name"><b>Downtown</b> · penthouse, Burj view</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1743808564484-e2d1c4ab9ef6?auto=format&fit=crop&w=1600&q=85" alt="A historic stone house surrounded by greenery" loading="lazy"><span class="tag">Cotswolds</span></div><div class="row"><b>£8,250,000</b><span>7 bed · 22 acres</span></div><p class="name"><b>Chipping Campden</b> · Georgian manor, walled garden</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1742411055135-08c64c75174a?auto=format&fit=crop&w=1600&q=85" alt="Houses on a hill overlooking the ocean" loading="lazy"><span class="tag">Malibu</span></div><div class="row"><b>$19,750,000</b><span>5 bed · 7,400 sq ft</span></div><p class="name"><b>Point Dume</b> · cliffside, ocean on three sides</p></a>
+        <a class="home" href="#enquire"><div class="ph"><img src="https://images.unsplash.com/photo-1777650998511-57a5db1ef311?auto=format&fit=crop&w=1600&q=85" alt="An arched entryway of a grand house among trees" loading="lazy"><span class="tag">Marbella</span></div><div class="row"><b>€12,900,000</b><span>6 bed · 10,100 sq ft</span></div><p class="name"><b>La Zagaleta</b> · gated estate, arched courtyard</p></a>
       </div>
     </div>
     <p class="grid-note">Prices in local currency. Every home here has been walked by someone on the desk.</p>
@@ -384,12 +384,12 @@
       </ul>
     </div>
     <figure class="pic" id="pic">
-      <img class="on" src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=1400&q=80" alt="Manhattan at dusk" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1583765748076-cac46b8c98c1?auto=format&fit=crop&w=1400&q=80" alt="A white house on a green lawn" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1767041743706-fa96a08187a3?auto=format&fit=crop&w=1400&q=80" alt="Dubai Marina at twilight" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1561027509-ec65ce5574f9?auto=format&fit=crop&w=1400&q=80" alt="A white house in the hills" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1578439297699-eb414262c2de?auto=format&fit=crop&w=1400&q=80" alt="A house at the water's edge" loading="lazy">
-      <img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1400&q=80" alt="A lounge with the city beyond the glass" loading="lazy">
+      <img class="on" src="https://images.unsplash.com/photo-1568515387631-8b650bbcdb90?auto=format&fit=crop&w=1600&q=85" alt="Central Park from above, Manhattan" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1543832923-44667a44c804?auto=format&fit=crop&w=1600&q=85" alt="Tower Bridge at sunset, London" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1745750434535-5943ef2fd31a?auto=format&fit=crop&w=1600&q=85" alt="Downtown Dubai and the Burj Khalifa" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=1600&q=85" alt="A hillside home over Los Angeles at dusk" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1664433451451-11337deef597?auto=format&fit=crop&w=1600&q=85" alt="Villa del Balbianello, Lake Como" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1774075884764-be7319c06e08?auto=format&fit=crop&w=1600&q=85" alt="Marina Bay, Singapore, at blue hour" loading="lazy">
       <figcaption class="cap"><span id="pic-city">New York</span><span id="pic-time">—</span></figcaption>
     </figure>
   </div>
@@ -405,11 +405,11 @@
 
 <section class="said" aria-label="A few more, from around the world" id="villas">
   <div class="slides" id="slides">
-    <figure class="on"><img src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=2400&q=85" alt="A modern house with two pools at dusk" loading="lazy"><figcaption><b>$24,500,000</b><span>Trousdale, Los Angeles</span></figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1613977257592-4871e5fcd7c4?auto=format&fit=crop&w=2400&q=85" alt="A white villa with a pool and lounge terrace" loading="lazy"><figcaption><b>€12,900,000</b><span>Marbella, Spain</span></figcaption></figure>
+    <figure class="on"><img src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=2400&q=85" alt="A modern house with two pools at dusk" loading="lazy"><figcaption><b>$24,500,000</b><span>Trousdale Estates, Los Angeles</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1785433080094-86a20fcc7129?auto=format&fit=crop&w=2400&q=85" alt="A grand white house on the waterfront" loading="lazy"><figcaption><b>€14,200,000</b><span>Tremezzo, Lake Como</span></figcaption></figure>
     <figure><img src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=2400&q=85" alt="A white mansion with clipped topiary and palms" loading="lazy"><figcaption><b>$31,000,000</b><span>Palm Beach, Florida</span></figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1578439297699-eb414262c2de?auto=format&fit=crop&w=2400&q=85" alt="A house at the water's edge" loading="lazy"><figcaption><b>€9,400,000</b><span>Tremezzo, Lake Como</span></figcaption></figure>
-    <figure><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=2400&q=85" alt="A modern house with a long pool in clear light" loading="lazy"><figcaption><b>AED 41,500,000</b><span>Emirates Hills, Dubai</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1778910554261-837b19e25c26?auto=format&fit=crop&w=2400&q=85" alt="A large modern house with manicured gardens" loading="lazy"><figcaption><b>$9,800,000</b><span>Rhinebeck, Hudson Valley</span></figcaption></figure>
+    <figure><img src="https://images.unsplash.com/photo-1742411055135-08c64c75174a?auto=format&fit=crop&w=2400&q=85" alt="Houses on a hill above the ocean" loading="lazy"><figcaption><b>$19,750,000</b><span>Point Dume, Malibu</span></figcaption></figure>
   </div>
   <div class="dots" id="dots" aria-label="Choose a home"></div>
 </section>

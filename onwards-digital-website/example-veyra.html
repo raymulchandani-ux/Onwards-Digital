@@ -136,7 +136,7 @@
 
   /* Control: the risk dial */
   .control{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
-  .dial{border:1px solid var(--line);border-radius:20px;padding:clamp(24px,3vw,40px);background:var(--bg-2)}
+  .dial{border-radius:20px;padding:clamp(24px,3vw,40px);border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55)}
   .dial .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
   .dial .top b{font-size:22px;font-weight:500;letter-spacing:-.02em}
   .dial .top span{color:var(--fg-2);font-size:14px}
@@ -158,7 +158,7 @@
   .legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
 
   /* Performance chart */
-  .perf .chart{margin-top:clamp(36px,6vh,64px);border:1px solid var(--line);border-radius:20px;padding:clamp(18px,3vw,36px);background:var(--bg-2)}
+  .perf .chart{margin-top:clamp(36px,6vh,64px);border-radius:20px;padding:clamp(18px,3vw,36px);border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55)}
   .perf .chart svg{width:100%;height:auto;display:block;overflow:visible}
   .perf .legend{margin-top:18px}
   .perf .legend .m i{background:var(--signal)}
@@ -172,9 +172,9 @@
   @media (prefers-reduced-motion:reduce){.grow path.line{stroke-dashoffset:0!important;transition:none}.grow .fill{opacity:1;transition:none}}
 
   /* Plan */
-  .plan{border-top:1px solid var(--line)}
-  .plan-wrap{position:relative;margin-top:clamp(36px,6vh,64px)}
-  .plan-line{position:absolute;inset:-4% 0;width:100%;height:108%;overflow:visible;opacity:.95}
+  .plan{border-top:1px solid var(--line);overflow:hidden}
+  .plan-wrap{position:relative;margin-top:clamp(36px,6vh,64px);padding:40px 0}
+  .plan-line{position:absolute;left:-6%;right:-6%;top:-2%;bottom:-2%;width:112%;height:104%;overflow:visible;opacity:.95;z-index:2;pointer-events:none}
   .plan-line .pline{stroke-dasharray:3000;stroke-dashoffset:3000;transition:stroke-dashoffset 2.8s cubic-bezier(.2,.7,.2,1)}
   .rv.in .plan-line .pline{stroke-dashoffset:0}
   .plan-line .pfill{opacity:0;transition:opacity 1.2s 1.8s}
@@ -182,7 +182,7 @@
   @media (prefers-reduced-motion:reduce){.plan-line .pline{stroke-dashoffset:0;transition:none}.plan-line .pfill{opacity:1}}
   .plan-card{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);border:1px solid rgba(255,255,255,.22);border-radius:24px;padding:clamp(24px,4vw,56px);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55);align-items:center}
   .plan-card::before{content:"";position:absolute;inset:0;border-radius:24px;background:rgba(0,0,0,.12);pointer-events:none}
-  .plan-card>*{position:relative}
+  .plan-card>*{position:relative;z-index:3}
   .price{font-size:clamp(56px,7vw,104px);font-weight:500;letter-spacing:-.05em;line-height:1}
   .price small{font-size:.28em;color:var(--fg-2);letter-spacing:-.01em;margin-left:8px}
   .plan-card ul{list-style:none;margin:0;padding:0}
@@ -262,23 +262,19 @@
 
 <section id="how" aria-labelledby="how-h">
   <div class="rv">
-    <p class="k">How it works</p>
     <h2 class="h" id="how-h">Begin in three steps.</h2>
     <div class="steps">
       <div class="step">
-        <p class="n">Step 1</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="100" height="80" rx="10"/><rect x="150" y="20" width="100" height="80" rx="10"/><path d="M110 60h40M138 50l12 10-12 10"/><path d="M30 45h60M30 60h40M30 75h50"/><circle cx="200" cy="60" r="18"/><path d="M191 60l6 6 12-12"/></svg></div>
         <h3>Connect your broker</h3>
         <p>16 brokerage accounts supported, including Schwab, Fidelity, Interactive Brokers, eToro and Robinhood.</p>
       </div>
       <div class="step">
-        <p class="n">Step 2</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 60h220"/><circle cx="150" cy="60" r="14"/><path d="M20 90h90M20 30h60"/><path d="M40 60v-12M80 60v-12M110 60v-12M190 60v-12M220 60v-12"/><path d="M150 20v18M150 82v18"/></svg></div>
         <h3>Set how much</h3>
         <p>Choose the amount Veyra can trade and how far it can lean.</p>
       </div>
       <div class="step">
-        <p class="n">Step 3</p>
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,95 40,80 65,86 90,60 120,66 150,40 180,48 210,25 250,30"/><circle cx="150" cy="40" r="5"/><circle cx="210" cy="25" r="5"/><path d="M150 40v-24M210 25v-14"/><path d="M143 14h14M203 8h14"/></svg></div>
         <h3>Every trade, mirrored</h3>
         <p>When the model buys, you buy, sized to your amount, within just seconds. When it sells, so do you. You see every order before and after.</p>
@@ -289,7 +285,6 @@
 
 <section class="model" aria-labelledby="model-h">
   <div class="rv">
-    <p class="k">The model</p>
     <div class="model-grid">
     <div>
     <h2 class="h" id="model-h">Human-level decisions, without the panic.</h2>
@@ -316,7 +311,6 @@
 <section id="control" aria-labelledby="control-h">
   <div class="control rv">
     <div>
-      <p class="k">Control</p>
       <h2 class="h" id="control-h">You set the limit.</h2>
       <p class="lead">One dial decides how far the model can lean. Everything else, from position size to the cash it keeps back, follows from it. Move it and watch what changes.</p>
     </div>
@@ -338,7 +332,6 @@
 
 <section class="perf" id="performance" aria-labelledby="perf-h">
   <div class="rv">
-    <p class="k">Performance</p>
     <h2 class="h" id="perf-h">Five years, hypothetically.</h2>
     <p class="lead">How the model's Balanced setting would have done against the S&amp;P 500 over the last five years, before fees. Simulated, not lived; read the small print.</p>
     <div class="chart">
@@ -359,13 +352,12 @@
 
 <section class="plan" id="plan" aria-labelledby="plan-h">
   <div class="rv">
-    <p class="k">Plan</p>
     <h2 class="h" id="plan-h">One plan. One price.</h2>
     <div class="plan-wrap">
       <svg class="plan-line" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id="pl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e5646a"/><stop offset=".12" stop-color="#5fd28a"/><stop offset=".3" stop-color="#5fd28a"/><stop offset=".36" stop-color="#e5646a"/><stop offset=".44" stop-color="#5fd28a"/><stop offset=".58" stop-color="#5fd28a"/><stop offset=".62" stop-color="#e5646a"/><stop offset=".68" stop-color="#5fd28a"/><stop offset="1" stop-color="#5fd28a"/></linearGradient><linearGradient id="pf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fd28a" stop-opacity=".18"/><stop offset="1" stop-color="#5fd28a" stop-opacity="0"/></linearGradient></defs>
-        <path class="pfill" fill="url(#pf)" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28 L1200,420 L0,420 Z"/>
-        <path class="pline" fill="none" stroke="url(#pl)" stroke-width="3.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28"/>
+        <path class="pfill" fill="url(#pf)" opacity=".45" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28 L1200,420 L0,420 Z"/>
+        <path class="pline" fill="none" stroke="url(#pl)" stroke-width="2.5" vector-effect="non-scaling-stroke" vector-effect="non-scaling-stroke" stroke-linejoin="round" d="M0,360 L60,330 L110,345 L170,300 L230,312 L290,262 L350,278 L420,236 L470,255 L530,205 L600,214 L660,168 L720,186 L790,140 L850,152 L910,110 L980,118 L1050,72 L1120,60 L1200,28"/>
       </svg>
     <div class="plan-card">
       <div>
@@ -386,7 +378,6 @@
 
 <section class="start" id="start" aria-labelledby="start-h">
   <div class="rv">
-    <p class="k">Start</p>
     <h2 class="h" id="start-h">Ready when you are.</h2>
     <p class="lead">An email and a broker. Connecting takes about two minutes; the first trade waits for the model, not for you.</p>
     <form id="start-form" novalidate>
@@ -402,7 +393,6 @@
 
 <section aria-labelledby="faq-h">
   <div class="rv">
-    <p class="k">Questions</p>
     <h2 class="h" id="faq-h">The short answers.</h2>
     <div class="faq" style="margin-top:36px">
       <details><summary>Does Veyra hold my money?</summary><p>No. Your account stays with your broker, in your name. Veyra has permission to place trades in it, and nothing else. You can revoke that permission from your broker's side at any time.</p></details>
@@ -436,7 +426,7 @@
   // A price series: a seeded random walk with drift, so it reads as a market, not a sine wave
   var seed=[], ghosts=[];
   (function(){var r=7; function rnd(){r=(r*16807)%2147483647;return r/2147483647;}
-    var v=0; for(var i=0;i<=140;i++){v+=(rnd()-.44)*.42+ (rnd()<.06?(rnd()-.5)*1.6:0); v=Math.max(-1.5,v); seed.push(v);}
+    var v=0; for(var i=0;i<=140;i++){v+=(rnd()-.36)*.5+ (rnd()<.06?(rnd()-.45)*1.6:0); v=Math.max(-1.2,v); seed.push(v);}
     for(var g=0;g<3;g++){var arr=[],w=0;for(var i=0;i<=140;i++){w+=(rnd()-.47)*.3;arr.push(w);}ghosts.push(arr);}
   })();
   function frame(){
@@ -449,7 +439,7 @@
     pts.forEach(function(p){p.y-=p.v;if(p.y<-4){p.y=H+4;p.x=Math.random()*W;}ctx.globalAlpha=.25+Math.sin((p.y/H)*3.14)*.5;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();});
     ctx.globalAlpha=1;
     // faint market lines behind: other series, barely there
-    var n=seed.length, base=H*.46, amp=H*.07;
+    var n=seed.length, base=H*.5, amp=H*.052;
     ghosts.forEach(function(g,k){ctx.beginPath();for(var i=0;i<n;i++){var x=(i/(n-1))*W*1.02,y=base+H*.08*(k-1)-(g[i]+Math.sin(t*.006+i*.3+k)*.12)*amp*.8;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='rgba(242,242,240,'+(0.05+k*0.012)+')';ctx.lineWidth=1;ctx.stroke();});
     // the line: drawn once, then it keeps breathing
     var prog=reduce?1:Math.min(1,t/260);
@@ -499,7 +489,6 @@
   layout(); window.addEventListener('resize',layout);
   // The rings turn in script so a hover can slow them to a stop and the chips always stay upright
   var ang1=0, ang2=0, speed=1, target=1, lastT=null;
-  orbit.addEventListener('mouseenter',function(){target=0;}); orbit.addEventListener('mouseleave',function(){target=1;});
   function turn(ts){
     if(lastT==null)lastT=ts; var dt=Math.min(64,ts-lastT); lastT=ts;
     speed+=(target-speed)*.08;
