@@ -3,23 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Noor &amp; Vale — Homes from two million, in the cities that matter</title>
-<meta name="description" content="A global residential brokerage for homes from $2 million, with desks in New York and Dubai and advisors in thirty-eight cities. Fictional example website by Onwards Digital.">
+<title>Noor &amp; Vale — Homes from two million, anywhere in the world</title>
+<meta name="description" content="A global residential house for homes from $2 million, with advisors in forty cities. Fictional example website by Onwards Digital.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=Geist:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0b0b0c;
-    --bg-2:#131315;
+    --bg:#0a0a0b;
+    --bg-2:#111113;
     --fg:#f4f2ed;
-    --fg-2:#aaa7a0;
-    --fg-3:#6b6964;
-    --line:#26262a;
+    --fg-2:#a9a69f;
+    --fg-3:#6a6862;
+    --line:rgba(244,242,237,.1);
     --brass:#cfae6b;
-    --gutter:clamp(20px,5vw,80px);
+    --gutter:clamp(20px,5vw,84px);
     --serif:'Newsreader',Georgia,serif;
     --sans:'Geist',system-ui,-apple-system,sans-serif;
+    --ease:cubic-bezier(.2,.7,.2,1);
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth;scroll-padding-top:100px;background:var(--bg)}
@@ -32,183 +33,227 @@
   img{display:block}
   :focus-visible{outline:2px solid var(--brass);outline-offset:3px}
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  em{font-style:italic}
 
-  .onwards{position:sticky;top:0;z-index:50;height:36px;background:#1a1917;color:#e6e2da;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);font-weight:400}
+  .onwards{position:sticky;top:0;z-index:60;height:36px;background:#1a1917;color:#e6e2da;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);font-weight:400}
   .onwards a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(230,226,218,.4)}
   @media (max-width:600px){.onwards>span{display:none}}
 
-  .head{position:sticky;top:36px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);height:64px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
-  .head.solid{background:rgba(11,11,12,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line)}
-  .wordmark{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:.01em;text-decoration:none;font-variation-settings:"opsz" 24}
-  .wordmark em{font-style:italic;font-weight:300}
-  .head nav{display:flex;align-items:center;gap:26px}
-  .head nav a{text-decoration:none;font-size:14px;color:var(--fg-2);transition:color .15s;font-weight:400}
-  .head nav a:hover{color:var(--fg)}
-  .btn{display:inline-flex;align-items:center;justify-content:center;background:var(--fg);color:#0b0b0c;text-decoration:none;font-weight:500;font-size:14px;padding:11px 20px;border-radius:2px;border:1px solid var(--fg);cursor:pointer;transition:background .15s,color .15s;min-height:42px;font-family:var(--sans)}
-  .btn:hover{background:transparent;color:var(--fg)}
-  .btn.ghost{background:transparent;color:var(--fg);border-color:rgba(244,242,237,.35)}
+  /* Header */
+  .head{position:sticky;top:36px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);height:64px;transition:background .35s,border-color .35s;border-bottom:1px solid transparent}
+  .head.solid{background:rgba(10,10,11,.7);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom-color:var(--line)}
+  .wordmark{font-family:var(--serif);font-size:23px;font-weight:400;text-decoration:none;font-variation-settings:"opsz" 24;letter-spacing:.005em}
+  .head nav{display:flex;align-items:center;gap:28px}
+  .head nav a{text-decoration:none;font-size:13.5px;color:var(--fg-2);font-weight:400;position:relative;padding:4px 0}
+  .head nav a:not(.btn)::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--fg);transition:right .3s var(--ease)}
+  .head nav a:not(.btn):hover{color:var(--fg)}
+  .head nav a:not(.btn):hover::after{right:0}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--fg);color:#0a0a0b;text-decoration:none;font-weight:500;font-size:13.5px;padding:0 20px;height:42px;border-radius:999px;border:1px solid var(--fg);cursor:pointer;transition:background .2s,color .2s,transform .2s;font-family:var(--sans);white-space:nowrap}
+  .btn:hover{background:transparent;color:var(--fg);transform:translateY(-1px)}
+  .btn.ghost{background:transparent;color:var(--fg);border-color:rgba(244,242,237,.3)}
   .btn.ghost:hover{border-color:var(--fg)}
-  .head nav .btn{color:#0b0b0c}.head nav .btn:hover{color:var(--fg)}
-  .clock{font-size:13px;color:var(--fg-2);display:flex;gap:16px;font-variant-numeric:tabular-nums;font-weight:400}
-  .clock b{font-weight:400;color:var(--fg)}
-  .clock i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--brass);margin-right:8px;vertical-align:1px}
+  .head nav .btn{color:#0a0a0b}.head nav .btn:hover{color:var(--fg)}
+  .head .now{font-size:12.5px;color:var(--fg-2);font-variant-numeric:tabular-nums;display:flex;gap:8px;align-items:center;font-weight:400}
+  .head .now i{width:6px;height:6px;border-radius:50%;background:var(--brass);display:inline-block}
 
-  /* Hero: two cities, crossfading */
-  .hero{position:relative;height:calc(100vh - 100px);min-height:560px;overflow:hidden;display:flex;align-items:flex-end}
-  .hero .bg{position:absolute;inset:0}
-  .hero .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.6s ease,transform 12s linear}
-  .hero .bg img.on{opacity:1;transform:scale(1)}
-  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,.35) 0%,rgba(11,11,12,0) 35%,rgba(11,11,12,.88) 100%);pointer-events:none}
-  .hero .copy{position:relative;z-index:1;padding:0 var(--gutter) clamp(44px,7vh,88px);width:100%;display:grid;grid-template-columns:1.4fr 1fr;gap:32px;align-items:end}
-  .hero h1{font-size:clamp(46px,7vw,112px);max-width:11ch}
-  .hero h1 em{font-style:italic}
-  .hero .sub{color:var(--fg-2);font-size:clamp(16px,1.3vw,19px);max-width:36ch}
-  .hero .sub p b{color:var(--fg);font-weight:400}
-  .hero .cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
-  .cities{position:absolute;z-index:1;top:clamp(20px,5vh,48px);left:var(--gutter);display:flex;gap:6px}
-  .cities button{background:rgba(11,11,12,.35);backdrop-filter:blur(8px);border:1px solid rgba(244,242,237,.22);color:var(--fg-2);padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:color .2s,border-color .2s;font-weight:400}
-  .cities button b{font-weight:400;color:var(--fg)}
-  .cities button span{font-variant-numeric:tabular-nums}
-  .cities button.on{border-color:var(--fg);color:var(--fg)}
-  .hero .copy>*{opacity:0;transform:translateY(14px);animation:up 1s cubic-bezier(.2,.7,.2,1) forwards}
-  .hero .copy>*:nth-child(2){animation-delay:.18s}
-  .cities{opacity:0;animation:up 1s .5s forwards}
-  @keyframes up{to{opacity:1;transform:none}}
-  @media (prefers-reduced-motion:reduce){.hero .copy>*,.cities{animation:none;opacity:1;transform:none}.hero .bg img{transition:opacity .4s;transform:none}}
+  /* Hero: a house in the woods, breathing */
+  .hero{position:relative;height:calc(100vh - 100px);min-height:600px;overflow:hidden}
+  .hero .bg{position:absolute;inset:-6%;will-change:transform}
+  .hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;transform:scale(1.08);animation:breathe 26s ease-in-out infinite alternate}
+  @keyframes breathe{from{transform:scale(1.08) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-1.2%,-1%,0)}}
+  .hero .mist{position:absolute;inset:-20%;background:radial-gradient(60% 40% at 30% 70%,rgba(244,242,237,.16),transparent 60%),radial-gradient(50% 35% at 75% 30%,rgba(207,174,107,.10),transparent 60%);mix-blend-mode:screen;animation:mist 22s ease-in-out infinite alternate;pointer-events:none}
+  @keyframes mist{from{transform:translate3d(-4%,2%,0)}to{transform:translate3d(4%,-3%,0)}}
+  .hero .grain{position:absolute;inset:0;opacity:.14;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");mix-blend-mode:overlay}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,11,.45) 0%,rgba(10,10,11,.05) 30%,rgba(10,10,11,.1) 55%,rgba(10,10,11,.92) 100%);pointer-events:none}
+  .hero .copy{position:absolute;left:var(--gutter);right:var(--gutter);bottom:clamp(36px,7vh,80px);z-index:2}
+  .hero h1{font-size:clamp(46px,7.6vw,118px);max-width:12ch}
+  .hero h1 .l{display:block;overflow:hidden}
+  .hero h1 .l span{display:block;transform:translateY(110%);animation:rise 1.1s var(--ease) forwards}
+  .hero h1 .l:nth-child(2) span{animation-delay:.12s}
+  @keyframes rise{to{transform:none}}
+  .hero .sub{margin-top:18px;color:var(--fg-2);font-size:clamp(15px,1.2vw,18px);max-width:44ch;opacity:0;animation:fade 1s .5s forwards}
+  .hero .sub b{color:var(--fg);font-weight:400}
+  @keyframes fade{to{opacity:1}}
 
-  section{padding:clamp(72px,12vh,140px) var(--gutter)}
-  .k{font-size:13px;color:var(--fg-3);margin-bottom:18px;font-weight:400}
-  .h{font-size:clamp(34px,4.8vw,72px);max-width:16ch}
-  .h em{font-style:italic}
-  .lead{margin-top:18px;color:var(--fg-2);font-size:clamp(16px,1.25vw,19px);max-width:50ch}
-  .rv{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
-  .rv.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+  /* The ask bar: where, what, how much */
+  .ask{margin-top:26px;display:grid;grid-template-columns:1.4fr 1fr 1fr auto;background:rgba(10,10,11,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(244,242,237,.18);border-radius:999px;max-width:920px;opacity:0;animation:fade 1s .7s forwards;overflow:hidden}
+  .ask label{display:flex;flex-direction:column;gap:2px;padding:12px 22px;border-right:1px solid rgba(244,242,237,.12);cursor:text;min-width:0}
+  .ask label span{font-size:11.5px;color:var(--fg-3);font-weight:400;letter-spacing:.02em}
+  .ask input,.ask select{background:transparent;border:0;color:var(--fg);font:inherit;font-size:16px;padding:0;min-width:0;width:100%;outline:none;font-weight:300}
+  .ask select{appearance:none;-webkit-appearance:none;cursor:pointer}
+  .ask select option{background:#111}
+  .ask input::placeholder{color:var(--fg-2)}
+  .ask .go{margin:6px;height:auto;padding:0 22px}
+  .ask .type{position:relative}
+  .ask .type .ghost{position:absolute;left:22px;bottom:12px;font-size:16px;color:var(--fg-2);pointer-events:none;font-weight:300}
+  .ask .type .ghost::after{content:"";display:inline-block;width:1px;height:1em;background:var(--fg-2);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .ask .type input:focus~.ghost,.ask .type input:not(:placeholder-shown)~.ghost{display:none}
+  .scroll-hint{position:absolute;right:var(--gutter);bottom:clamp(36px,7vh,80px);z-index:2;font-size:12px;color:var(--fg-2);display:flex;align-items:center;gap:10px;opacity:0;animation:fade 1s 1.2s forwards;font-weight:400}
+  .scroll-hint i{width:1px;height:44px;background:linear-gradient(var(--fg),transparent);display:block;animation:drop 2s ease-in-out infinite}
+  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @media (prefers-reduced-motion:reduce){.hero .bg img,.hero .mist,.scroll-hint i{animation:none}.hero h1 .l span,.hero .sub,.ask,.scroll-hint{animation:none;opacity:1;transform:none}}
 
-  /* Two desks */
-  .desks{display:flex;gap:2px;margin-top:clamp(36px,6vh,64px);height:clamp(420px,60vh,640px)}
-  .desk{position:relative;flex:1;overflow:hidden;background:var(--bg-2);transition:flex 1s cubic-bezier(.2,.7,.2,1);text-decoration:none;color:inherit;display:flex;align-items:flex-end}
-  .desk:hover,.desk:focus-visible{flex:1.7}
-  .desk img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.8;transition:transform 1.4s cubic-bezier(.2,.7,.2,1),opacity .6s}
-  .desk:hover img{transform:scale(1.04);opacity:.95}
-  .desk::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,12,0) 30%,rgba(11,11,12,.85) 100%)}
-  .desk .in{position:relative;z-index:1;padding:clamp(20px,3vw,40px);display:grid;gap:8px;width:100%}
-  .desk h3{font-size:clamp(34px,4vw,60px)}
-  .desk .meta{display:flex;justify-content:space-between;gap:16px;color:var(--fg-2);font-size:14px;font-variant-numeric:tabular-nums;flex-wrap:wrap;font-weight:400}
-  .desk .meta b{color:var(--fg);font-weight:400}
-
-  /* Featured homes: a strip you scroll sideways */
-  .homes{padding-right:0;padding-left:0}
-  .homes .head-row{padding:0 var(--gutter);display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
-  .arrows{display:flex;gap:8px}
-  .arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s}
-  .arrows button:hover{border-color:var(--fg)}
-  .arrows svg{width:18px;height:18px}
-  .strip{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:clamp(32px,5vh,56px) var(--gutter) 8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .strip::-webkit-scrollbar{display:none}
-  .home{flex:0 0 clamp(300px,34vw,520px);scroll-snap-align:start;text-decoration:none;color:inherit;display:block}
-  .home .ph{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
-  .home .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
-  .home:hover .ph img{transform:scale(1.04)}
-  .home .ph span{position:absolute;left:14px;top:14px;background:rgba(11,11,12,.55);backdrop-filter:blur(8px);color:var(--fg);font-size:12px;padding:6px 10px;border-radius:999px;font-weight:400}
-  .home .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:14px}
-  .home .row b{font-family:var(--serif);font-size:24px;font-weight:400;letter-spacing:-.01em;font-variation-settings:"opsz" 24}
-  .home .row span{color:var(--fg-2);font-size:14px;font-variant-numeric:tabular-nums}
-  .home .name{color:var(--fg-2);font-size:14.5px;margin-top:4px}
-  .home .name b{color:var(--fg);font-weight:400}
-  .strip-note{padding:14px var(--gutter) 0;font-size:13px;color:var(--fg-3)}
-
-  /* How we work: sticky media on the left, steps on the right */
-  .how{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:start}
-  .how .media{position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
-  .how .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .9s ease,transform 1.6s ease}
-  .how .media img.on{opacity:1;transform:none}
-  .how .media figcaption{position:absolute;left:16px;bottom:14px;font-size:12.5px;color:var(--fg-2);z-index:1}
-  .how ol{list-style:none;margin:0;padding:0}
-  .how li{padding:clamp(36px,8vh,88px) 0;border-top:1px solid var(--line);opacity:.35;transition:opacity .5s}
-  .how li.on{opacity:1}
-  .how li:first-child{border-top:0;padding-top:12px}
-  .how li h3{font-size:clamp(30px,3.4vw,50px)}
-  .how li p{margin-top:14px;color:var(--fg-2);max-width:40ch;font-size:17px}
-  .how li .n{font-size:13px;color:var(--brass);margin-bottom:12px;font-weight:400}
-
-  /* Numbers */
-  .numbers{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(36px,6vh,64px)}
-  .stat b{display:block;font-family:var(--serif);font-size:clamp(52px,6.4vw,100px);font-weight:300;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 72}
-  .stat b small{font-size:.5em;color:var(--fg-2);margin-left:4px}
-  .stat>span{display:block;margin-top:12px;color:var(--fg-2);font-size:15px;max-width:28ch}
-
-  /* Cities marquee with live times */
-  .cities-run{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:0;position:relative}
-  .cities-run::before,.cities-run::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none}
-  .cities-run::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
-  .cities-run::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
-  .cities-run .row{display:inline-flex;animation:run 70s linear infinite}
-  .cities-run:hover .row{animation-play-state:paused}
+  /* Cities run, live */
+  .run{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;position:relative}
+  .run::before,.run::after{content:"";position:absolute;top:0;bottom:0;width:140px;z-index:1;pointer-events:none}
+  .run::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+  .run::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+  .run .row{display:inline-flex;animation:run 80s linear infinite}
+  .run:hover .row{animation-play-state:paused}
   @keyframes run{to{transform:translateX(-50%)}}
-  .cities-run .c{display:inline-flex;align-items:baseline;gap:14px;padding:26px 36px;border-right:1px solid var(--line)}
-  .cities-run .c b{font-family:var(--serif);font-size:30px;font-weight:300;font-variation-settings:"opsz" 30}
-  .cities-run .c span{font-size:13px;color:var(--fg-2);font-variant-numeric:tabular-nums;font-weight:400}
-  @media (prefers-reduced-motion:reduce){.cities-run .row{animation:none}}
+  .run .c{display:inline-flex;align-items:baseline;gap:12px;padding:18px 30px;font-size:14px;color:var(--fg-2);font-weight:400}
+  .run .c b{font-family:var(--serif);font-size:20px;font-weight:300;color:var(--fg);font-variation-settings:"opsz" 20}
+  .run .c span{font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:reduce){.run .row{animation:none}}
+
+  /* Section rhythm: lighter than before */
+  section{padding:clamp(56px,9vh,110px) var(--gutter)}
+  .k{font-size:12.5px;color:var(--fg-3);margin-bottom:14px;font-weight:400;letter-spacing:.02em}
+  .h{font-size:clamp(32px,4.4vw,64px);max-width:18ch}
+  .lead{margin-top:16px;color:var(--fg-2);font-size:clamp(15px,1.15vw,18px);max-width:52ch}
+  .rv{opacity:0;transform:translateY(18px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  /* line reveal for headings */
+  .lines .l{display:block;overflow:hidden}
+  .lines .l span{display:block;transform:translateY(105%);transition:transform 1s var(--ease)}
+  .rv.in .lines .l span{transform:none}
+  .rv.in .lines .l:nth-child(2) span{transition-delay:.08s}.rv.in .lines .l:nth-child(3) span{transition-delay:.16s}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.lines .l span{transform:none;transition:none}}
+
+  /* Selected homes: an editorial grid with wipe reveals and slow parallax */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:clamp(12px,1.6vw,22px);margin-top:clamp(28px,5vh,56px)}
+  .home{position:relative;text-decoration:none;color:inherit;display:block;cursor:none}
+  .home:nth-child(1){grid-column:span 7}
+  .home:nth-child(2){grid-column:span 5}
+  .home:nth-child(3){grid-column:span 4}
+  .home:nth-child(4){grid-column:span 4}
+  .home:nth-child(5){grid-column:span 4}
+  .home .ph{position:relative;overflow:hidden;background:var(--bg-2);clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
+  .home:nth-child(1) .ph{aspect-ratio:16/10}
+  .home:nth-child(2) .ph{aspect-ratio:4/5}
+  .home:nth-child(n+3) .ph{aspect-ratio:4/5}
+  .rv.in .home .ph{clip-path:inset(0 0 0 0)}
+  .rv.in .home:nth-child(2) .ph{transition-delay:.12s}.rv.in .home:nth-child(3) .ph{transition-delay:.2s}.rv.in .home:nth-child(4) .ph{transition-delay:.28s}.rv.in .home:nth-child(5) .ph{transition-delay:.36s}
+  .home .ph img{width:100%;height:115%;object-fit:cover;transform:translateY(var(--py,0));transition:filter .6s}
+  .home:hover .ph img{filter:brightness(1.06)}
+  .home .tag{position:absolute;left:14px;top:14px;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-weight:400}
+  .home .row{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:12px}
+  .home .row b{font-family:var(--serif);font-size:22px;font-weight:400;font-variation-settings:"opsz" 22}
+  .home .row span{color:var(--fg-2);font-size:13.5px;font-variant-numeric:tabular-nums;font-weight:400}
+  .home .name{color:var(--fg-2);font-size:14px;margin-top:2px}
+  .home .name b{color:var(--fg);font-weight:400}
+  .cursor{position:fixed;left:0;top:0;z-index:70;pointer-events:none;width:76px;height:76px;border-radius:50%;background:var(--fg);color:#0a0a0b;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:500;transform:translate(-50%,-50%) scale(0);transition:transform .35s var(--ease);will-change:transform}
+  .cursor.on{transform:translate(-50%,-50%) scale(1)}
+  @media (hover:none){.home{cursor:pointer}.cursor{display:none}}
+  @media (prefers-reduced-motion:reduce){.home .ph{clip-path:none;transition:none}.home .ph img{transform:none}}
+  .grid-note{margin-top:16px;font-size:12.5px;color:var(--fg-3)}
+
+  /* Where: a list of cities; the picture follows your hand */
+  .where{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:start}
+  .where .list{list-style:none;margin:clamp(24px,4vh,40px) 0 0;padding:0;border-top:1px solid var(--line)}
+  .where .list li{border-bottom:1px solid var(--line)}
+  .where .list button{width:100%;display:grid;grid-template-columns:1fr auto auto;gap:20px;align-items:baseline;text-align:left;background:transparent;border:0;color:var(--fg-2);padding:14px 0;cursor:pointer;transition:color .2s,padding-left .35s var(--ease)}
+  .where .list button b{font-family:var(--serif);font-size:clamp(24px,2.4vw,34px);font-weight:300;color:var(--fg);font-variation-settings:"opsz" 34;transition:transform .35s var(--ease)}
+  .where .list button span{font-size:13px;font-variant-numeric:tabular-nums;font-weight:400}
+  .where .list button.on{padding-left:14px;color:var(--fg)}
+  .where .list button:hover b,.where .list button.on b{color:var(--brass)}
+  .where .pic{position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .where .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s var(--ease),transform 1.6s var(--ease)}
+  .where .pic img.on{opacity:1;transform:none}
+  .where .pic .cap{position:absolute;left:16px;bottom:14px;right:16px;display:flex;justify-content:space-between;font-size:12.5px;color:var(--fg);text-shadow:0 1px 10px rgba(0,0,0,.6);z-index:1;font-weight:400}
+
+  /* Process: pinned picture, steps go by */
+  .how{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,80px);align-items:start;margin-top:clamp(28px,5vh,56px)}
+  .how .media{position:sticky;top:120px;aspect-ratio:4/5;overflow:hidden;background:var(--bg-2)}
+  .how .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.05);transition:opacity .9s var(--ease),transform 1.8s var(--ease)}
+  .how .media img.on{opacity:1;transform:none}
+  .how .media .bar{position:absolute;left:0;right:0;bottom:0;height:2px;background:rgba(244,242,237,.15)}
+  .how .media .bar i{display:block;height:100%;background:var(--brass);width:25%;transition:width .6s var(--ease)}
+  .how ol{list-style:none;margin:0;padding:0}
+  .how li{padding:clamp(28px,7vh,72px) 0;border-top:1px solid var(--line);opacity:.3;transition:opacity .5s}
+  .how li.on{opacity:1}
+  .how li:first-child{border-top:0;padding-top:8px}
+  .how li h3{font-size:clamp(26px,3vw,42px)}
+  .how li p{margin-top:12px;color:var(--fg-2);max-width:40ch;font-size:16px}
+  .how li .n{font-size:12.5px;color:var(--brass);margin-bottom:10px;font-weight:400}
+
+  /* Numbers as a quiet line */
+  .numbers{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(40px,7vh,72px) var(--gutter);display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .stat b{display:block;font-family:var(--serif);font-size:clamp(40px,4.6vw,68px);font-weight:300;line-height:1;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 72}
+  .stat b small{font-size:.5em;color:var(--fg-2);margin-left:3px}
+  .stat>span{display:block;margin-top:10px;color:var(--fg-2);font-size:13.5px;max-width:22ch}
+
+  /* Words from clients, drifting through a photo */
+  .said{position:relative;padding:0;height:clamp(420px,62vh,640px);overflow:hidden;display:flex;align-items:center}
+  .said img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:translateY(var(--py,0)) scale(1.15);opacity:.55}
+  .said::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 70% at 50% 50%,rgba(10,10,11,.2),rgba(10,10,11,.85))}
+  .said blockquote{position:relative;z-index:1;margin:0 auto;padding:0 var(--gutter);max-width:22ch;text-align:center;font-family:var(--serif);font-size:clamp(28px,3.6vw,52px);font-weight:300;line-height:1.15;font-variation-settings:"opsz" 72}
+  .said cite{display:block;margin-top:18px;font-family:var(--sans);font-style:normal;font-size:13px;color:var(--fg-2);font-weight:400}
 
   /* Enquiry */
   .enq{display:grid;grid-template-columns:1fr 1.25fr;gap:clamp(24px,5vw,80px);align-items:start}
-  .enq .quote{margin-top:34px;border-top:1px solid var(--line);padding-top:20px;font-family:var(--serif);font-size:22px;font-weight:300;max-width:34ch;line-height:1.3;font-variation-settings:"opsz" 22}
-  .enq .quote cite{display:block;font-family:var(--sans);font-style:normal;color:var(--fg-2);font-size:13.5px;margin-top:10px}
-  form.ask{display:grid;gap:26px}
-  .q{display:grid;gap:10px}
-  .q>label,.q>.lbl{font-size:13.5px;color:var(--fg-2);font-weight:400}
+  form.req{display:grid;gap:22px}
+  .q{display:grid;gap:8px}
+  .q>label,.q>.lbl{font-size:12.5px;color:var(--fg-2);font-weight:400}
   .chips{display:flex;flex-wrap:wrap;gap:8px}
   .chips label{position:relative}
   .chips input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
-  .chips span{display:inline-flex;align-items:center;padding:10px 16px;border:1px solid var(--line);border-radius:999px;font-size:14px;cursor:pointer;transition:background .12s,color .12s,border-color .12s;font-weight:400}
-  .chips input:checked+span{background:var(--fg);color:#0b0b0c;border-color:var(--fg)}
+  .chips span{display:inline-flex;align-items:center;padding:9px 15px;border:1px solid rgba(244,242,237,.2);border-radius:999px;font-size:13.5px;cursor:pointer;transition:background .15s,color .15s,border-color .15s;font-weight:400}
+  .chips input:checked+span{background:var(--fg);color:#0a0a0b;border-color:var(--fg)}
   .chips input:focus-visible+span{outline:2px solid var(--brass);outline-offset:2px}
-  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .input,.sel{width:100%;font:inherit;font-size:16px;color:var(--fg);background:transparent;border:1px solid var(--line);border-radius:2px;padding:12px 14px;min-height:48px;font-weight:300}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .input,.sel{width:100%;font:inherit;font-size:15.5px;color:var(--fg);background:transparent;border:0;border-bottom:1px solid rgba(244,242,237,.22);padding:10px 0;min-height:44px;font-weight:300;border-radius:0}
   .input::placeholder{color:var(--fg-3)}
-  .input:focus,.sel:focus{outline:none;border-color:var(--fg-2)}
-  .sel{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23aaa7a0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px;background-color:var(--bg)}
-  .sel option{background:var(--bg)}
+  .input:focus,.sel:focus{outline:none;border-bottom-color:var(--fg)}
+  .sel{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a9a69f' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;padding-right:28px}
+  .sel option{background:#111}
   .budget{display:flex;justify-content:space-between;align-items:baseline}
-  .budget b{font-family:var(--serif);font-size:28px;font-weight:300;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 28}
-  .range{-webkit-appearance:none;appearance:none;width:100%;height:1px;background:var(--line);margin:14px 0 6px;outline:none}
-  .range::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
-  .range::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--fg);border:0;cursor:pointer}
+  .budget b{font-family:var(--serif);font-size:26px;font-weight:300;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 26}
+  .range{-webkit-appearance:none;appearance:none;width:100%;height:1px;background:rgba(244,242,237,.25);margin:12px 0 4px;outline:none}
+  .range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
+  .range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer}
   .range:focus-visible{outline:none}.range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--brass)}
-  .ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--fg-3)}
-  .send{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-  .send small{color:var(--fg-3);font-size:13px}
-  form.ask.sent>*{display:none}
-  .done{display:none;padding:22px;border:1px solid var(--line);font-family:var(--serif);font-size:24px;font-weight:300;font-variation-settings:"opsz" 24}
-  form.ask.sent .done{display:block}
+  .ends{display:flex;justify-content:space-between;font-size:12px;color:var(--fg-3)}
+  .send{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
+  .send small{color:var(--fg-3);font-size:12.5px}
+  form.req.sent>*{display:none}
+  .done{display:none;padding:20px 0;border-top:1px solid var(--line);font-family:var(--serif);font-size:24px;font-weight:300;font-variation-settings:"opsz" 24}
+  form.req.sent .done{display:block}
 
-  footer{padding:36px var(--gutter) 44px;border-top:1px solid var(--line);color:var(--fg-3);font-size:13px;display:grid;grid-template-columns:1fr 1fr;gap:20px;font-weight:400}
+  footer{padding:32px var(--gutter) 40px;border-top:1px solid var(--line);color:var(--fg-3);font-size:12.5px;display:grid;grid-template-columns:1fr 1fr;gap:18px;font-weight:400}
   footer .links{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
   footer a{color:var(--fg-2);text-decoration:none}
   footer a:hover{color:var(--fg)}
   footer .disc{grid-column:1/-1;max-width:90ch;line-height:1.55}
 
-  @media (max-width:900px){
+  @media (max-width:960px){
     html{scroll-padding-top:90px}
-    .head nav a:not(.btn),.head .clock{display:none}
-    .hero{height:calc(100svh - 100px);min-height:520px}
-    .hero .copy{grid-template-columns:1fr;gap:18px}
-    .hero h1{font-size:clamp(44px,11vw,64px)}
-    .cities{left:var(--gutter);right:var(--gutter);overflow-x:auto;scrollbar-width:none}
-    .cities button span{display:none}
-    .desks{flex-direction:column;height:auto}
-    .desk{min-height:300px;flex:none}
-    .desk:hover{flex:none}
-    .how{grid-template-columns:1fr}
+    .head nav a:not(.btn),.head .now{display:none}
+    .hero{height:calc(100svh - 100px);min-height:560px}
+    .hero h1{font-size:clamp(42px,11vw,64px)}
+    .ask{grid-template-columns:1fr;border-radius:18px}
+    .ask label{border-right:0;border-bottom:1px solid rgba(244,242,237,.12)}
+    .ask .go{margin:10px;border-radius:999px}
+    .scroll-hint{display:none}
+    .grid{grid-template-columns:1fr 1fr}
+    .home:nth-child(1){grid-column:span 2}
+    .home:nth-child(n+2){grid-column:span 1}
+    .home:nth-child(5){grid-column:span 2}
+    .home:nth-child(5) .ph{aspect-ratio:16/10}
+    .where,.how,.enq{grid-template-columns:1fr}
+    .where .pic{position:relative;top:0;aspect-ratio:4/3;order:-1}
     .how .media{position:relative;top:0;aspect-ratio:4/3}
-    .how li{padding:28px 0}
-    .stats{grid-template-columns:1fr;gap:28px}
-    .enq{grid-template-columns:1fr}
+    .how li{padding:24px 0}
+    .numbers{grid-template-columns:1fr 1fr}
     .two{grid-template-columns:1fr}
     footer{grid-template-columns:1fr}
     footer .links{justify-content:flex-start}
+  }
+  @media (max-width:520px){
+    .grid{grid-template-columns:1fr}
+    .home:nth-child(n){grid-column:span 1}
+    .home:nth-child(n) .ph{aspect-ratio:4/3}
   }
 </style>
 </head>
@@ -217,114 +262,117 @@
 <div class="onwards"><a href="index.html">← Back to Onwards Digital</a><span>Example site by Onwards Digital · Noor &amp; Vale is fictional</span></div>
 
 <header class="head" id="head">
-  <a class="wordmark" href="#top">Noor <em>&amp;</em> Vale</a>
-  <div class="clock" aria-label="Office times"><span><i></i>New York <b id="c-ny">—</b></span><span><i></i>Dubai <b id="c-db">—</b></span></div>
+  <a class="wordmark" href="#top">Noor &amp; Vale</a>
+  <span class="now" id="now"><i></i><span id="now-t">—</span></span>
   <nav>
-    <a href="#desks">The desks</a><a href="#homes">Homes</a><a href="#how">How we work</a>
-    <a class="btn" href="#ask">Speak to an advisor</a>
+    <a href="#homes">Homes</a><a href="#where">Cities</a><a href="#how">How we work</a>
+    <a class="btn" href="#enquire">Speak to an advisor</a>
   </nav>
 </header>
 
 <section class="hero" id="top" aria-label="Introduction" style="padding:0">
-  <div class="bg" aria-hidden="true">
-    <img id="bg-ny" class="on" src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=2400&q=80" alt="">
-    <img id="bg-db" src="https://images.unsplash.com/photo-1767041743706-fa96a08187a3?auto=format&fit=crop&w=2400&q=80" alt="">
-  </div>
-  <div class="cities" role="tablist" aria-label="City">
-    <button type="button" class="on" data-city="ny" role="tab" aria-selected="true"><b>New York</b><span id="t-ny">—</span></button>
-    <button type="button" data-city="db" role="tab" aria-selected="false"><b>Dubai</b><span id="t-db">—</span></button>
-  </div>
+  <div class="bg" id="bg"><img src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=2600&q=85" alt="A glass house lit from within, alone among tall trees at dusk"></div>
+  <div class="mist" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
   <div class="copy">
-    <h1>Homes from two million, in the cities <em>that matter.</em></h1>
-    <div class="sub">
-      <p><b>A residential brokerage with two desks and one standard.</b> New York and Dubai, then thirty-six cities through advisors we've worked with for years. Every home we show, someone here has walked.</p>
-      <div class="cta"><a class="btn" href="#ask">Speak to an advisor</a><a class="btn ghost" href="#homes">See what's listed</a></div>
+    <h1><span class="l"><span>The right home,</span></span><span class="l"><span><em>anywhere.</em></span></span></h1>
+    <p class="sub"><b>Homes from two million dollars, in forty cities.</b> One advisor who knows you, wherever the house happens to be.</p>
+    <form class="ask" id="ask" aria-label="Start a search">
+      <label class="type"><span>Where</span><input id="a-where" name="where" placeholder=" " autocomplete="off"><em class="ghost" id="ghost">Lake Como</em></label>
+      <label><span>Kind of home</span><select id="a-kind" name="kind"><option>Any</option><option>House</option><option>Apartment</option><option>Penthouse</option><option>Estate</option><option>Waterfront</option></select></label>
+      <label><span>Budget</span><select id="a-budget" name="budget"><option>$2m – $5m</option><option>$5m – $10m</option><option>$10m – $25m</option><option>$25m and above</option></select></label>
+      <button class="btn go" type="submit">Begin</button>
+    </form>
+  </div>
+  <div class="scroll-hint" aria-hidden="true"><i></i>Scroll</div>
+</section>
+
+<div class="run" aria-label="Cities where we work, with local times"><div class="row" id="run"></div></div>
+
+<section id="homes" aria-labelledby="homes-h">
+  <div class="rv">
+    <p class="k">Selected this month</p>
+    <h2 class="h lines" id="homes-h"><span class="l"><span>Five homes we'd</span></span><span class="l"><span>show a friend.</span></span></h2>
+    <div class="grid" id="grid">
+      <a class="home" href="#enquire"><div class="ph"><img data-px src="https://images.unsplash.com/photo-1757356657991-c3fd6e2e812e?auto=format&fit=crop&w=1800&q=80" alt="A modern house with two pools, lit at dusk" loading="lazy"><span class="tag">Los Angeles</span></div><div class="row"><b>$24,500,000</b><span>7 bed · 11,200 sq ft</span></div><p class="name"><b>Trousdale estate</b>, two pools, the whole city below</p></a>
+      <a class="home" href="#enquire"><div class="ph"><img data-px src="https://images.unsplash.com/photo-1416331108676-a22ccb276e35?auto=format&fit=crop&w=1400&q=80" alt="A white house among old trees" loading="lazy"><span class="tag">Hudson Valley</span></div><div class="row"><b>$6,900,000</b><span>5 bed · 48 acres</span></div><p class="name"><b>Stone farmhouse</b>, 1840, two hours from Manhattan</p></a>
+      <a class="home" href="#enquire"><div class="ph"><img data-px src="https://images.unsplash.com/photo-1776362355123-ca966d36e29c?auto=format&fit=crop&w=1400&q=80" alt="A double-height living room with a sculptural stair" loading="lazy"><span class="tag">London</span></div><div class="row"><b>£11,750,000</b><span>4 bed · 4,100 sq ft</span></div><p class="name"><b>Belgravia lateral</b>, garden square, rebuilt 2024</p></a>
+      <a class="home" href="#enquire"><div class="ph"><img data-px src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1400&q=80" alt="A white villa and pool in clear light" loading="lazy"><span class="tag">Dubai</span></div><div class="row"><b>$8,200,000</b><span>6 bed · 9,400 sq ft</span></div><p class="name"><b>Palm Jumeirah villa</b>, private beach, staff wing</p></a>
+      <a class="home" href="#enquire"><div class="ph"><img data-px src="https://images.unsplash.com/photo-1578439297699-eb414262c2de?auto=format&fit=crop&w=1400&q=80" alt="A house on the water's edge" loading="lazy"><span class="tag">Lake Como</span></div><div class="row"><b>€9,400,000</b><span>6 bed · lakefront</span></div><p class="name"><b>Villa at Tremezzo</b>, boathouse, terraced gardens</p></a>
     </div>
+    <p class="grid-note">Prices in local currency. Every home here has been walked by someone on the desk.</p>
   </div>
 </section>
 
-<section id="desks" aria-labelledby="desks-h">
-  <div class="rv">
-    <p class="k">The desks</p>
-    <h2 class="h" id="desks-h">Two cities. Always one of them <em>awake.</em></h2>
-    <p class="lead">Nine hours apart, so a question asked at midnight in Manhattan is answered over morning coffee in Dubai. One file, one advisor who knows both.</p>
-    <div class="desks">
-      <a class="desk" href="#ask">
-        <img src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=1600&q=80" alt="Manhattan at dusk from across the water" loading="lazy">
-        <div class="in"><h3>New York</h3><div class="meta"><span><b id="d-ny">—</b> local time</span><span><b>212</b> homes listed</span><span>Tribeca to the Upper East Side</span></div></div>
-      </a>
-      <a class="desk" href="#ask">
-        <img src="https://images.unsplash.com/photo-1745750434535-5943ef2fd31a?auto=format&fit=crop&w=1600&q=80" alt="Downtown Dubai skyline in daylight" loading="lazy">
-        <div class="in"><h3>Dubai</h3><div class="meta"><span><b id="d-db">—</b> local time</span><span><b>168</b> homes listed</span><span>Palm Jumeirah to Al Barari</span></div></div>
-      </a>
+<section id="where" aria-labelledby="where-h">
+  <div class="where rv">
+    <div>
+      <p class="k">Cities</p>
+      <h2 class="h lines" id="where-h"><span class="l"><span>Forty cities.</span></span><span class="l"><span>One phone number.</span></span></h2>
+      <p class="lead">Move along the list and the picture follows. Choose a city and it's already filled in when you speak to us.</p>
+      <ul class="list" id="city-list">
+        <li><button type="button" class="on" data-i="0" data-city="New York"><b>New York</b><span data-tz="America/New_York">—</span><span>212 homes</span></button></li>
+        <li><button type="button" data-i="1" data-city="London"><b>London</b><span data-tz="Europe/London">—</span><span>146 homes</span></button></li>
+        <li><button type="button" data-i="2" data-city="Dubai"><b>Dubai</b><span data-tz="Asia/Dubai">—</span><span>168 homes</span></button></li>
+        <li><button type="button" data-i="3" data-city="Los Angeles"><b>Los Angeles</b><span data-tz="America/Los_Angeles">—</span><span>94 homes</span></button></li>
+        <li><button type="button" data-i="4" data-city="Lake Como"><b>Lake Como</b><span data-tz="Europe/Rome">—</span><span>31 homes</span></button></li>
+        <li><button type="button" data-i="5" data-city="Singapore"><b>Singapore</b><span data-tz="Asia/Singapore">—</span><span>57 homes</span></button></li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<section class="homes" id="homes" aria-labelledby="homes-h">
-  <div class="rv">
-    <div class="head-row">
-      <div><p class="k">Listed this month</p><h2 class="h" id="homes-h">A few of the homes.</h2></div>
-      <div class="arrows"><button type="button" id="prev" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button><button type="button" id="next" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button></div>
-    </div>
-    <div class="strip" id="strip" tabindex="0" aria-label="Featured homes, scroll sideways">
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1200&q=80" alt="Living room with a wall of glass over the city" loading="lazy"><span>New York</span></div><div class="row"><b>$8,900,000</b><span>4 bed · 3,860 sq ft</span></div><p class="name"><b>Tribeca loft</b>, forty-first floor, corner exposure</p></a>
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=80" alt="A modern white villa with a pool and lounge terrace" loading="lazy"><span>Dubai</span></div><div class="row"><b>$6,400,000</b><span>5 bed · 7,100 sq ft</span></div><p class="name"><b>Palm Jumeirah villa</b>, garden homes, private beach</p></a>
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1776362355123-ca966d36e29c?auto=format&fit=crop&w=1200&q=80" alt="Double-height living room with a sculptural staircase" loading="lazy"><span>New York</span></div><div class="row"><b>$14,750,000</b><span>5 bed · 5,200 sq ft</span></div><p class="name"><b>West Village townhouse</b>, 1899, rebuilt 2024</p></a>
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1762732793012-8bdab3af00b4?auto=format&fit=crop&w=1200&q=80" alt="A bath set against a window over the skyline at sunset" loading="lazy"><span>Dubai</span></div><div class="row"><b>$3,200,000</b><span>3 bed · 2,900 sq ft</span></div><p class="name"><b>Downtown penthouse</b>, Burj view, sixty-second floor</p></a>
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80" alt="Modern house with a long pool in clear light" loading="lazy"><span>Dubai</span></div><div class="row"><b>$11,000,000</b><span>6 bed · 12,400 sq ft</span></div><p class="name"><b>Al Barari estate</b>, on the water, staff wing</p></a>
-      <a class="home" href="#ask"><div class="ph"><img src="https://images.unsplash.com/photo-1642976975710-1d8890dbf5ab?auto=format&fit=crop&w=1200&q=80" alt="A formal living room with a chandelier" loading="lazy"><span>New York</span></div><div class="row"><b>$5,250,000</b><span>3 bed · 2,650 sq ft</span></div><p class="name"><b>Upper East Side classic seven</b>, Park Avenue, pre-war</p></a>
-    </div>
-    <p class="strip-note">Prices in US dollars. Details on request; every listing is shared with the owner's consent.</p>
+    <figure class="pic" id="pic">
+      <img class="on" src="https://images.unsplash.com/photo-1762430259780-28ffac74916c?auto=format&fit=crop&w=1400&q=80" alt="Manhattan at dusk" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1583765748076-cac46b8c98c1?auto=format&fit=crop&w=1400&q=80" alt="A white house on a green lawn" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1767041743706-fa96a08187a3?auto=format&fit=crop&w=1400&q=80" alt="Dubai Marina at twilight" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1561027509-ec65ce5574f9?auto=format&fit=crop&w=1400&q=80" alt="A white house in the hills" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1578439297699-eb414262c2de?auto=format&fit=crop&w=1400&q=80" alt="A house at the water's edge" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1760611655987-d348d6d28174?auto=format&fit=crop&w=1400&q=80" alt="A lounge with the city beyond the glass" loading="lazy">
+      <figcaption class="cap"><span id="pic-city">New York</span><span id="pic-time">—</span></figcaption>
+    </figure>
   </div>
 </section>
 
 <section id="how" aria-labelledby="how-h">
   <div class="rv">
     <p class="k">How we work</p>
-    <h2 class="h" id="how-h">From the first call to the keys.</h2>
-    <div class="how" style="margin-top:clamp(36px,6vh,64px)">
+    <h2 class="h lines" id="how-h"><span class="l"><span>From the first call</span></span><span class="l"><span>to the keys.</span></span></h2>
+    <div class="how">
       <figure class="media" id="media">
-        <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm living room in low light" loading="lazy">
-        <img data-step="2" src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=1400&q=80" alt="A modern house lit from within at dusk" loading="lazy">
-        <img data-step="3" src="https://images.unsplash.com/photo-1745750434535-5943ef2fd31a?auto=format&fit=crop&w=1400&q=80" alt="Dubai skyline in daylight" loading="lazy">
+        <img class="on" data-step="1" src="https://images.unsplash.com/photo-1611755489400-3c53602ab783?auto=format&fit=crop&w=1400&q=80" alt="A calm room in low light" loading="lazy">
+        <img data-step="2" src="https://images.unsplash.com/photo-1599409637219-d04e9a2db432?auto=format&fit=crop&w=1400&q=80" alt="A white house among trees under a blue sky" loading="lazy">
+        <img data-step="3" src="https://images.unsplash.com/photo-1756064173162-326c8e85215d?auto=format&fit=crop&w=1400&q=80" alt="A white mansion with clipped topiary and palms" loading="lazy">
         <img data-step="4" src="https://images.unsplash.com/photo-1686342123879-241c6349e8c7?auto=format&fit=crop&w=1400&q=80" alt="A staircase in black and white" loading="lazy">
-        <figcaption id="media-cap">The brief</figcaption>
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
       </figure>
       <ol id="steps">
-        <li class="on" data-step="1" data-cap="The brief"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, in person or on a call, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></li>
-        <li data-step="2" data-cap="The shortlist"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></li>
-        <li data-step="3" data-cap="The visits"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, the second desk has already checked the paperwork.</p></li>
-        <li data-step="4" data-cap="The keys"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></li>
+        <li class="on" data-step="1"><p class="n">One</p><h3>A conversation, not a form.</h3><p>Forty minutes with one advisor, about how you'll live in the home rather than what it should have. Most people leave the call with a shorter list than they came with.</p></li>
+        <li data-step="2"><p class="n">Two</p><h3>Six homes, all of them walked.</h3><p>We show you what we'd show a friend. Every home on the shortlist has been visited by someone on the desk, and the notes are yours, including the honest ones.</p></li>
+        <li data-step="3"><p class="n">Three</p><h3>Visits arranged around your week.</h3><p>Two days in the city, morning and evening light, a driver, and the same advisor throughout. If you're buying abroad, a colleague in that city has already checked the paperwork.</p></li>
+        <li data-step="4"><p class="n">Four</p><h3>One fee, agreed before we start.</h3><p>A flat fee for the buyer's side, written down at the brief. Lawyers, surveys and currency introduced when you want them, never bundled in.</p></li>
       </ol>
     </div>
   </div>
 </section>
 
-<section class="numbers" aria-labelledby="num-h">
-  <div class="rv">
-    <p class="k">The house</p>
-    <h2 class="h" id="num-h">Small on purpose.</h2>
-    <p class="lead">Fourteen advisors, two desks, and no franchise. We take fewer clients so that the one on the phone knows your file.</p>
-    <div class="stats">
-      <div class="stat"><b>$<span class="count" data-to="4.2" data-dec="1">0</span><small>bn</small></b><span>of homes sold since 2014, in nineteen currencies.</span></div>
-      <div class="stat"><b><span class="count" data-to="38">0</span></b><span>cities where an advisor we've worked with for years will meet you.</span></div>
-      <div class="stat"><b><span class="count" data-to="11">0</span></b><span>languages spoken across the two desks, before we call a translator.</span></div>
-    </div>
-  </div>
+<div class="numbers rv" aria-label="The house in numbers">
+  <div class="stat"><b>$<span class="count" data-to="4.2" data-dec="1">0</span><small>bn</small></b><span>of homes sold since 2014, in nineteen currencies</span></div>
+  <div class="stat"><b><span class="count" data-to="40">0</span></b><span>cities with an advisor who will meet you there</span></div>
+  <div class="stat"><b><span class="count" data-to="11">0</span></b><span>languages spoken before we call a translator</span></div>
+  <div class="stat"><b><span class="count" data-to="1">0</span></b><span>advisor on your file, start to finish</span></div>
+</div>
+
+<section class="said" aria-label="From a client">
+  <img data-px src="https://images.unsplash.com/photo-1635111057505-3b7dcc2b72fb?auto=format&fit=crop&w=2200&q=80" alt="" aria-hidden="true" loading="lazy">
+  <blockquote>“They showed us six houses and told us to buy the fourth. We bought the fourth.”<cite>A client, Hudson Valley, 2025</cite></blockquote>
 </section>
 
-<div class="cities-run" aria-label="Cities and their local times"><div class="row" id="run"></div></div>
-
-<section id="ask" aria-labelledby="ask-h">
+<section id="enquire" aria-labelledby="enq-h">
   <div class="enq rv">
     <div>
       <p class="k">Speak to an advisor</p>
-      <h2 class="h" id="ask-h">Tell us the city. We'll call <em>within a day.</em></h2>
-      <p class="lead">One advisor, who reads this before they dial. No newsletters, no list.</p>
-      <blockquote class="quote">“They showed us six apartments and told us to buy the fourth. We bought the fourth.”<cite>A client, Tribeca, 2025</cite></blockquote>
+      <h2 class="h lines" id="enq-h"><span class="l"><span>Tell us the city.</span></span><span class="l"><span>We'll call <em>within a day.</em></span></span></h2>
+      <p class="lead">One advisor, who reads this before they dial. No newsletters, no list, nothing shared outside the desk.</p>
     </div>
-    <form class="ask" novalidate>
+    <form class="req" novalidate>
       <div class="q">
         <span class="lbl">I'm looking to</span>
         <div class="chips">
@@ -334,8 +382,8 @@
         </div>
       </div>
       <div class="two">
-        <div class="q"><label for="city">City</label><select class="sel" id="city" name="city"><option>New York</option><option>Dubai</option><option>London</option><option>Paris</option><option>Miami</option><option>Singapore</option><option>Lisbon</option><option>Somewhere else</option></select></div>
-        <div class="q"><label for="kind">Kind of home</label><select class="sel" id="kind" name="kind"><option>Apartment</option><option>Penthouse</option><option>Townhouse</option><option>Villa</option><option>Not sure yet</option></select></div>
+        <div class="q"><label for="city">City</label><input class="input" id="city" name="city" placeholder="Where the home is, or should be" list="cities"><datalist id="cities"><option>New York</option><option>London</option><option>Dubai</option><option>Los Angeles</option><option>Lake Como</option><option>Singapore</option><option>Paris</option><option>Miami</option><option>Lisbon</option><option>Sydney</option></datalist></div>
+        <div class="q"><label for="kind">Kind of home</label><select class="sel" id="kind" name="kind"><option>Any</option><option>House</option><option>Apartment</option><option>Penthouse</option><option>Estate</option><option>Waterfront</option></select></div>
       </div>
       <div class="q">
         <div class="budget"><span class="lbl">Budget</span><b id="bud">$5m</b></div>
@@ -355,68 +403,102 @@
 </section>
 
 <footer>
-  <div>© 2026 Noor &amp; Vale, a fictional company · New York · Dubai · <a href="mailto:desk@noorvale.example">desk@noorvale.example</a></div>
+  <div>© 2026 Noor &amp; Vale, a fictional company · <a href="mailto:desk@noorvale.example">desk@noorvale.example</a></div>
   <div class="links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Licensing</a><a href="#">Careers</a></div>
   <p class="disc">This is an example website built by Onwards Digital to show what's possible. Noor &amp; Vale does not exist; the homes, prices and figures are invented, and the photographs are stock images of places that are not for sale.</p>
 </footer>
 
+<div class="cursor" id="cursor" aria-hidden="true">View</div>
+
 <script>
 (function(){
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
 
-  /* Header to glass after the hero */
+  /* Header to glass */
   var head=document.getElementById('head');
-  function onScroll(){head.classList.toggle('solid',window.scrollY>40);}
-  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  function onHead(){head.classList.toggle('solid',window.scrollY>40);}
+  window.addEventListener('scroll',onHead,{passive:true}); onHead();
 
-  /* Live times: the two desks, and the cities run */
-  function timeIn(tz,opts){try{return new Intl.DateTimeFormat('en-US',Object.assign({hour:'numeric',minute:'2-digit',timeZone:tz},opts||{})).format(new Date());}catch(e){return '';}}
-  var CITIES=[['New York','America/New_York'],['Dubai','Asia/Dubai'],['London','Europe/London'],['Paris','Europe/Paris'],['Miami','America/New_York'],['Singapore','Asia/Singapore'],['Lisbon','Europe/Lisbon'],['Milan','Europe/Rome'],['Hong Kong','Asia/Hong_Kong'],['Los Angeles','America/Los_Angeles'],['Riyadh','Asia/Riyadh'],['Geneva','Europe/Zurich']];
+  /* Hero: the house leans a little toward the mouse */
+  var bg=document.getElementById('bg');
+  if(fine && !reduce){
+    var tx=0,ty=0,cx=0,cy=0;
+    window.addEventListener('mousemove',function(e){tx=(e.clientX/window.innerWidth-.5)*-16;ty=(e.clientY/window.innerHeight-.5)*-10;},{passive:true});
+    (function lean(){cx+=(tx-cx)*.04;cy+=(ty-cy)*.04;bg.style.transform='translate3d('+cx+'px,'+cy+'px,0)';requestAnimationFrame(lean);})();
+  }
+
+  /* Typewriter in the Where box */
+  var ghost=document.getElementById('ghost'), places=['Lake Como','Upper East Side','Palm Jumeirah','Belgravia','Trousdale','Sentosa Cove','Île Saint-Louis','Byron Bay'], pi=0, ci=0, del=false;
+  function type(){
+    if(reduce){ghost.textContent='Lake Como';return;}
+    var w=places[pi];
+    ghost.textContent=w.slice(0,ci);
+    if(!del){ci++; if(ci>w.length){del=true;setTimeout(type,1400);return;}}
+    else{ci--; if(ci<0){del=false;ci=0;pi=(pi+1)%places.length;}}
+    setTimeout(type,del?45:85);
+  }
+  type();
+
+  /* Live times */
+  function timeIn(tz){try{return new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:tz}).format(new Date());}catch(e){return '';}}
+  var CITIES=[['New York','America/New_York'],['London','Europe/London'],['Dubai','Asia/Dubai'],['Los Angeles','America/Los_Angeles'],['Paris','Europe/Paris'],['Lake Como','Europe/Rome'],['Singapore','Asia/Singapore'],['Miami','America/New_York'],['Lisbon','Europe/Lisbon'],['Hong Kong','Asia/Hong_Kong'],['Sydney','Australia/Sydney'],['Geneva','Europe/Zurich'],['Riyadh','Asia/Riyadh'],['Tokyo','Asia/Tokyo'],['Aspen','America/Denver'],['Cape Town','Africa/Johannesburg']];
   var run=document.getElementById('run');
-  function drawRun(){var html='';CITIES.concat(CITIES).forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;}
   function tick(){
-    var ny=timeIn('America/New_York'), db=timeIn('Asia/Dubai');
-    ['c-ny','t-ny','d-ny'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=ny;});
-    ['c-db','t-db','d-db'].forEach(function(id){var e=document.getElementById(id);if(e)e.textContent=db;});
-    drawRun();
+    var html='';CITIES.concat(CITIES).forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;
+    document.querySelectorAll('[data-tz]').forEach(function(s){s.textContent=timeIn(s.dataset.tz);});
+    var local=new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(new Date());
+    document.getElementById('now-t').textContent='Advisors awake · '+local;
+    var on=document.querySelector('#city-list button.on'); if(on) document.getElementById('pic-time').textContent=timeIn(on.querySelector('[data-tz]').dataset.tz)+' local';
   }
   tick(); setInterval(tick,30000);
 
-  /* Hero: pick a city, or let it drift between the two */
-  var bgs={ny:document.getElementById('bg-ny'),db:document.getElementById('bg-db')}, tabs=document.querySelectorAll('.cities button'), cur='ny', timer;
-  function show(c){cur=c;Object.keys(bgs).forEach(function(k){bgs[k].classList.toggle('on',k===c);});tabs.forEach(function(t){var on=t.dataset.city===c;t.classList.toggle('on',on);t.setAttribute('aria-selected',on?'true':'false');});}
-  function drift(){clearInterval(timer);if(reduce)return;timer=setInterval(function(){show(cur==='ny'?'db':'ny');},7000);}
-  tabs.forEach(function(t){t.addEventListener('click',function(){show(t.dataset.city);drift();});});
-  drift();
-
-  /* Reveal once per section; count numbers when they arrive */
+  /* Reveal per section, count numbers */
   var rvs=document.querySelectorAll('.rv');
   if('IntersectionObserver' in window && !reduce){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);if(e.target.querySelector('.count'))countUp(e.target);}});},{threshold:.06,rootMargin:'0px 0px -10% 0px'});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);if(e.target.querySelector('.count'))countUp(e.target);}});},{threshold:.08,rootMargin:'0px 0px -8% 0px'});
     rvs.forEach(function(r){io.observe(r);});
   } else { rvs.forEach(function(r){r.classList.add('in');}); document.querySelectorAll('.count').forEach(function(c){c.textContent=c.dataset.to;}); }
-  function countUp(scope){
-    scope.querySelectorAll('.count').forEach(function(c){
-      var to=+c.dataset.to, dec=+(c.dataset.dec||0), start=null, dur=1500;
-      function step(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/dur);p=1-Math.pow(1-p,3);c.textContent=(to*p).toFixed(dec);if(p<1)requestAnimationFrame(step);}
-      requestAnimationFrame(step);
-    });
+  function countUp(scope){scope.querySelectorAll('.count').forEach(function(c){var to=+c.dataset.to,dec=+(c.dataset.dec||0),start=null,dur=1500;function step(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/dur);p=1-Math.pow(1-p,3);c.textContent=(to*p).toFixed(dec);if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);});}
+
+  /* Slow parallax on the big pictures */
+  var px=document.querySelectorAll('[data-px]');
+  if(!reduce){
+    function para(){var vh=window.innerHeight;px.forEach(function(img){var r=img.parentElement.getBoundingClientRect();if(r.bottom<0||r.top>vh)return;var p=(r.top+r.height/2-vh/2)/vh;img.style.setProperty('--py',(p*-9)+'%');});}
+    window.addEventListener('scroll',para,{passive:true}); window.addEventListener('resize',para); para();
   }
 
-  /* Homes strip arrows */
-  var strip=document.getElementById('strip');
-  function stepStrip(dir){var card=strip.querySelector('.home');strip.scrollBy({left:dir*(card.getBoundingClientRect().width+16),behavior:reduce?'auto':'smooth'});}
-  document.getElementById('prev').addEventListener('click',function(){stepStrip(-1);});
-  document.getElementById('next').addEventListener('click',function(){stepStrip(1);});
-  strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
-
-  /* How we work: the picture follows the step you're reading */
-  var steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), cap=document.getElementById('media-cap');
-  function setStep(n,c){steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===n);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===n);});cap.textContent=c;}
-  if('IntersectionObserver' in window){
-    var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setStep(e.target.dataset.step,e.target.dataset.cap);});},{rootMargin:'-45% 0px -45% 0px'});
-    steps.forEach(function(s){so.observe(s);});
+  /* Cursor label over the homes */
+  var cur=document.getElementById('cursor');
+  if(fine){
+    var mx=0,my=0,kx=0,ky=0;
+    window.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;},{passive:true});
+    (function follow(){kx+=(mx-kx)*.18;ky+=(my-ky)*.18;cur.style.left=kx+'px';cur.style.top=ky+'px';requestAnimationFrame(follow);})();
+    document.querySelectorAll('.home').forEach(function(h){h.addEventListener('mouseenter',function(){cur.classList.add('on');});h.addEventListener('mouseleave',function(){cur.classList.remove('on');});});
   }
+
+  /* Cities: the picture follows the row; a click fills the form */
+  var rows=document.querySelectorAll('#city-list button'), pics=document.querySelectorAll('#pic img'), picCity=document.getElementById('pic-city'), cityIn=document.getElementById('city');
+  function showCity(btn){rows.forEach(function(r){r.classList.toggle('on',r===btn);});pics.forEach(function(p,i){p.classList.toggle('on',i===+btn.dataset.i);});picCity.textContent=btn.dataset.city;document.getElementById('pic-time').textContent=timeIn(btn.querySelector('[data-tz]').dataset.tz)+' local';}
+  rows.forEach(function(r){
+    r.addEventListener('mouseenter',function(){showCity(r);});
+    r.addEventListener('focus',function(){showCity(r);});
+    r.addEventListener('click',function(){showCity(r);cityIn.value=r.dataset.city;document.getElementById('enquire').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+  });
+
+  /* Process: the pinned picture follows the step */
+  var steps=document.querySelectorAll('#steps li'), imgs=document.querySelectorAll('#media img'), bar=document.getElementById('bar');
+  function setStep(n){steps.forEach(function(s){s.classList.toggle('on',s.dataset.step===n);});imgs.forEach(function(i){i.classList.toggle('on',i.dataset.step===n);});bar.style.width=(n*25)+'%';}
+  if('IntersectionObserver' in window){var so=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setStep(e.target.dataset.step);});},{rootMargin:'-45% 0px -45% 0px'});steps.forEach(function(s){so.observe(s);});}
+
+  /* The ask bar hands its answers to the form */
+  document.getElementById('ask').addEventListener('submit',function(e){
+    e.preventDefault();
+    var w=document.getElementById('a-where').value.trim(); if(w) cityIn.value=w;
+    document.getElementById('kind').value=document.getElementById('a-kind').value;
+    var b=document.getElementById('a-budget').selectedIndex, r=document.getElementById('budget'); r.value=[3,7,15,30][b]; r.dispatchEvent(new Event('input'));
+    document.getElementById('enquire').scrollIntoView({behavior:reduce?'auto':'smooth'});
+  });
 
   /* Budget */
   var b=document.getElementById('budget'), bud=document.getElementById('bud');
@@ -424,7 +506,7 @@
   b.addEventListener('input',money); money();
 
   /* Demo only: nothing is sent anywhere */
-  var f=document.querySelector('form.ask');
+  var f=document.querySelector('form.req');
   f.addEventListener('submit',function(e){e.preventDefault();f.classList.add('sent');});
 })();
 </script>
