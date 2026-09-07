@@ -56,7 +56,7 @@ ul { padding: 0; list-style: none; }
 .section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 24px; margin-bottom: 32px; }
 .section-head .stack { display: flex; flex-direction: column; gap: 8px; }
 .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
-.grid-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
+.grid-5 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
 .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
 .rule { border-top: 1px solid var(--ink); }
 .hair { border-top: 1px solid var(--hair); }
@@ -638,3 +638,6 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
   .tile-wrap .tile .meta { display: none; }
   .tile-copy { display: flex; }
 }
+
+/* Three demo tiles: a little shorter than square now they are wider */
+@media (min-width:761px){.grid-5 .tile .ph{aspect-ratio:5/4}}
