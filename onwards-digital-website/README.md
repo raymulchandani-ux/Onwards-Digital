@@ -1,126 +1,57 @@
-# Onwards Digital — website
+# MONARCH
 
-Plain HTML, CSS and JavaScript. No build step, no subfolders — every file sits
-at the same level. Upload them all to GitHub and Vercel deploys as-is.
+A standalone browser-game foundation: casino tables, a personal collection, and an interactive coastal city shopping map. Plain HTML, CSS, and JavaScript, with all artwork and fonts included. No installation, API keys, or build tools required.
 
-```
-index.html            Homepage
-beginner.html         Free mockup (form only, no payment)
-advanced.html         $299 plan — questionnaire → payment.html
-professional.html     $599 plan — questionnaire → payment.html
-monthly-care.html     $12.99/mo — plan picker + questionnaire → payment.html
-thanks.html           Landing page after the free-mockup form
-payment.html          Checkout: PayPal or Stripe (reads plan/price from the URL)
-terms.html            Terms of Service   ┐
-privacy.html          Privacy Policy     ├ legal pages — see section 6
-refunds.html          Refunds & Cancellations ┘
-site.css              The design system (one file for all six pages)
-site.js               Shared behaviour: nav, currency, forms, add-on, submit
-config.js             ← THE ONLY FILE YOU NEED TO EDIT TO GO LIVE
-example-*.html        Five demo homepages for fictional businesses
-```
+## Put it on GitHub and Vercel
 
-## 1. Go live checklist (edit `config.js             ← THE ONLY FILE YOU NEED TO EDIT TO GO LIVE
+1. Unzip `monarch-website.zip`.
+2. Upload the **contents** to your GitHub repository. Keep `index.html`, `styles.css`, `app.js`, `core.js`, `vercel.json`, and the `assets` folder together at the repository root.
+3. In Vercel, create a new project and import that repository.
+4. If prompted, choose **Other** for Framework Preset. Use no Build Command and no Install Command; Output Directory is **`.`**. The included `vercel.json` supplies these settings.
+5. Deploy and open your Vercel URL.
 
-1. **Form emails** — `formEndpoint` uses FormSubmit.co. Submissions without an
-   attachment go through FormSubmit's AJAX endpoint; ones with a file are posted
-   as a normal form (FormSubmit only delivers attachments that way, max 10 MB)
-   and FormSubmit redirects the visitor to `payment.html` or `thanks.html`.
-   The endpoint and points at
-   `contactonwardsdigital@gmail.com`. The first real submission triggers a one-time
-   activation email to that inbox; click the link once and every later
-   submission arrives normally. (If you'd rather use Formspree or Netlify Forms,
-   change this one URL.)
-2. **PayPal** — replace `https://paypal.me/YOURUSERNAME` with your PayPal.me
-   link. The checkout appends the amount (`/299.00USD`). Optional: create a
-   PayPal *subscription* for Monthly Care ($12.99/month) and paste its link in
-   `paypalMonthlyCare`; until you do, the first month is taken via PayPal.me and
-   the page tells the customer you'll email a subscription link.
-3. **Stripe** — when you have your Stripe account, create three **Payment
-   Links** (Dashboard → Product catalog → Payment links): Advanced $299 one-time,
-   Professional $599 one-time, Monthly Care $12.99/month recurring. Paste each
-   URL into `stripe.advanced`, `stripe.professional`, `stripe.monthlyCare`.
-   Any that is left empty shows Stripe as "coming soon" on the checkout page
-   while PayPal keeps working — so nothing breaks in the meantime.
-4. **Prices** — `prices` holds USD (what checkout charges) plus AED, GBP and EUR
-   display conversions for the currency dropdown. Change a number here and
-   every page updates.
+Vercel's official guides: [Deployments](https://vercel.com/docs/deployments) and [Project configuration](https://vercel.com/docs/project-configuration/vercel-json).
 
-Until PayPal/Stripe links are filled in, the Pay button shows a polite message
-asking the customer to email you rather than sending them to a dead link.
+For a quick local look, open `index.html` in a modern browser. Playing from the deployed HTTPS site gives consistent browser storage behavior. The hash routes (`#play`, `#inventory`, `#purchase`) work without server rewrites.
 
-## 2. Photos
+## What's playable
 
-The homepage tiles and the five example sites use photographs hot-linked from
-Unsplash (free licence, no watermark, no attribution required — a quiet
-"Photography via Unsplash" line sits in each footer anyway). Every `<img>` has
-`onerror="this.remove()"`, so if a photo is ever taken down the designed
-placeholder shows instead of a broken image. For a real client site, download
-the photos (or use the client's own) and reference them locally — don't rely on
-hot-linking for paying customers.
+- Home → Enter Monarch → Play / Inventory / Purchase gateway.
+- Three persistent header buttons switch between the in-game sections.
+- Start with **25,000 credits**.
+- Blackjack: hit, stand, double down, soft aces, dealer stands on all 17s, natural blackjack pays 3:2. No split or insurance.
+- Poker: **single-player, five-card Jacks or Better video poker**, with hold/draw and nine paying hand categories. This is not multiplayer Texas Hold'em.
+- European roulette: animated 37-pocket wheel, red/black, odd/even, low/high, and individual-number bets. One bet per spin.
+- Ten map destinations, category filters, zoom controls, and scrollable/pannable map area. Three tiers each for cars, properties, and watches; one eyewear shop carries all three tiers.
+- Twelve collectibles, from a city hatchback and studio to a hypercar and hillside mansion.
+- Purchase confirmations, balance deductions, duplicate ownership prevention, inventory filters, equip/unequip, and editable player name.
+- Equipped favorites appear in the avatar profile's signature collection. The character portrait is fixed artwork; items do not yet change a rendered character model.
+- The wallet's **+** button offers simulated credit packs. Pack dollar amounts are concept prices; clicking adds demo credits for free. No checkout or payment collection.
+- Local browser saving for wallet, collection, profile, recent outcomes, and unfinished card hands.
+- Responsive layouts, keyboard focus styling, native modal dialogs, and reduced-motion support.
 
-Each slot is `<figure class="photo" data-photo="…">`; the `data-photo` text
-describes the shot. To swap a photo, replace the `src`:
+## Prototype boundaries
 
-```html
-<figure class="photo" data-photo="dining room at dusk">
-  <img src="images/dining-room.jpg" alt="The dining room at Ossobello at dusk">
-</figure>
-```
+This is the base requested, with a complete local gameplay loop. Accounts, multiplayer poker, friend profiles, social sharing, live payments, a shared economy, and a customizable 3D character are not connected.
 
-The CSS makes any `img` inside `.photo` fill the slot (`object-fit: cover`).
-Aim for 1600px-wide JPGs under 300 KB.
+The balance is stored in `localStorage` under `monarch-v1`. It belongs to this browser and website address. Clearing site data removes progress. Use one active tab for this local prototype. If storage is unavailable, an on-screen notice explains that progress lasts only for the current visit.
 
-The "Recent work" section on the homepage shows the example sites in scaled
-live frames (iframes), so it always reflects the current version of each site.
+A client-only balance can be edited by a player. Before taking actual payments or offering shared accounts, move balances, game settlement, purchases, and ownership to an authenticated server with an auditable transaction ledger. Payment credits should be awarded only after a verified payment-provider webhook. The demo wallet must be replaced, not reused as payment verification.
 
-## 3. Things deliberately left out
+Credits and items have no cash value, cannot be withdrawn, and are not transferable. No third-party gambling service is connected.
 
-- **Testimonials on the homepage.** The old site carried placeholder reviews.
-  Rather than invent quotes from people who don't exist, the section is gone;
-  add it back (there's a `.quotes` style ready in `site.css`) once you have
-  real ones with names you're allowed to use.
-- **The client editor / login.** The site now *sells* self-service editing
-  ("edit your menu yourself"). That product doesn't exist yet in this repo —
-  it's a separate build. Until it does, Monthly Care is fulfilled by you making
-  the changes (the page also promises "up to 3 changes a month done for you",
-  so the offer is still honest).
-- **Hosting.** The site says, everywhere, that Onwards builds websites and does
-  not host them. Keep it that way in any copy you add.
+## Editing the foundation
 
-## 4. The example sites
+- **Brand, starting credits, catalog, prices, locations, screens and controls:** `app.js`
+- **Color palette, typography, responsive layout and animations:** `styles.css`
+- **Deck shuffling, blackjack scoring, poker evaluation and roulette payout rules:** `core.js`
+- **Page title, description and entry point:** `index.html`
+- **Artwork and fonts:** `assets/`
 
-`example-restaurant.html` (Ossobello), `example-cafe.html` (Hollowmere), `example-salon.html` (Tessaline), `example-veyra.html` (Veyra, a fictional AI investing startup), `example-noorvale.html` (Noor & Vale, a fictional luxury real estate house).
-Every business, person
-and review is fictional, and the sites deliberately carry no phone numbers or
-street addresses — only a neighbourhood and city. Each page is self-contained, so you can copy one as the
-starting point for a real client's site. Forms on the example pages are
-front-end only (they confirm on the page and send nothing).
+All product names and location brands are fictional. Artwork was generated for this prototype. Typeface licenses are in `licenses/`. Design rationale and research links are in `DESIGN-NOTES.md`; image prompts are in `ARTWORK-PROMPTS.txt`.
 
-## 5. Editing the site
+## Validation
 
-- Colours, spacing and type live at the top of `site.css              The design system (one file for all six pages)
-- The three questionnaire pages share one structure; if you change a field on
-  one, change it on the others (or regenerate them — ask Claude for
-  `tools/build_plans.py`).
-- Fonts: Instrument Serif + Schibsted Grotesk from Google Fonts.
+Seventeen automated logic/integration checks passed: shuffled-deck uniqueness, blackjack ace/natural/push/double-down rules, all video-poker payout categories, every roulette pocket and bet, wager limits, route rendering, purchases, equipment, repeated-action prevention, name escaping, and state restoration. Local HTTP delivery and packaged asset references were also checked.
 
-## 6. Legal pages
-
-`terms.html`, `privacy.html` and `refunds.html` are drafted around how Onwards
-actually works (50% refund before handover, Monthly Care runs to the end of the
-paid month, bugs fixed free but must be reported, portfolio opt-out). Two
-highlighted placeholders need your input before launch: the legal name /
-entity (in Terms §intro and Privacy §intro) and the governing law (Terms §10).
-Search the files for `class="ph"`. These are drafts, not legal advice — have a
-lawyer review them before taking real payments. Update the "Last updated" date
-whenever you change them.
-
-## 7. Logo files
-
-`logo-mark.svg` (ink), `logo-mark-reversed.svg` (bone, for dark backgrounds),
-`logo-lockup.svg` / `logo-lockup.png` / `logo-lockup-reversed.png` (mark +
-wordmark, for email signatures, invoices and social profiles). The favicon set
-(`favicon.svg`, `favicon.ico`, `favicon-192.png`, `favicon-512.png`,
-`apple-touch-icon.png`) is generated from the same mark. The mark is the
-"open O" — a ring opening on the right into an arrow.
+These checks run the game and rendering functions in a JavaScript test context. Browser interaction and visual layout testing were not performed; cross-browser behavior and a full accessibility audit remain to be checked before a public launch. An optional feature-detected WebMCP surface exposes collection reading and section navigation; a supported live WebMCP validation context was unavailable, so those integrations are unverified.
