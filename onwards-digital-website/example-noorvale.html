@@ -177,7 +177,7 @@
   .where .list button.on{padding-left:14px;color:var(--fg)}
   .where .list button:hover b,.where .list button.on b{color:var(--brass)}
   .where .pic{position:relative;aspect-ratio:4/3.4;max-height:calc(100vh - 220px);overflow:hidden;background:var(--bg-2);margin:0;border-radius:6px;clip-path:inset(0 0 100% 0 round 6px);transition:clip-path 1.3s var(--ease)}
-  .rv.in .where .pic{clip-path:inset(0 0 0 0 round 6px)}
+  .where.rv.in .pic,.rv.in .where .pic{clip-path:inset(0 0 0 0 round 6px)}
   @media (prefers-reduced-motion:reduce){.where .pic{clip-path:none;transition:none}}
   .where .pic .tag{position:absolute;left:14px;top:14px;z-index:1;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-weight:400}
   .where .pic .tag.time{left:auto;right:14px;top:auto;bottom:14px;font-variant-numeric:tabular-nums}
