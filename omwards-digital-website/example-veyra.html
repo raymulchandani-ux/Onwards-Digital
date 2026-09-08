@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veyra — Copy the trades of an AI, in your own account</title>
+<meta name="description" content="Veyra mirrors the trades of an AI model into your own brokerage account, in seconds. One plan, $29 a month, cancel any time. Fictional example website by Onwards Digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000;
+    --bg-2:#0c0d10;
+    --fg:#f2f2f0;
+    --fg-2:#a4a6ab;
+    --fg-3:#5f6167;
+    --line:#26282d;
+    --signal:#8fb6ff;   /* one colour, used only where the model is speaking */
+    --gutter:clamp(20px,5vw,80px);
+    --font:'Geist',system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:100px;background:var(--bg)}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:17px;line-height:1.5;font-weight:400;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3{margin:0;font-weight:500;letter-spacing:-.03em;line-height:1.02}
+  p{margin:0}
+  a{color:inherit}
+  button{font:inherit}
+  :focus-visible{outline:2px solid var(--signal);outline-offset:3px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+  .onwards{position:sticky;top:0;z-index:50;height:36px;background:#1a1917;color:#e6e2da;font-size:12.5px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter)}
+  .onwards a{color:inherit;text-decoration:none;border-bottom:1px solid rgba(230,226,218,.4)}
+  @media (max-width:600px){.onwards>span{display:none}}
+
+  /* Header: transparent over the hero, glass once you scroll */
+  .head{position:sticky;top:36px;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gutter);height:64px;transition:background .3s,border-color .3s;border-bottom:1px solid transparent}
+  .head.solid{background:rgba(0,0,0,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+  .wordmark{font-weight:600;letter-spacing:-.04em;font-size:22px;text-decoration:none;display:flex;align-items:center;gap:10px}
+  .wordmark i{width:10px;height:10px;border-radius:50%;background:var(--fg);display:inline-block;box-shadow:0 0 0 4px rgba(242,242,240,.12)}
+  .head nav{display:flex;align-items:center;gap:26px}
+  .head nav a{text-decoration:none;font-size:14.5px;color:var(--fg-2);transition:color .15s}
+  .head nav a:hover{color:var(--fg)}
+  .pill{display:inline-flex;align-items:center;justify-content:center;background:var(--fg);color:#000;text-decoration:none;font-weight:500;font-size:14.5px;padding:10px 18px;border-radius:999px;border:0;cursor:pointer;transition:transform .15s,background .15s;min-height:40px}
+  .pill:hover{background:#fff;transform:translateY(-1px)}
+  .pill.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+  .pill.ghost:hover{border-color:var(--fg-2)}
+  .head nav .pill{color:#000}
+
+  /* Hero */
+  .hero{position:relative;min-height:calc(100vh - 100px);display:flex;align-items:flex-end;padding:0 var(--gutter) clamp(48px,8vh,96px);overflow:hidden}
+  .hero canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.2) 0%,rgba(0,0,0,0) 40%,rgba(0,0,0,.85) 100%);pointer-events:none}
+  .hero .copy{position:relative;z-index:1;max-width:760px}
+  .hero h1{font-size:clamp(44px,7.4vw,108px);font-weight:500}
+  .hero p{margin-top:22px;font-size:clamp(17px,1.6vw,21px);color:var(--fg-2);max-width:46ch}
+  .hero .cta{display:flex;gap:12px;align-items:center;margin-top:34px;flex-wrap:wrap}
+  .hero .cta small{color:var(--fg-3);font-size:13.5px}
+  .hero .copy>*{opacity:0;transform:translateY(14px);animation:up .9s cubic-bezier(.2,.7,.2,1) forwards}
+  .hero .copy>*:nth-child(2){animation-delay:.12s}.hero .copy>*:nth-child(3){animation-delay:.24s}
+  @keyframes up{to{opacity:1;transform:none}}
+  .live{position:absolute;right:var(--gutter);top:clamp(24px,6vh,64px);z-index:1;font-size:13px;color:var(--fg-2);display:flex;align-items:center;gap:10px;opacity:0;animation:up 1s .6s forwards}
+  .live i{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 0 rgba(143,182,255,.5);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(143,182,255,.5)}70%{box-shadow:0 0 0 8px rgba(143,182,255,0)}100%{box-shadow:0 0 0 0 rgba(143,182,255,0)}}
+  @media (prefers-reduced-motion:reduce){.hero .copy>*,.live{animation:none;opacity:1;transform:none}.live i{animation:none}}
+
+  /* Generic section rhythm: one reveal per section, children staggered */
+  section{padding:clamp(72px,12vh,140px) var(--gutter)}
+  .k{font-size:14px;color:var(--fg-3);margin-bottom:18px}
+  .h{font-size:clamp(32px,4.6vw,64px);max-width:16ch}
+  .lead{margin-top:18px;color:var(--fg-2);font-size:clamp(16px,1.3vw,19px);max-width:48ch}
+  .rv{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  .rv[data-d="1"]{transition-delay:.1s}.rv[data-d="2"]{transition-delay:.2s}.rv[data-d="3"]{transition-delay:.3s}
+  @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+  /* How it works: three steps, each with a small drawn illustration */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(40px,6vh,72px)}
+  .step{border-top:1px solid var(--line);padding-top:22px}
+  .step .art{height:150px;display:flex;align-items:center;margin-bottom:22px}
+  .step .art svg{width:100%;height:100%;overflow:visible}
+  .step h3{font-size:22px;letter-spacing:-.02em}
+  .step p{margin-top:8px;color:var(--fg-2);font-size:16px;max-width:34ch}
+  .step .n{font-size:13px;color:var(--fg-3);margin-bottom:12px}
+  /* line-draw when the section comes in */
+  .draw path,.draw circle,.draw rect,.draw polyline{stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 1.6s cubic-bezier(.2,.7,.2,1)}
+  .rv.in .draw path,.rv.in .draw circle,.rv.in .draw rect,.rv.in .draw polyline{stroke-dashoffset:0}
+  .rv.in .step:nth-child(2) .draw *{transition-delay:.25s}.rv.in .step:nth-child(3) .draw *{transition-delay:.5s}
+  @media (prefers-reduced-motion:reduce){.draw *{stroke-dashoffset:0!important;transition:none}}
+
+  /* The model: text on the left, an orbit of what it reads on the right */
+  .model-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+  .orbit{position:relative;aspect-ratio:1;max-width:520px;margin:0 auto;width:100%}
+  .orbit .ring{position:absolute;inset:0;border-radius:50%;border:1px solid rgba(242,242,240,.08)}
+  .orbit .ring.r2{inset:19%}
+  .orbit .item{position:absolute;left:50%;top:50%;width:0;height:0}
+  .orbit .item .chip{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(calc(-1*var(--a)));width:74px;height:74px}
+  .orbit .cd{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border-radius:50%;background:rgba(12,13,16,.85);border:1px solid rgba(242,242,240,.14);color:var(--fg);text-align:center;transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .3s,background .3s,box-shadow .3s;cursor:default;backdrop-filter:blur(6px)}
+  .orbit .cd:hover{transform:scale(1.34);border-color:var(--signal);background:rgba(12,13,16,.98);box-shadow:0 12px 40px rgba(0,0,0,.6);position:relative;z-index:3}
+  .orbit .cd b{font-size:11.5px;font-weight:600;letter-spacing:-.01em;line-height:1.05}
+  .orbit .cd span{font-size:10px;color:var(--fg-2);font-variant-numeric:tabular-nums}
+  .orbit .cd svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin-bottom:2px}
+  .orbit .ring,.orbit .chip{will-change:transform}
+  .orbit .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:50%;background:rgba(12,13,16,.9);border:1px solid rgba(143,182,255,.35);box-shadow:0 0 0 12px rgba(143,182,255,.05),0 0 60px rgba(143,182,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;text-align:center;overflow:hidden}
+  .orbit .core .face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;opacity:0;transform:scale(.9);transition:opacity .5s,transform .5s}
+  .orbit .core .face.on{opacity:1;transform:none}
+  .orbit .core b{font-size:15px;font-weight:600;letter-spacing:-.02em}
+  .orbit .core span{font-size:11.5px;color:var(--fg-2)}
+  .orbit .core i{font-style:normal;font-size:11px;color:#5fd28a;font-variant-numeric:tabular-nums}
+  .orbit .core i.down{color:#e5646a}
+  .orbit .core svg{width:22px;height:22px;stroke:var(--signal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  @media (max-width:900px){.model-grid{grid-template-columns:1fr}.orbit{max-width:360px;overflow:clip}.orbit .item .chip{width:58px;height:58px}.orbit .cd b{font-size:10.5px}.orbit .core{width:96px;height:96px}}
+
+  /* The model: numbers that count in, plus a trade tape */
+  .model{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,48px);margin-top:clamp(40px,6vh,72px)}
+  .stat b{display:block;font-size:clamp(44px,5.6vw,84px);font-weight:500;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+  .stat b small{font-size:.45em;color:var(--fg-2);letter-spacing:-.02em;margin-left:4px}
+  .stat>span{display:block;margin-top:12px;color:var(--fg-2);font-size:15.5px;max-width:28ch}
+  .tape{margin-top:clamp(48px,8vh,88px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;position:relative}
+  .tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none}
+  .tape::before{left:0;background:linear-gradient(90deg,var(--bg-2),transparent)}
+  .tape::after{right:0;background:linear-gradient(270deg,var(--bg-2),transparent)}
+  .tape .row{display:flex;width:max-content;flex-wrap:nowrap;gap:0;animation:tape 48s linear infinite;will-change:transform}
+  .tape:hover .row{animation-play-state:paused}
+  @keyframes tape{to{transform:translateX(-50%)}}
+  .tape .t{display:inline-flex;flex:none;white-space:nowrap;gap:14px;align-items:baseline;padding:16px 28px;border-right:1px solid var(--line);font-size:14.5px;font-variant-numeric:tabular-nums}
+  .tape .t b{font-weight:500}
+  .tape .t .side{color:#5fd28a}
+  .tape .t .side.sell{color:#e5646a}
+  .tape .t .when{color:var(--fg-3)}
+  .tape-note{margin-top:12px;font-size:13px;color:var(--fg-3)}
+  @media (prefers-reduced-motion:reduce){.tape .row{animation:none}}
+
+  /* Control: the risk dial */
+  .control{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,96px);align-items:center}
+  .dial{border-radius:20px;padding:clamp(24px,3vw,40px);border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55)}
+  .dial .top{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+  .dial .top b{font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .dial .top span{color:var(--fg-2);font-size:14px}
+  .range{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--line);margin:34px 0 10px;outline:none}
+  .range::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 6px rgba(242,242,240,.08);transition:box-shadow .15s}
+  .range::-webkit-slider-thumb:hover{box-shadow:0 0 0 10px rgba(242,242,240,.12)}
+  .range::-moz-range-thumb{width:26px;height:26px;border-radius:50%;background:var(--fg);border:0;cursor:pointer}
+  .range:focus-visible{outline:none}
+  .range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px #000,0 0 0 5px var(--signal)}
+  .ends{display:flex;justify-content:space-between;font-size:13px;color:var(--fg-3)}
+  .readout{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;padding-top:24px;border-top:1px solid var(--line)}
+  .readout b{display:block;font-size:26px;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+  .readout span{display:block;color:var(--fg-2);font-size:13.5px;margin-top:4px}
+  .alloc{display:flex;height:10px;border-radius:999px;overflow:hidden;margin-top:26px;background:var(--line)}
+  .alloc i{display:block;height:100%;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+  .alloc .eq{background:var(--fg)}
+  .alloc .cash{background:var(--fg-3)}
+  .legend{display:flex;gap:18px;margin-top:10px;font-size:13px;color:var(--fg-2)}
+  .legend i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px}
+
+  /* Performance chart */
+  .perf .chart{margin-top:clamp(36px,6vh,64px);border-radius:20px;padding:clamp(18px,3vw,36px);border:1px solid rgba(255,255,255,.22);background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55)}
+  .perf .chart svg{width:100%;height:auto;display:block;overflow:visible}
+  .perf .legend{margin-top:18px}
+  .perf .legend .m i{background:var(--signal)}
+  .perf .legend .b i{background:var(--fg-3)}
+  .perf .fine{margin-top:16px;font-size:13px;color:var(--fg-3);max-width:80ch;line-height:1.5}
+  .grow path.line{stroke-dasharray:2400;stroke-dashoffset:2400;transition:stroke-dashoffset 2.6s cubic-bezier(.2,.7,.2,1)}
+  .grow path.line.bench{transition-delay:.3s}
+  .rv.in .grow path.line{stroke-dashoffset:0}
+  .grow .fill{opacity:0;transition:opacity 1.2s 1.6s}
+  .rv.in .grow .fill{opacity:1}
+  @media (prefers-reduced-motion:reduce){.grow path.line{stroke-dashoffset:0!important;transition:none}.grow .fill{opacity:1;transition:none}}
+
+  /* Plan */
+  .plan{border-top:1px solid var(--line);overflow:hidden}
+  .plan-wrap{position:relative;margin-top:clamp(36px,6vh,64px);padding:40px 0}
+  .plan-line{position:absolute;left:-6%;right:-6%;top:-2%;bottom:-2%;width:112%;height:104%;overflow:visible;opacity:.95;z-index:2;pointer-events:none}
+  .plan-line .pline{stroke-dasharray:2600;stroke-dashoffset:2600;transition:stroke-dashoffset 2.8s cubic-bezier(.2,.7,.2,1)}
+  .rv.in .plan-line .pline{stroke-dashoffset:0}
+  .plan-line .pfill{opacity:0;transition:opacity 1.2s 1.8s}
+  .rv.in .plan-line .pfill{opacity:1}
+  @media (prefers-reduced-motion:reduce){.plan-line .pline{stroke-dashoffset:0;transition:none}.plan-line .pfill{opacity:1}}
+  .plan-card{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);border:1px solid rgba(255,255,255,.22);border-radius:24px;padding:clamp(24px,4vw,56px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),inset 0 -10px 30px rgba(255,255,255,.04),0 30px 80px rgba(0,0,0,.55);align-items:center}
+  /* The glass lives on ::before (z 1). The line (z 2) runs over the glass, and the card's text (z 3) sits on top of the line — the card itself must not create a stacking context. */
+  .plan-card::before{content:"";position:absolute;inset:0;border-radius:24px;z-index:1;background:linear-gradient(135deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 50%,rgba(255,255,255,.06)),rgba(0,0,0,.12);backdrop-filter:blur(10px) saturate(1.3);-webkit-backdrop-filter:blur(10px) saturate(1.3);pointer-events:none}
+  .plan-card>*{position:relative;z-index:3}
+  .price{font-size:clamp(56px,7vw,104px);font-weight:500;letter-spacing:-.05em;line-height:1}
+  .price small{font-size:.28em;color:var(--fg-2);letter-spacing:-.01em;margin-left:8px}
+  .plan-card ul{list-style:none;margin:0;padding:0}
+  .plan-card li{padding:12px 0;border-bottom:1px solid rgba(255,255,255,.12);font-size:16px;color:var(--fg);display:flex;gap:12px}
+  .plan-card li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--fg);flex:none;margin-top:9px}
+  .plan-card li:last-child{border-bottom:0}
+  .plan-card .cta{margin-top:24px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .plan-card .cta small{color:var(--fg-3);font-size:13.5px}
+
+  /* Start: a two-field sign-up, demo only */
+  .start{border-top:1px solid var(--line);background:var(--bg-2)}
+  .start form{margin-top:32px;display:grid;grid-template-columns:1fr 1fr auto;gap:12px;max-width:820px}
+  .start input{font:inherit;font-size:16px;color:var(--fg);background:#000;border:1px solid var(--line);border-radius:999px;padding:12px 18px;min-height:48px;width:100%}
+  .start input::placeholder{color:var(--fg-3)}
+  .start input:focus{outline:none;border-color:var(--fg-2)}
+  .start .note{margin-top:14px;font-size:13.5px;color:var(--fg-3);max-width:60ch}
+  .start form.sent{display:none}
+  .start .ok{display:none;margin-top:32px;font-size:22px;letter-spacing:-.02em}
+  .start .ok.show{display:block}
+
+  /* Questions */
+  .faq{max-width:820px}
+  .faq details{border-top:1px solid var(--line)}
+  .faq details:last-child{border-bottom:1px solid var(--line)}
+  .faq summary{cursor:pointer;list-style:none;padding:20px 0;font-size:19px;font-weight:500;letter-spacing:-.01em;display:flex;justify-content:space-between;align-items:center;gap:20px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"";width:12px;height:12px;border-right:1px solid var(--fg-2);border-bottom:1px solid var(--fg-2);transform:rotate(45deg);transition:transform .25s;flex:none;margin-right:6px}
+  .faq details[open] summary::after{transform:rotate(225deg)}
+  .faq details p{padding:0 0 22px;color:var(--fg-2);max-width:60ch}
+
+  footer{padding:40px var(--gutter) 48px;border-top:1px solid var(--line);color:var(--fg-3);font-size:13.5px;display:grid;grid-template-columns:1fr 1fr;gap:24px}
+  footer .links{display:flex;gap:18px;flex-wrap:wrap;justify-content:flex-end}
+  footer a{color:var(--fg-2);text-decoration:none}
+  footer a:hover{color:var(--fg)}
+  footer .disc{grid-column:1/-1;max-width:90ch;line-height:1.55}
+
+  @media (max-width:600px){.perf svg text{font-size:24px}}
+  .steps-track{position:relative}
+  .glass{position:absolute;top:34px;z-index:3;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);color:var(--fg);cursor:pointer;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.45);transition:opacity .3s,transform .2s}
+  .glass:active{transform:scale(.95)}
+  .glass svg{width:18px;height:18px}
+  .glass.prev{left:-6px}.glass.next{right:-6px}
+  .glass[hidden]{display:none}
+  @media (max-width:900px){
+    html{scroll-padding-top:90px}
+    section{padding:44px var(--gutter)}
+    .head nav a:not(.pill){display:none}
+    .hero{min-height:calc(78svh - 100px);padding-bottom:36px}
+    .hero h1{font-size:clamp(40px,11vw,60px)}
+    .hero p{font-size:15px;margin-top:14px}
+    .live{top:16px;right:var(--gutter);font-size:12px}
+    .h{font-size:clamp(28px,7.6vw,40px)}
+    .lead{font-size:15px;margin-top:12px}
+    .steps-track{margin-top:24px}
+    .steps{display:flex;gap:0;margin-top:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;scroll-behavior:smooth}
+    .steps::-webkit-scrollbar{display:none}
+    .step{flex:0 0 100%;scroll-snap-align:center;padding:14px 48px 0;text-align:center}
+    .step .art{justify-content:center}
+    .step p{margin-left:auto;margin-right:auto}
+    .glass:not([hidden]){display:flex}
+    .step .art{height:74px;margin-bottom:12px}
+    .step h3{font-size:18px}
+    .step p{font-size:13.5px;margin-top:6px}
+    .model-grid{grid-template-columns:1fr;gap:20px}
+    .orbit{max-width:min(100%,340px)}.orbit .item .chip{width:50px;height:50px}.orbit .cd{gap:0}.orbit .cd b{font-size:9px;line-height:1.05}.orbit .cd span{font-size:8.5px}.orbit .cd svg{width:12px;height:12px;margin-bottom:1px}.orbit .core{width:92px;height:92px;box-shadow:0 0 0 8px rgba(143,182,255,.05),0 0 40px rgba(143,182,255,.12)}.orbit .core .face{padding:0 9px;gap:2px}.orbit .core b{font-size:10.5px;line-height:1.1}.orbit .core span{font-size:8.5px;line-height:1.2}.orbit .core i{font-size:9.5px}
+    .stats{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+    .stat b{font-size:30px}
+    .stat b small{font-size:.5em}
+    .stat>span{font-size:12px;margin-top:8px}
+    .tape{margin-top:32px}
+    .tape .t{padding:12px 18px;font-size:13px}
+    .control{grid-template-columns:1fr;gap:20px}
+    .dial{padding:20px}
+    .range{margin:24px 0 8px}
+    .readout{grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:20px;padding-top:16px}
+    .readout b{font-size:20px}.readout span{font-size:12px}
+    .perf .chart{padding:14px;margin-top:24px}
+    .perf .fine{font-size:12px}
+    .plan-wrap{padding:24px 0}
+    .plan-card{grid-template-columns:1fr;gap:18px;padding:22px}
+    .price{font-size:56px}
+    .plan-card li{padding:9px 0;font-size:14.5px}
+    .start form{grid-template-columns:1fr 1fr;gap:10px}
+    .start form .pill{grid-column:1/-1;width:100%}
+    .faq summary{padding:14px 0;font-size:17px}
+    .faq details p{padding-bottom:16px;font-size:15px}
+    footer{grid-template-columns:1fr;padding:28px var(--gutter) 32px;gap:14px}
+    footer .links{justify-content:flex-start}
+  }
+</style>
+</head>
+<body>
+
+<div class="onwards"><a href="index.html">← Back to Onwards Digital</a><span>Example site by Onwards Digital · Veyra is fictional</span></div>
+
+<header class="head" id="head">
+  <a class="wordmark" href="#top"><i></i>Veyra</a>
+  <nav>
+    <a href="#how">How it works</a><a href="#control">Control</a><a href="#performance">Performance</a><a href="#plan">Plan</a>
+    <a class="pill" href="#start">Start copying</a>
+  </nav>
+</header>
+
+<section class="hero" id="top" aria-label="Introduction">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="live" aria-hidden="true"><i></i><span id="live-text">Model active · reviewing 412 positions</span></div>
+  <div class="copy">
+    <h1>Invest with<br>confidence.</h1>
+    <p>Veyra mirrors the trades of an AI trained on twenty years of markets into your own brokerage account, in seconds.</p>
+    <div class="cta"><a class="pill" href="#start">Start copying</a><a class="pill ghost" href="#how">How it works</a><small>$29 a month · cancel any time</small></div>
+  </div>
+</section>
+
+<section id="how" aria-labelledby="how-h">
+  <div class="rv">
+    <h2 class="h" id="how-h">Begin in three steps.</h2>
+    <div class="steps-track" id="steps-track">
+      <button type="button" class="glass prev" id="st-prev" aria-label="Previous step" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button type="button" class="glass next" id="st-next" aria-label="Next step" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    <div class="steps" id="steps">
+      <div class="step">
+        <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="100" height="80" rx="10"/><rect x="150" y="20" width="100" height="80" rx="10"/><path d="M110 60h40M138 50l12 10-12 10"/><path d="M30 45h60M30 60h40M30 75h50"/><circle cx="200" cy="60" r="18"/><path d="M191 60l6 6 12-12"/></svg></div>
+        <h3>Connect your broker</h3>
+        <p>16 brokerage accounts supported, including Schwab, Fidelity, Interactive Brokers, eToro and Robinhood.</p>
+      </div>
+      <div class="step">
+        <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 60h220"/><circle cx="150" cy="60" r="14"/><path d="M20 90h90M20 30h60"/><path d="M40 60v-12M80 60v-12M110 60v-12M190 60v-12M220 60v-12"/><path d="M150 20v18M150 82v18"/></svg></div>
+        <h3>Set how much</h3>
+        <p>Choose the amount Veyra can trade and how far it can lean.</p>
+      </div>
+      <div class="step">
+        <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="10,95 40,80 65,86 90,60 120,66 150,40 180,48 210,25 250,30"/><circle cx="150" cy="40" r="5"/><circle cx="210" cy="25" r="5"/><path d="M150 40v-24M210 25v-14"/><path d="M143 14h14M203 8h14"/></svg></div>
+        <h3>Every trade, mirrored</h3>
+        <p>When the model buys, you buy, sized to your amount, within just seconds. When it sells, so do you. You see every order before and after.</p>
+      </div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="model" aria-labelledby="model-h">
+  <div class="rv">
+    <div class="model-grid">
+    <div>
+    <h2 class="h" id="model-h">Human-level decisions, without the panic.</h2>
+    <p class="lead">Trained on twenty years of prices, filings, earnings calls and rates, Veyra looks at more than any analyst could and trades less than most. Most days it changes one position, or none.</p>
+    </div>
+    <div class="orbit" id="orbit" aria-label="Some of what the model reads: newspapers, companies and commodities">
+      <div class="ring r1" id="ring1"></div>
+      <div class="ring r2" id="ring2"></div>
+      <div class="core" id="core"></div>
+    </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b><span class="count" data-to="20">0</span><small>years</small></b><span>of market data in the training set, through three recessions and one pandemic.</span></div>
+      <div class="stat"><b><span class="count" data-to="1400">0</span></b><span>signals reviewed each trading day, from prices to the wording of a CFO on a call.</span></div>
+      <div class="stat"><b><span class="count" data-to="90">0</span><small>sec</small></b><span>between checks on every open position, market hours, every day.</span></div>
+    </div>
+    <div class="tape" aria-label="Recent model trades, illustrative">
+      <div class="row" id="tape"></div>
+    </div>
+    <p class="tape-note">Illustrative trade tape. Veyra is a fictional company and these are not real trades.</p>
+  </div>
+</section>
+
+<section id="control" aria-labelledby="control-h">
+  <div class="control rv">
+    <div>
+      <h2 class="h" id="control-h">You set the limit.</h2>
+      <p class="lead">One dial decides how far the model can lean. Everything else, from position size to the cash it keeps back, follows from it. Move it and watch what changes.</p>
+    </div>
+    <div class="dial" data-d="1">
+      <div class="top"><b id="dial-name">Balanced</b><span>Risk setting</span></div>
+      <label class="sr" for="risk">Risk setting</label>
+      <input class="range" type="range" id="risk" min="0" max="100" value="50" step="1">
+      <div class="ends"><span>Cautious</span><span>Bold</span></div>
+      <div class="alloc" aria-hidden="true"><i class="eq" id="a-eq" style="width:60%"></i><i class="cash" id="a-cash" style="width:40%"></i></div>
+      <div class="legend"><span><i style="background:var(--fg)"></i>In the market</span><span><i style="background:var(--fg-3)"></i>Held as cash</span></div>
+      <div class="readout">
+        <div><b id="r-max">6%</b><span>Largest single position</span></div>
+        <div><b id="r-dd">−12%</b><span>Drawdown floor it will not cross</span></div>
+        <div><b id="r-turn">3</b><span>Trades in a typical week</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="perf" id="performance" aria-labelledby="perf-h">
+  <div class="rv">
+    <h2 class="h" id="perf-h">Five years, hypothetically.</h2>
+    <p class="lead">How the model's Balanced setting would have done against the S&amp;P 500 over the last five years, before fees. Simulated, not lived; read the small print.</p>
+    <div class="chart">
+      <svg class="grow" viewBox="0 0 1000 380" role="img" aria-label="Line chart: simulated growth of $10,000, Veyra model versus S&P 500, five years">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fb6ff" stop-opacity=".22"/><stop offset="1" stop-color="#8fb6ff" stop-opacity="0"/></linearGradient></defs>
+        <g stroke="#26282d" stroke-width="1"><line x1="0" y1="330" x2="1000" y2="330"/><line x1="0" y1="230" x2="1000" y2="230"/><line x1="0" y1="130" x2="1000" y2="130"/><line x1="0" y1="30" x2="1000" y2="30"/></g>
+        <g fill="#5f6167" font-size="13" font-family="Geist,system-ui"><text x="0" y="350">2021</text><text x="245" y="350">2022</text><text x="490" y="350">2023</text><text x="735" y="350">2024</text><text x="965" y="350">2025</text><text x="0" y="24">$30k</text><text x="0" y="124">$20k</text><text x="0" y="224">$10k</text></g>
+        <path class="fill" fill="url(#g)" stroke="none" d="M0,230 L60,214 L120,224 L180,196 L240,206 L300,232 L360,246 L420,238 L480,218 L540,196 L600,204 L660,178 L720,168 L780,150 L840,140 L900,118 L960,108 L1000,96 L1000,330 L0,330 Z"/>
+        <path class="line bench" fill="none" stroke="#5f6167" stroke-width="2" d="M0,230 L60,210 L120,218 L180,200 L240,196 L300,236 L360,262 L420,254 L480,234 L540,214 L600,224 L660,200 L720,192 L780,178 L840,170 L900,160 L960,152 L1000,146"/>
+        <path class="line" fill="none" stroke="#8fb6ff" stroke-width="2.5" d="M0,230 L60,214 L120,224 L180,196 L240,206 L300,232 L360,246 L420,238 L480,218 L540,196 L600,204 L660,178 L720,168 L780,150 L840,140 L900,118 L960,108 L1000,96"/>
+        <g fill="#f2f2f0" font-size="14" font-family="Geist,system-ui"><text x="1000" y="90" text-anchor="end">$23,400</text><text x="1000" y="170" text-anchor="end" fill="#a4a6ab">$18,400</text></g>
+      </svg>
+      <div class="legend"><span class="m"><i></i>Veyra model, Balanced</span><span class="b"><i></i>S&amp;P 500, dividends reinvested</span></div>
+      <p class="fine">Hypothetical back-test of the current model on historical data from January 2021 to December 2025, starting from $10,000, before the subscription fee and brokerage costs. Back-tested results are produced with hindsight and do not reflect real trading; the model did not exist for most of this period. Past performance, real or simulated, does not predict future results.</p>
+    </div>
+  </div>
+</section>
+
+<section class="plan" id="plan" aria-labelledby="plan-h">
+  <div class="rv">
+    <h2 class="h" id="plan-h">One plan. One price.</h2>
+    <div class="plan-wrap">
+      <svg class="plan-line" viewBox="0 0 1200 420" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="pl" x1="0" y1="0" x2="1" y2="0"><stop offset="0.000" stop-color="#5fd28a"/><stop offset="0.186" stop-color="#5fd28a"/><stop offset="0.191" stop-color="#e5646a"/><stop offset="0.223" stop-color="#e5646a"/><stop offset="0.228" stop-color="#5fd28a"/><stop offset="0.431" stop-color="#5fd28a"/><stop offset="0.436" stop-color="#e5646a"/><stop offset="0.478" stop-color="#e5646a"/><stop offset="0.483" stop-color="#5fd28a"/><stop offset="0.633" stop-color="#5fd28a"/><stop offset="0.638" stop-color="#e5646a"/><stop offset="0.659" stop-color="#e5646a"/><stop offset="0.664" stop-color="#5fd28a"/><stop offset="1.000" stop-color="#5fd28a"/></linearGradient><linearGradient id="pf" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5fd28a" stop-opacity=".18"/><stop offset="1" stop-color="#5fd28a" stop-opacity="0"/></linearGradient></defs>
+        <path class="pfill" fill="url(#pf)" opacity=".45" d="M0.0,376.0 L12.8,371.6 L25.5,364.0 L38.3,364.3 L51.1,368.8 L63.8,366.7 L76.6,361.9 L89.4,353.8 L102.1,357.7 L114.9,362.0 L127.7,355.9 L140.4,351.1 L153.2,340.7 L166.0,333.2 L178.7,331.3 L191.5,330.3 L204.3,314.6 L217.0,313.7 L229.8,322.5 L242.6,328.1 L255.3,334.3 L268.1,330.5 L280.9,324.5 L293.6,316.4 L306.4,312.9 L319.1,319.8 L331.9,313.7 L344.7,318.7 L357.4,317.2 L370.2,322.5 L383.0,320.1 L395.7,321.7 L408.5,318.2 L421.3,298.6 L434.0,296.5 L446.8,289.7 L459.6,294.2 L472.3,293.3 L485.1,287.5 L497.9,285.5 L510.6,281.2 L523.4,289.7 L536.2,297.8 L548.9,305.0 L561.7,311.0 L574.5,303.7 L587.2,304.4 L600.0,296.8 L612.8,295.0 L625.5,286.1 L638.3,280.4 L651.1,277.3 L663.8,279.0 L676.6,272.6 L689.4,267.7 L702.1,256.8 L714.9,256.3 L727.7,251.1 L740.4,246.0 L753.2,242.2 L766.0,247.7 L778.7,256.2 L791.5,255.9 L804.3,250.4 L817.0,240.2 L829.8,232.7 L842.6,224.8 L855.3,218.4 L868.1,212.3 L880.9,209.0 L893.6,202.6 L906.4,190.9 L919.1,190.2 L931.9,191.5 L944.7,178.9 L957.4,175.2 L970.2,167.7 L983.0,160.8 L995.7,164.3 L1008.5,149.2 L1021.3,137.6 L1034.0,134.3 L1046.8,128.0 L1059.6,125.1 L1072.3,118.5 L1085.1,110.9 L1097.9,101.3 L1110.6,93.4 L1123.4,88.8 L1136.2,86.0 L1148.9,79.0 L1161.7,76.5 L1174.5,69.0 L1187.2,70.6 L1200.0,58.2 L1200,420 L0,420 Z"/>
+        <path class="pline" fill="none" stroke="url(#pl)" stroke-width="2.5" vector-effect="non-scaling-stroke" vector-effect="non-scaling-stroke" stroke-linejoin="round" d="M0.0,376.0 L12.8,371.6 L25.5,364.0 L38.3,364.3 L51.1,368.8 L63.8,366.7 L76.6,361.9 L89.4,353.8 L102.1,357.7 L114.9,362.0 L127.7,355.9 L140.4,351.1 L153.2,340.7 L166.0,333.2 L178.7,331.3 L191.5,330.3 L204.3,314.6 L217.0,313.7 L229.8,322.5 L242.6,328.1 L255.3,334.3 L268.1,330.5 L280.9,324.5 L293.6,316.4 L306.4,312.9 L319.1,319.8 L331.9,313.7 L344.7,318.7 L357.4,317.2 L370.2,322.5 L383.0,320.1 L395.7,321.7 L408.5,318.2 L421.3,298.6 L434.0,296.5 L446.8,289.7 L459.6,294.2 L472.3,293.3 L485.1,287.5 L497.9,285.5 L510.6,281.2 L523.4,289.7 L536.2,297.8 L548.9,305.0 L561.7,311.0 L574.5,303.7 L587.2,304.4 L600.0,296.8 L612.8,295.0 L625.5,286.1 L638.3,280.4 L651.1,277.3 L663.8,279.0 L676.6,272.6 L689.4,267.7 L702.1,256.8 L714.9,256.3 L727.7,251.1 L740.4,246.0 L753.2,242.2 L766.0,247.7 L778.7,256.2 L791.5,255.9 L804.3,250.4 L817.0,240.2 L829.8,232.7 L842.6,224.8 L855.3,218.4 L868.1,212.3 L880.9,209.0 L893.6,202.6 L906.4,190.9 L919.1,190.2 L931.9,191.5 L944.7,178.9 L957.4,175.2 L970.2,167.7 L983.0,160.8 L995.7,164.3 L1008.5,149.2 L1021.3,137.6 L1034.0,134.3 L1046.8,128.0 L1059.6,125.1 L1072.3,118.5 L1085.1,110.9 L1097.9,101.3 L1110.6,93.4 L1123.4,88.8 L1136.2,86.0 L1148.9,79.0 L1161.7,76.5 L1174.5,69.0 L1187.2,70.6 L1200.0,58.2"/>
+      </svg>
+    <div class="plan-card">
+      <div>
+        <p class="price">$29<small>per month</small></p>
+        <div class="cta"><a class="pill" href="#start">Start copying</a><small>First fourteen days free. Cancel in one tap.</small></div>
+      </div>
+      <ul>
+        <li>Every model trade mirrored into your account, sized to your amount</li>
+        <li>The risk dial, the drawdown floor, and a pause button</li>
+        <li>A plain-English note on why each trade happened</li>
+        <li>No commissions from us, no minimums, no lock-in</li>
+        <li>Your money stays at your broker, in your name</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</section>
+
+<section class="start" id="start" aria-labelledby="start-h">
+  <div class="rv">
+    <h2 class="h" id="start-h">Ready when you are.</h2>
+    <p class="lead">An email and a broker. Connecting takes about two minutes; the first trade waits for the model, not for you.</p>
+    <form id="start-form" novalidate>
+      <label class="sr" for="em">Email</label><input id="em" type="email" name="email" placeholder="you@example.com" autocomplete="email">
+      <label class="sr" for="br">Broker</label><input id="br" name="broker" placeholder="Your broker" list="brokers">
+      <datalist id="brokers"><option>Schwab</option><option>Fidelity</option><option>Interactive Brokers</option><option>Robinhood</option><option>E*Trade</option><option>Vanguard</option></datalist>
+      <button class="pill" type="submit">Start copying</button>
+    </form>
+    <p class="ok" id="start-ok">Check your inbox. The link to connect your broker is on its way.</p>
+    <p class="note">By continuing you agree to the terms and confirm you've read the risk disclosure. Nothing is charged during the trial.</p>
+  </div>
+</section>
+
+<section aria-labelledby="faq-h">
+  <div class="rv">
+    <h2 class="h" id="faq-h">The short answers.</h2>
+    <div class="faq" style="margin-top:36px">
+      <details><summary>Does Veyra hold my money?</summary><p>No. Your account stays with your broker, in your name. Veyra has permission to place trades in it, and nothing else. You can revoke that permission from your broker's side at any time.</p></details>
+      <details><summary>What if I disagree with a trade?</summary><p>Every order is visible before it fills, with a short note on the reasoning. You can pause the model, skip a single trade, or cap any position. If you skip a lot, the model will tell you your setting probably isn't right.</p></details>
+      <details><summary>Is this advice?</summary><p>No. Veyra is a tool that executes a model's decisions in your account at your instruction. It doesn't know your situation and isn't a substitute for someone who does. You can lose money, including money you'd rather not.</p></details>
+      <details><summary>How do I cancel?</summary><p>One tap in settings. Copying stops immediately; your positions stay where they are, yours to keep or close.</p></details>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 Veyra, a fictional company · <a href="mailto:hello@veyra.example">hello@veyra.example</a></div>
+  <div class="links"><a href="#">Risk disclosure</a><a href="#">Terms</a><a href="#">Privacy</a><a href="#">Security</a></div>
+  <p class="disc">This is an example website built by Onwards Digital to show what's possible. Veyra does not exist, no product is offered, and nothing on this page is investment advice. Trading securities involves risk, including the possible loss of principal.</p>
+</footer>
+
+<script>
+(function(){
+  var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Header turns to glass after the hero */
+  var head=document.getElementById('head');
+  function onScroll(){head.classList.toggle('solid',window.scrollY>40);}
+  window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+
+  /* Hero field: a slow drift of points and a price line finding its way across.
+     Deliberately quiet — it should feel like instruments, not fireworks. */
+  var cv=document.getElementById('field'), ctx=cv.getContext('2d'), W,H,pts=[],t=0, dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);pts=[];for(var i=0;i<90;i++)pts.push({x:Math.random()*W,y:Math.random()*H,v:.08+Math.random()*.18,r:.6+Math.random()*1.2});}
+  size(); window.addEventListener('resize',size);
+  // A price series: a seeded random walk with drift, so it reads as a market, not a sine wave
+  var seed=[], ghosts=[];
+  (function(){var r=7; function rnd(){r=(r*16807)%2147483647;return r/2147483647;}
+    var v=0; for(var i=0;i<=140;i++){v+=(rnd()-.36)*.5+ (rnd()<.06?(rnd()-.45)*1.6:0); v=Math.max(-1.2,v); seed.push(v);}
+    for(var g=0;g<3;g++){var arr=[],w=0;for(var i=0;i<=140;i++){w+=(rnd()-.47)*.3;arr.push(w);}ghosts.push(arr);}
+  })();
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle='rgba(255,255,255,.045)';ctx.lineWidth=1;
+    for(var gy=0;gy<H;gy+=Math.max(48,H/9)){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(W,gy);ctx.stroke();}
+    // drifting points
+    ctx.fillStyle='rgba(242,242,240,.55)';
+    pts.forEach(function(p){p.y-=p.v;if(p.y<-4){p.y=H+4;p.x=Math.random()*W;}ctx.globalAlpha=.25+Math.sin((p.y/H)*3.14)*.5;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,6.283);ctx.fill();});
+    ctx.globalAlpha=1;
+    // faint market lines behind: other series, barely there
+    var n=seed.length, base=H*.5, amp=H*.052*(W<H?.5:1); // portrait: half the climb, or the line shoots to the top
+    ghosts.forEach(function(g,k){ctx.beginPath();for(var i=0;i<n;i++){var x=(i/(n-1))*W*1.02,y=base+H*.08*(k-1)-(g[i]+Math.sin(t*.006+i*.3+k)*.12)*amp*.8;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.strokeStyle='rgba(242,242,240,'+(0.05+k*0.012)+')';ctx.lineWidth=1;ctx.stroke();});
+    // the line: drawn once, then it keeps breathing
+    var prog=reduce?1:Math.min(1,t/260);
+    ctx.beginPath();
+    for(var i=0;i<n*prog;i++){var x=(i/(n-1))*W*1.02, y=base-(seed[i]+Math.sin(t*.008+i*.4)*.08)*amp;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+    ctx.strokeStyle='rgba(143,182,255,.9)';ctx.lineWidth=1.6;ctx.lineJoin='round';ctx.stroke();
+    // glow tip
+    if(prog<1){var li=Math.floor(n*prog),lx=(li/(n-1))*W*1.02,ly=base-(seed[Math.min(li,n-1)]+Math.sin(t*.008+li*.4)*.08)*amp;ctx.beginPath();ctx.arc(lx,ly,3,0,6.283);ctx.fillStyle='#8fb6ff';ctx.fill();}
+    t++; if(!reduce) requestAnimationFrame(frame);
+  }
+  frame();
+
+  /* Live counter in the hero nudges every few seconds */
+  var live=document.getElementById('live-text'), lp=412;
+  setInterval(function(){lp+=Math.round((Math.random()-.5)*6);live.textContent='Model active · reviewing '+lp+' positions';},4000);
+
+  /* One reveal per section */
+  var rvs=document.querySelectorAll('.rv');
+  if('IntersectionObserver' in window && !reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);if(e.target.querySelector('.count'))countUp(e.target);}});},{threshold:.06,rootMargin:"0px 0px -10% 0px"});
+    rvs.forEach(function(r){io.observe(r);});
+  } else { rvs.forEach(function(r){r.classList.add('in');}); document.querySelectorAll('.count').forEach(function(c){c.textContent=(+c.dataset.to).toLocaleString();}); }
+  function countUp(scope){
+    scope.querySelectorAll('.count').forEach(function(c){
+      var to=+c.dataset.to, start=null, dur=1400;
+      function step(ts){if(!start)start=ts;var p=Math.min(1,(ts-start)/dur);p=1-Math.pow(1-p,3);c.textContent=Math.round(to*p).toLocaleString();if(p<1)requestAnimationFrame(step);}
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* Steps carousel on phones: centred, arrows, swipe, auto-advance every 5s, loops */
+  (function(){
+    var track=document.getElementById('steps'), prev=document.getElementById('st-prev'), next=document.getElementById('st-next'); if(!track) return;
+    var items=track.querySelectorAll('.step'), n=items.length, idx=0, timer=null, mq=window.matchMedia('(max-width:900px)');
+    function go(i,smooth){idx=(i+n)%n; track.scrollTo({left:items[idx].offsetLeft-track.offsetLeft,behavior:(smooth===false||reduce)?'auto':'smooth'}); arrows();}
+    function arrows(){var off=!mq.matches;prev.hidden=off;next.hidden=off;}
+    function restart(){clearInterval(timer);if(mq.matches&&!reduce)timer=setInterval(function(){go(idx+1);},5000);}
+    prev.addEventListener('click',function(){go(idx-1);restart();});
+    next.addEventListener('click',function(){go(idx+1);restart();});
+    var st;
+    track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){var w=track.clientWidth||1;var i=Math.round(track.scrollLeft/w);if(i!==idx){idx=Math.max(0,Math.min(n-1,i));arrows();restart();}},80);},{passive:true});
+    track.addEventListener('touchstart',function(){clearInterval(timer);},{passive:true});
+    track.addEventListener('touchend',restart,{passive:true});
+    function setup(){if(mq.matches){go(0,false);restart();}else{clearInterval(timer);track.scrollLeft=0;arrows();}}
+    mq.addEventListener?mq.addEventListener('change',setup):mq.addListener(setup);
+    window.addEventListener('resize',function(){if(mq.matches)go(idx,false);});
+    setup();
+  })();
+
+  /* Trade tape (fictional) */
+  var trades=[['Buy','MSFT','+0.8%','9:41'],['Trim','NVDA','−1.2%','9:52'],['Buy','JNJ','+0.6%','10:07'],['Sell','TSLA','−2.4%','10:31'],['Buy','COST','+0.5%','11:12'],['Hold','—','412 positions','11:30'],['Buy','ASML','+0.9%','13:04'],['Trim','AAPL','−0.7%','14:16'],['Buy','LIN','+0.4%','15:02'],['Sell','SNAP','−1.9%','15:48']];
+  var tape=document.getElementById('tape'), html='';
+  function cell(t){return '<span class="t"><span class="side'+(t[0]==='Sell'||t[0]==='Trim'?' sell':'')+'">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span><span class="when">'+t[3]+'</span></span>';}
+  trades.concat(trades).forEach(function(t){html+=cell(t);}); tape.innerHTML=html;
+
+  /* Orbit: what the model reads. Names are set as plain type, not logos. */
+  var ICON={news:'<svg viewBox="0 0 24 24"><path d="M4 5h13v14H6a2 2 0 0 1-2-2V5z"/><path d="M17 8h3v9a2 2 0 0 1-2 2"/><path d="M7 9h7M7 12h7M7 15h5"/></svg>',chip:'<svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></svg>',car:'<svg viewBox="0 0 24 24"><path d="M3 14l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v4H3z"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg>',ingot:'<svg viewBox="0 0 24 24"><path d="M6 9h12l3 8H3z"/><path d="M9 9l1-3h4l1 3"/></svg>',index:'<svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 4-6 5 4"/><path d="M3 21h18"/></svg>',oil:'<svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg>',energy:'<svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4-8 4z"/><path d="M4 12l8 4 8-4M4 16l8 4 8-4"/></svg>'};
+  var ITEMS=[['The New York Times','news',null],['Wall Street Journal','news',null],['Economic Times','news',null],['Nvidia','chip','NVDA'],['Tesla','car','TSLA'],['Gold','ingot','XAU'],['Silver','ingot','XAG'],['S&P 500','index','SPX'],['Crude oil','oil','CL'],['Chevron','energy','CVX']];
+  var ring1=document.getElementById('ring1'), ring2=document.getElementById('ring2'), core=document.getElementById('core'), orbit=document.getElementById('orbit');
+  function place(ring,list,radiusPct){list.forEach(function(it,i){var a=(360/list.length)*i;var d=document.createElement('div');d.className='item';d.style.transform='rotate('+a+'deg) translate('+radiusPct+'%)';d.innerHTML='<div class="chip" style="--a:'+a+'deg"><div class="cd" title="'+it[0]+'">'+ICON[it[1]]+'<b>'+it[0]+'</b>'+(it[2]?'<span>'+it[2]+'</span>':'')+'</div></div>';ring.appendChild(d);});}
+  // outer ring: six; inner ring: four. Radius is a percentage of the orbit box (translate is relative to the item, so use px via CSS var)
+  function layout(){ring1.innerHTML='';ring2.innerHTML='';var R=orbit.clientWidth/2;place(ring1,ITEMS.slice(0,6),0);place(ring2,ITEMS.slice(6),0);
+    // Radii come from the real chip and core sizes, so nothing overlaps at any width:
+    // outer chips sit just inside the outer line; inner chips clear the core and the outer chips.
+    var chip=(ring1.querySelector('.chip')||{}).offsetWidth||74, coreR=core.offsetWidth/2||66;
+    var rOut=R-chip/2-1, rIn=Math.max(coreR+chip/2+6, Math.min(R*.62-chip/2+1, rOut-chip-6));
+    ring2.style.inset=(R-rIn)+'px';
+    ring1.querySelectorAll('.item').forEach(function(el,i){var a=(360/6)*i;el.style.transform='rotate('+a+'deg) translate('+rOut+'px)';});
+    ring2.querySelectorAll('.item').forEach(function(el,i){var a=(360/4)*i+45;el.style.transform='rotate('+a+'deg) translate('+rIn+'px)';el.querySelector('.chip').style.setProperty('--a',a+'deg');});
+  }
+  layout(); window.addEventListener('resize',layout);
+  // The rings turn in script so a hover can slow them to a stop and the chips always stay upright
+  var ang1=0, ang2=0, speed=1, target=1, lastT=null;
+  function turn(ts){
+    if(lastT==null)lastT=ts; var dt=Math.min(64,ts-lastT); lastT=ts;
+    speed+=(target-speed)*.08;
+    if(!reduce){ang1=(ang1+dt*.006*speed)%360; ang2=(ang2-dt*.0082*speed+360)%360;}
+    ring1.style.transform='rotate('+ang1+'deg)'; ring2.style.transform='rotate('+ang2+'deg)';
+    ring1.querySelectorAll('.chip').forEach(function(c){c.style.transform='translate(-50%,-50%) rotate('+(-ang1-parseFloat(c.style.getPropertyValue('--a')))+'deg)';});
+    ring2.querySelectorAll('.chip').forEach(function(c){c.style.transform='translate(-50%,-50%) rotate('+(-ang2-parseFloat(c.style.getPropertyValue('--a')))+'deg)';});
+    requestAnimationFrame(turn);
+  }
+  requestAnimationFrame(turn);
+  var FACES=[['Nvidia','NVDA · reading Q3 call','+1.8%'],['S&P 500','SPX · breadth check','+0.4%'],['Crude oil','CL · inventories, Wednesday','−1.1%'],['Wall Street Journal','Fed minutes, page one',''],['Tesla','TSLA · delivery numbers','−2.3%'],['Gold','XAU · real yields','+0.6%'],['The New York Times','Trade policy, front section',''],['Chevron','CVX · buyback filing','+0.9%']];
+  var faceIdx=0; core.innerHTML=FACES.map(function(f,i){return '<div class="face'+(i===0?' on':'')+'"><b>'+f[0]+'</b><span>'+f[1]+'</span>'+(f[2]?'<i class="'+(f[2].charAt(0)==='−'?'down':'')+'">'+f[2]+'</i>':'')+'</div>';}).join('');
+  var faces=core.querySelectorAll('.face');
+  if(!reduce) setInterval(function(){faceIdx=(faceIdx+1)%faces.length;faces.forEach(function(f,i){f.classList.toggle('on',i===faceIdx);});},3200);
+
+  /* Risk dial */
+  var risk=document.getElementById('risk'), nameEl=document.getElementById('dial-name'), eq=document.getElementById('a-eq'), cash=document.getElementById('a-cash'), rMax=document.getElementById('r-max'), rDd=document.getElementById('r-dd'), rTurn=document.getElementById('r-turn');
+  function dial(){
+    var v=+risk.value, inMkt=Math.round(35+v*.6), name=v<20?'Cautious':v<40?'Steady':v<62?'Balanced':v<82?'Assertive':'Bold';
+    nameEl.textContent=name; eq.style.width=inMkt+'%'; cash.style.width=(100-inMkt)+'%';
+    rMax.textContent=Math.round(3+v*.12)+'%'; rDd.textContent='−'+Math.round(6+v*.2)+'%'; rTurn.textContent=Math.round(1+v*.07);
+  }
+  risk.addEventListener('input',dial); dial();
+
+  /* Demo sign-up: nothing is sent anywhere */
+  var f=document.getElementById('start-form');
+  f.addEventListener('submit',function(e){e.preventDefault();f.classList.add('sent');document.getElementById('start-ok').classList.add('show');});
+})();
+</script>
+</body>
+</html>
