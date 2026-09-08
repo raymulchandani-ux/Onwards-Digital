@@ -262,12 +262,18 @@
   .sel option{background:#111}
   .budget{display:flex;justify-content:space-between;align-items:baseline}
   .budget b{font-family:var(--serif);font-size:26px;font-weight:300;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 26}
-  .range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:6px 0 0;outline:none;display:block;cursor:pointer;touch-action:pan-y}
-  .range::-webkit-slider-runnable-track{height:2px;background:rgba(244,242,237,.32);border-radius:2px;border:0}
-  .range::-moz-range-track{height:2px;background:rgba(244,242,237,.32);border-radius:2px;border:0}
-  .range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-9px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
-  .range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
-  .range:focus-visible{outline:none}.range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--brass)}
+  /* Budget slider, Noor & Vale's own: a hairline that fills with brass up to the knob, and a dark knob
+     with a brass ring and a brass centre. The input is 36px tall and the knob sits dead centre of it. */
+  .range{--p:0%;-webkit-appearance:none;appearance:none;width:100%;height:36px;background:transparent;margin:10px 0 2px;outline:none;display:block;cursor:pointer;touch-action:pan-y}
+  .range::-webkit-slider-runnable-track{height:1px;border:0;border-radius:1px;background:linear-gradient(90deg,var(--brass) 0,var(--brass) var(--p),rgba(244,242,237,.22) var(--p),rgba(244,242,237,.22) 100%)}
+  .range::-moz-range-track{height:1px;border:0;border-radius:1px;background:rgba(244,242,237,.22)}
+  .range::-moz-range-progress{height:1px;background:var(--brass)}
+  .range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-8.5px;border-radius:50%;background:radial-gradient(circle,var(--brass) 0 3px,transparent 3.5px),#141416;border:1px solid var(--brass);box-shadow:0 0 0 1px rgba(10,10,11,.9),0 6px 18px rgba(0,0,0,.5);cursor:grab;transition:transform .18s var(--ease),box-shadow .18s}
+  .range::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:radial-gradient(circle,var(--brass) 0 3px,transparent 3.5px),#141416;border:1px solid var(--brass);box-shadow:0 0 0 1px rgba(10,10,11,.9),0 6px 18px rgba(0,0,0,.5);cursor:grab;transition:transform .18s var(--ease)}
+  .range:hover::-webkit-slider-thumb{transform:scale(1.12);box-shadow:0 0 0 1px rgba(10,10,11,.9),0 0 0 6px rgba(207,174,107,.14),0 6px 18px rgba(0,0,0,.5)}
+  .range:active::-webkit-slider-thumb{transform:scale(1.2);cursor:grabbing;box-shadow:0 0 0 1px rgba(10,10,11,.9),0 0 0 9px rgba(207,174,107,.18),0 6px 18px rgba(0,0,0,.5)}
+  .range:hover::-moz-range-thumb,.range:active::-moz-range-thumb{transform:scale(1.12)}
+  .range:focus-visible{outline:none}.range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--brass)}.range:focus-visible::-moz-range-thumb{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--brass)}
   .ends{display:flex;justify-content:space-between;font-size:12px;color:var(--fg-3)}
   .send{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
   .send small{color:var(--fg-3);font-size:12.5px}
@@ -638,7 +644,8 @@
   function fmtM(v){return v>=50?'$50m+':'$'+v+'m';}
   budBtn.addEventListener('click',function(e){e.stopPropagation();open&&open.pop===popBud?closePops():openPop(fBud,popBud,budBtn);});
   popBud.addEventListener('click',function(e){e.stopPropagation();});
-  aRange.addEventListener('input',function(){budIn.value=aRange.value;budText.textContent=fmtM(+aRange.value);aBig.textContent=fmtM(+aRange.value);});
+  function paintRange(r){r.style.setProperty('--p',((r.value-r.min)/(r.max-r.min)*100)+'%');}
+  aRange.addEventListener('input',function(){budIn.value=aRange.value;budText.textContent=fmtM(+aRange.value);aBig.textContent=fmtM(+aRange.value);paintRange(aRange);}); paintRange(aRange);
 
   /* Bottom form: city suggestions (ours, not the browser's saved addresses) */
   var cPop=document.getElementById('pop-city'), cHl=-1;
@@ -670,7 +677,7 @@
 
   /* Budget */
   var b=document.getElementById('budget'), bud=document.getElementById('bud');
-  function money(){var v=+b.value;bud.textContent=v>=50?'$50m+':'$'+v+'m';}
+  function money(){var v=+b.value;bud.textContent=v>=50?'$50m+':'$'+v+'m';paintRange(b);}
   b.addEventListener('input',money); money();
 
   /* Demo only: nothing is sent anywhere */
