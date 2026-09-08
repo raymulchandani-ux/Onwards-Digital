@@ -77,10 +77,11 @@
   @keyframes fade{to{opacity:1}}
 
   /* The ask bar: where, what, how much */
-  .ask{margin-top:26px;display:grid;grid-template-columns:1.4fr 1fr 1fr auto;background:rgba(10,10,11,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(244,242,237,.18);border-radius:999px;max-width:920px;opacity:0;animation:fade 1s .7s forwards;overflow:hidden}
-  .ask{overflow:visible}
+  .ask{margin-top:26px;display:flex;align-items:center;gap:12px;max-width:920px;opacity:0;animation:fade 1s .7s forwards}
+  .ask .bar{flex:1;min-width:0;display:grid;grid-template-columns:1.4fr 1fr 1fr;background:rgba(10,10,11,.5);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(244,242,237,.18);border-radius:999px}
   .ask .field{position:relative;display:flex;flex-direction:column;gap:2px;padding:12px 22px;border-right:1px solid rgba(244,242,237,.12);cursor:text;min-width:0}
   .ask .field:first-child{border-radius:999px 0 0 999px}
+  .ask .field:last-child{border-right:0;border-radius:0 999px 999px 0}
   .ask .pickbtn{display:flex;flex-direction:column;gap:2px;align-items:flex-start;background:transparent;border:0;color:var(--fg);padding:0;cursor:pointer;width:100%;text-align:left}
   .ask .pickbtn b{font-weight:300;font-size:16px;line-height:1.3;white-space:nowrap}
   .ask .pickbtn b.empty{color:var(--fg-2)}
@@ -99,26 +100,21 @@
   .ask select{appearance:none;-webkit-appearance:none;cursor:pointer}
   .ask select option{background:#111}
   .ask input::placeholder{color:var(--fg-2)}
-  .ask .go{margin:6px;height:auto;padding:0 22px}
+  .ask .go{flex:none;height:52px;padding:0 28px;font-size:14px}
   .ask .type{position:relative}
   .ask .type .ghost{position:absolute;left:22px;bottom:12px;font-size:16px;color:var(--fg-2);pointer-events:none;font-weight:300}
   .ask .field.open .ghost{display:none}
   .ask .type .ghost::after{content:"";display:inline-block;width:1px;height:1em;background:var(--fg-2);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(2) infinite}
   @keyframes blink{50%{opacity:0}}
   .ask .type input:focus~.ghost,.ask .type input:not(:placeholder-shown)~.ghost{display:none}
-  .scroll-hint{position:absolute;right:var(--gutter);bottom:clamp(36px,7vh,80px);z-index:2;font-size:12px;color:var(--fg-2);display:flex;align-items:center;gap:10px;opacity:0;animation:fade 1s 1.2s forwards;font-weight:400}
-  .scroll-hint i{width:1px;height:44px;background:linear-gradient(var(--fg),transparent);display:block;animation:drop 2s ease-in-out infinite}
-  @keyframes drop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-  @media (prefers-reduced-motion:reduce){.hero .bg img,.hero .mist,.scroll-hint i{animation:none}.hero h1 .l span,.hero .sub,.ask,.scroll-hint{animation:none;opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.hero .bg img,.hero .mist{animation:none}.hero h1 .l span,.hero .sub,.ask{animation:none;opacity:1;transform:none}}
 
   /* Cities run, live */
-  .run{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;position:relative}
-  .run::before,.run::after{content:"";position:absolute;top:0;bottom:0;width:140px;z-index:1;pointer-events:none}
-  .run::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
-  .run::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
-  .run .row{display:inline-flex;animation:run 80s linear infinite}
-  .run:hover .row{animation-play-state:paused}
-  @keyframes run{to{transform:translateX(-50%)}}
+  /* The six real estate capitals with their local times, standing still, in the order of the Cities section */
+  .run{border-top:1px solid var(--line);border-bottom:1px solid var(--line);white-space:nowrap;position:relative}
+  .run .row{display:grid;grid-template-columns:repeat(6,1fr)}
+  .run .c{justify-content:center;border-right:1px solid var(--line)}
+  .run .c:last-child{border-right:0}
   .run .c{display:inline-flex;align-items:baseline;gap:12px;padding:18px 30px;font-size:14px;color:var(--fg-2);font-weight:400}
   .run .c b{font-family:var(--serif);font-size:20px;font-weight:300;color:var(--fg);font-variation-settings:"opsz" 20}
   .run .c span{font-variant-numeric:tabular-nums}
@@ -297,18 +293,21 @@
     .h{font-size:clamp(28px,7.4vw,40px)}
     .lead{font-size:14.5px;margin-top:12px}
     /* Ask bar: Where on top, kind and budget side by side, then Begin */
-    .ask{grid-template-columns:1fr 1fr;border-radius:18px;margin-top:18px}
+    .ask{flex-direction:column;align-items:stretch;gap:10px;margin-top:18px}
+    .ask .bar{grid-template-columns:1fr 1fr;border-radius:18px}
     .ask .field{border-right:0;border-bottom:1px solid rgba(244,242,237,.12);padding:10px 16px;border-radius:0}
-    .ask .field:first-child{grid-column:1/-1}
-    .ask #f-kind{border-right:1px solid rgba(244,242,237,.12)}
-    .ask .go{grid-column:1/-1;margin:10px;border-radius:999px}
+    .ask .field:first-child{grid-column:1/-1;border-radius:18px 18px 0 0}
+    .ask #f-kind{border-right:1px solid rgba(244,242,237,.12);border-bottom:0;border-radius:0 0 0 18px}
+    .ask .field:last-child{border-bottom:0;border-radius:0 0 18px 0}
+    .ask .go{width:100%;height:48px}
     .ask .pop{width:100%;max-width:none;top:calc(100% + 6px);bottom:auto;transform:translateY(-6px);max-height:224px;overflow:auto}
     .ask .pop.open{transform:none}
     .ask .pop-slider{width:100%;max-height:none}
     .hero .copy{top:auto;bottom:clamp(88px,15%,136px)}
     .hero{height:calc(100svh - 100px);min-height:640px;overflow:visible;z-index:2}
-    .scroll-hint{display:none}
-    .run .c{padding:12px 18px;font-size:12.5px}.run .c b{font-size:16px}
+    .run .row{grid-template-columns:repeat(3,1fr)}
+    .run .c{flex-direction:column;align-items:center;gap:2px;padding:12px 8px;font-size:12px}.run .c b{font-size:16px}
+    .run .c:nth-child(3){border-right:0}.run .c:nth-child(-n+3){border-bottom:1px solid var(--line)}
     .track{margin-top:20px}
     .home{flex:0 0 calc((100% - var(--gap))/2)}
     .home .row b{font-size:17px}.home .row span{font-size:11.5px}.home .name{font-size:12.5px}
@@ -361,6 +360,7 @@
     <h1><span class="l"><span>The right home,</span></span><span class="l"><span><em>anywhere.</em></span></span></h1>
     <p class="sub"><b>Over 500 homes across 40 cities.</b></p>
     <form class="ask" id="ask" aria-label="Start a search">
+      <div class="bar">
       <label class="type field" id="f-where"><span>Where</span><input id="a-where" name="where" placeholder=" " autocomplete="off" aria-autocomplete="list" aria-controls="pop-where" aria-expanded="false"><em class="ghost" id="ghost">Lake Como</em>
         <div class="pop" id="pop-where" role="listbox" hidden></div>
       </label>
@@ -377,13 +377,13 @@
           <div class="ends"><span>$2m</span><span>$50m and above</span></div>
         </div>
       </div>
+      </div>
       <button class="btn go" type="submit">Begin</button>
     </form>
   </div>
-  <div class="scroll-hint" aria-hidden="true"><i></i>Scroll</div>
 </section>
 
-<div class="run" aria-label="Cities where we work, with local times"><div class="row" id="run"></div></div>
+<div class="run" aria-label="The six real estate capitals, with local times"><div class="row" id="run"></div></div>
 
 <section id="homes" aria-labelledby="homes-h" class="homes">
   <div class="rv">
@@ -531,10 +531,10 @@
 
   /* Live times */
   function timeIn(tz){try{return new Intl.DateTimeFormat('en-US',{hour:'numeric',minute:'2-digit',timeZone:tz}).format(new Date());}catch(e){return '';}}
-  var CITIES=[['New York','America/New_York'],['London','Europe/London'],['Dubai','Asia/Dubai'],['Los Angeles','America/Los_Angeles'],['Paris','Europe/Paris'],['Lake Como','Europe/Rome'],['Singapore','Asia/Singapore'],['Miami','America/New_York'],['Lisbon','Europe/Lisbon'],['Hong Kong','Asia/Hong_Kong'],['Sydney','Australia/Sydney'],['Geneva','Europe/Zurich'],['Riyadh','Asia/Riyadh'],['Tokyo','Asia/Tokyo'],['Aspen','America/Denver'],['Cape Town','Africa/Johannesburg']];
+  var CITIES=[['New York','America/New_York'],['London','Europe/London'],['Dubai','Asia/Dubai'],['Los Angeles','America/Los_Angeles'],['Lake Como','Europe/Rome'],['Singapore','Asia/Singapore']];
   var run=document.getElementById('run');
   function tick(){
-    var html='';CITIES.concat(CITIES).forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;
+    var html='';CITIES.forEach(function(c){html+='<span class="c"><b>'+c[0]+'</b><span>'+timeIn(c[1])+'</span></span>';});run.innerHTML=html;
     document.querySelectorAll('[data-tz]').forEach(function(s){s.textContent=timeIn(s.dataset.tz);});
     var on=document.querySelector('#city-list button.on'); if(on) document.getElementById('pic-time').textContent=timeIn(on.querySelector('[data-tz]').dataset.tz)+' local';
   }
