@@ -1,0 +1,367 @@
+/* Pending request store: holds a paid-plan form (including any uploaded file)
+   between the plan page and checkout, so nothing is emailed before payment. */
+window.ONWARDS_PENDING = (function () {
+  var DB = "onwards", STORE = "pending", KEY = "request";
+  function open() {
+    return new Promise(function (res, rej) {
+      if (!window.indexedDB) return rej();
+      var r = indexedDB.open(DB, 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore(STORE); };
+      r.onsuccess = function () { res(r.result); };
+      r.onerror = function () { rej(r.error); };
+    });
+  }
+  function tx(mode, fn) {
+    return open().then(function (db) {
+      return new Promise(function (res, rej) {
+        var t = db.transaction(STORE, mode), s = t.objectStore(STORE), req = fn(s);
+        t.oncomplete = function () { res(req && req.result); };
+        t.onerror = function () { rej(t.error); };
+      });
+    });
+  }
+  function ssSave(obj) { try { var c = { label: obj.label, savedAt: obj.savedAt, fields: obj.fields.filter(function (f) { return !(f[1] instanceof Blob); }) }; sessionStorage.setItem("onwards-pending", JSON.stringify(c)); } catch (e) {} }
+  return {
+    save: function (obj) { ssSave(obj); return tx("readwrite", function (s) { return s.put(obj, KEY); }).catch(function () {}); },
+    load: function () {
+      return tx("readonly", function (s) { return s.get(KEY); }).catch(function () { return null; }).then(function (v) {
+        if (v) return v;
+        try { return JSON.parse(sessionStorage.getItem("onwards-pending") || "null"); } catch (e) { return null; }
+      });
+    },
+    clear: function () { try { sessionStorage.removeItem("onwards-pending"); } catch (e) {} return tx("readwrite", function (s) { return s.delete(KEY); }).catch(function () {}); }
+  };
+})();
+
+/* Onwards Digital — shared behaviour (no dependencies) */
+(function () {
+  "use strict";
+  var CFG = window.ONWARDS || {};
+
+  /* Reveal on scroll ---------------------------------------- */
+  var reveals = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* Scaled live previews (homepage) --------------------------- */
+  var frames = document.querySelectorAll(".frame iframe");
+  function fitFrames() {
+    frames.forEach(function (f) {
+      var w = f.parentElement.clientWidth;
+      if (w) f.style.transform = "scale(" + (w / 1440) + ")";
+    });
+  }
+  if (frames.length) { fitFrames(); window.addEventListener("resize", fitFrames); setTimeout(fitFrames, 300); }
+
+  /* Mobile nav ---------------------------------------------- */
+  var toggle = document.querySelector(".nav-toggle");
+  var nav = document.querySelector(".nav");
+  if (toggle && nav) {
+    toggle.addEventListener("click", function () {
+      var open = nav.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.parentElement.classList.toggle("menu-open", open);
+    });
+  }
+
+  /* Currency (display only) --------------------------------- */
+  var SYM = CFG.currencies || { USD: "$" };
+  var cur = "USD";
+  try { var saved = localStorage.getItem("onwards-currency"); if (saved && (saved in SYM)) cur = saved; } catch (e) {}
+  // The new UAE dirham symbol (2025) is not on keyboards or in most fonts yet,
+  // so it is drawn as a small inline SVG in front of AED prices.
+  var DIRHAM = '<svg class="dh" viewBox="0 0 100 100" aria-label="AED" role="img"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg>';
+  function fmt(n) {
+    var v = (n % 1) ? n.toFixed(2) : n.toLocaleString("en-US");
+    if (cur === "AED") return DIRHAM + v;
+    return (SYM[cur] || "") + v;
+  }
+  function paintCurrency() {
+    document.querySelectorAll("[data-price]").forEach(function (el) {
+      var key = el.getAttribute("data-price");
+      var p = CFG.prices && CFG.prices[key];
+      if (!p) return;
+      var v = p[cur]; if (v == null) v = p.USD;
+      var txt = (key === "beginner") ? "Free" : fmt(v);
+      var suffix = el.getAttribute("data-suffix") || "";
+      var prefix = el.getAttribute("data-prefix") || "";
+      el.innerHTML = prefix + txt + (suffix ? '<small> ' + suffix + '</small>' : "");
+    });
+    document.querySelectorAll(".cur-dd").forEach(function (dd) { dd.value = cur; });
+    var symHtml = { USD: "$", EUR: "€", GBP: "£", AED: DIRHAM }[cur] || "";
+    document.querySelectorAll(".cur-btn-label").forEach(function (el) { el.innerHTML = cur + " " + symHtml; });
+    document.querySelectorAll(".cur-list li").forEach(function (li) { li.setAttribute("aria-selected", li.getAttribute("data-cur") === cur ? "true" : "false"); });
+    document.querySelectorAll("[data-currency-note]").forEach(function (el) {
+      el.textContent = cur === "USD" ? "Prices in USD" : "Prices shown in " + cur + " · charged in USD";
+    });
+    paintSubmit();
+    window.ONWARDS_CUR = { code: cur, fmt: fmt, dirham: DIRHAM };
+    try { document.dispatchEvent(new CustomEvent("onwards:currency", { detail: { code: cur } })); } catch (e) {}
+  }
+  // One entry point for every control on the page (top bar, pricing section, plain <select>).
+  function setCurrency(c) {
+    if (!c || !(c in SYM)) return;
+    cur = c;
+    try { localStorage.setItem("onwards-currency", cur); } catch (e) {}
+    paintCurrency();
+  }
+  document.querySelectorAll(".cur-dd").forEach(function (dd) {
+    dd.addEventListener("change", function () { setCurrency(dd.value); });
+  });
+  paintCurrency();
+
+  /* Custom currency menus (top bar and pricing section) */
+  var menus = Array.prototype.slice.call(document.querySelectorAll(".cur-menu"));
+  function closeAllMenus(except) {
+    menus.forEach(function (m) { if (m !== except) m._close && m._close(); });
+  }
+  menus.forEach(function (menu) {
+    var mBtn = menu.querySelector(".cur-btn"), mList = menu.querySelector(".cur-list");
+    if (!mBtn || !mList) return;
+    function openMenu(o) {
+      menu.classList.toggle("open", o);
+      if (o) mList.removeAttribute("hidden"); else mList.setAttribute("hidden", "");
+      mBtn.setAttribute("aria-expanded", o ? "true" : "false");
+    }
+    menu._close = function () { openMenu(false); };
+    mBtn.addEventListener("click", function (e) {
+      e.preventDefault(); e.stopPropagation();
+      var willOpen = !menu.classList.contains("open");
+      closeAllMenus(menu);
+      openMenu(willOpen);
+    });
+    // Delegated: works whether the tap lands on the <li> or one of the spans inside it.
+    mList.addEventListener("click", function (e) {
+      var t = e.target;
+      while (t && t !== mList && !(t.tagName === "LI" && t.hasAttribute("data-cur"))) t = t.parentNode;
+      if (!t || t === mList) return;
+      e.preventDefault(); e.stopPropagation();
+      setCurrency(t.getAttribute("data-cur"));
+      openMenu(false);
+      mBtn.focus();
+    });
+  });
+  if (menus.length) {
+    document.addEventListener("click", function (e) {
+      var inside = false;
+      menus.forEach(function (m) { if (m.contains(e.target)) inside = true; });
+      if (!inside) closeAllMenus();
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" || e.key === "Esc") closeAllMenus(); });
+  }
+
+  /* On phones the "Our work" section is folded into the tiles, so its nav link lands there instead */
+  document.querySelectorAll('a[href="#work"]').forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      var w = document.getElementById("work"), b = document.getElementById("build");
+      if (w && b && w.offsetParent === null) { e.preventDefault(); b.scrollIntoView({ behavior: "smooth" }); }
+    });
+  });
+
+  /* Form helpers (plan pages) ------------------------------- */
+  var industry = document.getElementById("business-type");
+  var other = document.getElementById("business-type-other");
+  if (industry && other) {
+    industry.addEventListener("change", function () {
+      var on = industry.value === "other";
+      other.style.display = on ? "block" : "none";
+      other.required = on;
+      if (on) other.focus(); else other.value = "";
+    });
+  }
+  var upgradeFields = document.getElementById("upgrade-fields");
+  document.querySelectorAll('input[name="website_type"]').forEach(function (r) {
+    r.addEventListener("change", function () {
+      if (upgradeFields) upgradeFields.style.display = (r.value === "upgrade" && r.checked) ? "block" : "none";
+    });
+  });
+  var uploadArea = document.getElementById("upload-area");
+  var fileInput = document.getElementById("insp-file");
+  var preview = document.getElementById("upload-preview");
+  if (uploadArea && fileInput && preview) {
+    uploadArea.addEventListener("click", function () { fileInput.click(); });
+    uploadArea.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fileInput.click(); } });
+    fileInput.addEventListener("change", function () {
+      if (fileInput.files && fileInput.files[0]) {
+        document.getElementById("upload-file-name").textContent = fileInput.files[0].name;
+        preview.style.display = "flex";
+        uploadArea.style.display = "none";
+      }
+    });
+    var rm = document.getElementById("upload-remove");
+    if (rm) rm.addEventListener("click", function () {
+      fileInput.value = "";
+      preview.style.display = "none";
+      uploadArea.style.display = "flex";
+    });
+  }
+
+  /* Monthly Care add-on (advanced / professional) ------------ */
+  var addon = document.getElementById("addon");
+  var addonInput = document.getElementById("care-input");
+  var submitBtn = document.getElementById("submit-btn");
+  var addonOn = false;
+  // The button reads the plan from data-plan-key ("advanced" | "professional" | "monthlyCare")
+  // and shows the price in whatever currency is selected. Charging still happens in USD.
+  function paintSubmit() {
+    var btn = document.getElementById("submit-btn");
+    if (!btn) return;
+    var key = btn.getAttribute("data-plan-key");
+    if (!key || !CFG.prices || !CFG.prices[key]) return;
+    function priceOf(k) { var p = CFG.prices[k]; var v = p[cur]; if (v == null) v = p.USD; return '<span style="white-space:nowrap">' + fmt(v) + (k === "monthlyCare" ? "/mo" : "") + "</span>"; }
+    var withAddon = addonOn || btn.getAttribute("data-addon") === "yes";
+    if (key === "monthlyCare") {
+      btn.innerHTML = "<span>Subscribe — " + priceOf("monthlyCare") + "</span>";
+    } else {
+      btn.innerHTML = "<span>Continue to payment — " + priceOf(key) + (withAddon ? " + " + priceOf("monthlyCare") : "") + "</span>";
+    }
+  }
+  window.__paintSubmit = paintSubmit;
+  if (addon && addonInput) {
+    addon.addEventListener("click", function () {
+      addonOn = !addonOn;
+      addon.classList.toggle("on", addonOn);
+      addon.setAttribute("aria-checked", addonOn ? "true" : "false");
+      addonInput.value = addonOn ? "Yes" : "No";
+      paintSubmit();
+    });
+    addon.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addon.click(); } });
+    paintSubmit();
+  }
+
+  /* Submit ---------------------------------------------------- */
+  var form = document.getElementById("plan-form");
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+  function fieldOf(el) { return el.closest(".field") || el.parentElement; }
+  function setError(el, msg) {
+    var f = fieldOf(el); if (!f) return;
+    var err = f.querySelector(".err");
+    if (!err) { err = document.createElement("p"); err.className = "err"; err.setAttribute("aria-live", "polite"); f.appendChild(err); }
+    err.textContent = msg; f.classList.add("invalid");
+    el.setAttribute("aria-invalid", "true");
+  }
+  function clearError(el) {
+    var f = fieldOf(el); if (!f) return;
+    f.classList.remove("invalid"); el.removeAttribute("aria-invalid");
+  }
+  function validate(form) {
+    var first = null, seenRadio = {};
+    form.querySelectorAll("[required]").forEach(function (el) {
+      if (el.offsetParent === null && el.type !== "radio") return;   // hidden (e.g. collapsed "other" field)
+      var ok = true, msg = "This field is required";
+      if (el.type === "radio") {
+        if (seenRadio[el.name]) return; seenRadio[el.name] = true;
+        ok = !!form.querySelector('input[name="' + el.name + '"]:checked');
+        msg = "Please choose one option";
+      } else if (el.type === "email") {
+        var v = el.value.trim();
+        if (!v) { ok = false; }
+        else if (!EMAIL_RE.test(v)) { ok = false; msg = "Please enter a valid email address, like name@gmail.com"; }
+      } else if (el.tagName === "SELECT") {
+        ok = !!el.value; msg = "Please select an option";
+      } else {
+        ok = !!el.value.trim();
+      }
+      if (ok) clearError(el); else { setError(el, msg); if (!first) first = el; }
+    });
+    return first;
+  }
+  if (form) {
+    // live re-check once a field has been flagged
+    form.addEventListener("input", function (e) {
+      var el = e.target; var f = fieldOf(el);
+      if (!f || !f.classList.contains("invalid")) return;
+      if (el.type === "email") { if (EMAIL_RE.test(el.value.trim())) clearError(el); }
+      else if (el.value && el.value.trim()) clearError(el);
+    });
+    form.addEventListener("change", function (e) {
+      var el = e.target; if (el.type === "radio" || el.tagName === "SELECT") { if (el.value) clearError(el); }
+    });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var bad = validate(form);
+      var banner = document.getElementById("form-error");
+      var picker = document.querySelector(".picker");
+      if (picker && !window.__selectedPlan) {
+        if (banner) { banner.textContent = "Please choose a plan above to continue."; banner.classList.add("show"); }
+        picker.style.outline = "1px solid #9a3b2a";
+        picker.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      if (picker) picker.style.outline = "";
+      if (bad) {
+        if (banner) { banner.textContent = "Please fix the highlighted fields to continue."; banner.classList.add("show"); }
+        fieldOf(bad).scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(function () { try { bad.focus({ preventScroll: true }); } catch (x) { bad.focus(); } }, 350);
+        return;
+      }
+      if (banner) banner.classList.remove("show");
+      var plan = form.getAttribute("data-plan");          // "Beginner" | "Advanced" | "Professional" | "Monthly Care"
+      var price = form.getAttribute("data-price");        // "0" | "299" | "599" | "12.99"
+      var next = form.getAttribute("data-next");          // "" for beginner, "payment" otherwise
+      var label = plan + (addonOn ? " + Monthly Care" : "");
+      if (window.__selectedPlan) label = window.__selectedPlan.label; // monthly-care page picker
+
+      var dest;                                            // where the visitor lands afterwards
+      if (next === "payment") {
+        dest = window.__selectedPlan ? window.__selectedPlan.paymentUrl
+             : "payment.html?plan=" + encodeURIComponent(plan) + "&price=" + price + (addonOn ? "&addon=true" : "");
+      } else {
+        dest = "thanks.html";
+      }
+      var absNext = new URL(dest, location.href).href;
+
+      // Extra fields FormSubmit reads
+      function hidden(name, value) {
+        var el = form.querySelector('input[name="' + name + '"]');
+        if (!el) { el = document.createElement("input"); el.type = "hidden"; el.name = name; form.appendChild(el); }
+        el.value = value;
+      }
+      hidden("plan", label);
+      hidden("_subject", "New Onwards Digital request — " + label);
+      hidden("_template", "table");
+
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = next === "payment" ? "Saving your details…" : "Sending…"; }
+
+      var fileEl = form.querySelector('input[type="file"]');
+      var hasFile = !!(fileEl && fileEl.files && fileEl.files.length);
+
+      /* Paid plans: nothing is sent yet. The details are parked in the browser and
+         only emailed from the checkout page at the moment the visitor goes off to pay. */
+      if (next === "payment") {
+        var fields = [];
+        new FormData(form).forEach(function (v, k) { fields.push([k, v]); });
+        window.ONWARDS_PENDING.save({ label: label, fields: fields, savedAt: Date.now() }).then(
+          function () { window.location.href = dest; },
+          function () { window.location.href = dest; }
+        );
+        return;
+      }
+
+      /* Free plan: send straight away */
+      if (hasFile) {
+        // Attachments only arrive on a normal (non-AJAX) submission, so post the
+        // form itself; FormSubmit then redirects the visitor to _next.
+        hidden("_next", absNext);
+        hidden("_captcha", "false");
+        form.setAttribute("action", (CFG.formEndpoint || "").replace("/ajax/", "/"));
+        form.setAttribute("method", "POST");
+        form.setAttribute("enctype", "multipart/form-data");
+        form.submit();
+        return;
+      }
+
+      var data = new FormData(form);
+      var done = false;
+      var finish = function () { if (!done) { done = true; window.location.href = dest; } };
+      setTimeout(finish, 4000); // never leave the visitor waiting on a slow mail relay
+      fetch(CFG.formEndpoint, { method: "POST", body: data, headers: { "Accept": "application/json" } }).then(finish, finish);
+    });
+  }
+})();

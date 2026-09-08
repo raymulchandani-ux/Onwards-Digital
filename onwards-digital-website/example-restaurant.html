@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ossobello — Italian Trattoria on Federal Hill, Providence</title>
+<meta name="description" content="Ossobello is the Bellandi family's trattoria on Federal Hill, Providence. Handmade pasta, a wood oven and a short Italian wine list. Dinner Tuesday to Sunday, lunch Friday and Saturday. Reserve a table online.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Karla:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#14120f;
+    --night-2:#1b1814;
+    --night-3:#221e19;
+    --cream:#efe6d6;
+    --cream-2:rgba(239,230,214,.72);
+    --cream-3:rgba(239,230,214,.5);
+    --amber:#d9a45b;
+    --amber-2:#e7b86f;
+    --rule:rgba(239,230,214,.16);
+    --rule-2:rgba(239,230,214,.32);
+    --display:"Cormorant Garamond","Cormorant","Garamond","Times New Roman",serif;
+    --body:"Karla","Helvetica Neue",Helvetica,Arial,sans-serif;
+    --max:1200px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;background:var(--night)}
+  body{margin:0;background:var(--night);color:var(--cream);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.02;letter-spacing:.005em}
+  a{color:inherit}
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:1px solid var(--amber);outline-offset:4px}
+  p{margin:0}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--amber)}
+  .btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:48px;padding:0 26px;background:var(--amber);color:var(--night);text-decoration:none;font-weight:600;font-size:13px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--amber);transition:background .2s,border-color .2s,color .2s}
+  .btn:hover{background:var(--amber-2);border-color:var(--amber-2)}
+  .btn.ghost{background:transparent;color:var(--cream);border-color:var(--rule-2)}
+  .btn.ghost:hover{border-color:var(--cream);background:transparent}
+  svg.i{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+  /* Onwards bar */
+  .onwards{height:36px;background:#1a1917;color:#e8e4dc;font-family:var(--body);font-size:12px;letter-spacing:.14em;text-transform:uppercase;display:flex;align-items:center;border-bottom:1px solid rgba(232,228,220,.12)}
+  .onwards .wrap{display:flex;justify-content:space-between;align-items:center;width:100%}
+  .onwards a{color:#e8e4dc;text-decoration:none;border-bottom:1px solid rgba(232,228,220,.35)}
+  .onwards a:hover{border-bottom-color:#e8e4dc}
+  .onwards .short{display:none}
+
+  /* Header */
+  .site-head{position:sticky;top:0;z-index:20;background:rgba(20,18,15,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+  .site-head .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
+  .brand{font-family:var(--display);font-size:28px;font-weight:500;text-decoration:none;letter-spacing:.08em;line-height:1;text-transform:uppercase}
+  .nav{display:flex;gap:34px;align-items:center}
+  .nav a{text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;padding:12px 0;color:var(--cream-2);border-bottom:1px solid transparent;transition:color .2s}
+  .nav a:hover{color:var(--amber)}
+  .head-cta{display:flex;align-items:center;gap:22px}
+  .head-cta .btn{min-height:44px;padding:0 22px;background:transparent;color:var(--amber);border-color:var(--amber)}
+  .head-cta .btn:hover{background:var(--amber);color:var(--night)}
+  .head-tel{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-size:13px;letter-spacing:.14em;color:var(--cream-2);font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .2s}
+  .head-tel:hover{color:var(--amber)}
+  .head-tel svg.i{width:16px;height:16px}
+  .nav .nav-tel{display:none}
+  .menu-toggle{display:none;background:none;border:1px solid var(--rule-2);width:44px;height:44px;align-items:center;justify-content:center;cursor:pointer;color:var(--cream)}
+  .menu-toggle svg.i{width:20px;height:20px}
+
+  /* Photo slots */
+  .photo{margin:0;position:relative;background:var(--night-3);min-height:240px;display:flex;align-items:flex-end;padding:16px 20px;overflow:hidden}
+  .photo::before{display:none}
+  .photo figcaption{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-3);font-weight:500;position:relative}
+  .photo>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.9) contrast(1.02)}
+  .photo:has(>img)>figcaption,.photo:has(>img)>.cap,.photo:has(>img)>span{display:none}
+  .photo:has(>img)::before{display:none}
+
+  /* Hero: text left, dining-room photo right; hours + reserve stay in the first screen */
+  .hero{position:relative;isolation:isolate;padding:0}
+  .hero .veil{display:none}
+  .hero .wrap{width:100%;min-height:0;padding-top:clamp(40px,5vh,56px);padding-bottom:clamp(32px,4vh,44px);display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(32px,5vw,64px);align-items:stretch}
+  .hero .text{display:flex;flex-direction:column;justify-content:center}
+  .hero h1{font-size:clamp(52px,5.4vw,72px);font-weight:400;line-height:.95;letter-spacing:.03em;margin:14px 0 18px;text-transform:uppercase}
+  .hero .lede{font-family:var(--display);font-size:clamp(20px,1.7vw,24px);line-height:1.3;max-width:30ch;font-style:italic;font-weight:400;color:var(--cream)}
+  .hero .actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:28px}
+  .hero .aside{display:flex;flex-direction:column;gap:20px;min-width:0}
+  .hero .aside .photo{flex:1 1 auto;min-height:200px;max-height:300px}
+    .hero .aside .photo>img{object-position:center 60%}
+  .hero .side{border-left:1px solid var(--rule-2);padding-left:24px}
+  .hero .side .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:10px}
+  .hero .side .v{font-family:var(--display);font-size:clamp(21px,1.6vw,24px);line-height:1.25}
+  .hero .side .v strong{font-weight:500;color:#fff}
+  .hero .side .sub{margin-top:8px;color:var(--cream-2);font-size:15px;max-width:34ch}
+  .hero .side .tel{margin-top:10px;font-size:15px}
+  .hero .side .tel a{text-decoration:none;color:var(--cream);border-bottom:1px solid var(--rule-2);font-variant-numeric:tabular-nums}
+  .hero .side .tel a:hover{color:var(--amber);border-color:var(--amber)}
+
+  /* Section scaffolding — generous */
+  section{padding:clamp(56px,6vw,80px) 0}
+  .sec-head{margin-bottom:clamp(28px,3vw,40px)}
+  .sec-head .eyebrow{display:block;margin-bottom:14px}
+  .sec-head h2{font-size:clamp(36px,3.4vw,44px);font-weight:400;max-width:18ch;line-height:1.08}
+  .sec-head p{margin-top:16px;max-width:52ch;color:var(--cream-2);font-size:16px}
+  .link{text-decoration:none;font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:var(--amber);display:inline-flex;align-items:center;gap:10px;border-bottom:1px solid transparent;padding-bottom:4px}
+  .link:hover{border-bottom-color:var(--amber)}
+
+  /* Full-bleed breathing photo between sections */
+  .bleed{position:relative;height:clamp(280px,40vh,420px)}
+  .bleed .photo{position:absolute;inset:0;min-height:0}
+  .bleed .photo::before{display:none}
+  .bleed .cap{position:absolute;left:0;right:0;bottom:0;padding-bottom:28px;z-index:2;pointer-events:none}
+  .bleed .cap>span{display:block;max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  .bleed .photo{align-items:flex-start}
+  .bleed .cap span{font-family:var(--display);font-style:italic;font-size:20px;color:var(--cream-2);text-shadow:0 1px 20px rgba(0,0,0,.6)}
+  .bleed::after{content:"";position:absolute;inset:0;background:linear-gradient(to top, rgba(20,18,15,.75), rgba(20,18,15,0) 40%, rgba(20,18,15,0) 75%, rgba(20,18,15,.35));pointer-events:none}
+
+  /* Menu: single wide column, hairline leaders */
+  .menu-sec .wrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(40px,5vw,72px);align-items:start}
+  .menu-sec .sec-head{position:sticky;top:132px;margin-bottom:0}
+  .menu-sec .sec-head .photo{margin-top:32px;min-height:0;height:300px}
+  .course{margin-bottom:clamp(28px,3vw,36px)}
+  .course:last-of-type{margin-bottom:0}
+  .course h3{font-size:12px;font-family:var(--body);letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:var(--amber);margin-bottom:8px}
+  .dish{display:grid;grid-template-columns:auto 1fr auto;gap:0 14px;align-items:baseline;padding:12px 0}
+  .dish .n{font-family:var(--display);font-size:23px;font-weight:500;line-height:1.1;white-space:nowrap}
+  .dish .lead{border-bottom:1px solid var(--rule);transform:translateY(-7px);min-width:24px}
+  .dish .p{font-family:var(--display);font-size:22px;font-weight:400;color:var(--cream-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .dish .d{grid-column:1/-1;color:var(--cream-2);font-size:15px;margin-top:2px;max-width:50ch}
+  .menu-note{margin-top:36px;padding-top:20px;border-top:1px solid var(--rule);display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:baseline;color:var(--cream-3);font-size:15px}
+  .menu-note .ital{font-family:var(--display);font-style:italic;font-size:20px;color:var(--cream)}
+  .menu-note a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .menu-note a:hover{color:var(--amber);border-color:var(--amber)}
+
+  /* Hours */
+  .hours-sec{background:var(--night-2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+  .hours-sec .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,5vw,72px);align-items:start}
+  .hours-sec .sec-head{margin-bottom:0}
+  .hours-sec .btn{margin-top:24px}
+  table.hours{width:100%;border-collapse:collapse;font-size:16px}
+  table.hours th{text-align:left;font-weight:500;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);padding:0 0 12px;border-bottom:1px solid var(--rule-2)}
+  table.hours th:not(:first-child){text-align:right}
+  table.hours td{padding:13px 0;border-bottom:1px solid var(--rule);vertical-align:baseline}
+  table.hours td:first-child{font-family:var(--display);font-size:22px;width:40%}
+  table.hours td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;padding-left:20px;white-space:nowrap;color:var(--cream-2)}
+  table.hours td.off{color:var(--cream-3)}
+  table.hours tr.now td{color:#fff}
+  table.hours tr.now td:first-child::after{content:"Tonight";font-family:var(--body);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);margin-left:14px;vertical-align:middle}
+  .hours-foot{margin-top:18px;font-size:15px;color:var(--cream-3)}
+
+  /* Reviews — three quotes stacked, staggered */
+  .reviews .wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .reviews .sec-head{grid-column:1/-1;margin-bottom:8px}
+  blockquote{margin:0;padding-top:20px;border-top:1px solid var(--rule)}
+    blockquote p{font-family:var(--display);font-size:clamp(20px,1.7vw,24px);line-height:1.3;font-weight:400}
+  blockquote p::before{content:"\201C";color:var(--amber)}
+  blockquote p::after{content:"\201D";color:var(--amber)}
+  blockquote cite{display:block;margin-top:14px;font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--cream-3);font-weight:500}
+
+  /* Story — two photos offset around text */
+  .story .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(40px,5vw,72px);align-items:center}
+  .story .pics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .story .pics .photo:first-child{grid-column:1/3;min-height:0;height:340px}
+  .story .pics .photo:last-child{grid-column:2/3;min-height:0;height:200px;margin-top:-64px;margin-right:-40px;box-shadow:0 0 0 12px var(--night)}
+  .story .text p{margin-bottom:16px;max-width:52ch;color:var(--cream-2)}
+  .story .text p:first-of-type{font-family:var(--display);font-size:23px;line-height:1.3;font-style:italic;color:var(--cream)}
+  .story .sig{margin-top:8px;font-family:var(--display);font-size:22px;font-style:italic;color:var(--cream)}
+  .story .sig small{display:block;font-family:var(--body);font-style:normal;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-top:6px}
+
+  /* Reserve */
+  .reserve{background:var(--night-2);border-top:1px solid var(--rule)}
+  .reserve .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(40px,5vw,72px);align-items:start}
+  .reserve .sec-head{margin-bottom:0}
+  .reserve .aside{margin-top:20px;padding-top:0;border-top:0;color:var(--cream-3);font-size:15px;max-width:40ch}
+  .reserve .aside a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .reserve .aside a:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct{margin-top:28px;padding:22px 0 0;border-top:1px solid var(--rule-2)}
+  .contact-direct .k{display:block;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500;margin-bottom:10px}
+  .contact-direct .num{display:inline-block;font-family:var(--display);font-size:clamp(30px,2.6vw,36px);line-height:1;font-weight:500;color:#fff;text-decoration:none;font-variant-numeric:tabular-nums;letter-spacing:.01em;border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+  .contact-direct .num:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct .hrs{margin-top:10px;color:var(--cream-2);font-size:15px}
+  .contact-direct .hrs a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+  .contact-direct .hrs a:hover{color:var(--amber);border-color:var(--amber)}
+  .contact-direct .why{margin-top:10px;font-family:var(--display);font-style:italic;font-size:18px;line-height:1.3;color:var(--cream);max-width:30ch}
+  .contact-direct.m{display:none}
+  form.res{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+  form.res .field{display:flex;flex-direction:column;gap:8px}
+  form.res .field.full{grid-column:1/-1}
+  form.res label{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--amber);font-weight:500}
+  form.res input,form.res select,form.res textarea{font:inherit;font-size:18px;font-family:var(--display);color:var(--cream);background:transparent;border:0;border-bottom:1px solid var(--rule-2);padding:8px 0 10px;min-height:44px;border-radius:0;-webkit-appearance:none;appearance:none;transition:border-color .2s}
+  form.res input::placeholder,form.res textarea::placeholder{color:var(--cream-3)}
+  form.res input:hover,form.res select:hover,form.res textarea:hover{border-bottom-color:var(--cream-2)}
+  form.res input:focus,form.res select:focus,form.res textarea:focus{border-bottom-color:var(--amber);outline:none}
+  form.res select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9a45b' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 0 center;background-size:18px;padding-right:28px;cursor:pointer}
+  form.res select option{background:var(--night-2);color:var(--cream)}
+  form.res input[type=date],form.res input[type=time]{color-scheme:dark}
+  form.res input::-webkit-calendar-picker-indicator{filter:invert(.8) sepia(.6) saturate(2) hue-rotate(-10deg);cursor:pointer}
+  form.res textarea{resize:vertical;min-height:72px;line-height:1.4}
+  form.res .submit{grid-column:1/-1;display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:8px}
+  form.res button{font:inherit;font-size:13px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;min-height:48px;padding:0 30px;background:var(--amber);color:var(--night);border:1px solid var(--amber);cursor:pointer;transition:background .2s}
+  form.res button:hover{background:var(--amber-2)}
+  form.res .fine{font-size:14px;color:var(--cream-3)}
+  form.res .done{display:none;grid-column:1/-1;font-family:var(--display);font-size:26px;font-style:italic;padding-top:8px}
+  form.res.sent .done{display:block}
+  form.res.sent .field,form.res.sent .submit,form.res.sent .contact-direct{display:none}
+
+  /* Footer */
+  footer{padding:clamp(48px,5vw,64px) 0 32px;border-top:1px solid var(--rule)}
+  footer .cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid var(--rule)}
+  footer .brand{font-size:32px;border-bottom:0}
+  footer .tag{margin-top:16px;color:var(--cream-2);max-width:30ch}
+  footer h4{margin:0 0 16px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--amber);font-weight:500}
+  footer a{color:var(--cream-2);text-decoration:none;border-bottom:1px solid transparent;transition:color .2s}
+  footer a:hover{color:var(--amber)}
+  footer ul{list-style:none;margin:0;padding:0;line-height:2}
+  footer .foot-hours{font-size:16px;line-height:1.8;color:var(--cream-2)}
+  footer .bottom{display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-top:22px;font-size:12px;letter-spacing:.08em;color:var(--cream-3)}
+  footer .bottom a{color:var(--cream-3)}
+  footer .bottom a:hover{color:var(--amber)}
+
+  /* Reveal */
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .9s ease,transform .9s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+  /* Responsive */
+  @media (max-width:1040px){
+    .nav{gap:22px}
+    .head-tel{display:none}
+    .head-cta{gap:12px}
+    .menu-sec .wrap,.hours-sec .wrap,.story .wrap,.reserve .wrap{grid-template-columns:1fr;gap:40px}
+    .menu-sec .sec-head{position:static}
+    .menu-sec .sec-head .photo{display:none}
+        .reviews .wrap{grid-template-columns:1fr 1fr}
+    .story .pics .photo:last-child{margin-right:0}
+    footer .cols{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:900px){
+    .hero .wrap{grid-template-columns:1fr;gap:28px;min-height:0;padding-top:40px}
+    .hero .aside{display:contents}
+    .hero .side{border-left:0;border-top:1px solid var(--rule-2);padding:20px 0 0}
+    .hero .aside .photo{order:3;min-height:0;height:280px;max-height:none}
+  }
+  @media (max-width:720px){
+    .wrap{padding:0 20px}
+    .onwards{font-size:10px;letter-spacing:.1em;white-space:nowrap}
+    .onwards .long{display:none}
+    .onwards .short{display:inline}
+    .site-head .wrap{height:60px}
+    .brand{font-size:22px}
+    .nav{display:none;position:absolute;left:0;right:0;top:60px;background:var(--night);border-bottom:1px solid var(--rule);flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 12px}
+    .nav.open{display:flex}
+    .nav a{padding:14px 0;min-height:48px;border-bottom:1px solid var(--rule);font-size:13px;color:var(--cream)}
+    .nav a:last-child{border-bottom:0}
+    .menu-toggle{display:inline-flex}
+    .head-cta .btn{display:none}
+    .head-cta{gap:14px}
+    .head-tel{font-size:12px;letter-spacing:.1em}
+    .nav .nav-tel{display:flex;align-items:center;gap:10px;color:var(--amber)}
+    .nav .nav-tel svg.i{width:16px;height:16px}
+    .hero{min-height:0;display:flex;align-items:flex-end}
+    .hero .aside .photo{position:absolute;inset:0;min-height:0;height:auto;z-index:-1}
+    .hero .aside .photo::before,.hero .aside .photo>figcaption{display:none}
+    .hero .veil{display:block;position:absolute;inset:0;z-index:-1;background:linear-gradient(to top, rgba(20,18,15,1) 0%, rgba(20,18,15,.86) 28%, rgba(20,18,15,.35) 62%, rgba(20,18,15,.25) 100%)}
+    .hero .wrap{padding-top:56px;padding-bottom:36px;gap:24px}
+    .hero h1{font-size:38px;letter-spacing:.03em;margin:12px 0 14px}
+    .hero .lede{font-size:19px}
+    .hero .actions{gap:10px;margin-top:22px}
+    .hero .actions .btn{width:100%}
+    .hero .side .v{font-size:20px}
+    .hero .side .sub{font-size:14px}
+    section{padding:48px 0}
+    .sec-head{margin-bottom:28px}
+    .sec-head h2{font-size:32px}
+    .story #story-title{font-size:32px!important}
+    .bleed{height:34vh;min-height:220px;max-height:280px}
+    .bleed .cap{padding-bottom:24px}
+    .bleed .cap>span{padding:0 20px}
+    .bleed .cap span{font-size:17px}
+    .course{margin-bottom:28px}
+    .dish{grid-template-columns:1fr auto;gap:0 12px}
+    .dish .n{white-space:normal;font-size:21px}
+    .dish .lead{display:none}
+    .dish .p{font-size:20px}
+    .dish .d{max-width:none;font-size:15px}
+    .menu-note{margin-top:28px}
+    table.hours td:first-child{font-size:19px;width:auto}
+    table.hours td{padding:12px 0}
+    table.hours td:first-child::after{display:block;margin:2px 0 0}
+    table.hours{font-size:15px}
+    table.hours th{font-size:10px}
+    .reviews .wrap{grid-template-columns:1fr;gap:24px}
+    blockquote:nth-of-type(1),blockquote:nth-of-type(2),blockquote:nth-of-type(3){grid-column:auto;margin-top:0}
+    blockquote p{font-size:20px}
+    .story .pics{gap:12px}
+    .story .pics .photo:first-child{height:220px}
+    .story .pics .photo:last-child{height:160px;margin-top:-48px;margin-right:-20px;box-shadow:0 0 0 10px var(--night)}
+    .story .text p:first-of-type{font-size:20px}
+    .contact-direct.d{display:none}
+    .contact-direct.m{display:block;grid-column:1/-1;order:1;margin:8px 0 0;padding:24px 0 0;border-top:1px solid var(--rule-2)}
+    .contact-direct .num{font-size:32px}
+    form.res{grid-template-columns:1fr;gap:16px}
+    form.res input,form.res select,form.res textarea{font-size:16px}
+    form.res .submit{flex-direction:column;align-items:stretch}
+    form.res button{width:100%}
+    footer{padding-top:40px}
+    footer .cols{padding-bottom:28px}
+    footer .cols{grid-template-columns:1fr 1fr;gap:28px}
+    footer .cols>div:first-child{grid-column:1/-1}
+    footer .brand{font-size:28px}
+  }
+
+  /* Phone: keep only the back link in the top bar */
+  @media (max-width:640px){.head-tel{display:none}}
+  @media (max-width:600px){.onwards>span,.onwards .wrap>span{display:none}.onwards{justify-content:flex-start}.onwards .wrap{justify-content:flex-start}}
+  /* The Onwards Digital bar stays pinned above the site's own sticky header */
+  .onwards{position:sticky;top:0;z-index:21}
+  html{scroll-padding-top:112px}
+  .site-head{top:36px}
+  /* Custom date & time pickers (reservation) */
+  .pick-field{position:relative}
+  form.res .pick{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;text-align:left;font:inherit;font-size:18px;font-family:var(--display);color:var(--cream);background:transparent;border:0;border-bottom:1px solid var(--rule-2);padding:8px 0 10px;min-height:44px;border-radius:0;cursor:pointer;transition:border-color .2s;letter-spacing:0;text-transform:none;font-weight:400}
+  form.res .pick:hover{border-bottom-color:var(--cream-2);background:transparent}
+  form.res .pick[aria-expanded="true"],form.res .pick:focus{border-bottom-color:var(--amber);outline:none}
+  form.res .pick svg{width:20px;height:20px;flex:none;color:var(--amber);opacity:.85;transition:opacity .2s}
+  form.res .pick:hover svg{opacity:1}
+  form.res .pick .pick-val.empty{color:var(--cream-3)}
+  .pop{position:absolute;left:0;top:calc(100% + 10px);z-index:30;min-width:100%;width:max-content;max-width:min(360px,calc(100vw - 2*var(--gutter,20px)));background:#221e19;border:1px solid var(--rule-2);box-shadow:0 18px 40px rgba(0,0,0,.45);padding:16px;opacity:0;transform:translateY(-6px);transition:opacity .18s ease,transform .18s ease;pointer-events:none}
+  .pop.open{opacity:1;transform:none;pointer-events:auto}
+  .cal{width:300px}
+  .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .cal-month{font-family:var(--display);font-size:20px;color:var(--cream)}
+  form.res .cal-nav{letter-spacing:0;min-height:0;font:inherit;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;color:var(--cream-2);cursor:pointer;padding:0;transition:color .15s,border-color .15s}
+  .cal-nav svg{width:18px;height:18px}
+  form.res .cal-nav:hover{color:var(--amber);border-color:var(--rule-2)}
+  form.res .cal-nav:disabled{opacity:.3;cursor:default;border-color:transparent;color:var(--cream-2)}
+  .cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .cal-dow span{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--cream-3);text-align:center;padding:4px 0 8px}
+  form.res .cal-grid button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:36px;background:transparent;border:1px solid transparent;color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s;font-variant-numeric:tabular-nums}
+  form.res .cal-grid button:hover{border-color:var(--rule-2)}
+  form.res .cal-grid button.today{border-color:var(--rule-2)}
+  form.res .cal-grid button.sel,form.res .cal-grid button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  form.res .cal-grid button:disabled{color:var(--cream-3);opacity:.35;cursor:default;border-color:transparent;text-decoration:line-through;text-decoration-color:rgba(239,230,214,.4)}
+  .cal-grid .blank{height:36px}
+  .pop-note{margin:12px 0 0;font-size:12.5px;color:var(--cream-3);border-top:1px solid var(--rule);padding-top:10px}
+  .times{width:300px;max-height:340px;overflow:auto;overscroll-behavior:contain}
+  .tg+.tg{margin-top:12px;padding-top:12px;border-top:1px solid var(--rule)}
+  .tg .k{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--amber);margin-bottom:8px}
+  .tg .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  form.res .tg button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:38px;background:transparent;border:1px solid var(--rule);color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s;font-variant-numeric:tabular-nums}
+  form.res .tg button:hover{border-color:var(--cream-2)}
+  form.res .tg button.sel,form.res .tg button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  .party{width:300px}
+  .party .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  form.res .party .opts button{letter-spacing:0;text-transform:none;font-weight:400;min-height:0;font:inherit;font-family:var(--display);font-size:16px;height:38px;background:transparent;border:1px solid var(--rule);color:var(--cream);cursor:pointer;padding:0;transition:background .15s,color .15s,border-color .15s}
+  form.res .party .opts button:hover{border-color:var(--cream-2)}
+  form.res .party .opts button.sel,form.res .party .opts button.sel:hover{background:var(--amber);color:var(--night);border-color:var(--amber)}
+  form.res .party .opts button.wide{grid-column:1/-1}
+  .times .closed{font-family:var(--display);font-style:italic;color:var(--cream-2);font-size:17px;margin:4px 0}
+  @media (max-width:600px){.pop{left:0;right:0;width:auto;max-width:none;min-width:0}.cal,.times,.party{width:auto}}
+  @media (prefers-reduced-motion:reduce){.pop{transition:none;transform:none}}
+
+  /* Phone: less scrolling — pairs stay side by side, sections breathe less */
+  @media (max-width:720px){
+    section,.section{padding-top:36px!important;padding-bottom:36px!important}
+    .menu-sec .wrap,.reviews .wrap,.reserve .wrap{padding-top:32px;padding-bottom:32px}
+    .reviews .wrap{grid-template-columns:1fr 1fr;gap:14px}
+    .reviews blockquote,.review{font-size:13.5px}
+    form.res{grid-template-columns:1fr 1fr;gap:14px 12px}
+    form.res .field.wide,form.res .note-field,form.res textarea{grid-column:1/-1}
+    footer .cols{grid-template-columns:1fr 1fr;gap:16px}
+    .hero .wrap{padding-top:40px;padding-bottom:28px}
+  }
+
+  @media (max-width:720px){
+    .sec-head p{font-size:14px}
+    .dish{padding:9px 0}.dish .d{font-size:12.5px;line-height:1.4}
+    .course{padding-top:18px}
+    .hours td,.hours th{padding:6px 0;font-size:13px}
+    .reserve .sec-head .photo,.reserve .contact-direct.m{display:none}
+    .story .wrap{gap:14px}.story p{font-size:14px}
+    .bleed{height:200px}
+  }
+</style>
+</head>
+<body>
+
+<div class="onwards" role="note">
+  <div class="wrap">
+    <a href="index.html">&larr; Back to <span class="long">Onwards Digital</span><span class="short">Onwards</span></a>
+    <span><span class="long">Example site by </span>Onwards Digital</span>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Ossobello, home">Ossobello</a>
+    <nav class="nav" id="nav" aria-label="Primary">
+      <a href="#menu">Menu</a>
+      <a href="#hours">Hours</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#story">The Family</a>
+      <a href="#reserve">Reserve</a>
+      <a class="nav-tel" href="tel:0000000000"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>Call (000) 000 0000</a>
+    </nav>
+    <div class="head-cta">
+      <a class="head-tel" href="tel:0000000000" aria-label="Call Ossobello, (000) 000 0000"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>(000) 000 0000</a>
+      <a class="btn" href="#reserve">Reserve a table</a>
+      <button class="menu-toggle" type="button" aria-controls="nav" aria-expanded="false" aria-label="Open menu">
+        <svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="veil" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="text">
+        <span class="eyebrow">Trattoria &middot; Federal Hill, Providence</span>
+        <h1 id="hero-title">Ossobello</h1>
+        <p class="lede">We roll the pasta at seven, light the oven at three and the candles at five. The Bellandi family, since 1994.</p>
+        <div class="actions">
+          <a class="btn" href="#reserve">Reserve a table</a>
+          <a class="btn ghost" href="#menu">Tonight's menu</a>
+        </div>
+      </div>
+      <div class="aside">
+        <div class="side" id="today" aria-live="polite">
+          <span class="k">Tonight</span>
+          <p class="v" id="today-text"><strong>Dinner 5 – 10 pm</strong><br>walk-ins welcome at the bar</p>
+          <p class="sub">Two doors up from the arch on the Hill. Reservations are online now; the bar stays first come, first served.</p>
+          <p class="tel">Call <a href="tel:0000000000">(000) 000 0000</a></p>
+        </div>
+        <figure class="photo" data-photo="the dining room after dark, candles on every table, wide">
+          <img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=2000&q=80"
+               alt="The dining room after dark: low light, a painting on the far wall, candles on the tables" loading="eager"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Dining room</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="menu-sec" id="menu" aria-labelledby="menu-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Tonight's menu</span>
+        <h2 id="menu-title">What we're cooking this week</h2>
+        <p>Nine things, done properly. The board by the bar has whatever the fish man and the market talked us into this morning.</p>
+        <figure class="photo" data-photo="tagliatelle al ragù on a dark plate, close">
+          <img src="https://images.unsplash.com/photo-1727005217349-66276af3aa7d?auto=format&fit=crop&w=1200&q=80"
+               alt="A plate of ribbon pasta under ragù and shaved Parmigiano, shot close on dark wood" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Tagliatelle al ragù</figcaption>
+        </figure>
+      </div>
+
+      <div class="reveal">
+        <div class="course">
+          <h3>Antipasti</h3>
+          <div class="dish"><span class="n">Carciofi alla giudia</span><span class="lead" aria-hidden="true"></span><span class="p">14</span><span class="d">Twice-fried artichokes, lemon, sea salt. Eat the leaves.</span></div>
+          <div class="dish"><span class="n">Burrata &amp; peaches</span><span class="lead" aria-hidden="true"></span><span class="p">17</span><span class="d">Rhode Island peaches while they last, basil, aged balsamic.</span></div>
+          <div class="dish"><span class="n">Polpette della nonna</span><span class="lead" aria-hidden="true"></span><span class="p">13</span><span class="d">Veal and pork meatballs in Sunday sauce, grilled bread. Our mother's, made on Sundays by our mother.</span></div>
+        </div>
+        <div class="course">
+          <h3>Primi</h3>
+          <div class="dish"><span class="n">Tagliatelle al ragù</span><span class="lead" aria-hidden="true"></span><span class="p">26</span><span class="d">Egg pasta rolled this morning, three-meat Bolognese, Parmigiano.</span></div>
+          <div class="dish"><span class="n">Tortelli di zucca</span><span class="lead" aria-hidden="true"></span><span class="p">24</span><span class="d">Squash and amaretti, brown butter, sage. Our father's Sunday lunch from Mantua.</span></div>
+          <div class="dish"><span class="n">Spaghetti alle vongole</span><span class="lead" aria-hidden="true"></span><span class="p">28</span><span class="d">Point Judith littlenecks, garlic, white wine, a little chili.</span></div>
+        </div>
+        <div class="course">
+          <h3>Secondi</h3>
+          <div class="dish"><span class="n">Ossobuco</span><span class="lead" aria-hidden="true"></span><span class="p">42</span><span class="d">Veal shank braised since the afternoon, saffron risotto, gremolata. The house dish; the name comes from it.</span></div>
+          <div class="dish"><span class="n">Branzino al forno</span><span class="lead" aria-hidden="true"></span><span class="p">36</span><span class="d">Whole sea bass from the wood oven, fennel, olives, lemon. We'll bone it at the table if you ask.</span></div>
+          <div class="dish"><span class="n">Bistecca per due</span><span class="lead" aria-hidden="true"></span><span class="p">88</span><span class="d">A thick rib steak over the coals, rosemary, salt, olive oil. For two, with the bones.</span></div>
+        </div>
+
+        <div class="menu-note">
+          <span class="ital">The menu moves with the market. What's here is what we're proud of tonight.</span>
+          <span>Takeout Tue–Sun from 5 pm &middot; <a href="mailto:ciao@ossobello.example">email us your order</a></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bleed reveal" aria-hidden="false">
+    <figure class="photo" data-photo="a glass of red wine beside a candle, dark table, wide">
+      <img src="https://images.unsplash.com/photo-1642501500606-b56852b10732?auto=format&fit=crop&w=2000&q=80"
+           alt="A glass of red wine next to a lit candle on a dark table" loading="lazy" style="object-position:center 55%"
+           onerror="this.remove()">
+      <figcaption>Photo &middot; Wine by candlelight</figcaption>
+    </figure>
+    <div class="cap"><span>Most of the list is from small growers in Lombardy and Piedmont. Marco will pour you a taste before you commit.</span></div>
+  </div>
+
+  <section class="hours-sec" id="hours" aria-labelledby="hours-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Hours &amp; reservations</span>
+        <h2 id="hours-title">Dinner six nights. Lunch on the weekend.</h2>
+        <p>Book ahead Friday through Sunday; we're a small room and we fill. The bar seats twelve and never takes a reservation. For a party of seven or more, use the form and tell us the occasion.</p>
+        <a class="btn" href="#reserve" id="hours-cta">Reserve a table</a>
+      </div>
+      <div class="reveal">
+        <table class="hours" id="hours-table">
+          <thead><tr><th scope="col">Day</th><th scope="col">Lunch</th><th scope="col">Dinner</th></tr></thead>
+          <tbody>
+            <tr data-day="1"><td>Monday</td><td class="off">Closed</td><td class="off">Closed</td></tr>
+            <tr data-day="2"><td>Tuesday</td><td class="off">—</td><td>5 – 10 pm</td></tr>
+            <tr data-day="3"><td>Wednesday</td><td class="off">—</td><td>5 – 10 pm</td></tr>
+            <tr data-day="4"><td>Thursday</td><td class="off">—</td><td>5 – 10 pm</td></tr>
+            <tr data-day="5"><td>Friday</td><td>12 – 2:30 pm</td><td>5 – 11 pm</td></tr>
+            <tr data-day="6"><td>Saturday</td><td>12 – 2:30 pm</td><td>5 – 11 pm</td></tr>
+            <tr data-day="0"><td>Sunday</td><td class="off">—</td><td>4 – 9 pm</td></tr>
+          </tbody>
+        </table>
+        <p class="hours-foot">The kitchen closes half an hour before the room. We close Christmas Day and the first two weeks of August, when we go home to Mantua.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews" id="reviews" aria-labelledby="reviews-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Guests</span>
+        <h2 id="reviews-title">What people say when they leave</h2>
+      </div>
+      <blockquote class="reveal">
+        <p>The tagliatelle is the reason we drive in from Warwick. Thirty years and it hasn't changed, which is the point.</p>
+        <cite>— D. F., Google review</cite>
+      </blockquote>
+      <blockquote class="reveal">
+        <p>Sat at the bar on a Tuesday, no reservation, and Marco walked me through the wine list like I was family.</p>
+        <cite>— J. P., Yelp</cite>
+      </blockquote>
+      <blockquote class="reveal">
+        <p>Order the ossobuco. Bring someone you like. The room does the rest.</p>
+        <cite>— A. R., OpenTable</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <div class="bleed reveal">
+    <figure class="photo" data-photo="candle on a table against a brick wall in the back room">
+      <img src="https://images.unsplash.com/photo-1675583635076-6eac784dbf41?auto=format&fit=crop&w=2000&q=80"
+           alt="A single candle on a set table against the brick wall of the back room" loading="lazy" style="object-position:center 45%"
+           onerror="this.remove()">
+      <figcaption>Photo &middot; The back room</figcaption>
+    </figure>
+    <div class="cap"><span>The back room seats twenty-two. Ask for it when you book if it's a birthday, a rehearsal supper, or a long argument.</span></div>
+  </div>
+
+  <section class="story" id="story" aria-labelledby="story-title">
+    <div class="wrap">
+      <div class="pics reveal">
+        <figure class="photo" data-photo="filled pasta and rolling pin on a floured board, morning">
+          <img src="https://images.unsplash.com/photo-1569767143908-1342240550ce?auto=format&fit=crop&w=1600&q=80"
+               alt="Filled pasta and a rolling pin on a floured board" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; The pasta table</figcaption>
+        </figure>
+        <figure class="photo" data-photo="ravioli under grated cheese, close">
+          <img src="https://images.unsplash.com/photo-1650223164911-1274a3d15700?auto=format&fit=crop&w=1200&q=80"
+               alt="Ravioli under a fall of grated cheese" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; Tortelli</figcaption>
+        </figure>
+      </div>
+      <div class="text reveal">
+        <span class="eyebrow">The family</span>
+        <h2 id="story-title" style="margin:14px 0 22px;font-size:clamp(36px,3.4vw,44px);line-height:1.08">Two generations, one pasta table.</h2>
+        <p>Our parents opened Ossobello in the spring of 1994 with a second-hand wood oven and a menu written on butcher paper.</p>
+        <p>Giuseppe came from Mantua, where tortelli di zucca is Sunday lunch. Anna is from the Hill, three streets over. The room you sit in was a shoe repair shop. The oven has never moved.</p>
+        <p>We took the kitchen in 2016. Rosa rolls the pasta every morning at seven on the same board our father used. Marco runs the floor and buys the wine. Our mother still makes the polpette on Sundays and will tell you if you're eating too fast.</p>
+        <p class="sig">Rosa &amp; Marco Bellandi<small>Owners</small></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="reserve" id="reserve" aria-labelledby="reserve-title">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="eyebrow">Reserve</span>
+        <h2 id="reserve-title">Hold a table</h2>
+        <p>Tell us when and how many. We confirm by email the same day, usually within the hour while we're in the kitchen.</p>
+        <div class="aside">
+          <p>Something we should know: an allergy, a birthday, someone who needs the quiet corner? Put it in the note. For the back room or a party over twelve, <a href="mailto:ciao@ossobello.example">email Marco directly</a>.</p>
+        </div>
+        <div class="contact-direct d" aria-labelledby="contact-direct-title">
+          <span class="k" id="contact-direct-title">Or contact us directly</span>
+          <a class="num" href="tel:0000000000">(000) 000 0000</a>
+          <p class="hrs">Dinner Tue–Thu 5–10, Fri &amp; Sat 5–11, Sun 4–9<br><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></p>
+          <p class="why">Call for parties of seven or more, private dining, or same-night tables.</p>
+        </div>
+        <figure class="photo" data-photo="candles and wine glasses on a dimly lit table" style="margin-top:32px;min-height:0;height:240px">
+          <img src="https://images.unsplash.com/photo-1756925974940-fbf149fa0fd2?auto=format&fit=crop&w=1200&q=80"
+               alt="Candles and wine glasses on a dimly lit table" loading="lazy"
+               onerror="this.remove()">
+          <figcaption>Photo &middot; A table, set</figcaption>
+        </figure>
+      </div>
+
+      <form class="res reveal" action="#" method="post" novalidate onsubmit="event.preventDefault();this.classList.add('sent');">
+        <div class="contact-direct m">
+          <span class="k">Or contact us directly</span>
+          <a class="num" href="tel:0000000000">(000) 000 0000</a>
+          <p class="hrs">Dinner Tue–Thu 5–10, Fri &amp; Sat 5–11, Sun 4–9<br><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></p>
+          <p class="why">Call for parties of seven or more, private dining, or same-night tables.</p>
+        </div>
+        <div class="field">
+          <label for="r-name">Name</label>
+          <input id="r-name" name="name" type="text" placeholder="Who's the table under?" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="r-email">Email</label>
+          <input id="r-email" name="email" type="email" placeholder="We'll confirm here" autocomplete="email" required>
+        </div>
+        <div class="field pick-field">
+          <label for="r-date-btn">Date</label>
+          <button type="button" class="pick" id="r-date-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-date-pop">
+            <span class="pick-val" id="r-date-text">Choose a date</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>
+          </button>
+          <input type="hidden" id="r-date" name="date" required>
+          <div class="pop cal" id="r-date-pop" role="dialog" aria-label="Choose a date" hidden>
+            <div class="cal-head">
+              <button type="button" class="cal-nav" id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+              <span class="cal-month" id="cal-month" aria-live="polite"></span>
+              <button type="button" class="cal-nav" id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+            </div>
+            <div class="cal-dow" aria-hidden="true"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+            <div class="cal-grid" id="cal-grid"></div>
+            <p class="pop-note">Closed Mondays. Lunch Friday &amp; Saturday.</p>
+          </div>
+        </div>
+        <div class="field pick-field">
+          <label for="r-time-btn">Time</label>
+          <button type="button" class="pick" id="r-time-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-time-pop">
+            <span class="pick-val" id="r-time-text">Choose a time</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>
+          </button>
+          <input type="hidden" id="r-time" name="time" required>
+          <div class="pop times" id="r-time-pop" role="dialog" aria-label="Choose a time" hidden>
+            <div id="time-groups"></div>
+          </div>
+        </div>
+        <div class="field pick-field">
+          <label for="r-party-btn">Party size</label>
+          <button type="button" class="pick" id="r-party-btn" aria-haspopup="dialog" aria-expanded="false" aria-controls="r-party-pop">
+            <span class="pick-val" id="r-party-text">Two</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <input type="hidden" id="r-party" name="party" value="2" required>
+          <div class="pop party" id="r-party-pop" role="dialog" aria-label="Party size" hidden>
+            <div class="opts" id="party-opts"></div>
+            <p class="pop-note">Seven or more? Say so and we'll ring you about the back room.</p>
+          </div>
+        </div>
+        <div class="field">
+          <label for="r-occasion">Occasion <span style="color:var(--cream-3);letter-spacing:.1em">(optional)</span></label>
+          <input id="r-occasion" name="occasion" type="text" placeholder="Birthday, anniversary, a Tuesday">
+        </div>
+        <div class="field full">
+          <label for="r-note">Note</label>
+          <textarea id="r-note" name="note" rows="2" placeholder="Allergies, a high chair, the corner table by the oven"></textarea>
+        </div>
+        <div class="submit">
+          <button type="submit">Request a table</button>
+          <span class="fine">Nothing is charged. We hold tables for fifteen minutes past the time.</span>
+        </div>
+        <p class="done" aria-live="polite">Grazie. We've got it, and we'll write back before service.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer id="visit">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <a class="brand" href="#top">Ossobello</a>
+        <p class="tag">A family trattoria on Federal Hill, Providence. Handmade pasta, wood oven, Italian wine.</p>
+        <p style="margin-top:26px"><a class="btn" href="#reserve">Reserve a table</a></p>
+      </div>
+      <div>
+        <h4>Write or call</h4>
+        <ul>
+          <li><a href="tel:0000000000">(000) 000 0000</a></li>
+          <li><a href="mailto:ciao@ossobello.example">ciao@ossobello.example</a></li>
+          <li><a href="#reserve">Reservations</a></li>
+          <li><a href="#menu">Takeout</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <div class="foot-hours">
+          Dinner Tue–Thu 5–10<br>
+          Fri &amp; Sat 5–11<br>
+          Sun 4–9<br>
+          Lunch Fri &amp; Sat 12–2:30<br>
+          Closed Monday
+        </div>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">OpenTable</a></li>
+          <li><a href="#story">Our story</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>&copy; 2026 Ossobello &middot; Bellandi Family Restaurants LLC</span>
+      <span>Photography via Unsplash</span>
+      <span>Site by <a href="index.html">Onwards Digital</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Tonight's hours, computed from the table so the owner edits one place.
+  var day = new Date().getDay();
+  var row = document.querySelector('#hours-table tr[data-day="'+day+'"]');
+  var out = document.getElementById('today-text');
+  if(row && out){
+    row.classList.add('now');
+    var cells = row.querySelectorAll('td');
+    var lunch = cells[1].textContent.trim(), dinner = cells[2].textContent.trim();
+    var parts = [];
+    if(lunch !== '—' && lunch !== 'Closed') parts.push('<strong>Lunch '+lunch+'</strong>');
+    if(dinner !== 'Closed') parts.push('<strong>Dinner '+dinner+'</strong>');
+    out.innerHTML = parts.length ? parts.join(' &middot; ')+'<br>walk-ins welcome at the bar'
+                                 : '<strong>Closed Mondays</strong><br>back tomorrow at 5 pm';
+  }
+
+  // Reservation form: custom date and time pickers
+  (function(){
+    var dateBtn=document.getElementById('r-date-btn'), dateText=document.getElementById('r-date-text'), dateIn=document.getElementById('r-date'), datePop=document.getElementById('r-date-pop');
+    var timeBtn=document.getElementById('r-time-btn'), timeText=document.getElementById('r-time-text'), timeIn=document.getElementById('r-time'), timePop=document.getElementById('r-time-pop');
+    var partyBtn=document.getElementById('r-party-btn'), partyText=document.getElementById('r-party-text'), partyIn=document.getElementById('r-party'), partyPop=document.getElementById('r-party-pop'), partyOpts=document.getElementById('party-opts');
+    if(!dateBtn||!timeBtn||!partyBtn) return;
+    var grid=document.getElementById('cal-grid'), monthEl=document.getElementById('cal-month'), prev=document.getElementById('cal-prev'), next=document.getElementById('cal-next'), groupsEl=document.getElementById('time-groups');
+    var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var DAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    // Service by weekday (0 = Sunday): [label, first seating, last seating] in minutes from midnight
+    var SERVICE={0:[['Dinner',16*60,20*60+30]],2:[['Dinner',17*60,21*60+30]],3:[['Dinner',17*60,21*60+30]],4:[['Dinner',17*60,21*60+30]],5:[['Lunch',12*60,14*60],['Dinner',17*60,22*60+30]],6:[['Lunch',12*60,14*60],['Dinner',17*60,22*60+30]]};
+    var today=new Date(); today.setHours(0,0,0,0);
+    var sel=null, view=new Date(today.getFullYear(),today.getMonth(),1), selTime=null;
+
+    function iso(d){var m=d.getMonth()+1,dd=d.getDate();return d.getFullYear()+'-'+(m<10?'0':'')+m+'-'+(dd<10?'0':'')+dd;}
+    function fmtTime(mins){var h=Math.floor(mins/60),m=mins%60,ap=h>=12?'PM':'AM';h=h%12||12;return h+':'+(m<10?'0':'')+m+' '+ap;}
+    function open(btn,pop){closeAll(); pop.hidden=false; requestAnimationFrame(function(){pop.classList.add('open');}); btn.setAttribute('aria-expanded','true');}
+    function close(btn,pop){pop.classList.remove('open'); btn.setAttribute('aria-expanded','false'); setTimeout(function(){ if(!pop.classList.contains('open')) pop.hidden=true; },200);}
+    function closeAll(){close(dateBtn,datePop);close(timeBtn,timePop);close(partyBtn,partyPop);}
+
+    function drawCal(){
+      monthEl.textContent=MONTHS[view.getMonth()]+' '+view.getFullYear();
+      prev.disabled = view.getFullYear()===today.getFullYear() && view.getMonth()===today.getMonth();
+      grid.innerHTML='';
+      var first=new Date(view.getFullYear(),view.getMonth(),1);
+      var lead=(first.getDay()+6)%7; // Monday first
+      for(var i=0;i<lead;i++){var b=document.createElement('span');b.className='blank';grid.appendChild(b);}
+      var n=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+      for(var d=1;d<=n;d++){
+        var dt=new Date(view.getFullYear(),view.getMonth(),d);
+        var btn=document.createElement('button'); btn.type='button'; btn.textContent=d;
+        var past=dt<today, closed=dt.getDay()===1;
+        if(past||closed){btn.disabled=true; btn.title=closed?'Closed Mondays':'';}
+        if(iso(dt)===iso(today)) btn.classList.add('today');
+        if(sel&&iso(dt)===iso(sel)) btn.classList.add('sel');
+        btn.setAttribute('aria-label',DAYS[dt.getDay()]+' '+d+' '+MONTHS[dt.getMonth()]);
+        (function(dt){btn.addEventListener('click',function(){pickDate(dt);});})(dt);
+        grid.appendChild(btn);
+      }
+    }
+    function pickDate(dt){
+      sel=dt; dateIn.value=iso(dt);
+      dateText.textContent=DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS[dt.getMonth()].slice(0,3)+' '+dt.getFullYear();
+      dateText.classList.remove('empty');
+      drawCal(); drawTimes(); close(dateBtn,datePop);
+      // if the chosen time no longer fits the day's service, clear it
+      if(selTime!=null && !timeAvailable(selTime)){selTime=null; timeIn.value=''; timeText.textContent='Choose a time'; timeText.classList.add('empty');}
+      if(!timeIn.value) setTimeout(function(){open(timeBtn,timePop);},220);
+    }
+    function timeAvailable(m){var svc=sel?SERVICE[sel.getDay()]:null; if(!svc) return false; return svc.some(function(g){return m>=g[1]&&m<=g[2];});}
+    function drawTimes(){
+      groupsEl.innerHTML='';
+      var svc=sel?SERVICE[sel.getDay()]:SERVICE[2];
+      if(!svc){var p=document.createElement('p');p.className='closed';p.textContent="We're closed that day.";groupsEl.appendChild(p);return;}
+      svc.forEach(function(g){
+        var tg=document.createElement('div'); tg.className='tg';
+        var k=document.createElement('span'); k.className='k'; k.textContent=g[0]; tg.appendChild(k);
+        var opts=document.createElement('div'); opts.className='opts';
+        for(var m=g[1];m<=g[2];m+=15){
+          var b=document.createElement('button'); b.type='button'; b.textContent=fmtTime(m); b.dataset.m=m;
+          if(selTime===m) b.classList.add('sel');
+          b.addEventListener('click',function(){pickTime(+this.dataset.m);});
+          opts.appendChild(b);
+        }
+        tg.appendChild(opts); groupsEl.appendChild(tg);
+      });
+    }
+    function pickTime(m){
+      selTime=m; var h=Math.floor(m/60),mm=m%60; timeIn.value=(h<10?'0':'')+h+':'+(mm<10?'0':'')+mm;
+      timeText.textContent=fmtTime(m); timeText.classList.remove('empty');
+      drawTimes(); close(timeBtn,timePop);
+    }
+
+    // Party size
+    var PARTY=[['2','Two'],['3','Three'],['4','Four'],['5','Five'],['6','Six'],['7','Seven or more']];
+    function drawParty(){
+      partyOpts.innerHTML='';
+      PARTY.forEach(function(o){
+        var b=document.createElement('button'); b.type='button'; b.textContent=o[1]; b.dataset.v=o[0];
+        if(o[0]==='7') b.classList.add('wide');
+        if(partyIn.value===o[0]) b.classList.add('sel');
+        b.addEventListener('click',function(){partyIn.value=this.dataset.v; partyText.textContent=this.textContent; drawParty(); close(partyBtn,partyPop);});
+        partyOpts.appendChild(b);
+      });
+    }
+    drawParty();
+    partyBtn.addEventListener('click',function(e){e.stopPropagation(); if(partyPop.classList.contains('open')) close(partyBtn,partyPop); else open(partyBtn,partyPop);});
+
+    // Whole control opens the picker: the words and the icon are one button
+    dateBtn.addEventListener('click',function(e){e.stopPropagation(); if(datePop.classList.contains('open')) close(dateBtn,datePop); else open(dateBtn,datePop);});
+    timeBtn.addEventListener('click',function(e){e.stopPropagation(); if(timePop.classList.contains('open')) close(timeBtn,timePop); else open(timeBtn,timePop);});
+    prev.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()-1,1);drawCal();});
+    next.addEventListener('click',function(){view=new Date(view.getFullYear(),view.getMonth()+1,1);drawCal();});
+    [datePop,timePop,partyPop].forEach(function(p){p.addEventListener('click',function(e){e.stopPropagation();});});
+    document.addEventListener('click',function(e){ if(!datePop.contains(e.target)&&!timePop.contains(e.target)&&!partyPop.contains(e.target)) closeAll(); });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeAll();} });
+
+    // Defaults: next open day, 7:30 pm (or the day's first dinner seating)
+    var start=new Date(today); if(start.getDay()===1) start.setDate(start.getDate()+1);
+    pickDateQuiet(start);
+    function pickDateQuiet(dt){ sel=dt; dateIn.value=iso(dt); dateText.textContent=DAYS[dt.getDay()]+' '+dt.getDate()+' '+MONTHS[dt.getMonth()].slice(0,3)+' '+dt.getFullYear(); view=new Date(dt.getFullYear(),dt.getMonth(),1); drawCal(); var pref=19*60+30; var svc=SERVICE[dt.getDay()]; var m=timeAvailable(pref)?pref:svc[svc.length-1][1]; selTime=m; var h=Math.floor(m/60),mm=m%60; timeIn.value=(h<10?'0':'')+h+':'+(mm<10?'0':'')+mm; timeText.textContent=fmtTime(m); drawTimes(); }
+  })();
+
+  // Mobile nav
+  var t = document.querySelector('.menu-toggle'), nav = document.getElementById('nav');
+  if(t){
+    t.addEventListener('click', function(){
+      var open = nav.classList.toggle('open');
+      t.setAttribute('aria-expanded', open ? 'true' : 'false');
+      t.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    });
+    nav.addEventListener('click', function(e){ if(e.target.tagName==='A'){ nav.classList.remove('open'); t.setAttribute('aria-expanded','false'); } });
+  }
+
+  // One gentle reveal
+  var els = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, {rootMargin:'0px 0px -8% 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else { els.forEach(function(el){ el.classList.add('in'); }); }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Onwards Digital — Websites for small businesses, built in a week, yours to change</title>
+  <meta name="description" content="A clean, fast website for your restaurant, salon, or café — built in a week, with a simple editor so you can update the menu or your hours yourself. From $299, then $12.99 a month.">
+  <link rel="icon" href="favicon.ico?v=2" sizes="any">
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="icon" href="favicon-192.png?v=2" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2">
+  <meta name="theme-color" content="#f6f4ef">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="site.css?v=20260908c">
+</head>
+<body>
+
+<!-- Utility bar -->
+<div class="utility">
+  <div class="wrap">
+    <span class="left">Free mockup on every plan — see your homepage before you pay.</span>
+    <div class="right">
+      <a href="mailto:contactonwardsdigital@gmail.com">Contact</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <div class="wrap">
+    <a class="wordmark" href="index.html"><svg class="mark" viewBox="0 0 100 100" width="26" height="26" aria-hidden="true"><path d="M72 24 A36 36 0 1 0 72 76" fill="none" stroke="currentColor" stroke-width="9"/><path d="M50 50 H94" fill="none" stroke="currentColor" stroke-width="9"/><path d="M80 38 L94 50 L80 62" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter"/></svg>Onwards Digital</a>
+    <div class="nav-bar">
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <nav class="nav" id="nav">
+        <a href="#build">What we build</a>
+        <a href="#work">Our work</a>
+        <a href="#how">How it works</a>
+        <a href="#included">What’s included</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">Questions</a>
+      </nav>
+      <div class="cur-menu nav-cur">
+      <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+      <ul class="cur-list" role="listbox" hidden>
+        <li role="option" data-cur="USD" aria-selected="true"><span>USD</span><span class="sym">$</span></li>
+        <li role="option" data-cur="EUR"><span>EUR</span><span class="sym">€</span></li>
+        <li role="option" data-cur="GBP"><span>GBP</span><span class="sym">£</span></li>
+        <li role="option" data-cur="AED"><span>AED</span><span class="sym"><svg class="dh" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg></span></li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</header>
+
+<!-- Hero (text only) -->
+<section class="hero-text">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="hero-kicker">Websites for small businesses</p>
+        <h1 class="h-hero">Built in a week. Yours for life. Change whenever you like.</h1>
+      </div>
+      <div class="hero-right">
+        <p class="lede-lg">A clean, fast website for your business — designed to be fully functional on phone or computer, delivered in a week, while also allowing you to update the site at any time.</p>
+        <div class="hero-actions">
+          <a href="beginner.html" class="btn">Get a free mockup</a>
+          <a href="#work" class="btn-line">See our work</a>
+        </div>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="fact"><span class="cap muted">Build</span><span class="serif">3–7 days</span></div>
+      <div class="fact"><span class="cap muted">One-time</span><span class="serif" data-price="advanced" data-prefix="from ">from $299</span></div>
+      <div class="fact"><span class="cap muted">Then</span><span class="serif" data-price="monthlyCare" data-suffix="/ month">$12.99 <small>/ month</small></span></div>
+      <div class="fact"><span class="cap muted">Edits</span><span class="serif">Whenever you like</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- What we build -->
+<section class="section" id="build">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">What we build</h2>
+        <span class="muted" style="font-size:15px;">Five kinds of business, five very different demo sites we built to show what’s possible. Click any to open it.</span>
+      </div>
+    </div>
+    <div class="grid-5">
+      <div class="tile-wrap">
+      <a class="tile reveal" href="example-restaurant.html">
+          <div class="ph"><svg viewBox="0 0 200 200" fill="none" stroke="#1a1917" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><circle cx="100" cy="104" r="46"/><circle cx="100" cy="104" r="30"/><path d="M36 60v40M44 60v22a8 8 0 0 1-8 8M28 60v22a8 8 0 0 0 8 8M36 90v50M164 58c-8 6-12 18-12 34 0 10 6 14 12 14v34"/></svg><img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=800&q=75" alt="Ossobello — a candlelit dining room" loading="lazy" onerror="this.remove()"></div>
+          <div class="meta"><span class="name">Restaurants</span><span class="sub">Ossobello · trattoria, Providence</span></div>
+        </a>
+        <div class="tile-copy case-copy reveal">
+        <span class="cap muted">Restaurant · Providence</span>
+        <h3 class="h-sub">Ossobello</h3>
+        <p class="lede">A family trattoria’s site: tonight’s hours in the first screen, one reservation button, and the menu on the page itself — three courses, prices aligned, no PDF to download.</p>
+        <a href="example-restaurant.html" class="btn-text cap">Open the site</a>
+        </div>
+      </div>
+      <div class="tile-wrap">
+      <a class="tile reveal" href="example-cafe.html">
+          <div class="ph alt"><svg viewBox="0 0 200 200" fill="none" stroke="#1a1917" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><path d="M58 84h84v28a34 34 0 0 1-34 34H92a34 34 0 0 1-34-34V84zM142 92h10a12 12 0 0 1 0 24h-10M50 160h100M84 58c0-8 8-8 8-16M100 58c0-8 8-8 8-16M116 58c0-8 8-8 8-16"/></svg><img src="https://images.unsplash.com/photo-1643944471768-2d2eac3afb6d?auto=format&fit=crop&w=800&q=75" alt="Hollowmere — the pastry case at opening" loading="lazy" onerror="this.remove()"></div>
+          <div class="meta"><span class="name">Cafés &amp; bakeries</span><span class="sub">Hollowmere · bakehouse, Portland</span></div>
+        </a>
+        <div class="tile-copy case-copy reveal">
+        <span class="cap muted">Café &amp; bakery · Portland, Maine</span>
+        <h3 class="h-sub">Hollowmere Coffee &amp; Bakehouse</h3>
+        <p class="lede">A walk-in bakery that sells out by early afternoon. Order ahead with a pickup time, the whole counter menu inline, dietary tags included, and a 48-hour pre-order for loaves and cakes.</p>
+        <a href="example-cafe.html" class="btn-text cap">Open the site</a>
+        </div>
+      </div>
+      <div class="tile-wrap">
+      <a class="tile reveal" href="example-salon.html">
+          <div class="ph"><svg viewBox="0 0 200 200" fill="none" stroke="#1a1917" stroke-width="1.2" stroke-linecap="round" aria-hidden="true"><circle cx="72" cy="132" r="16"/><circle cx="128" cy="132" r="16"/><path d="M82 120L128 48M118 120L72 48M100 96l-6 12M100 96l6 12"/></svg><img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?auto=format&fit=crop&w=800&q=75" alt="Tessaline — salon chairs before opening" loading="lazy" onerror="this.remove()"></div>
+          <div class="meta"><span class="name">Salons &amp; studios</span><span class="sub">Tessaline · colour studio, Austin</span></div>
+        </a>
+        <div class="tile-copy case-copy reveal">
+        <span class="cap muted">Salon &amp; colour studio · Austin</span>
+        <h3 class="h-sub">Tessaline</h3>
+        <p class="lede">Most salon sites hide their prices. This one publishes starting prices for every service, introduces each stylist by what they’re known for, and lets a new client request a time. The editorial design gives the salon a higher-end feel, which supports higher pricing.</p>
+        <a href="example-salon.html" class="btn-text cap">Open the site</a>
+        </div>
+      </div>
+      <div class="tile-wrap">
+      <a class="tile reveal" href="example-veyra.html">
+          <div class="ph" style="background:#000"><img src="veyra-thumb.jpg" alt="Veyra — the site's opening screen" loading="lazy" onerror="this.remove()"></div>
+          <div class="meta"><span class="name">Startups &amp; apps</span><span class="sub">Veyra · AI investing, New York</span></div>
+        </a>
+        <div class="tile-copy case-copy reveal">
+        <span class="cap muted">AI investing subscription · New York</span>
+        <h3 class="h-sub">Veyra</h3>
+        <p class="lede">A fictional AI copy-trading service, built to show what a modern product site can be: one idea per screen, a hero that draws itself, numbers that count in, a risk dial you can move, and a single $29 plan. Dark, quiet, fast.</p>
+        <a href="example-veyra.html" class="btn-text cap">Open the site</a>
+        </div>
+      </div>
+      <div class="tile-wrap">
+      <a class="tile reveal" href="example-noorvale.html">
+          <div class="ph" style="background:#0b0b0c"><img src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=800&q=75" alt="Noor &amp; Vale — a glass house among trees at dusk" loading="lazy" onerror="this.remove()"></div>
+          <div class="meta"><span class="name">Real estate</span><span class="sub">Noor &amp; Vale · homes from $2m, worldwide</span></div>
+        </a>
+        <div class="tile-copy case-copy reveal">
+        <span class="cap muted">Global luxury real estate · forty cities</span>
+        <h3 class="h-sub">Noor &amp; Vale</h3>
+        <p class="lede">A fictional global house for homes from $2 million. A house in the woods that breathes behind the headline, a search bar that types its own suggestions, homes that wipe into view as you scroll, a city list where the picture follows your hand, and live local times for forty cities. Quiet, dark, expensive-looking.</p>
+        <a href="example-noorvale.html" class="btn-text cap">Open the site</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent work: live previews -->
+<section class="section" id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">Our work, up close</h2>
+        <span class="muted" style="font-size:15px;">Five demonstration sites, designed and built by us for five made-up businesses — different styles to show the quality and range of what we could make for you. Every preview is the real, working page.</span>
+      </div>
+    </div>
+
+    <article class="case reveal">
+      <a class="frame" href="example-restaurant.html" aria-label="Open the Ossobello site"><iframe src="example-restaurant.html" title="Ossobello preview" loading="lazy" tabindex="-1"></iframe></a>
+      <div class="case-copy">
+        <span class="cap muted">Restaurant · Providence</span>
+        <h3 class="h-sub">Ossobello</h3>
+        <p class="lede">A family trattoria’s site: tonight’s hours in the first screen, one reservation button, and the menu on the page itself — three courses, prices aligned, no PDF to download.</p>
+        <ul class="case-list">
+          <li>Tonight’s hours computed from one weekly table</li>
+          <li>Menu on the page, grouped antipasti / primi / secondi</li>
+          <li>Reservation form instead of a phone queue</li>
+        </ul>
+        <a href="example-restaurant.html" class="btn-text cap">Open the site</a>
+      </div>
+    </article>
+
+    <article class="case flip reveal">
+      <a class="frame" href="example-cafe.html" aria-label="Open the Hollowmere site"><iframe src="example-cafe.html" title="Hollowmere preview" loading="lazy" tabindex="-1"></iframe></a>
+      <div class="case-copy">
+        <span class="cap muted">Café &amp; bakery · Portland, Maine</span>
+        <h3 class="h-sub">Hollowmere Coffee &amp; Bakehouse</h3>
+        <p class="lede">A walk-in bakery that sells out by early afternoon. Order ahead with a pickup time, the whole counter menu inline, dietary tags included, and a 48-hour pre-order for loaves and cakes.</p>
+        <ul class="case-list">
+          <li>“Opens today at 7am” status line</li>
+          <li>Coffee, pastry and brunch menus with V / VE / GF tags</li>
+          <li>Pre-order form for whole loaves and cakes</li>
+        </ul>
+        <a href="example-cafe.html" class="btn-text cap">Open the site</a>
+      </div>
+    </article>
+
+    <article class="case reveal">
+      <a class="frame" href="example-salon.html" aria-label="Open the Tessaline site"><iframe src="example-salon.html" title="Tessaline preview" loading="lazy" tabindex="-1"></iframe></a>
+      <div class="case-copy">
+        <span class="cap muted">Salon &amp; colour studio · Austin</span>
+        <h3 class="h-sub">Tessaline</h3>
+        <p class="lede">Most salon sites hide their prices. This one publishes starting prices for every service, introduces each stylist by what they’re known for, and lets a new client request a time. The editorial design gives the salon a higher-end feel, which supports higher pricing.</p>
+        <ul class="case-list">
+          <li>Full price list with “from” pricing</li>
+          <li>Book with a specific stylist</li>
+          <li>First-visit FAQ: consultation, cancellations, parking</li>
+        </ul>
+        <a href="example-salon.html" class="btn-text cap">Open the site</a>
+      </div>
+    </article>
+    <article class="case reveal">
+      <a class="frame" href="example-veyra.html" aria-label="Open the Veyra site"><iframe src="example-veyra.html" title="Veyra preview" loading="lazy" tabindex="-1"></iframe></a>
+      <div class="case-copy">
+        <span class="cap muted">AI investing subscription · New York</span>
+        <h3 class="h-sub">Veyra</h3>
+        <p class="lede">A fictional AI copy-trading service, built to show what a modern product site can be: one idea per screen, a hero that draws itself, numbers that count in, a risk dial you can move, and a single $29 plan. Dark, quiet, fast.</p>
+        <ul class="case-list">
+          <li>Every section is one sentence and one thing to look at</li>
+          <li>Animations answer the scroll, and switch off for people who ask</li>
+          <li>The performance chart carries the small print it needs</li>
+        </ul>
+        <a href="example-veyra.html" class="btn-text cap">Open the site</a>
+      </div>
+    </article>
+    <article class="case reveal">
+      <a class="frame" href="example-noorvale.html" aria-label="Open the Noor &amp; Vale site"><iframe src="example-noorvale.html" title="Noor &amp; Vale preview" loading="lazy" tabindex="-1"></iframe></a>
+      <div class="case-copy">
+        <span class="cap muted">Global luxury real estate · forty cities</span>
+        <h3 class="h-sub">Noor &amp; Vale</h3>
+        <p class="lede">A fictional global house for homes from $2 million. A house in the woods that breathes behind the headline, a search bar that types its own suggestions, homes that wipe into view as you scroll, a city list where the picture follows your hand, and live local times for forty cities. Quiet, dark, expensive-looking.</p>
+        <ul class="case-list">
+          <li>Motion answers the scroll and the cursor, never the clock</li>
+          <li>Every price and figure is invented and says so</li>
+          <li>Budget slider and one advisor call, instead of a listings search</li>
+        </ul>
+        <a href="example-noorvale.html" class="btn-text cap">Open the site</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">How it works</h2>
+        <span class="muted" style="font-size:15px;">Four steps. You’ll spend about an hour of your own time across the whole thing.</span>
+      </div>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><span class="n">1</span><span class="t">Tell us about your business</span><p class="d">A five-minute form: what you do, who your customers are, what they usually ask you. Upload your logo and a few photos if you have them — if you don’t, we’ll work with what you’ve got.</p></div>
+      <div class="step"><span class="n">2</span><span class="t">See your free mockup</span><p class="d">You get a homepage within 3–5 business days with your name, your colours and your words on it. It’s free, and it’s yours to keep.</p></div>
+      <div class="step"><span class="n">3</span><span class="t">Refine and build</span><p class="d">You tell us what to change. We build the full site and send it back for revisions, and within 3–7 days you have a fully functioning website.</p></div>
+      <div class="step"><span class="n">4</span><span class="t">Go live, then edit it yourself</span><p class="d">You get the finished site, ready to put on your own domain. With Monthly Care you can edit the site up to three times a month: change prices, update your hours, swap a photo, and publish.</p></div>
+    </div>
+    <div class="need reveal">
+      <div class="need-head"><h3 class="need-title">What we’ll need from you</h3></div>
+      <ul class="need-list">
+        <li><span>Your logo</span><span class="muted">Any format. No logo? We set your name in good type.</span></li>
+        <li><span>Photos</span><span class="muted">Your own are best. Phone photos in daylight are fine.</span></li>
+        <li><span>The facts</span><span class="muted">Hours, prices, services, what people ask you most.</span></li>
+        <li><span>Your domain</span><span class="muted">You connect the site directly to your domain. As simple as that.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- What's included -->
+<section class="section" id="included">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">What every site includes</h2>
+        <span class="muted" style="font-size:15px;">Whatever the plan, these come as standard.</span>
+      </div>
+    </div>
+    <div class="included reveal">
+      <div class="inc"><span class="t">Designed for phone or computer</span><p>Most of your visitors are on a phone, but every page is laid out for a thumb or a mouse.</p></div>
+      <div class="inc"><span class="t">Fast to load</span><p>Hand-written HTML and CSS, no page-builder bloat. Pages load in well under a second on a normal connection.</p></div>
+      <div class="inc"><span class="t">The essentials up front</span><p>What you do, where, when you’re open and how to book — in the first screen, every time.</p></div>
+      <div class="inc"><span class="t">Real photography, room to breathe</span><p>Your photos, sized and placed properly. No stock-photo hero, no wall of icons.</p></div>
+      <div class="inc"><span class="t">Forms that reach you</span><p>Reservations, bookings, quote requests or orders land in your inbox. No account to check.</p></div>
+      <div class="inc"><span class="t">Search basics done</span><p>Page titles, descriptions, and the structure Google expects, so your name and town bring people to you.</p></div>
+      <div class="inc"><span class="t">Ready to go live</span><p>You receive the complete site, plus clear steps for putting it on your own domain. Nothing is owned by us.</p></div>
+      <div class="inc"><span class="t">The editor</span><p>With Monthly Care, you can change a price, swap a photo, and publish whenever you like.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">Pricing</h2>
+        <span class="muted" style="font-size:15px;">No hidden fees. No contracts. One-time build, then a small monthly amount if you want to edit the site yourself.</span>
+      </div>
+      <div class="cur-select"><span class="cap muted">Show prices in</span>
+        <div class="cur-menu">
+          <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+          <ul class="cur-list" role="listbox" hidden>
+            <li role="option" data-cur="USD" aria-selected="true"><span>USD</span><span class="sym">$</span></li>
+            <li role="option" data-cur="EUR"><span>EUR</span><span class="sym">€</span></li>
+            <li role="option" data-cur="GBP"><span>GBP</span><span class="sym">£</span></li>
+            <li role="option" data-cur="AED"><span>AED</span><span class="sym"><svg class="dh" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="plans reveal">
+      <div class="plan">
+        <div class="plan-head">
+          <span class="cap muted">Beginner</span>
+          <span class="price" data-price="beginner">Free</span>
+          <p class="plan-desc">A mockup of your homepage, no commitment.</p>
+        </div>
+        <ul class="features">
+          <li>One custom homepage design</li>
+          <li>Mobile or desktop layout</li>
+          <li>Delivered in 3–5 business days</li>
+          <li>Upgrade any time to go live</li>
+        </ul>
+        <a href="beginner.html" class="btn-line">Get your free mockup</a>
+      </div>
+      <div class="plan">
+        <div class="plan-head">
+          <span class="cap muted">Advanced</span>
+          <span class="price" data-price="advanced">$299</span>
+          <p class="plan-desc">A clean online presence, fast.</p>
+        </div>
+        <ul class="features">
+          <li>Up to 3 non-payment pages</li>
+          <li>Mobile &amp; desktop</li>
+          <li>Contact form, basic SEO</li>
+          <li>2 rounds of revisions, excluding bug fixes</li>
+          <li>Delivered in 3–5 business days</li>
+        </ul>
+        <a href="advanced.html" class="btn-line">Get started</a>
+      </div>
+      <div class="plan featured">
+        <div class="plan-head">
+          <div class="row"><span class="cap muted">Professional</span><span class="tag">Most chosen</span></div>
+          <span class="price" data-price="professional">$599</span>
+          <p class="plan-desc">A full site that turns visitors into customers.</p>
+        </div>
+        <ul class="features">
+          <li>Up to 5 non-payment pages</li>
+          <li>Booking or payments</li>
+          <li>Contact form, basic SEO</li>
+          <li>5 rounds of revisions, excluding bug fixes</li>
+          <li>Delivered in 5–7 business days</li>
+        </ul>
+        <a href="professional.html" class="btn">Get started</a>
+      </div>
+      <div class="plan">
+        <div class="plan-head">
+          <span class="cap muted">Monthly care</span>
+          <span class="price" data-price="monthlyCare" data-suffix="/ mo">$12.99<small> / mo</small></span>
+          <p class="plan-desc">Keep it current. Edit it yourself, any time.</p>
+        </div>
+        <ul class="features">
+          <li>Edit menu, hours &amp; photos yourself</li>
+          <li>Email support included</li>
+          <li>Edited by us within 3 business days</li>
+          <li>Cancel any time</li>
+        </ul>
+        <a href="monthly-care.html" class="btn-line">Add to any plan</a>
+      </div>
+    </div>
+    <p class="fine reveal">Prices are one-time for the build and monthly for care. Pay by PayPal or Stripe. Monthly Care can be cancelled any time by email — you keep the site either way. We build your website; we don’t host it, so there are no hosting fees from us.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="stack">
+        <h2 class="h-section">Questions people ask</h2>
+      </div>
+    </div>
+    <div class="faq reveal">
+      <details>
+        <summary>What happens after I send the free mockup form?</summary>
+        <p>We read it, look at your current site if you have one, and design your homepage. You get it by email within 3–5 business days as a picture of the page at phone and desktop sizes. There’s nothing to pay and nothing to cancel.</p>
+      </details>
+      <details>
+        <summary>Do I need to write the words?</summary>
+        <p>No. Tell us the facts — what you do, prices, hours, what customers ask — and we write the copy. You’ll edit it during revisions until it sounds like you.</p>
+      </details>
+      <details>
+        <summary>What if I don’t have good photos?</summary>
+        <p>We design so that phone photos taken in daylight look good, and we’ll tell you exactly which four or five shots to take. If you’d rather, we can source licensed stock photography for the launch and swap in your own later.</p>
+      </details>
+      <details>
+        <summary>Who owns the website?</summary>
+        <p>You do. The code, the domain, the content — from day one. Monthly Care only adds a 24/7 support system; the website is still yours.</p>
+      </details>
+      <details>
+        <summary>Can I take bookings or payments?</summary>
+        <p>Yes — all plans include a booking or payment integration (a reservation system, an appointment tool, or a simple online-ordering link). Tell us what you already use and we’ll connect it.</p>
+      </details>
+      <details>
+        <summary>What does Monthly Care actually cover?</summary>
+        <p>An editor, so you can change menus, hours, prices and photos yourself whenever you like, plus support by email. We’ll make up to three edits a month for you, delivered within three business days.</p>
+      </details>
+      <details>
+        <summary>I’m not in the US. Does that matter?</summary>
+        <p>No. We work by email and everything is online. Prices are in US dollars; switch the toggle at the top of the page to see them in another currency.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+  <div class="wrap">
+    <div class="cta-band reveal">
+      <div class="stack">
+        <h2 class="h-sub">See your homepage before you pay a cent.</h2>
+        <p class="lede">Tell us about your business and we’ll send a free mockup within 3–5 business days.</p>
+      </div>
+      <a href="beginner.html" class="btn">Get a free mockup</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<div class="wrap footer-wrap">
+  <footer class="footer">
+    <div class="col">
+      <span class="brand"><svg class="mark" viewBox="0 0 100 100" width="20" height="20" aria-hidden="true"><path d="M72 24 A36 36 0 1 0 72 76" fill="none" stroke="currentColor" stroke-width="9"/><path d="M50 50 H94" fill="none" stroke="currentColor" stroke-width="9"/><path d="M80 38 L94 50 L80 62" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter"/></svg>Onwards Digital</span>
+      <span class="about">Websites for small businesses. Built in a week, yours to change.</span>
+    </div>
+    <div class="col"><span class="cap">Plans</span><a href="beginner.html">Free mockup</a><a href="advanced.html">Advanced</a><a href="professional.html">Professional</a><a href="monthly-care.html">Monthly care</a></div>
+    <div class="col"><span class="cap">Examples</span><a href="example-restaurant.html">Ossobello — restaurant</a><a href="example-cafe.html">Hollowmere — café</a><a href="example-salon.html">Tessaline — salon</a><a href="example-veyra.html">Veyra — startup</a><a href="example-noorvale.html">Noor &amp; Vale — real estate</a></div>
+    <div class="col"><span class="cap">Contact</span><a href="mailto:contactonwardsdigital@gmail.com">contactonwardsdigital@gmail.com</a><span class="muted">© 2026 Onwards Digital</span><span class="muted" style="font-size:12px;">Example businesses are fictional. Photography via Unsplash.</span><a href="terms.html" style="font-size:12px;">Terms</a><a href="privacy.html" style="font-size:12px;">Privacy</a><a href="refunds.html" style="font-size:12px;">Refunds</a></div>
+  </footer>
+</div>
+
+<script src="config.js?v=20260908c"></script>
+<script src="site.js?v=20260908c"></script>
+</body>
+</html>
