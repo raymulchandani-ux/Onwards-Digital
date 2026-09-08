@@ -111,7 +111,7 @@
   .orbit .core i{font-style:normal;font-size:11px;color:#5fd28a;font-variant-numeric:tabular-nums}
   .orbit .core i.down{color:#e5646a}
   .orbit .core svg{width:22px;height:22px;stroke:var(--signal);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-  @media (max-width:900px){.model-grid{grid-template-columns:1fr}.orbit{max-width:360px}.orbit .item .chip{width:60px;height:60px}.orbit .cd b{font-size:10.5px}.orbit .core{width:108px;height:108px}}
+  @media (max-width:900px){.model-grid{grid-template-columns:1fr}.orbit{max-width:360px;overflow:clip}.orbit .item .chip{width:58px;height:58px}.orbit .cd b{font-size:10.5px}.orbit .core{width:96px;height:96px}}
 
   /* The model: numbers that count in, plus a trade tape */
   .model{background:var(--bg-2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -247,7 +247,7 @@
     .step h3{font-size:18px}
     .step p{font-size:13.5px;margin-top:6px}
     .model-grid{grid-template-columns:1fr;gap:20px}
-    .orbit{max-width:280px}.orbit .item .chip{width:56px;height:56px}.orbit .cd b{font-size:10px}.orbit .cd span{font-size:9px}.orbit .cd svg{width:14px;height:14px}.orbit .core{width:100px;height:100px}.orbit .core b{font-size:13px}.orbit .core span{font-size:10.5px}
+    .orbit{max-width:min(100%,340px)}.orbit .item .chip{width:50px;height:50px}.orbit .cd{gap:1px}.orbit .cd b{font-size:9.5px}.orbit .cd span{font-size:8.5px}.orbit .cd svg{width:13px;height:13px;margin-bottom:1px}.orbit .core{width:90px;height:90px;box-shadow:0 0 0 8px rgba(143,182,255,.05),0 0 40px rgba(143,182,255,.12)}.orbit .core b{font-size:12px}.orbit .core span{font-size:9.5px;padding:0 6px}.orbit .core i{font-size:10px}
     .stats{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
     .stat b{font-size:30px}
     .stat b small{font-size:.5em}
@@ -542,8 +542,13 @@
   function place(ring,list,radiusPct){list.forEach(function(it,i){var a=(360/list.length)*i;var d=document.createElement('div');d.className='item';d.style.transform='rotate('+a+'deg) translate('+radiusPct+'%)';d.innerHTML='<div class="chip" style="--a:'+a+'deg"><div class="cd" title="'+it[0]+'">'+ICON[it[1]]+'<b>'+it[0]+'</b>'+(it[2]?'<span>'+it[2]+'</span>':'')+'</div></div>';ring.appendChild(d);});}
   // outer ring: six; inner ring: four. Radius is a percentage of the orbit box (translate is relative to the item, so use px via CSS var)
   function layout(){ring1.innerHTML='';ring2.innerHTML='';var R=orbit.clientWidth/2;place(ring1,ITEMS.slice(0,6),0);place(ring2,ITEMS.slice(6),0);
-    ring1.querySelectorAll('.item').forEach(function(el,i){var a=(360/6)*i;el.style.transform='rotate('+a+'deg) translate('+(R-38)+'px)';});
-    ring2.querySelectorAll('.item').forEach(function(el,i){var a=(360/4)*i+45;el.style.transform='rotate('+a+'deg) translate('+(R*.62-36)+'px)';el.querySelector('.chip').style.setProperty('--a',a+'deg');});
+    // Radii come from the real chip and core sizes, so nothing overlaps at any width:
+    // outer chips sit just inside the outer line; inner chips clear the core and the outer chips.
+    var chip=(ring1.querySelector('.chip')||{}).offsetWidth||74, coreR=core.offsetWidth/2||66;
+    var rOut=R-chip/2-1, rIn=Math.max(coreR+chip/2+6, Math.min(R*.62-chip/2+1, rOut-chip-6));
+    ring2.style.inset=(R-rIn)+'px';
+    ring1.querySelectorAll('.item').forEach(function(el,i){var a=(360/6)*i;el.style.transform='rotate('+a+'deg) translate('+rOut+'px)';});
+    ring2.querySelectorAll('.item').forEach(function(el,i){var a=(360/4)*i+45;el.style.transform='rotate('+a+'deg) translate('+rIn+'px)';el.querySelector('.chip').style.setProperty('--a',a+'deg');});
   }
   layout(); window.addEventListener('resize',layout);
   // The rings turn in script so a hover can slow them to a stop and the chips always stay upright

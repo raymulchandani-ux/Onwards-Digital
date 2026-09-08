@@ -58,6 +58,7 @@
 
   /* Hero: a house in the woods, breathing */
   .hero{position:relative;height:calc(100vh - 100px);min-height:600px;overflow:hidden}
+  .hero .scene{position:absolute;inset:0;overflow:hidden}
   .hero .bg{position:absolute;inset:-6%;will-change:transform}
   .hero .bg img{width:100%;height:100%;object-fit:cover;object-position:center 60%;transform:scale(1.08);animation:breathe 26s ease-in-out infinite alternate}
   @keyframes breathe{from{transform:scale(1.08) translate3d(0,0,0)}to{transform:scale(1.14) translate3d(-1.2%,-1%,0)}}
@@ -148,7 +149,7 @@
   .home{flex:0 0 calc((100% - 2*var(--gap))/3);scroll-snap-align:start;position:relative;text-decoration:none;color:inherit;display:block}
   .home .ph{position:relative;overflow:hidden;background:var(--bg-2);aspect-ratio:4/3.4;border-radius:6px;clip-path:inset(0 0 100% 0);transition:clip-path 1.2s var(--ease)}
   .rv.in .home .ph{clip-path:inset(0 0 0 0)}
-  .rv.in .home:nth-child(2) .ph{transition-delay:.1s}.rv.in .home:nth-child(3) .ph{transition-delay:.2s}.rv.in .home:nth-child(4) .ph{transition-delay:.3s}
+  .rv.in .home:nth-child(11) .ph{transition-delay:.1s}.rv.in .home:nth-child(12) .ph{transition-delay:.2s}.rv.in .home:nth-child(13) .ph{transition-delay:.3s}
   .home .ph img{width:100%;height:100%;object-fit:cover;transition:transform 1.4s var(--ease)}
   .home:hover .ph img{transform:scale(1.04)}
   .home .tag{position:absolute;left:14px;top:14px;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-weight:400}
@@ -261,9 +262,11 @@
   .sel option{background:#111}
   .budget{display:flex;justify-content:space-between;align-items:baseline}
   .budget b{font-family:var(--serif);font-size:26px;font-weight:300;font-variant-numeric:tabular-nums;font-variation-settings:"opsz" 26}
-  .range{-webkit-appearance:none;appearance:none;width:100%;height:1px;background:rgba(244,242,237,.25);margin:12px 0 4px;outline:none}
-  .range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
-  .range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer}
+  .range{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:6px 0 0;outline:none;display:block;cursor:pointer;touch-action:pan-y}
+  .range::-webkit-slider-runnable-track{height:2px;background:rgba(244,242,237,.32);border-radius:2px;border:0}
+  .range::-moz-range-track{height:2px;background:rgba(244,242,237,.32);border-radius:2px;border:0}
+  .range::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;margin-top:-9px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
+  .range::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--fg);border:0;cursor:pointer;box-shadow:0 0 0 5px rgba(244,242,237,.08)}
   .range:focus-visible{outline:none}.range:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--brass)}
   .ends{display:flex;justify-content:space-between;font-size:12px;color:var(--fg-3)}
   .send{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:4px}
@@ -296,8 +299,8 @@
     .ask .pop{width:100%;max-width:none;top:calc(100% + 6px);bottom:auto;transform:translateY(-6px);max-height:224px;overflow:auto}
     .ask .pop.open{transform:none}
     .ask .pop-slider{width:100%;max-height:none}
-    .hero .copy{bottom:auto;top:16px}
-    .hero{height:calc(100svh - 100px);min-height:640px}
+    .hero .copy{top:auto;bottom:clamp(88px,15%,136px)}
+    .hero{height:calc(100svh - 100px);min-height:640px;overflow:visible;z-index:2}
     .scroll-hint{display:none}
     .run .c{padding:12px 18px;font-size:12.5px}.run .c b{font-size:16px}
     .track{margin-top:20px}
@@ -345,9 +348,9 @@
 </header>
 
 <section class="hero" id="top" aria-label="Introduction" style="padding:0">
-  <div class="bg" id="bg"><img src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=2600&q=85" alt="A glass house lit from within, alone among tall trees at dusk"></div>
-  <div class="mist" aria-hidden="true"></div>
-  <div class="grain" aria-hidden="true"></div>
+  <div class="scene" aria-hidden="true"><div class="bg" id="bg"><img src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=2600&q=85" alt="A glass house lit from within, alone among tall trees at dusk"></div>
+  <div class="mist"></div>
+  <div class="grain"></div></div>
   <div class="copy">
     <h1><span class="l"><span>The right home,</span></span><span class="l"><span><em>anywhere.</em></span></span></h1>
     <p class="sub"><b>Over 500 homes across 40 cities.</b></p>
@@ -559,19 +562,29 @@
   /* Homes strip: arrows, keyboard, and the arrows dim at the ends */
   var strip=document.getElementById('strip'), hp=document.getElementById('h-prev'), hn=document.getElementById('h-next');
   var glide=null;
+  // The nine homes are copied once before and once after themselves, so the strip never has an end:
+  // step past the last card and the first one simply follows on. When the view lands on a copy we
+  // quietly move back to the same view of the originals.
+  var REAL=Array.prototype.slice.call(strip.querySelectorAll('.home')), N=REAL.length;
+  function clone(h){var c=h.cloneNode(true);c.setAttribute('aria-hidden','true');c.tabIndex=-1;c.classList.add('copy');return c;}
+  REAL.slice().reverse().forEach(function(h){strip.insertBefore(clone(h),strip.firstChild);});
+  REAL.forEach(function(h){strip.appendChild(clone(h));});
+  function cardW(){var c=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16;return c.getBoundingClientRect().width+gap;}
+  function setW(){return N*cardW();}
+  function recentre(){var w=setW(),x=strip.scrollLeft,y=x;while(y>=2*w)y-=w;while(y<w)y+=w;if(Math.abs(y-x)>.5){strip.classList.add('gliding');strip.scrollLeft=y;strip.classList.remove('gliding');}}
+  strip.classList.add('gliding'); strip.scrollLeft=setW(); strip.classList.remove('gliding');
+  window.addEventListener('load',function(){if(!glide)recentre();});
+  var scrollT; strip.addEventListener('scroll',function(){if(glide)return;clearTimeout(scrollT);scrollT=setTimeout(recentre,120);},{passive:true});
+  window.addEventListener('resize',function(){if(!glide)recentre();});
   function stepStrip(dir){
-    var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=960?2:3;
-    var page=per*(card.getBoundingClientRect().width+gap), from=strip.scrollLeft, max=strip.scrollWidth-strip.clientWidth;
-    var to;
-    if(dir>0 && from>=max-4) to=0;                       // past the last page: round to the first
-    else if(dir<0 && from<=4) to=max;                     // before the first: round to the last
-    else to=Math.max(0,Math.min(max,Math.round((from+dir*page)/page)*page));
-    if(reduce){strip.scrollLeft=to;return;}
+    var cw=cardW(),per=window.innerWidth<=960?2:3,from=strip.scrollLeft;
+    var to=(Math.round(from/cw)+dir*per)*cw;
+    if(reduce){strip.scrollLeft=to;recentre();return;}
     if(glide)cancelAnimationFrame(glide);
     var t0=null,dur=720;
     function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
-    (function run(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);strip.scrollLeft=from+(to-from)*ease(p);if(p<1)glide=requestAnimationFrame(run);else glide=null;})(performance.now());
-    strip.classList.add('gliding');setTimeout(function(){strip.classList.remove('gliding');},dur);
+    strip.classList.add('gliding');
+    (function run(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);strip.scrollLeft=from+(to-from)*ease(p);if(p<1)glide=requestAnimationFrame(run);else{glide=null;strip.scrollLeft=to;recentre();strip.classList.remove('gliding');}})(performance.now());
   }
   hp.addEventListener('click',function(){stepStrip(-1);}); hn.addEventListener('click',function(){stepStrip(1);});
   strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
@@ -587,7 +600,8 @@
   var open=null;
   function openPop(field,pop,btn){closePops();pop.hidden=false;requestAnimationFrame(function(){pop.classList.add('open');});field.classList.add('open');if(btn)btn.setAttribute('aria-expanded','true');open={field:field,pop:pop,btn:btn};}
   function closePops(){if(!open)return;var o=open;o.pop.classList.remove('open');o.field.classList.remove('open');if(o.btn)o.btn.setAttribute('aria-expanded','false');setTimeout(function(){if(!o.pop.classList.contains('open'))o.pop.hidden=true;},220);open=null;}
-  document.addEventListener('click',function(e){if(open&&!open.field.contains(e.target))closePops();var k=document.getElementById('q-kind');if(k&&!k.contains(e.target))closeKind2();});
+  var downIn=false; document.addEventListener('pointerdown',function(e){downIn=!!(open&&open.field.contains(e.target));},true);
+  document.addEventListener('click',function(e){if(downIn){downIn=false;return;}if(open&&!open.field.contains(e.target))closePops();var k=document.getElementById('q-kind');if(k&&!k.contains(e.target))closeKind2();});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePops();closeKind2();}});
 
   // Where: suggestions as you type
