@@ -549,7 +549,7 @@
   rows.forEach(function(r){
     r.addEventListener('mouseenter',function(){showCity(r);});
     r.addEventListener('focus',function(){showCity(r);});
-    r.addEventListener('click',function(){showCity(r);cityIn.value=r.dataset.city;document.getElementById('enquire').scrollIntoView({behavior:reduce?'auto':'smooth'});});
+    r.addEventListener('click',function(){showCity(r);cityIn.value=r.dataset.city;if(window.innerWidth>960)document.getElementById('enquire').scrollIntoView({behavior:reduce?'auto':'smooth'});});
   });
 
   /* Homes strip: arrows, keyboard, and the arrows dim at the ends */

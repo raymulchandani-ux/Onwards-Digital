@@ -220,6 +220,12 @@
   footer .disc{grid-column:1/-1;max-width:90ch;line-height:1.55}
 
   @media (max-width:600px){.perf svg text{font-size:24px}}
+  .steps-track{position:relative}
+  .glass{position:absolute;top:34px;z-index:3;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.28);color:var(--fg);cursor:pointer;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,.06));backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 10px 30px rgba(0,0,0,.45);transition:opacity .3s,transform .2s}
+  .glass:active{transform:scale(.95)}
+  .glass svg{width:18px;height:18px}
+  .glass.prev{left:-6px}.glass.next{right:-6px}
+  .glass[hidden]{display:none}
   @media (max-width:900px){
     html{scroll-padding-top:90px}
     section{padding:44px var(--gutter)}
@@ -230,9 +236,13 @@
     .live{top:16px;right:var(--gutter);font-size:12px}
     .h{font-size:clamp(28px,7.6vw,40px)}
     .lead{font-size:15px;margin-top:12px}
-    .steps{display:flex;gap:12px;margin-top:24px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-left:calc(-1*var(--gutter));margin-right:calc(-1*var(--gutter));padding:0 var(--gutter)}
+    .steps-track{margin-top:24px}
+    .steps{display:flex;gap:0;margin-top:0;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;scroll-behavior:smooth}
     .steps::-webkit-scrollbar{display:none}
-    .step{flex:0 0 68vw;scroll-snap-align:start;padding-top:14px}
+    .step{flex:0 0 100%;scroll-snap-align:center;padding:14px 48px 0;text-align:center}
+    .step .art{justify-content:center}
+    .step p{margin-left:auto;margin-right:auto}
+    .glass:not([hidden]){display:flex}
     .step .art{height:74px;margin-bottom:12px}
     .step h3{font-size:18px}
     .step p{font-size:13.5px;margin-top:6px}
@@ -289,7 +299,10 @@
 <section id="how" aria-labelledby="how-h">
   <div class="rv">
     <h2 class="h" id="how-h">Begin in three steps.</h2>
-    <div class="steps">
+    <div class="steps-track" id="steps-track">
+      <button type="button" class="glass prev" id="st-prev" aria-label="Previous step" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button type="button" class="glass next" id="st-next" aria-label="Next step" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+    <div class="steps" id="steps">
       <div class="step">
         <div class="art"><svg class="draw" viewBox="0 0 260 120" fill="none" stroke="#f2f2f0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="20" width="100" height="80" rx="10"/><rect x="150" y="20" width="100" height="80" rx="10"/><path d="M110 60h40M138 50l12 10-12 10"/><path d="M30 45h60M30 60h40M30 75h50"/><circle cx="200" cy="60" r="18"/><path d="M191 60l6 6 12-12"/></svg></div>
         <h3>Connect your broker</h3>
@@ -305,6 +318,7 @@
         <h3>Every trade, mirrored</h3>
         <p>When the model buys, you buy, sized to your amount, within just seconds. When it sells, so do you. You see every order before and after.</p>
       </div>
+    </div>
     </div>
   </div>
 </section>
@@ -495,6 +509,25 @@
       requestAnimationFrame(step);
     });
   }
+
+  /* Steps carousel on phones: centred, arrows, swipe, auto-advance every 5s, loops */
+  (function(){
+    var track=document.getElementById('steps'), prev=document.getElementById('st-prev'), next=document.getElementById('st-next'); if(!track) return;
+    var items=track.querySelectorAll('.step'), n=items.length, idx=0, timer=null, mq=window.matchMedia('(max-width:900px)');
+    function go(i,smooth){idx=(i+n)%n; track.scrollTo({left:items[idx].offsetLeft-track.offsetLeft,behavior:(smooth===false||reduce)?'auto':'smooth'}); arrows();}
+    function arrows(){if(!mq.matches){prev.hidden=next.hidden=true;return;} prev.hidden=(idx===0); next.hidden=false;}
+    function restart(){clearInterval(timer);if(mq.matches&&!reduce)timer=setInterval(function(){go(idx+1);},5000);}
+    prev.addEventListener('click',function(){go(idx-1);restart();});
+    next.addEventListener('click',function(){go(idx+1);restart();});
+    var st;
+    track.addEventListener('scroll',function(){clearTimeout(st);st=setTimeout(function(){var w=track.clientWidth||1;var i=Math.round(track.scrollLeft/w);if(i!==idx){idx=Math.max(0,Math.min(n-1,i));arrows();restart();}},80);},{passive:true});
+    track.addEventListener('touchstart',function(){clearInterval(timer);},{passive:true});
+    track.addEventListener('touchend',restart,{passive:true});
+    function setup(){if(mq.matches){go(0,false);restart();}else{clearInterval(timer);track.scrollLeft=0;arrows();}}
+    mq.addEventListener?mq.addEventListener('change',setup):mq.addListener(setup);
+    window.addEventListener('resize',function(){if(mq.matches)go(idx,false);});
+    setup();
+  })();
 
   /* Trade tape (fictional) */
   var trades=[['Buy','MSFT','+0.8%','9:41'],['Trim','NVDA','−1.2%','9:52'],['Buy','JNJ','+0.6%','10:07'],['Sell','TSLA','−2.4%','10:31'],['Buy','COST','+0.5%','11:12'],['Hold','—','412 positions','11:30'],['Buy','ASML','+0.9%','13:04'],['Trim','AAPL','−0.7%','14:16'],['Buy','LIN','+0.4%','15:02'],['Sell','SNAP','−1.9%','15:48']];
