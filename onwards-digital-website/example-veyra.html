@@ -123,10 +123,10 @@
   .tape::before,.tape::after{content:"";position:absolute;top:0;bottom:0;width:120px;z-index:1;pointer-events:none}
   .tape::before{left:0;background:linear-gradient(90deg,var(--bg-2),transparent)}
   .tape::after{right:0;background:linear-gradient(270deg,var(--bg-2),transparent)}
-  .tape .row{display:inline-flex;gap:0;animation:tape 48s linear infinite}
+  .tape .row{display:flex;width:max-content;flex-wrap:nowrap;gap:0;animation:tape 48s linear infinite;will-change:transform}
   .tape:hover .row{animation-play-state:paused}
   @keyframes tape{to{transform:translateX(-50%)}}
-  .tape .t{display:inline-flex;gap:14px;align-items:baseline;padding:16px 28px;border-right:1px solid var(--line);font-size:14.5px;font-variant-numeric:tabular-nums}
+  .tape .t{display:inline-flex;flex:none;white-space:nowrap;gap:14px;align-items:baseline;padding:16px 28px;border-right:1px solid var(--line);font-size:14.5px;font-variant-numeric:tabular-nums}
   .tape .t b{font-weight:500}
   .tape .t .side{color:#5fd28a}
   .tape .t .side.sell{color:#e5646a}
@@ -515,7 +515,7 @@
     var track=document.getElementById('steps'), prev=document.getElementById('st-prev'), next=document.getElementById('st-next'); if(!track) return;
     var items=track.querySelectorAll('.step'), n=items.length, idx=0, timer=null, mq=window.matchMedia('(max-width:900px)');
     function go(i,smooth){idx=(i+n)%n; track.scrollTo({left:items[idx].offsetLeft-track.offsetLeft,behavior:(smooth===false||reduce)?'auto':'smooth'}); arrows();}
-    function arrows(){if(!mq.matches){prev.hidden=next.hidden=true;return;} prev.hidden=(idx===0); next.hidden=false;}
+    function arrows(){var off=!mq.matches;prev.hidden=off;next.hidden=off;}
     function restart(){clearInterval(timer);if(mq.matches&&!reduce)timer=setInterval(function(){go(idx+1);},5000);}
     prev.addEventListener('click',function(){go(idx-1);restart();});
     next.addEventListener('click',function(){go(idx+1);restart();});

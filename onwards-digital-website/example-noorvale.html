@@ -163,7 +163,6 @@
   .glass svg{width:22px;height:22px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.5))}
   .glass.prev{left:calc(var(--gutter) - 30px)}
   .glass.next{right:calc(var(--gutter) - 30px)}
-  .glass[disabled]{opacity:.25;cursor:default;transform:none}
   @media (prefers-reduced-motion:reduce){.home .ph{clip-path:none;transition:none}}
   .grid-note{padding:0 var(--gutter)}
   .grid-note{margin-top:16px;font-size:12.5px;color:var(--fg-3)}
@@ -177,7 +176,9 @@
   .where .list button span{font-size:12.5px;font-variant-numeric:tabular-nums;font-weight:400}
   .where .list button.on{padding-left:14px;color:var(--fg)}
   .where .list button:hover b,.where .list button.on b{color:var(--brass)}
-  .where .pic{position:relative;aspect-ratio:4/3.4;max-height:calc(100vh - 220px);overflow:hidden;background:var(--bg-2);margin:0;border-radius:6px}
+  .where .pic{position:relative;aspect-ratio:4/3.4;max-height:calc(100vh - 220px);overflow:hidden;background:var(--bg-2);margin:0;border-radius:6px;clip-path:inset(0 0 100% 0 round 6px);transition:clip-path 1.3s var(--ease)}
+  .rv.in .where .pic{clip-path:inset(0 0 0 0 round 6px)}
+  @media (prefers-reduced-motion:reduce){.where .pic{clip-path:none;transition:none}}
   .where .pic .tag{position:absolute;left:14px;top:14px;z-index:1;font-size:12px;color:var(--fg);background:rgba(10,10,11,.45);backdrop-filter:blur(8px);padding:6px 10px;border-radius:999px;font-weight:400}
   .where .pic .tag.time{left:auto;right:14px;top:auto;bottom:14px;font-variant-numeric:tabular-nums}
   .where .pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity .8s var(--ease),transform 1.6s var(--ease)}
@@ -292,8 +293,11 @@
     .ask .field:first-child{grid-column:1/-1}
     .ask #f-kind{border-right:1px solid rgba(244,242,237,.12)}
     .ask .go{grid-column:1/-1;margin:10px;border-radius:999px}
-    .ask .pop{width:100%;max-width:none}
-    .ask .pop-slider{width:100%}
+    .ask .pop{width:100%;max-width:none;top:calc(100% + 6px);bottom:auto;transform:translateY(-6px);max-height:224px;overflow:auto}
+    .ask .pop.open{transform:none}
+    .ask .pop-slider{width:100%;max-height:none}
+    .hero .copy{bottom:auto;top:16px}
+    .hero{height:calc(100svh - 100px);min-height:640px}
     .scroll-hint{display:none}
     .run .c{padding:12px 18px;font-size:12.5px}.run .c b{font-size:16px}
     .track{margin-top:20px}
@@ -558,7 +562,10 @@
   function stepStrip(dir){
     var card=strip.querySelector('.home'),gap=parseFloat(getComputedStyle(strip).columnGap)||16,per=window.innerWidth<=960?2:3;
     var page=per*(card.getBoundingClientRect().width+gap), from=strip.scrollLeft, max=strip.scrollWidth-strip.clientWidth;
-    var to=Math.max(0,Math.min(max,Math.round((from+dir*page)/page)*page));
+    var to;
+    if(dir>0 && from>=max-4) to=0;                       // past the last page: round to the first
+    else if(dir<0 && from<=4) to=max;                     // before the first: round to the last
+    else to=Math.max(0,Math.min(max,Math.round((from+dir*page)/page)*page));
     if(reduce){strip.scrollLeft=to;return;}
     if(glide)cancelAnimationFrame(glide);
     var t0=null,dur=720;
@@ -566,9 +573,7 @@
     (function run(ts){if(!t0)t0=ts;var p=Math.min(1,(ts-t0)/dur);strip.scrollLeft=from+(to-from)*ease(p);if(p<1)glide=requestAnimationFrame(run);else glide=null;})(performance.now());
     strip.classList.add('gliding');setTimeout(function(){strip.classList.remove('gliding');},dur);
   }
-  function ends(){hp.disabled=strip.scrollLeft<8;hn.disabled=strip.scrollLeft+strip.clientWidth>strip.scrollWidth-8;}
   hp.addEventListener('click',function(){stepStrip(-1);}); hn.addEventListener('click',function(){stepStrip(1);});
-  strip.addEventListener('scroll',ends,{passive:true}); window.addEventListener('resize',ends); ends();
   strip.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();stepStrip(1);}if(e.key==='ArrowLeft'){e.preventDefault();stepStrip(-1);}});
 
   /* Villas: slow rotation, dots you can press */
