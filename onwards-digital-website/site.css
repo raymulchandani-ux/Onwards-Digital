@@ -124,8 +124,6 @@ ul { padding: 0; list-style: none; }
 .tile .ph { aspect-ratio: 1 / 1; background: var(--stone); position: relative; overflow: hidden; }
 .tile .ph.alt { background: var(--stone-2); }
 .tile .ph svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.tile .ph::after { content: ""; position: absolute; inset: 0; border: 1px solid transparent; transition: border-color .15s ease; }
-.tile:hover .ph::after { border-color: var(--ink); }
 .tile .name { font-size: 16px; }
 .tile .sub { font-size: 13px; color: var(--muted); }
 .tile .meta { display: flex; flex-direction: column; gap: 4px; }
@@ -308,18 +306,6 @@ ul { padding: 0; list-style: none; }
 .tile .ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(.92); transition: transform .6s ease; }
 .tile:hover .ph img { transform: scale(1.03); }
 
-.case { display: grid; grid-template-columns: 7fr 5fr; gap: 64px; align-items: center; padding: 64px 0; border-top: 1px solid var(--hair); }
-.case:first-of-type { border-top: 1px solid var(--ink); }
-.case.flip .frame { order: 2; }
-.case.flip .case-copy { order: 1; }
-.frame { display: block; position: relative; aspect-ratio: 16 / 10; overflow: hidden; border: 1px solid var(--ink); background: var(--stone); }
-.frame::after { content: ""; position: absolute; inset: 0; }
-.frame iframe { position: absolute; top: 0; left: 0; width: 1440px; height: 900px; border: 0; transform-origin: 0 0; pointer-events: none; background: #fff; }
-.case-copy { display: flex; flex-direction: column; gap: 20px; }
-.case-list { display: flex; flex-direction: column; font-size: 14px; }
-.case-list li { padding: 10px 0; border-top: 1px solid var(--hair); }
-.case-list li:last-child { border-bottom: 1px solid var(--hair); }
-.case-copy .btn-text { align-self: flex-start; }
 
 .need { display: flex; flex-direction: column; gap: 8px; margin-top: 56px; border-top: 1px solid var(--ink); padding-top: 28px; }
 .need-title { font-family: var(--serif); font-weight: 400; font-size: clamp(22px, 2.2vw, 30px); letter-spacing: 0.01em; }
@@ -349,9 +335,6 @@ ul { padding: 0; list-style: none; }
   .fact:nth-child(3) { padding-left: 0; }
   .fact:nth-child(1), .fact:nth-child(2) { border-bottom: 1px solid var(--hair); }
   .pov, .need { grid-template-columns: 1fr; gap: 16px; }
-  .case, .case.flip { grid-template-columns: 1fr; gap: 32px; }
-  .case.flip .frame { order: 0; }
-  .case.flip .case-copy { order: 1; }
   .included { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 760px) {
@@ -361,7 +344,6 @@ ul { padding: 0; list-style: none; }
   .fact + .fact { padding-left: 0; }
   .fact:last-child { border-bottom: 0; }
   .pov-cols { grid-template-columns: 1fr; gap: 20px; }
-  .case { padding: 40px 0; }
   .need-list { grid-template-columns: 1fr; }
   .included { grid-template-columns: repeat(2, minmax(0, 1fr)); border-left: 0; }
   .inc { padding: 18px 14px 20px 0; }
@@ -416,8 +398,6 @@ ul { padding: 0; list-style: none; }
   .section { padding-top: 48px; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 12px; }
   .grid-5, .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-  /* an odd last tile sits centred on its own row, same size as the others */
-  .grid-5 .tile:last-child:nth-child(odd) { grid-column: 1 / -1; width: calc(50% - 8px); margin: 0 auto; }
   .plans, .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .plan { padding: 22px 14px 24px; gap: 18px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
   .plan:nth-child(even) { border-right: 0; }
@@ -488,14 +468,6 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 
 /* ── Phone-only compaction (≤760px) ────────────────────────── */
 @media (max-width: 760px) {
-  /* Recent work: compact rows instead of five tall previews */
-  .case { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; align-items: start; }
-  .case .frame, .case .case-list { display: none; }
-  .case-copy { gap: 8px; }
-  .case-copy .h-sub { font-size: 24px; }
-  .case-copy .lede { font-size: 15px; line-height: 1.5; }
-  .case-copy .btn-text { margin-top: 4px; }
-  #work .section-head .muted { display: none; }
 
   /* Plan pages: tighter form and aside */
   .plan-page { margin-top: 24px; }
@@ -624,23 +596,7 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 .btn .dh path { stroke-width: 6.5; }
 .summary .dh, .submit-note .dh { width: 0.8em; height: 0.8em; max-width: none; vertical-align: -0.08em; }
 
-/* Phone only: the five demo tiles carry their "Our work, up close" text directly
-   under the photo, and the separate Our work section is hidden to cut scrolling. */
-.tile-copy { display: none; }
-@media (max-width: 760px) {
-  #work { display: none; }
-  .grid-5 { grid-template-columns: 1fr; gap: 0; }
-  .grid-5 .tile:last-child:nth-child(odd) { width: auto; margin: 0; }
-  .tile-wrap { display: flex; flex-direction: column; gap: 14px; padding: 24px 0; border-top: 1px solid var(--hair); }
-  .tile-wrap:first-child { border-top: 1px solid var(--ink); }
-  .tile-wrap:last-child { border-bottom: 1px solid var(--hair); }
-  .tile-wrap .tile .ph { aspect-ratio: 16 / 10; }
-  .tile-wrap .tile .meta { display: none; }
-  .tile-copy { display: flex; }
-}
 
-/* Three demo tiles: a little shorter than square now they are wider */
-@media (min-width:761px){.grid-5 .tile .ph{aspect-ratio:4/5}}
 
 /* Phone: less scrolling on the homepage */
 @media (max-width: 760px) {
@@ -649,10 +605,6 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
   .fact:nth-child(even) { border-right: 0; padding-left: 12px; }
   .fact:nth-child(3), .fact:nth-child(4) { border-bottom: 0; }
   .fact .serif { font-size: 22px; }
-  .tile-wrap { padding: 18px 0; gap: 10px; }
-  .tile-wrap .tile .ph { aspect-ratio: 16 / 9; }
-  .tile-copy .h-sub { font-size: 22px; }
-  .tile-copy .lede { font-size: 14.5px; }
   .section { padding-top: 40px; padding-bottom: 40px; }
   .steps .step { padding: 16px 12px 18px 0; }
   .step p { font-size: 13.5px; }
@@ -661,11 +613,46 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
 }
 
 @media (max-width: 760px) {
-  .tile-copy .lede { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .tile-copy .btn-text { display: none; }
-  .tile-copy .cap { font-size: 11px; }
   .step .h-sub, .steps h3 { font-size: 18px; }
   .features li { padding: 6px 0; font-size: 12.5px; }
   .plan { gap: 12px; }
   .inc p { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+}
+
+/* What we build ------------------------------------------------
+   The five demo sites with their write-ups, in one section (the separate
+   "Our work, up close" section with live previews is gone). Three across on
+   a laptop, two on a tablet, one on a phone. Photos are 4:3 with soft
+   corners and lift a little on hover — no hairline box around them. */
+.cases { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 32px; margin-top: 8px; }
+.cases .tile-wrap { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.cases .tile { gap: 12px; }
+.cases .tile .ph { aspect-ratio: 4 / 3; border-radius: 14px; box-shadow: inset 0 0 0 1px rgba(26,25,23,.06); transition: transform .5s ease, box-shadow .5s ease; }
+.cases .tile .ph img { border-radius: 14px; transition: transform .8s ease, filter .5s ease; }
+.cases .tile:hover .ph { transform: translateY(-3px); box-shadow: inset 0 0 0 1px rgba(26,25,23,.06), 0 18px 40px -20px rgba(26,25,23,.35); }
+.cases .tile:hover .ph img { transform: scale(1.04); filter: saturate(1); }
+.cases .tile .meta { display: none; }
+.cases .tile-copy { display: flex; flex-direction: column; gap: 12px; }
+.cases .tile-copy .cap { font-size: 11.5px; }
+.cases .tile-copy .h-sub { font-size: clamp(24px, 2.2vw, 30px); }
+.cases .tile-copy .lede { font-size: 14.5px; line-height: 1.55; }
+.cases .case-list { display: flex; flex-direction: column; font-size: 13.5px; margin-top: 4px; }
+.cases .case-list li { padding: 8px 0; border-top: 1px solid var(--hair); }
+.cases .case-list li:last-child { border-bottom: 1px solid var(--hair); }
+.cases .tile-copy .btn-text { align-self: flex-start; margin-top: 2px; }
+@media (max-width: 1100px) {
+  .cases { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px 24px; }
+}
+@media (max-width: 760px) {
+  /* Phone: one column, photo 16:10, copy clamped and the bullet lists hidden to keep the section short */
+  .cases { grid-template-columns: 1fr; gap: 0; margin-top: 0; }
+  .cases .tile-wrap { gap: 10px; padding: 18px 0; border-top: 1px solid var(--hair); }
+  .cases .tile-wrap:first-child { border-top: 1px solid var(--ink); }
+  .cases .tile-wrap:last-child { border-bottom: 1px solid var(--hair); }
+  .cases .tile .ph, .cases .tile .ph img { aspect-ratio: 16 / 10; border-radius: 12px; }
+  .cases .tile-copy { gap: 6px; }
+  .cases .tile-copy .cap { font-size: 11px; }
+  .cases .tile-copy .h-sub { font-size: 22px; }
+  .cases .tile-copy .lede { font-size: 14.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .cases .case-list, .cases .tile-copy .btn-text { display: none; }
 }
