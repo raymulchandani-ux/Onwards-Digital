@@ -14,6 +14,7 @@
   var state;
   try { state = JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { state = null; }
   if (!state || !state.theme || !state.img) state = G.defaults("restaurant");
+  (function fillMissing(o, d) { Object.keys(d).forEach(function (k) { if (o[k] === undefined) o[k] = JSON.parse(JSON.stringify(d[k])); else if (d[k] && typeof d[k] === "object" && !Array.isArray(d[k]) && o[k] && typeof o[k] === "object") fillMissing(o[k], d[k]); }); })(state, G.defaults(state.preset || "restaurant"));
   var blobs = {};            // blob: URL -> Blob, for photos the customer uploads
   var page = "home", device = window.innerWidth < 760 ? "phone" : "laptop";
 
@@ -53,9 +54,12 @@
     if (a.nodeType === 3 || a.nodeType === 8) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
     if (a.nodeType !== 1) return;
     var i;
+    if (a.hasAttribute("data-days") || a.hasAttribute("data-cal")) {           // the site's own pickers keep their month and selection
+      for (i = 0; i < b.attributes.length; i++) { var bt = b.attributes[i]; if (a.getAttribute(bt.name) !== bt.value && bt.name !== "data-cal" && bt.name !== "data-days") a.setAttribute(bt.name, bt.value); }
+      return;
+    }
     for (i = a.attributes.length - 1; i >= 0; i--) { var n = a.attributes[i].name; if (!b.hasAttribute(n) && n !== "contenteditable") a.removeAttribute(n); }
     for (i = 0; i < b.attributes.length; i++) { var at = b.attributes[i]; if (a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
-    if (a.hasAttribute("data-days") || a.hasAttribute("data-cal")) return;   // the site's own pickers keep their state
     var bk = [].slice.call(b.childNodes);
     for (i = 0; i < bk.length; i++) { if (i < a.childNodes.length) morph(a.childNodes[i], bk[i]); else a.appendChild(a.ownerDocument.importNode(bk[i], true)); }
     while (a.childNodes.length > bk.length) a.removeChild(a.lastChild);
@@ -87,6 +91,17 @@
     frame.style.width = vw + "px"; frame.style.height = fh + "px"; frame.style.transform = "scale(" + sc + ")";
   }
   window.addEventListener("resize", debounce(function () { fit(); sizeThumbs(); }, 120));
+  if (window.ResizeObserver) { var ro = new ResizeObserver(function () { fit(); sizeThumbs(); }); ro.observe(stage); ro.observe($(".bl-panels", root)); }
+  var blEl = $(".bl", root), view = "split";
+  try { view = localStorage.getItem("onwards-builder-view") || "split"; } catch (e) {}
+  function setView(v) {
+    view = v; blEl.classList.remove("m-preview", "m-split", "m-options"); blEl.classList.add("m-" + v);
+    root.querySelectorAll("[data-view]").forEach(function (b) { var on = b.getAttribute("data-view") === v; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+    try { localStorage.setItem("onwards-builder-view", v); } catch (e) {}
+    var t0 = performance.now(); (function tick(now) { fit(); sizeThumbs(); if (now - t0 < 520) requestAnimationFrame(tick); })(t0);
+  }
+  root.querySelectorAll("[data-view]").forEach(function (b) { b.addEventListener("click", function () { setView(b.getAttribute("data-view")); }); });
+  setView(view);
 
   var update = debounce(function () { apply(); save(); refreshThumbs(); paintSummaries(); }, 90);
   function changed(now) { if (now) { apply(); save(); refreshThumbs(); paintSummaries(); } else update(); }
@@ -170,7 +185,7 @@
     var names = [["base", "Page"], ["soft", "Soft"], ["ink", "Dark"], ["accent", "Accent"]];
     var box = h("div", { class: "tones" });
     function paint() {
-      var c = G.colors(state), soft = G.mix(c.bg, c.fg, .06);
+      var c = secColors(key), soft = G.mix(c.bg, c.fg, .06);
       var map = { base: [c.bg, c.fg], soft: [soft, c.fg], ink: [c.fg, c.bg], accent: [c.ac, G.onColor(c.ac)] };
       [].forEach.call(box.children, function (b) { var t = b.getAttribute("data-t"); b.classList.toggle("on", state[key].tone === t); var i = b.querySelector("i"); i.style.background = map[t][0]; i.style.color = map[t][1]; });
     }
@@ -321,11 +336,81 @@
       withSize ? group("Heading size", [seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null
     ];
   }
-  function lookTabs(sec, withSize, extra) {
-    var tabs = [["Design", function () { return [layouts(sec)]; }],
-      ["Style", function () { return [group("Section colour", [tones(sec)]), withSize ? group("Heading size", [seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null].concat(extra || []); }]];
-    return tabs;
+  function secColors(k) { var o = state[k]; return (o && (o.custom || (o.pal != null && G.PALETTES[o.pal]))) || G.colors(state); }
+  function secPalettes(sec) {
+    var o = state[sec], box = h("div", { class: "pals" });
+    function mark(x) { [].forEach.call(box.children, function (c) { c.classList.toggle("on", c === x); }); }
+    var same = h("button", { type: "button", class: "pal same" + (o.pal == null && !o.custom ? " on" : ""), title: "Same as the rest of the site", "aria-label": "Same as the rest of the site", text: "Site" });
+    same.addEventListener("click", function () { o.pal = null; o.custom = null; mark(same); changed(true); });
+    box.appendChild(same);
+    G.PALETTES.forEach(function (p, i) {
+      var b = h("button", { type: "button", class: "pal" + (o.pal === i && !o.custom ? " on" : ""), title: p.n, "aria-label": p.n, style: "background:" + p.bg }, [h("i", { style: "background:" + p.fg }), h("i", { style: "background:" + p.ac })]);
+      b.addEventListener("click", function () { o.pal = i; o.custom = null; mark(b); changed(true); });
+      box.appendChild(b);
+    });
+    return box;
   }
+  function secSize(sec) {
+    var o = state[sec], val = function () { return o.size != null ? o.size : state.theme.size; };
+    var out = h("output", { text: val() + "%" }), inp = h("input", { type: "range", min: 85, max: 120, step: 5, value: val(), "aria-label": "Text size for this section" });
+    var reset = h("button", { type: "button", class: "btn-text cap rs", text: "Reset", hidden: o.size == null });
+    inp.addEventListener("input", function () { o.size = +inp.value; out.textContent = inp.value + "%"; reset.hidden = false; changed(); });
+    reset.addEventListener("click", function () { o.size = null; inp.value = val(); out.textContent = val() + "%"; reset.hidden = true; changed(true); });
+    return h("div", { class: "rng" }, [h("span", { class: "fl-l", text: "Text size" }), inp, out, reset]);
+  }
+  function styleBlock(sec, withSize) {
+    return [
+      h("p", { class: "hint", text: "These change this section only. To change the whole site at once, use Colours & fonts." }),
+      group("Background", [tones(sec)]),
+      group("Sizes", [secSize(sec), withSize ? h("div", { class: "fl" }, [h("span", { class: "fl-l", text: "Heading size" }), seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null]),
+      group("Colours", [secPalettes(sec)]),
+      group("Fonts", [h("div", { class: "cols2" }, [fontPick("Headings", "hf", state[sec]), fontPick("Text", "bf", state[sec])])])
+    ];
+  }
+  function lookTabs(sec, withSize, extra) {
+    return [["Design", function () { return [layouts(sec)]; }],
+      ["Style", function () { return styleBlock(sec, withSize).concat(extra || []); }]];
+  }
+
+  /* Font dropdown: our own list, each name shown in its font */
+  function fontPick(label, which, obj) {
+    var list = which === "hf" ? G.HEAD_FONTS : G.BODY_FONTS, allowSame = obj !== state.theme;
+    var wrap = h("div", { class: "fp" }), btn = h("button", { type: "button", class: "fp-btn", "aria-haspopup": "listbox", "aria-expanded": "false" });
+    var pop = h("div", { class: "fp-list", role: "listbox", "aria-label": label + " font", hidden: true });
+    function nameOf(i) { return i == null ? "Same as site" : list[i][0]; }
+    function paint() {
+      var i = obj[which]; btn.innerHTML = "";
+      btn.appendChild(h("span", { class: "fp-l", text: label }));
+      btn.appendChild(h("span", { class: "fp-v", text: nameOf(i), style: i == null ? null : "font-family:'" + list[i][0] + "',serif" }));
+      btn.appendChild(h("i", { class: "fp-c", "aria-hidden": "true" }));
+      [].forEach.call(pop.children, function (o) { var on = String(o.getAttribute("data-i")) === String(i == null ? "" : i); o.classList.toggle("on", on); o.setAttribute("aria-selected", on); });
+    }
+    function close() { pop.hidden = true; wrap.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
+    function openIt() {
+      loadFonts(); document.querySelectorAll(".fp.open").forEach(function (x) { if (x !== wrap && x._close) x._close(); });
+      pop.hidden = false; wrap.classList.add("open"); btn.setAttribute("aria-expanded", "true");
+      var sel = pop.querySelector(".on") || pop.firstChild; pop.scrollTop = Math.max(0, sel.offsetTop - 60); sel.focus({ preventScroll: true });
+      requestAnimationFrame(function () {                       // bring the whole list into view inside the options column
+        var L = wrap.closest(".bl-panels"), r = pop.getBoundingClientRect();
+        if (L && L.scrollHeight > L.clientHeight + 4) { var lr = L.getBoundingClientRect(); if (r.bottom > lr.bottom) L.scrollBy({ top: r.bottom - lr.bottom + 16, behavior: "smooth" }); }
+        else if (r.bottom > window.innerHeight) window.scrollBy({ top: r.bottom - window.innerHeight + 90, behavior: "smooth" });
+      });
+    }
+    function choose(i) { obj[which] = i; paint(); close(); btn.focus(); changed(true); }
+    if (allowSame) pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o same", "data-i": "", text: "Same as the rest of the site", onclick: function () { choose(null); } }));
+    list.forEach(function (f, i) { pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o", "data-i": i, text: f[0], style: "font-family:'" + f[0] + "',serif", onclick: function () { choose(i); } })); });
+    btn.addEventListener("click", function () { pop.hidden ? openIt() : close(); });
+    pop.addEventListener("keydown", function (e) {
+      var items = [].slice.call(pop.children), k = items.indexOf(document.activeElement);
+      if (e.key === "ArrowDown") { e.preventDefault(); (items[k + 1] || items[k]).focus(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); (items[k - 1] || items[k]).focus(); }
+      else if (e.key === "Escape") { e.preventDefault(); close(); btn.focus(); }
+    });
+    wrap._close = close;
+    wrap.appendChild(btn); wrap.appendChild(pop); paint();
+    return wrap;
+  }
+  document.addEventListener("click", function (e) { document.querySelectorAll(".fp.open").forEach(function (x) { if (!x.contains(e.target) && x._close) x._close(); }); });
   var PANELS = [
     { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
       build: function () {
@@ -338,7 +423,7 @@
         });
         var pages = h("div", { class: "sws" }, [
           toggle("About", "pages.about", pageToggled("about")), toggle(state.services.label || "Services", "pages.services", pageToggled("services")),
-          toggle("Gallery", "pages.gallery", pageToggled("gallery")), toggle("Booking system", "pages.booking", pageToggled("booking")), toggle("Contact", "pages.contact", pageToggled("contact"))
+          toggle("Gallery", "pages.gallery", pageToggled("gallery")), toggle("Booking system", "pages.booking", pageToggled("booking")), toggle("Contact", "pages.contact", pageToggled("contact")), toggle("Terms of service", "pages.terms", pageToggled("terms"))
         ]);
         return [
           group("Kind of business", [types, h("p", { class: "hint", text: "Fills in example words and photos. Your design stays as it is." })]),
@@ -359,7 +444,7 @@
       build: function () { return { tabs: lookTabs("header", false) }; } },
     { id: "hero", title: function () { return "Homepage"; }, sum: function () { return G.SECTIONS.hero[state.hero.v].n + " design"; }, page: "home",
       build: function () {
-        return { tabs: lookTabs("hero", true, [group("Site colours", [palettes()]), group("Fonts & size", [fontSelect(), range("Text size", "theme.size", 90, 115, 5, "%")])]).concat([
+        return { tabs: lookTabs("hero", true).concat([
           ["Words", function () { return [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
             h("div", { class: "cols2" }, [text("Main button", "hero.cta", { max: 28 }), text("Second button", "hero.cta2", { max: 28 })]),
             group("Three highlights", [toggle("Show highlights", "hero.hlOn"), hlFields()])]; }],
@@ -369,7 +454,7 @@
     { id: "about", need: "about", title: function () { return "About"; }, sum: function () { return G.SECTIONS.about[state.about.v].n + " design"; }, page: "about",
       build: function () {
         return { tabs: lookTabs("about", true).concat([
-          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), group("Three numbers", [factFields()])]; }],
+          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), group("Key facts", [h("p", { class: "hint", text: "Three short facts shown as big numbers with a label, e.g. “12 — dishes on the menu”. Some About designs show them. Clear all three to hide them." }), factFields()])]; }],
           ["Photos", function () { return [photo("Main photo", "about"), photo("Second photo", "x1", "Used by some designs")]; }]
         ]) };
       } },
@@ -391,29 +476,44 @@
         return { tabs: lookTabs("booking", true, [photo("Photo", "x1", "Used by the Photo split design")]).concat([
           ["Words & options", function () { return [group("What people book", [seg("booking.kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
             h("div", { class: "cols2" }, [text("Name in menu", "booking.label", { max: 16 }), text("Button", "booking.button", { max: 28 })]), text("Heading", "booking.title", { max: 60 }), text("Intro", "booking.intro", { area: true, rows: 2, max: 200 }),
-            text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." })]; }]
+            text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." }),
+            text("Times people can pick, separated by commas", "booking.times", { max: 300, ph: state.booking.kind === "table" ? "5:30pm, 6:00pm, 6:30pm…" : "9:00am, 10:00am, 11:00am…" }), h("p", { class: "hint", text: "Leave empty to use our usual times. Every design has a full calendar, so people can pick any future date." })]; }],
+          ["Requests", function () { return destBlock(); }]
         ]) };
       } },
     { id: "contact", title: function () { return "Contact & footer"; }, sum: function () { return (state.pages.contact ? G.SECTIONS.contact[state.contact.v].n + " · " : "") + G.SECTIONS.footer[state.footer.v].n + " footer"; }, page: "contact",
       build: function () {
         var tabs = [];
-        if (state.pages.contact) tabs.push(["Design", function () { return [layouts("contact"), group("Section colour", [tones("contact")])]; }]);
+        if (state.pages.contact) { tabs.push(["Design", function () { return [layouts("contact")]; }]); tabs.push(["Style", function () { return styleBlock("contact", true); }]); }
         tabs.push(["Your details", function () { return [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
-          h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email", "contact.email", { max: 80, type: "email" })]),
+          h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email shown on your site", "contact.email", { max: 80, type: "email" })]),
           state.pages.contact ? text("Heading", "contact.title", { max: 60 }) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
           state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null]; }]);
-        tabs.push(["Footer", function () { return [layouts("footer"), group("Footer colour", [tones("footer")]), toggle("Show “Site by Onwards Digital”", "credit")]; }]);
+        tabs.push(["Footer", function () { return [layouts("footer"), toggle("Show “Site by Onwards Digital”", "credit")]; }]);
+        tabs.push(["Footer style", function () { return styleBlock("footer", false); }]);
         return { tabs: tabs };
+      } },
+    { id: "terms", need: "terms", title: function () { return "Terms of service"; }, sum: function () { return G.SECTIONS.terms[state.terms.v].n + " design"; }, page: "terms",
+      build: function () {
+        return { tabs: lookTabs("terms", true).concat([
+          ["Words", function () { return [h("div", { class: "cols2" }, [text("Heading", "terms.title", { max: 60 }), text("Name in footer", "terms.label", { max: 20 })]), text("Date line", "terms.updated", { max: 60 }),
+            text("Your terms", "terms.text", { area: true, rows: 16, max: 8000 }),
+            h("p", { class: "hint", text: "Start each part with a short heading on its own line and the text underneath. Leave a blank line between parts." }),
+            h("p", { class: "hint note", text: "This is a starting point, not legal advice. Change it to match how your business works." })]; }]
+        ]) };
       } }
   ];
+  function destBlock() {
+    var mail = h("div", { class: "grp" }, [text("Send requests to this email", "contact.email", { max: 80, type: "email" }),
+      h("p", { class: "hint", text: "Your site’s forms use FormSubmit, a free form service, to email each request straight to you. The first one asks you to confirm the address." })]);
+    var mine = h("p", { class: "hint", text: "The forms stay on your site but won’t send anything until you connect your own booking tool or form service." });
+    function paint() { var own = state.booking.dest === "own"; mail.hidden = own; mine.hidden = !own; }
+    paint();
+    return [group("Where should booking requests go?", [seg("booking.dest", [["email", "To my email"], ["own", "I’ll set this up myself"]], paint)]), mail, mine,
+      h("p", { class: "hint note", text: "Onwards Digital never receives, stores or sends your bookings, and doesn’t put your site online for you. You own and run it." })];
+  }
   /* A page switched on scrolls the preview to it, so the change is visible straight away */
   function pageToggled(id) { return function (on) { syncList(); if (on) setTimeout(function () { goPage(id); }, 120); }; }
-  function fontSelect() {
-    var sel = h("select", { class: "fi", "aria-label": "Heading font" });
-    G.HEAD_FONTS.forEach(function (f, i) { sel.appendChild(h("option", { value: i, text: "Headings: " + f[0], selected: state.theme.hf === i })); });
-    sel.addEventListener("change", function () { state.theme.hf = +sel.value; changed(true); });
-    return sel;
-  }
   function hlFields() {
     var box = h("div", { class: "hls" });
     state.hl.forEach(function (x, i) {
@@ -432,7 +532,8 @@
       var l = h("input", { class: "fi", "data-path": "about.facts." + i + ".1", value: x[1], maxlength: 30, "aria-label": "Label " + (i + 1) });
       v.addEventListener("input", function () { state.about.facts[i][0] = v.value; changed(); });
       l.addEventListener("input", function () { state.about.facts[i][1] = l.value; changed(); });
-      box.appendChild(h("div", {}, [v, l]));
+      v.setAttribute("placeholder", "12"); l.setAttribute("placeholder", "dishes on the menu");
+      box.appendChild(h("div", { class: "fact-row" }, [v, l]));
     });
     return box;
   }
@@ -522,7 +623,7 @@
     var n = nodes[id]; if (!n) return;
     var willOpen = open !== id;
     if (open && nodes[open]) {
-      var o = nodes[open]; o.node.classList.remove("open"); o.head.setAttribute("aria-expanded", "false");
+      var o = nodes[open]; o.node.classList.remove("open", "settled"); o.head.setAttribute("aria-expanded", "false");
       o.t = setTimeout(function () { if (!o.node.classList.contains("open")) o.inner.innerHTML = ""; }, 420);
     }
     open = null;
@@ -531,6 +632,7 @@
     fill(n); n.head.setAttribute("aria-expanded", "true");
     if (instant) { n.node.classList.add("noanim", "open"); requestAnimationFrame(function () { n.node.classList.remove("noanim"); }); }
     else requestAnimationFrame(function () { n.node.classList.add("open"); });
+    clearTimeout(n.st); n.st = setTimeout(function () { if (open === id) n.node.classList.add("settled"); }, instant ? 0 : 400);
     if (n.p.page) goPage(state.pages[n.p.page] || n.p.page === "home" ? n.p.page : "home", id === "contact" && !state.pages.contact ? "bottom" : null);
     if (!instant) setTimeout(function () {
       if (open !== id) return;
@@ -558,6 +660,7 @@
   function openBuy() {
     var ce = (state.contact.email || "").trim();
     if (!ownerIn.value) ownerIn.value = /example\.com$/i.test(ce) ? "" : ce;
+    own.checked = state.booking.dest === "own";
     paintOwn();
     showModal(modal, "#buy-name");
     if (window.__paintSubmit) window.__paintSubmit();
@@ -597,7 +700,9 @@
     else if (!selfSetup && !re.test(owner.value.trim())) { bad = owner; msg = "Enter the email for bookings, or choose “I want to set this up on my own”."; }
     if (bad) { bad.closest(".field").classList.add("invalid"); err.textContent = msg; bad.focus(); return; }
     err.textContent = "";
-    if (!selfSetup) { state.contact.email = owner.value.trim(); save(); apply(); }
+    state.booking.dest = selfSetup ? "own" : "email";
+    if (!selfSetup) state.contact.email = owner.value.trim();
+    save(); apply();
     var btn = $("#submit-btn", root); btn.disabled = true; btn.textContent = "Preparing your site…";
     finishedSite().then(function (html) {
       var slug = (state.name || "website").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "website";

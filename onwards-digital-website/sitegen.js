@@ -80,9 +80,12 @@ window.SITEGEN = (function () {
     ["Nunito Sans", "wght@400;600"], ["IBM Plex Sans", "wght@400;500;600"], ["Outfit", "wght@400;500;600"], ["Mulish", "wght@400;500;700"]
   ];
   function fam(f) { return "family=" + f[0].replace(/ /g, "+") + (f[1] ? ":" + f[1] : ""); }
+  var OWN = ["header", "hero", "about", "services", "gallery", "booking", "contact", "terms", "footer"];
   function fontsHref(s) {
-    var h = HEAD_FONTS[s.theme.hf] || HEAD_FONTS[0], b = BODY_FONTS[s.theme.bf] || BODY_FONTS[0];
-    var list = [fam(h)]; if (b[0] !== h[0]) list.push(fam(b));
+    var seen = {}, list = [];
+    function add(f) { if (f && !seen[f[0]]) { seen[f[0]] = 1; list.push(fam(f)); } }
+    add(HEAD_FONTS[s.theme.hf] || HEAD_FONTS[0]); add(BODY_FONTS[s.theme.bf] || BODY_FONTS[0]);
+    OWN.forEach(function (k) { var o = s[k]; if (!o) return; if (o.hf != null) add(HEAD_FONTS[o.hf]); if (o.bf != null) add(BODY_FONTS[o.bf]); });
     return "https://fonts.googleapis.com/css2?" + list.join("&") + "&display=swap";
   }
   function allFontsHref() {
@@ -174,7 +177,7 @@ window.SITEGEN = (function () {
   function defaults(key) {
     var s = {
       preset: "restaurant", name: "", tagline: "", onePage: true, credit: true,
-      pages: { about: true, services: true, gallery: true, booking: true, contact: true },
+      pages: { about: true, services: true, gallery: true, booking: true, contact: true, terms: false },
       theme: { pal: 3, custom: null, hf: 1, bf: 4, size: 100, hscale: 100, radius: "soft", btn: "solid" },
       header: { v: 0, tone: "base" },
       hero: { v: 0, tone: "base", hs: "m", hlOn: true },
@@ -182,8 +185,10 @@ window.SITEGEN = (function () {
       about: { v: 0, tone: "soft", hs: "m" },
       services: { v: 0, tone: "base", hs: "m", items: [] },
       gallery: { v: 0, tone: "base", hs: "m" },
-      booking: { v: 0, tone: "ink", hs: "m" },
+      booking: { v: 0, tone: "ink", hs: "m", dest: "email", times: "" },
       contact: { v: 0, tone: "base", hs: "m" },
+      terms: { v: 0, tone: "base", hs: "m", label: "Terms", title: "Terms of service", updated: "Last updated September 2026",
+        text: "Bookings\nA booking is a request until we confirm it by email or phone. Please give us at least 24 hours\u2019 notice if you need to change or cancel.\n\nPrices\nPrices on this site can change. The price you pay is the one confirmed when you book or order.\n\nPayments and refunds\nTell customers here how they pay you and when, if ever, they can get a refund.\n\nYour information\nWe only use the details you send us to reply to you and manage your booking. We never sell them.\n\nQuestions\nIf you have a question about these terms, contact us using the details on this site." },
       footer: { v: 0, tone: "ink" },
       img: {}
     };
@@ -195,8 +200,9 @@ window.SITEGEN = (function () {
     var c = s.theme.custom || PALETTES[s.theme.pal] || PALETTES[0];
     return { bg: c.bg, fg: c.fg, ac: c.ac };
   }
-  function toneVars(s) {
-    var c = colors(s), out = "";
+  function toneVars(s) { return toneCSS(colors(s), ""); }
+  function toneCSS(c, scope) {
+    var out = "";
     var tones = {
       base: [c.bg, c.fg], soft: [mix(c.bg, c.fg, lum(c.bg) > .5 ? .055 : .07), c.fg], ink: [c.fg, c.bg], accent: [c.ac, onColor(c.ac)]
     };
@@ -206,7 +212,7 @@ window.SITEGEN = (function () {
       var bb = c.ac;
       if (k === "accent") bb = fg;
       else if (contrast(c.ac, bg) < 1.8) bb = fg;
-      out += ".t-" + k + "{--sbg:" + bg + ";--sfg:" + fg + ";--smut:" + mix(fg, bg, .36) + ";--sline:" + mix(bg, fg, .16) + ";--bb:" + bb + ";--bt:" + onColor(bb) + "}";
+      out += scope + ".t-" + k + "{--sbg:" + bg + ";--sfg:" + fg + ";--smut:" + mix(fg, bg, .36) + ";--sline:" + mix(bg, fg, .16) + ";--bb:" + bb + ";--bt:" + onColor(bb) + "}";
     });
     return out;
   }
@@ -217,6 +223,20 @@ window.SITEGEN = (function () {
       ";--sz:" + (s.theme.size / 100) + ";--hk:" + (s.theme.hscale / 100) + ";--lh:" + (serifBody ? 1.68 : 1.6) + "}" + toneVars(s);
   }
 
+  /* A section can have its own colours, fonts and text size; otherwise it follows the site */
+  function sectionVars(s) {
+    var out = "";
+    OWN.forEach(function (k) {
+      var o = s[k]; if (!o) return;
+      var sc = ".x-" + k, v = "";
+      if (o.custom || o.pal != null) { var c = o.custom || PALETTES[o.pal] || PALETTES[0]; out += toneCSS(c, sc); v += "--ac:" + c.ac + ";"; }
+      if (o.hf != null && HEAD_FONTS[o.hf]) v += "--hf:'" + HEAD_FONTS[o.hf][0] + "';--hw:" + HEAD_FONTS[o.hf][2] + ";";
+      if (o.bf != null && BODY_FONTS[o.bf]) v += "--bf:'" + BODY_FONTS[o.bf][0] + "';";
+      if (o.size != null) v += "font-size:calc(16px*var(--sz)*" + (o.size / 100) + ");";
+      if (v) out += sc + "{" + v + "}";
+    });
+    return out;
+  }
   var BASE_CSS = [
     "*,*:before,*:after{box-sizing:border-box;margin:0;padding:0}",
     "html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}",
@@ -224,7 +244,7 @@ window.SITEGEN = (function () {
     ".r-square{--r:0px;--br:0px;--brf:0px}.r-soft{--r:12px;--br:8px;--brf:8px}.r-round{--r:26px;--br:999px;--brf:14px}",
     "body{background:var(--bg);color:var(--fg);font-family:var(--bf),system-ui,sans-serif;font-size:calc(16px*var(--sz));line-height:var(--lh);-webkit-font-smoothing:antialiased}",
     "img{display:block;max-width:100%}a{color:inherit}button{font:inherit;color:inherit}",
-    ".s{background:var(--sbg);color:var(--sfg);position:relative}",
+    ".s{background:var(--sbg);color:var(--sfg);position:relative;font-family:var(--bf),system-ui,sans-serif}",
     ".w{width:min(1180px,100% - 2*var(--gut));margin-inline:auto}",
     ".pad{padding-block:clamp(56px,8vw,112px)}",
     "h1,h2,h3,.hf{font-family:var(--hf),Georgia,serif;font-weight:var(--hw);line-height:1.06;letter-spacing:-.01em;text-wrap:balance}",
@@ -261,13 +281,15 @@ window.SITEGEN = (function () {
     ".chip.on,.days button.on,.cal button.on{background:var(--sfg);color:var(--sbg);border-color:var(--sfg)}.days button.on small{color:inherit;opacity:.75}",
     ".stepper{display:inline-flex;align-items:center;border:1px solid var(--sline);border-radius:var(--brf);width:max-content}",
     ".stepper button{width:42px;height:42px;background:none;border:0;font-size:1.15em;cursor:pointer}.stepper output{min-width:34px;text-align:center}",
-    ".cal{border:1px solid var(--sline);border-radius:var(--r);padding:14px}",
+    ".cal{border:1px solid var(--sline);border-radius:var(--r);padding:14px;max-width:440px}",
     ".cal .ch{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}",
     ".cal .ch button{background:none;border:1px solid var(--sline);border-radius:var(--brf);width:34px;height:34px;cursor:pointer}",
     ".cal .cg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}",
     ".cal .cg span{font-size:.72em;color:var(--smut);padding:4px 0}",
     ".cal .cg button{aspect-ratio:1;border:1px solid transparent;background:none;border-radius:var(--brf);cursor:pointer;font-size:.9em}",
     ".cal .cg button:hover{border-color:var(--sline)}.cal .cg button[disabled]{opacity:.3;cursor:default}",
+    ".cal .cg button.on,.cal .cg button.on:hover{background:var(--sfg);color:var(--sbg);border-color:var(--sfg)}",
+    ".cal .cg button.today{border-color:var(--sline)}",
     ".sent-msg{display:none}.bk-form.sent>*{display:none}.bk-form.sent>.sent-msg{display:block}",
     ".sent-msg h3{margin-bottom:8px}",
     ".err-msg{color:var(--smut);font-size:.85em;min-height:1em}",
@@ -284,12 +306,13 @@ window.SITEGEN = (function () {
     if (s.pages.gallery) pages.push({ id: "gallery", label: s.gallery.label || "Gallery" });
     if (s.pages.booking) pages.push({ id: "booking", label: s.booking.label || "Book" });
     if (s.pages.contact) pages.push({ id: "contact", label: "Contact" });
+    if (s.pages.terms) pages.push({ id: "terms", label: s.terms.label || "Terms", foot: true });
     var has = function (id) { return pages.some(function (p) { return p.id === id; }); };
     var target = has("booking") ? "booking" : has("contact") ? "contact" : has("about") ? "about" : "";
     return { s: s, pages: pages, has: has, target: target, img: function (k) { var v = k.charAt(0) === "g" ? s.img.g[+k.slice(1)] : s.img[k]; return v || ""; } };
   }
   function im(c, k, alt) { var u = c.img(k); return u ? '<img src="' + esc(u) + '" alt="' + esc(alt || "") + '" loading="lazy">' : ""; }
-  function sec(c, key, cls, inner) { var o = c.s[key]; return '<section class="s t-' + (o.tone || "base") + " hs-" + (o.hs || "m") + " " + cls + '">' + inner + "</section>"; }
+  function sec(c, key, cls, inner) { var o = c.s[key]; return '<section class="s x-' + key + " t-" + (o.tone || "base") + " hs-" + (o.hs || "m") + " " + cls + '">' + inner + "</section>"; }
   function heroActs(c) {
     var h = c.s.hero, out = "";
     if (h.cta && c.target) out += '<a class="btn" href="#' + c.target + '">' + t("hero.cta") + "</a>";
@@ -301,11 +324,11 @@ window.SITEGEN = (function () {
     return (h.kick && !noKick ? '<p class="kick">' + t("hero.kick") + "</p>" : "") + "<h1>" + t("hero.title") + "</h1>" + (h.text ? '<p class="lede">' + t("hero.text") + "</p>" : "") + heroActs(c);
   }
   function sh(c, key, introKey, center) { var o = c.s[key], intro = introKey && o[introKey]; return '<div class="sh' + (center ? " c" : "") + '"><h2>' + t(key + ".title") + "</h2>" + (intro ? '<p class="lede">' + t(key + "." + introKey) + "</p>" : "") + "</div>"; }
-  function facts(c) { var f = c.s.about.facts || []; return '<div class="facts">' + f.map(function (x, i) { return "<div><b>" + t("about.facts." + i + ".0", x[0]) + "</b><span>" + t("about.facts." + i + ".1", x[1]) + "</span></div>"; }).join("") + "</div>"; }
+  function facts(c) { var f = c.s.about.facts || []; if (!f.some(function (x) { return (x[0] || "").trim() || (x[1] || "").trim(); })) return ""; return '<div class="facts">' + f.map(function (x, i) { return "<div><b>" + t("about.facts." + i + ".0", x[0]) + "</b><span>" + t("about.facts." + i + ".1", x[1]) + "</span></div>"; }).join("") + "</div>"; }
 
   /* ── Header designs ────────────────────────────────────── */
   function logo(c) { return '<a class="logo" href="#home">' + t("name") + "</a>"; }
-  function links(c) { return '<nav class="links">' + c.pages.map(function (p) { return '<a href="#' + p.id + '" data-l="' + p.id + '">' + esc(p.label) + "</a>"; }).join("") + "</nav>"; }
+  function links(c) { return '<nav class="links">' + c.pages.filter(function (p) { return !p.foot; }).map(function (p) { return '<a href="#' + p.id + '" data-l="' + p.id + '">' + esc(p.label) + "</a>"; }).join("") + "</nav>"; }
   function hEnd(c) {
     var b = c.target && c.target !== "home" ? '<a class="btn cta" href="#' + c.target + '">' + esc(c.s.hero.cta || c.s.booking.label || "Contact") + "</a>" : "";
     return '<div class="end">' + b + '<button class="menu-btn" type="button" aria-label="Menu"><span></span><span></span></button></div>';
@@ -365,7 +388,7 @@ window.SITEGEN = (function () {
   var HL_CSS = ".hl .g{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,4vw,56px);padding-block:clamp(40px,6vw,72px)}.hl .g>div{border-top:1px solid var(--sline);padding-top:18px}.hl h3{margin-bottom:8px}.hl p{font-size:.95em}@media(max-width:760px){.hl .g{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:74%;overflow-x:auto;scroll-snap-type:x mandatory;gap:18px;padding-block:32px;scrollbar-width:none}.hl .g>div{scroll-snap-align:start}}";
   function highlights(c) {
     if (!c.s.hero.hlOn || !(c.s.hl || []).length) return "";
-    return '<section class="s t-' + (c.s.hero.tone === "ink" || c.s.hero.tone === "accent" ? c.s.hero.tone : "base") + ' hl"><div class="w g">' + c.s.hl.map(function (x, i) { return "<div><h3>" + t("hl." + i + ".0", x[0]) + '</h3><p class="mut">' + t("hl." + i + ".1", x[1]) + "</p></div>"; }).join("") + "</div></section>";
+    return '<section class="s x-hero t-' + (c.s.hero.tone === "ink" || c.s.hero.tone === "accent" ? c.s.hero.tone : "base") + ' hl"><div class="w g">' + c.s.hl.map(function (x, i) { return "<div><h3>" + t("hl." + i + ".0", x[0]) + '</h3><p class="mut">' + t("hl." + i + ".1", x[1]) + "</p></div>"; }).join("") + "</div></section>";
   }
 
   /* ── About designs (text boxes with images) ────────────── */
@@ -447,12 +470,16 @@ window.SITEGEN = (function () {
 
   /* ── Booking designs ───────────────────────────────────── */
   function opts(c) { return String(c.s.booking.options || "").split(",").map(function (x) { return x.trim(); }).filter(Boolean); }
-  function times(c) { return c.s.booking.kind === "table" ? ["5:30pm", "6:00pm", "6:30pm", "7:00pm", "7:30pm", "8:00pm", "8:30pm", "9:00pm"] : ["9:00am", "10:00am", "11:00am", "12:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm"]; }
-  function formOpen(c) {
-    var s = c.s, email = (s.contact.email || "").trim();
-    return '<form class="bk-form" method="POST" action="https://formsubmit.co/' + esc(email) + '" novalidate><input type="hidden" name="_subject" value="New ' + esc((s.booking.label || "booking").toLowerCase()) + " request — " + esc(s.name) + '"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false">';
+  function times(c) { var own = String(c.s.booking.times || "").split(",").map(function (x) { return x.trim(); }).filter(Boolean); if (own.length) return own; return c.s.booking.kind === "table" ? ["5:30pm", "6:00pm", "6:30pm", "7:00pm", "7:30pm", "8:00pm", "8:30pm", "9:00pm"] : ["9:00am", "10:00am", "11:00am", "12:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm"]; }
+  function formAction(c) {
+    var email = (c.s.contact.email || "").trim();
+    return c.s.booking.dest === "own" || !email ? 'action="" data-own' : 'action="https://formsubmit.co/' + esc(email) + '"';
   }
-  function pDay(cal) { return '<div class="fld"><span class="lb">Day</span>' + (cal ? '<div class="cal" data-cal data-name="day"></div>' : '<div class="days" data-days data-name="day"></div>') + '<input type="hidden" name="day"></div>'; }
+  function formOpen(c) {
+    var s = c.s;
+    return '<form class="bk-form" method="POST" ' + formAction(c) + ' novalidate><input type="hidden" name="_subject" value="New ' + esc((s.booking.label || "booking").toLowerCase()) + " request — " + esc(s.name) + '"><input type="hidden" name="_template" value="table"><input type="hidden" name="_captcha" value="false">';
+  }
+  function pDay() { return '<div class="fld"><span class="lb">Day</span><div class="cal" data-cal data-name="day"></div><input type="hidden" name="day"></div>'; }
   function pTime(c) { if (c.s.booking.kind === "enquiry") return ""; return '<div class="fld"><span class="lb">Time</span><div class="chips" data-name="time">' + times(c).map(function (t) { return '<button type="button" class="chip" data-pick="' + t + '">' + t + "</button>"; }).join("") + '</div><input type="hidden" name="time"></div>'; }
   function pGuests(c) { if (c.s.booking.kind !== "table") return ""; return '<div class="fld"><span class="lb">Guests</span><div class="stepper" data-name="guests"><button type="button" data-step="-1" aria-label="Fewer">&minus;</button><output>2</output><button type="button" data-step="1" aria-label="More">+</button></div><input type="hidden" name="guests" value="2"></div>'; }
   function pOpts(c, big) { var o = opts(c); if (!o.length) return ""; var lab = c.s.booking.kind === "table" ? "Occasion" : c.s.booking.kind === "enquiry" ? "About" : "Service"; return '<div class="fld"><span class="lb">' + lab + '</span><div class="chips' + (big ? " big" : "") + '" data-name="option">' + o.map(function (t) { return '<button type="button" class="chip" data-pick="' + esc(t) + '">' + esc(t) + "</button>"; }).join("") + '</div><input type="hidden" name="' + lab.toLowerCase() + '" data-for="option"></div>'; }
@@ -462,7 +489,7 @@ window.SITEGEN = (function () {
   function pickers(c, o) {
     o = o || {};
     var k = c.s.booking.kind;
-    return (o.noOpts ? "" : pOpts(c)) + (k === "enquiry" ? "" : pDay(o.cal)) + pTime(c) + pGuests(c) + pMsg(c);
+    return (o.noOpts ? "" : pOpts(c)) + (k === "enquiry" ? "" : pDay()) + pTime(c) + pGuests(c) + pMsg(c);
   }
   function fullForm(c, o) { return formOpen(c) + pickers(c, o) + pDetails() + pSubmit(c) + "</form>"; }
   function infoBlock(c) { var ct = c.s.contact; return '<div class="info"><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Address</span>' + lines(ct.address).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Phone</span><p>' + esc(ct.phone) + "</p></div></div>"; }
@@ -472,9 +499,9 @@ window.SITEGEN = (function () {
     { n: "Form & details", css: ".bk-3 .g{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(28px,6vw,96px);align-items:start}.bk-3 .info{display:grid;gap:22px;padding-top:24px;border-top:1px solid var(--sline);position:sticky;top:100px}.bk-3 .info p{font-size:.95em}@media(max-width:760px){.bk-3 .g{grid-template-columns:1fr}.bk-3 .info{position:static;grid-template-columns:1fr 1fr}.bk-3 .info>div:first-child{grid-column:1/-1}}", html: function (c) { return '<div class="w g pad"><div>' + sh(c, "booking", "intro") + fullForm(c) + "</div>" + infoBlock(c) + "</div>"; } },
     { n: "Band", css: ".bk-4 .g{display:grid;grid-template-columns:1fr 1.4fr;gap:clamp(28px,6vw,96px);align-items:start}@media(max-width:760px){.bk-4 .g{grid-template-columns:1fr;gap:0}}", html: function (c) { return '<div class="w g pad">' + sh(c, "booking", "intro") + fullForm(c) + "</div>"; } },
     { n: "Three steps", css: ".bk-5 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);align-items:start}.bk-5 .st{border-top:1px solid var(--sline);padding-top:18px;display:grid;gap:18px}.bk-5 .st>.hf{font-size:1.25em}.bk-5 .st .r3{grid-template-columns:1fr}.bk-5 .st .r3>*:last-child{grid-column:auto}@media(max-width:760px){.bk-5 .steps{grid-template-columns:1fr}}",
-      html: function (c) { var k = c.s.booking.kind; var one = k === "enquiry" ? pOpts(c) : pDay(false) + pOpts(c); var two = k === "enquiry" ? pMsg(c) : pTime(c) + pGuests(c); return '<div class="w pad">' + sh(c, "booking", "intro") + formOpen(c) + '<div class="steps"><div class="st"><span class="hf">1. ' + (k === "enquiry" ? "Choose a topic" : "Choose a day") + "</span>" + one + '</div><div class="st"><span class="hf">2. ' + (k === "enquiry" ? "Your message" : "Choose a time") + "</span>" + two + '</div><div class="st"><span class="hf">3. Your details</span>' + pDetails() + pSubmit(c) + "</div></div></form></div>"; } },
+      html: function (c) { var k = c.s.booking.kind; var one = k === "enquiry" ? pOpts(c) : pDay() + pOpts(c); var two = k === "enquiry" ? pMsg(c) : pTime(c) + pGuests(c); return '<div class="w pad">' + sh(c, "booking", "intro") + formOpen(c) + '<div class="steps"><div class="st"><span class="hf">1. ' + (k === "enquiry" ? "Choose a topic" : "Choose a day") + "</span>" + one + '</div><div class="st"><span class="hf">2. ' + (k === "enquiry" ? "Your message" : "Choose a time") + "</span>" + two + '</div><div class="st"><span class="hf">3. Your details</span>' + pDetails() + pSubmit(c) + "</div></div></form></div>"; } },
     { n: "Calendar", css: ".bk-6 .g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,72px);align-items:start}.bk-6 .cal{padding:clamp(14px,2vw,24px)}@media(max-width:760px){.bk-6 .g{grid-template-columns:1fr}}",
-      html: function (c) { if (c.s.booking.kind === "enquiry") return '<div class="w pad">' + sh(c, "booking", "intro") + fullForm(c) + "</div>"; return '<div class="w pad">' + sh(c, "booking", "intro") + formOpen(c) + '<div class="g"><div>' + pDay(true) + '</div><div class="bk-form">' + pOpts(c) + pTime(c) + pGuests(c) + pDetails() + "</div></div>" + pSubmit(c) + "</form></div>"; } },
+      html: function (c) { if (c.s.booking.kind === "enquiry") return '<div class="w pad">' + sh(c, "booking", "intro") + fullForm(c) + "</div>"; return '<div class="w pad">' + sh(c, "booking", "intro") + formOpen(c) + '<div class="g"><div>' + pDay() + '</div><div class="bk-form">' + pOpts(c) + pTime(c) + pGuests(c) + pDetails() + "</div></div>" + pSubmit(c) + "</form></div>"; } },
     { n: "Over photo", css: ".bk-7 .in{position:relative;padding-block:clamp(48px,8vw,112px)}.bk-7 .glass{max-width:640px;margin-left:auto;background:var(--sbg);background:color-mix(in srgb,var(--sbg) 88%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:var(--r);padding:clamp(22px,4vw,48px)}@media(max-width:760px){.bk-7 .in{padding-block:24px}}", html: function (c) { return '<div class="bgimg">' + im(c, "hero") + '</div><div class="w in"><div class="glass">' + sh(c, "booking", "intro") + fullForm(c) + "</div></div>"; } },
     { n: "Lines", css: ".bk-8 .g{display:grid;grid-template-columns:1fr 1.2fr;gap:clamp(28px,6vw,96px);align-items:start}.bk-8 .sh{position:sticky;top:100px}.bk-8 .sh h2{font-size:calc(clamp(36px,5vw,72px)*var(--k,1)*var(--hk))}.bk-8 .inp{border:0;border-bottom:1px solid var(--sline);border-radius:0;padding-inline:0}.bk-8 .inp:focus{border-color:var(--sfg)}@media(max-width:760px){.bk-8 .g{grid-template-columns:1fr;gap:0}.bk-8 .sh{position:static}}", html: function (c) { return '<div class="w g pad">' + sh(c, "booking", "intro") + fullForm(c) + "</div>"; } },
     { n: "Choose first", css: ".bk-9 .g{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(28px,5vw,80px);align-items:start}.bk-9 .chips.big{display:grid;gap:8px}.bk-9 .chips.big .chip{text-align:left;padding:1.1em 1.2em;font-size:1em;font-family:var(--hf),serif;font-weight:var(--hw)}@media(max-width:760px){.bk-9 .g{grid-template-columns:1fr;gap:18px}.bk-9 .chips.big{grid-template-columns:1fr 1fr}}",
@@ -505,7 +532,7 @@ window.SITEGEN = (function () {
     { n: "Hours table", css: ".ct-5 .g{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,6vw,96px)}.ct-5 .d{display:grid;gap:18px;margin-top:8px}.ct-5 .t{border-top:1px solid var(--sline)}@media(max-width:760px){.ct-5 .g{grid-template-columns:1fr;gap:24px}.ct-5 .d{grid-template-columns:1fr 1fr}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div>' + sh(c, "contact", "note") + '<div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + '</p></div></div></div><div><span class="lb">Opening hours</span><div class="t" style="margin-top:10px">' + hoursRows(c) + "</div></div></div>"; } },
     { n: "Message form", css: ".ct-6 .g{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(28px,6vw,96px);align-items:start}.ct-6 .d{display:grid;gap:18px}@media(max-width:760px){.ct-6 .g{grid-template-columns:1fr;gap:28px}.ct-6 .d{grid-template-columns:1fr 1fr}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div>' + sh(c, "contact", "note") + '<div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>" + '<form class="bk-form" method="POST" action="https://formsubmit.co/' + esc(ct.email) + '" novalidate><input type="hidden" name="_subject" value="New message — ' + esc(c.s.name) + '"><input type="hidden" name="_captcha" value="false"><div class="r3" style="grid-template-columns:1fr 1fr"><label class="fld"><span class="lb">Name</span><input class="inp" name="name" required></label><label class="fld"><span class="lb">Email</span><input class="inp" type="email" name="email" required></label></div><div class="fld"><span class="lb">Message</span><textarea class="inp" name="message" required></textarea></div><p class="err-msg" aria-live="polite"></p><div><button class="btn" type="submit">Send message</button></div><div class="sent-msg"><h3>Message sent.</h3><p class="mut">Thank you. We\'ll reply soon.</p></div></form></div>'; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div>' + sh(c, "contact", "note") + '<div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>" + '<form class="bk-form" method="POST" ' + formAction(c) + ' novalidate><input type="hidden" name="_subject" value="New message — ' + esc(c.s.name) + '"><input type="hidden" name="_captcha" value="false"><div class="r3" style="grid-template-columns:1fr 1fr"><label class="fld"><span class="lb">Name</span><input class="inp" name="name" required></label><label class="fld"><span class="lb">Email</span><input class="inp" type="email" name="email" required></label></div><div class="fld"><span class="lb">Message</span><textarea class="inp" name="message" required></textarea></div><p class="err-msg" aria-live="polite"></p><div><button class="btn" type="submit">Send message</button></div><div class="sent-msg"><h3>Message sent.</h3><p class="mut">Thank you. We\'ll reply soon.</p></div></form></div>'; } },
     { n: "Cards", css: ".ct-7 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.4vw,16px)}.ct-7 .card{border:1px solid var(--sline);border-radius:var(--r);padding:clamp(18px,2.6vw,32px);display:grid;gap:6px;align-content:start}.ct-7 h3{margin-bottom:8px}@media(max-width:760px){.ct-7 .grid{grid-template-columns:1fr 1fr}.ct-7 .card:last-child{grid-column:1/-1}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact", "note") + '<div class="grid"><div class="card"><h3>Visit</h3><p>' + addr(c) + '</p></div><div class="card"><h3>Hours</h3>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div class="card"><h3>Get in touch</h3><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>"; } },
     { n: "Photo banner", css: ".ct-8{min-height:560px;display:flex;align-items:flex-end}.ct-8 .in{position:relative;padding-block:clamp(40px,6vw,80px)}.ct-8 .card{background:var(--sbg);max-width:520px;padding:clamp(24px,3.6vw,44px);border-radius:var(--r);display:grid;gap:14px}.ct-8 .card h2{margin-bottom:6px}@media(max-width:760px){.ct-8 .in{padding-block:20px}}",
@@ -539,19 +566,32 @@ window.SITEGEN = (function () {
       html: function (c) { return '<div class="w"><div class="box"><div>' + logo(c) + '<p class="mut">' + t("tagline") + "</p></div><nav>" + flinks(c) + '</nav></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + " &middot; " + esc(c.s.contact.phone) + "</span>" + credit(c) + "</div>"; } }
   ];
 
-  var SECTIONS = { header: HEADERS, hero: HEROES, about: ABOUTS, services: SERVICES, gallery: GALLERIES, booking: BOOKINGS, contact: CONTACTS, footer: FOOTERS };
-  var PFX = { header: "hd", hero: "he", about: "ab", services: "sv", gallery: "ga", booking: "bk", contact: "ct", footer: "ft" };
+  function termsBody(c) {
+    return String(c.s.terms.text || "").split(/\n\s*\n/).filter(function (b) { return b.trim(); }).map(function (b) {
+      var ls = b.trim().split("\n");
+      if (ls.length > 1 && ls[0].length < 60 && !/[.!?]$/.test(ls[0])) return "<h3>" + esc(ls[0]) + "</h3><p>" + ls.slice(1).map(esc).join("<br>") + "</p>";
+      return "<p>" + ls.map(esc).join("<br>") + "</p>";
+    }).join("");
+  }
+  var TERMS_BASE = ".tm .doc h3{margin:1.8em 0 .5em;font-size:calc(1.2em*var(--hk))}.tm .doc h3:first-child{margin-top:0}.tm .doc p{color:var(--smut);max-width:40em}.tm .doc p+p{margin-top:.8em}.tm .upd{font-size:.85em;color:var(--smut);margin-top:10px}";
+  var TERMS = [
+    { n: "Plain", css: ".tm-1 .in{max-width:760px}", html: function (c) { return '<div class="w pad"><div class="in"><h2>' + t("terms.title") + '</h2><p class="upd">' + t("terms.updated") + '</p><div class="doc" style="margin-top:36px">' + termsBody(c) + "</div></div></div>"; } },
+    { n: "Side heading", css: ".tm-2 .g{display:grid;grid-template-columns:1fr 2fr;gap:clamp(28px,6vw,96px);align-items:start}.tm-2 .g>div:first-child{position:sticky;top:100px}@media(max-width:760px){.tm-2 .g{grid-template-columns:1fr;gap:24px}.tm-2 .g>div:first-child{position:static}}", html: function (c) { return '<div class="w g pad"><div><h2>' + t("terms.title") + '</h2><p class="upd">' + t("terms.updated") + '</p></div><div class="doc">' + termsBody(c) + "</div></div>"; } },
+    { n: "Boxed", css: ".tm-3 .box{max-width:820px;margin-inline:auto;border:1px solid var(--sline);border-radius:var(--r);padding:clamp(24px,5vw,64px)}.tm-3 .top{text-align:center;margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--sline)}", html: function (c) { return '<div class="w pad"><div class="box"><div class="top"><h2>' + t("terms.title") + '</h2><p class="upd">' + t("terms.updated") + '</p></div><div class="doc">' + termsBody(c) + "</div></div></div>"; } }
+  ];
+  var SECTIONS = { header: HEADERS, hero: HEROES, about: ABOUTS, services: SERVICES, gallery: GALLERIES, booking: BOOKINGS, contact: CONTACTS, terms: TERMS, footer: FOOTERS };
+  var PFX = { header: "hd", hero: "he", about: "ab", services: "sv", gallery: "ga", booking: "bk", contact: "ct", terms: "tm", footer: "ft" };
 
   function pick(key, s) { var list = SECTIONS[key]; var v = Math.max(0, Math.min(list.length - 1, s[key].v | 0)); return { t: list[v], cls: PFX[key] + "-" + (v + 1) }; }
 
-  function renderHeader(c) { var p = pick("header", c.s); return '<header class="s hd ' + p.cls + " t-" + c.s.header.tone + '">' + p.t.html(c) + "</header>"; }
-  function renderFooter(c) { var p = pick("footer", c.s); return '<footer class="s ft ' + p.cls + " t-" + c.s.footer.tone + '">' + p.t.html(c) + "</footer>"; }
-  function renderSection(c, key) { var p = pick(key, c.s); return sec(c, key, key === "hero" ? "he " + p.cls : (key === "contact" ? "ct " : "") + p.cls, p.t.html(c)); }
+  function renderHeader(c) { var p = pick("header", c.s); return '<header class="s x-header hd ' + p.cls + " t-" + c.s.header.tone + '">' + p.t.html(c) + "</header>"; }
+  function renderFooter(c) { var p = pick("footer", c.s); return '<footer class="s x-footer ft ' + p.cls + " t-" + c.s.footer.tone + '">' + p.t.html(c) + "</footer>"; }
+  function renderSection(c, key) { var p = pick(key, c.s); return sec(c, key, key === "hero" ? "he " + p.cls : (key === "contact" ? "ct " : key === "terms" ? "tm " : "") + p.cls, p.t.html(c)); }
 
   /* Which CSS is needed for a given render */
   function css(s, only) {
-    var parts = [rootVars(s), BASE_CSS, HEADER_BASE, CT_BASE, FT_BASE];
-    var keys = only ? (only === "hero" || only === "header" ? ["header", "hero"] : [only]) : ["header", "hero", "about", "services", "gallery", "booking", "contact", "footer"];
+    var parts = [rootVars(s), sectionVars(s), BASE_CSS, HEADER_BASE, CT_BASE, FT_BASE, TERMS_BASE];
+    var keys = only ? (only === "hero" || only === "header" ? ["header", "hero"] : [only]) : ["header", "hero", "about", "services", "gallery", "booking", "contact", "terms", "footer"];
     keys.forEach(function (k) { parts.push(pick(k, s).t.css); });
     if (!only || only === "hero") parts.push(HL_CSS);
     return parts.join("\n");
@@ -605,7 +645,7 @@ window.SITEGEN = (function () {
       ["M", "T", "W", "T", "F", "S", "S"].forEach(function (x) { h += "<span>" + x + "</span>"; });
       for (var i = 0; i < start; i++) h += "<i></i>";
       var sel = el.getAttribute("data-sel");
-      for (var dnum = 1; dnum <= days; dnum++) { var dt = new Date(y, m, dnum), v = iso(dt); h += '<button type="button" data-cd="' + v + '"' + (dt < today ? " disabled" : "") + (sel === v ? ' class="on"' : "") + ">" + dnum + "</button>"; }
+      for (var dnum = 1; dnum <= days; dnum++) { var dt = new Date(y, m, dnum), v = iso(dt); h += '<button type="button" data-cd="' + v + '"' + (dt < today ? " disabled" : "") + ' class="' + (sel === v ? "on" : "") + (+dt === +today ? " today" : "") + '"' + ">" + dnum + "</button>"; }
       el.innerHTML = h + "</div>"; el.setAttribute("data-y", y); el.setAttribute("data-m", m);
     }
     function arm() {
@@ -650,7 +690,8 @@ window.SITEGEN = (function () {
       var tm = f.querySelector("input[name=time]"); if (!bad && tm && !tm.value) bad = "Please choose a time.";
       if (bad) { e.preventDefault(); if (msg) msg.textContent = bad; return; }
       if (msg) msg.textContent = "";
-      if (P) { e.preventDefault(); f.classList.add("sent"); }
+      if (P) { e.preventDefault(); f.classList.add("sent"); return; }
+      if (f.hasAttribute("data-own")) { e.preventDefault(); if (msg) msg.textContent = "Online requests aren\u2019t switched on yet. Please call or email us."; }
     });
     if (P) {
       d.addEventListener("input", function (e) {
