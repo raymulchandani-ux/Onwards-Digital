@@ -27,7 +27,8 @@ window.ONWARDS = {
   stripe: {
     advanced:     "",   // one-time, $299
     professional: "",   // one-time, $599
-    monthlyCare:  ""    // recurring subscription, $12.99 / month
+    monthlyCare:  "",   // recurring subscription, $12.99 / month
+    readyMade:    ""    // one-time, $99.99 (ready-made site)
   },
 
   // ── Prices ─────────────────────────────────────────────────
@@ -37,7 +38,8 @@ window.ONWARDS = {
     beginner:     { USD: 0,     AED: 0,    GBP: 0,    EUR: 0     },
     advanced:     { USD: 299,   AED: 1099, GBP: 225,  EUR: 255   },
     professional: { USD: 599,   AED: 2200, GBP: 450,  EUR: 510   },
-    monthlyCare:  { USD: 12.99, AED: 48,   GBP: 9.99, EUR: 11.49 }
+    monthlyCare:  { USD: 12.99, AED: 48,   GBP: 9.99, EUR: 11.49 },
+    readyMade:    { USD: 99.99, AED: 367,  GBP: 74.99, EUR: 84.99 }
   },
   currencies: { USD: "$", EUR: "€", GBP: "£", AED: "" } // AED uses the drawn dirham symbol
 };
