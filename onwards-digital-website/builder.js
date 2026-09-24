@@ -8,7 +8,7 @@
   "use strict";
   var G = window.SITEGEN, root = document.getElementById("builder");
   if (!G || !root) return;
-  var LS = "onwards-builder-v2";
+  var LS = "onwards-builder-v3";
 
   /* ── State ─────────────────────────────────────────────── */
   var state;

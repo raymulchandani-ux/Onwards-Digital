@@ -33,7 +33,7 @@ The dropdown is the boxed pricing-section style only (the old utility-bar versio
 
 - GitHub repo **raymulchandani-ux/Onwards-Digital**, folder **`onwards-digital-website/`**, deployed by Vercel. The site is **flat** — every file in one folder, no subfolders.
 - Ray deploys by dragging the unzipped folder into GitHub's web upload. **Every delivery must be a zip containing the single `onwards-digital-website` folder with ALL previous changes included** (never a partial set of files), **always named exactly `onwards-digital-website.zip`** (no date or version suffix). Keep the updated CLAUDE.md inside the folder.
-- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20260924e`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
+- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20260924f`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
 - Fonts load from Google Fonts. Photos are Unsplash CDN URLs (`images.unsplash.com/photo-<id>?auto=format&fit=crop&w=…&q=…`) with `onerror="this.remove()"` fallbacks on the homepage tiles.
 
 ### Files
@@ -143,7 +143,7 @@ Five tiles: Restaurants (Ossobello), Cafés & bakeries (Hollowmere), Salons & st
 
 ---
 
-## 8. Change log — chat of 24 Sept 2026 (`v=20260924e`)
+## 8. Change log — chat of 24 Sept 2026 (`v=20260924f`)
 
 1. New landing chooser at index.html; old homepage moved to custom.html; links rewired.
 2. New ready-made.html with the live site builder (sitegen.js, builder.js, builder.css). See section 10.
@@ -188,4 +188,4 @@ Ray's idea: keep selling custom sites, and also sell one website with thousands 
 **Open questions for Ray (asked 24 Sept):** refund wording for ready-made sites; whether Monthly Care can be added to a ready-made site; whether the footer credit should default on; delivery promise wording; which section types to grow to 10 designs next.
 
 ## 9. How to resume in a new chat
-Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Sept 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20260924e` and is zipped as `onwards-digital-website.zip`.
+Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Sept 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20260924f` and is zipped as `onwards-digital-website.zip`.
