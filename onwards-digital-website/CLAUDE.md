@@ -33,7 +33,7 @@ The dropdown is the boxed pricing-section style only (the old utility-bar versio
 
 - GitHub repo **raymulchandani-ux/Onwards-Digital**, folder **`onwards-digital-website/`**, deployed by Vercel. The site is **flat** — every file in one folder, no subfolders.
 - Ray deploys by dragging the unzipped folder into GitHub's web upload. **Every delivery must be a zip containing the single `onwards-digital-website` folder with ALL previous changes included** (never a partial set of files), **always named exactly `onwards-digital-website.zip`** (no date or version suffix). Keep the updated CLAUDE.md inside the folder.
-- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20260924b`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
+- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20260924c`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
 - Fonts load from Google Fonts. Photos are Unsplash CDN URLs (`images.unsplash.com/photo-<id>?auto=format&fit=crop&w=…&q=…`) with `onerror="this.remove()"` fallbacks on the homepage tiles.
 
 ### Files
@@ -143,7 +143,7 @@ Five tiles: Restaurants (Ossobello), Cafés & bakeries (Hollowmere), Salons & st
 
 ---
 
-## 8. Change log — chat of 24 Sept 2026 (`v=20260924b`)
+## 8. Change log — chat of 24 Sept 2026 (`v=20260924c`)
 
 1. New landing chooser at index.html; old homepage moved to custom.html; links rewired.
 2. New ready-made.html with the live site builder (sitegen.js, builder.js, builder.css). See section 10.
@@ -179,7 +179,7 @@ Ray's idea: keep selling custom sites, and also sell one website with thousands 
 
 **The builder** (`#builder` on ready-made.html). Left: the customer's site, live, in an iframe (laptop at 1280 px scaled to fit, or phone at 390 px), with page tabs, Shuffle, Start over. Right: one dropdown per part of the site, one open at a time: Your business (kind of business preset, name, tagline, which pages, separate pages vs one long page), Colours & fonts, Header, Homepage, About, Services/Menu, Gallery, Booking, Contact & footer. Each section dropdown shows **square live thumbnails of every design** drawn in the customer's own colours and words, plus section colour (Page/Soft/Dark/Accent), heading size, the words, and photos. The Homepage dropdown also has site colours, heading font and text size, as Ray asked. On phones the preview is sticky on top (50svh) and the dropdowns scroll beneath it, with the buy bar sticky at the bottom. Work is autosaved in localStorage (`onwards-builder-v1`); uploaded photos are kept only for the session.
 
-**Design counts** (sitegen.js `SECTIONS`): header 6, homepage 10, about (text + image) 10, services 6, gallery 6, booking 10, contact 6, footer 4. 24 palettes + custom colours, 18 heading fonts, 14 text fonts, 3 corner styles, 3 button styles = about 282 billion combinations before words/photos (computed live into `[data-combos]`). Booking kinds: table / appointment / enquiry, with a custom day strip or month calendar, time chips and a guest stepper (no native pickers). Presets: Restaurant, Café & bakery, Salon & studio, Real estate, Something else — photos reuse the Unsplash IDs already used in the demos.
+**Design counts** (sitegen.js `SECTIONS`, as of 24 Sept third round): header 10, homepage 12, about (text + image) 12, services 10, gallery 10, booking 12, contact 10, footer 8. 32 palettes + custom colours, 22 heading fonts, 18 text fonts, 3 corner styles, 3 button styles = about 15.8 trillion combinations before words/photos (computed live into `[data-combos]`). Booking kinds: table / appointment / enquiry, with a custom day strip or month calendar, time chips and a guest stepper (no native pickers). Presets: Restaurant, Café & bakery, Salon & studio, Real estate, Something else — photos reuse the Unsplash IDs already used in the demos.
 
 **The finished site** is one self-contained HTML file (all pages in one file, switched by `#about`, `#booking`…; small runtime script inside). Booking and contact forms post to FormSubmit at the owner's email (first submission triggers FormSubmit's confirmation email to the owner). Optional "Site by Onwards Digital" footer credit (on by default).
 
@@ -188,4 +188,4 @@ Ray's idea: keep selling custom sites, and also sell one website with thousands 
 **Open questions for Ray (asked 24 Sept):** refund wording for ready-made sites; whether Monthly Care can be added to a ready-made site; whether the footer credit should default on; delivery promise wording; which section types to grow to 10 designs next.
 
 ## 9. How to resume in a new chat
-Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Sept 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20260924b` and is zipped as `onwards-digital-website.zip`.
+Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Sept 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20260924c` and is zipped as `onwards-digital-website.zip`.

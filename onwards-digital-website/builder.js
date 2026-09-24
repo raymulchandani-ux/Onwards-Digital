@@ -47,14 +47,34 @@
   frame.addEventListener("load", function () { ready = true; apply(); fit(); });
   frame.srcdoc = G.doc(state, { preview: true });
 
+  /* Patch a live DOM tree to match fresh HTML, touching only what changed */
+  function morph(a, b) {
+    if (a.nodeType !== b.nodeType || a.nodeName !== b.nodeName) { a.parentNode.replaceChild(a.ownerDocument.importNode(b, true), a); return; }
+    if (a.nodeType === 3 || a.nodeType === 8) { if (a.nodeValue !== b.nodeValue) a.nodeValue = b.nodeValue; return; }
+    if (a.nodeType !== 1) return;
+    var i;
+    for (i = a.attributes.length - 1; i >= 0; i--) { var n = a.attributes[i].name; if (!b.hasAttribute(n) && n !== "contenteditable") a.removeAttribute(n); }
+    for (i = 0; i < b.attributes.length; i++) { var at = b.attributes[i]; if (a.getAttribute(at.name) !== at.value) a.setAttribute(at.name, at.value); }
+    if (a.hasAttribute("data-days") || a.hasAttribute("data-cal")) return;   // the site's own pickers keep their state
+    var bk = [].slice.call(b.childNodes);
+    for (i = 0; i < bk.length; i++) { if (i < a.childNodes.length) morph(a.childNodes[i], bk[i]); else a.appendChild(a.ownerDocument.importNode(bk[i], true)); }
+    while (a.childNodes.length > bk.length) a.removeChild(a.lastChild);
+  }
+  function patchDoc(d, s, only, edit) {
+    var c = d.getElementById("css"), css = G.css(s, only); if (c.textContent !== css) c.textContent = css;
+    var f = d.getElementById("fonts"), href = G.fontsHref(s); if (f.getAttribute("href") !== href) f.setAttribute("href", href);
+    var cls = G.bodyClass(s); if (d.body.className !== cls) d.body.className = cls;
+    var tpl = d.createElement("template"); tpl.innerHTML = G.body(s, only, edit);
+    var holder = d.createElement("div"); holder.appendChild(tpl.content);
+    morph(d.getElementById("root"), (function () { var r = d.createElement("div"); r.id = "root"; while (holder.firstChild) r.appendChild(holder.firstChild); return r; })());
+  }
+  var editing = false;
   function apply() {
     if (!ready) return;
     var w = frame.contentWindow, d = frame.contentDocument; if (!d || !w.__site) return;
     var y = w.scrollY;
-    d.getElementById("css").textContent = G.css(state);
-    var f = d.getElementById("fonts"), href = G.fontsHref(state); if (f.getAttribute("href") !== href) f.setAttribute("href", href);
-    d.body.className = G.bodyClass(state);
-    d.getElementById("root").innerHTML = G.body(state);
+    if (editing) return;
+    patchDoc(d, state, null, true);
     w.__site.fill(); w.__site.show(page, false); w.scrollTo(0, y);
     paintTabs();
   }
@@ -62,7 +82,7 @@
     var P = stage.clientWidth < 500 ? 10 : 28;          // breathing room around the site
     var W = stage.clientWidth - 2 * P, H = stage.clientHeight - 2 * P, vw, sc, fh;
     root.classList.toggle("is-phone", device === "phone");
-    if (device === "laptop") { vw = 1280; sc = W / vw; fh = H / sc; wrap.style.width = Math.round(W) + "px"; wrap.style.height = Math.round(H) + "px"; }
+    if (device === "laptop") { W = Math.min(W, H * 1.5); vw = 1280; sc = W / vw; var hh = Math.min(H, W / 1.5); fh = hh / sc; wrap.style.width = Math.round(W) + "px"; wrap.style.height = Math.round(hh) + "px"; }
     else { vw = 390; sc = Math.min(1, W / vw); fh = Math.min(844, H / sc); wrap.style.width = Math.round(vw * sc) + "px"; wrap.style.height = Math.round(fh * sc) + "px"; }
     frame.style.width = vw + "px"; frame.style.height = fh + "px"; frame.style.transform = "scale(" + sc + ")";
   }
@@ -87,6 +107,12 @@
     w.__site.show(id, true);
     if (where === "bottom") setTimeout(function () { w.scrollTo({ top: w.document.body.scrollHeight, behavior: "smooth" }); }, 60);
   }
+  function syncInputs(path) { root.querySelectorAll('[data-path="' + path + '"]').forEach(function (inp) { if (inp !== document.activeElement) inp.value = get(path) || ""; }); }
+  window.addEventListener("message", function (e) {
+    if (e.source !== frame.contentWindow || !e.data) return;
+    if (e.data.edit) { editing = true; set(e.data.edit, e.data.value); save(); syncInputs(e.data.edit); paintSummaries(); refreshThumbs(); return; }
+    if (e.data.editDone) { editing = false; setTimeout(apply, 0); return; }
+  });
   window.addEventListener("message", function (e) { if (e.source === frame.contentWindow && e.data && e.data.sitePage) { page = e.data.sitePage; paintTabs(); } });
 
   /* Device + shuffle */
@@ -121,7 +147,7 @@
   function group(label, kids, cls) { return h("div", { class: "grp" + (cls ? " " + cls : "") }, [label ? h("span", { class: "cap muted", text: label }) : null].concat(kids)); }
   function text(label, path, o) {
     o = o || {};
-    var inp = h(o.area ? "textarea" : "input", { class: "fi", value: o.area ? null : get(path), rows: o.area ? (o.rows || 4) : null, maxlength: o.max || null, placeholder: o.ph || null, type: o.type || null });
+    var inp = h(o.area ? "textarea" : "input", { class: "fi", "data-path": path, value: o.area ? null : get(path), rows: o.area ? (o.rows || 4) : null, maxlength: o.max || null, placeholder: o.ph || null, type: o.type || null });
     if (o.area) inp.value = get(path) || "";
     inp.addEventListener("input", function () { set(path, inp.value); changed(); });
     return h("label", { class: "fl" }, [h("span", { class: "fl-l", text: label }), inp]);
@@ -244,7 +270,17 @@
   var thumbSets = [];     // { sec, frames[] } for panels that are open
   var painters = [];
   function layouts(sec) {
-    var list = G.SECTIONS[sec], box = h("div", { class: "lays" }), frames = [];
+    var list = G.SECTIONS[sec], frames = [];
+    if (sec === "header") {
+      var names = h("div", { class: "names" });
+      list.forEach(function (t, i) {
+        var b = h("button", { type: "button", class: "nm" + (state.header.v === i ? " on" : ""), "aria-pressed": state.header.v === i ? "true" : "false" }, [h("b", { text: t.n }), h("span", { text: t.d || "" })]);
+        b.addEventListener("click", function () { state.header.v = i; [].forEach.call(names.children, function (x, j) { x.classList.toggle("on", j === i); x.setAttribute("aria-pressed", j === i); }); changed(true); goPage("home"); });
+        names.appendChild(b);
+      });
+      return names;
+    }
+    var box = h("div", { class: "lays" });
     list.forEach(function (t, i) {
       var fr = h("iframe", { tabindex: "-1", "aria-hidden": "true", title: t.n, loading: "lazy" });
       var b = h("button", { type: "button", class: "lay" + (state[sec].v === i ? " on" : ""), "aria-label": t.n + " design", "aria-pressed": state[sec].v === i ? "true" : "false" }, [h("span", { class: "lay-box" }, [fr]), h("span", { class: "lay-n", text: t.n })]);
@@ -260,8 +296,12 @@
     var base = JSON.stringify(state);
     set.frames.forEach(function (fr, i) {
       var s = JSON.parse(base); s[set.sec].v = i;
-      if (set.sec === "header") s.hero.v = 0;
-      fr.srcdoc = G.doc(s, { thumb: true, only: set.sec });
+      var key = JSON.stringify([G.css(s, set.sec), G.body(s, set.sec), G.bodyClass(s), G.fontsHref(s)]);
+      if (fr._key === key) return;                       // nothing about this design changed
+      var d = fr._ready && fr.contentDocument;
+      if (d && d.getElementById("root")) patchDoc(d, s, set.sec, false);
+      else { fr.onload = function () { fr._ready = true; }; fr.srcdoc = G.doc(s, { thumb: true, only: set.sec }); }
+      fr._key = key;
     });
   }
   function sizeThumbs() {
@@ -377,8 +417,8 @@
   function hlFields() {
     var box = h("div", { class: "hls" });
     state.hl.forEach(function (x, i) {
-      var t = h("input", { class: "fi", value: x[0], maxlength: 40, "aria-label": "Highlight " + (i + 1) + " title" });
-      var d = h("textarea", { class: "fi", rows: 2, maxlength: 140, "aria-label": "Highlight " + (i + 1) + " text" }); d.value = x[1];
+      var t = h("input", { class: "fi", "data-path": "hl." + i + ".0", value: x[0], maxlength: 40, "aria-label": "Highlight " + (i + 1) + " title" });
+      var d = h("textarea", { class: "fi", "data-path": "hl." + i + ".1", rows: 2, maxlength: 140, "aria-label": "Highlight " + (i + 1) + " text" }); d.value = x[1];
       t.addEventListener("input", function () { state.hl[i][0] = t.value; changed(); });
       d.addEventListener("input", function () { state.hl[i][1] = d.value; changed(); });
       box.appendChild(h("div", { class: "hl-row" }, [t, d]));
@@ -388,8 +428,8 @@
   function factFields() {
     var box = h("div", { class: "facts3" });
     state.about.facts.forEach(function (x, i) {
-      var v = h("input", { class: "fi", value: x[0], maxlength: 10, "aria-label": "Number " + (i + 1) });
-      var l = h("input", { class: "fi", value: x[1], maxlength: 30, "aria-label": "Label " + (i + 1) });
+      var v = h("input", { class: "fi", "data-path": "about.facts." + i + ".0", value: x[0], maxlength: 10, "aria-label": "Number " + (i + 1) });
+      var l = h("input", { class: "fi", "data-path": "about.facts." + i + ".1", value: x[1], maxlength: 30, "aria-label": "Label " + (i + 1) });
       v.addEventListener("input", function () { state.about.facts[i][0] = v.value; changed(); });
       l.addEventListener("input", function () { state.about.facts[i][1] = l.value; changed(); });
       box.appendChild(h("div", {}, [v, l]));
@@ -401,9 +441,9 @@
     function draw() {
       box.innerHTML = "";
       state.services.items.forEach(function (x, i) {
-        var n = h("input", { class: "fi", value: x.n, placeholder: "Name", maxlength: 50, "aria-label": "Item name" });
-        var p = h("input", { class: "fi", value: x.p, placeholder: "Price", maxlength: 14, "aria-label": "Price" });
-        var d = h("input", { class: "fi", value: x.d, placeholder: "Short description", maxlength: 120, "aria-label": "Description" });
+        var n = h("input", { class: "fi", "data-path": "services.items." + i + ".n", value: x.n, placeholder: "Name", maxlength: 50, "aria-label": "Item name" });
+        var p = h("input", { class: "fi", "data-path": "services.items." + i + ".p", value: x.p, placeholder: "Price", maxlength: 14, "aria-label": "Price" });
+        var d = h("input", { class: "fi", "data-path": "services.items." + i + ".d", value: x.d, placeholder: "Short description", maxlength: 120, "aria-label": "Description" });
         n.addEventListener("input", function () { x.n = n.value; changed(); });
         p.addEventListener("input", function () { x.p = p.value; changed(); });
         d.addEventListener("input", function () { x.d = d.value; changed(); });
@@ -495,7 +535,7 @@
     if (!instant) setTimeout(function () {
       if (open !== id) return;
       if (list.scrollHeight > list.clientHeight + 4) list.scrollTo({ top: n.node.offsetTop, behavior: "smooth" });
-      else { var r = n.head.getBoundingClientRect(), pv = root.querySelector(".bl-view").getBoundingClientRect(); if (r.top < pv.bottom || r.top > window.innerHeight - 80) window.scrollBy({ top: r.top - pv.bottom - 8, behavior: "smooth" }); }
+      else if (window.innerWidth <= 860) { var r = n.head.getBoundingClientRect(), pv = root.querySelector(".bl-view").getBoundingClientRect(); if (r.top < pv.bottom || r.top > window.innerHeight - 80) window.scrollBy({ top: r.top - pv.bottom - 8, behavior: "smooth" }); }
     }, 380);
   }
   function rebuildPanels(keep) {
@@ -511,15 +551,14 @@
 
   /* ── Buying ────────────────────────────────────────────── */
   var modal = $("[data-buy-modal]", root), mForm = $("#buy-form", root);
-  var own = $("#buy-own", root), ownerIn = $("#buy-owner", root), ghWrap = $("#buy-gh-wrap", root);
+  var own = $("#buy-own", root), ownerIn = $("#buy-owner", root);
   function paintOwn() { var on = own.checked; ownerIn.disabled = on; ownerIn.closest(".field").classList.toggle("off", on); if (on) ownerIn.closest(".field").classList.remove("invalid"); }
   own.addEventListener("change", paintOwn);
-  function paintDelivery() { var v = (mForm.querySelector('input[name="delivery"]:checked') || {}).value; ghWrap.hidden = v !== "github"; }
-  mForm.querySelectorAll('input[name="delivery"]').forEach(function (r) { r.addEventListener("change", paintDelivery); });
+
   function openBuy() {
     var ce = (state.contact.email || "").trim();
     if (!ownerIn.value) ownerIn.value = /example\.com$/i.test(ce) ? "" : ce;
-    paintOwn(); paintDelivery();
+    paintOwn();
     showModal(modal, "#buy-name");
     if (window.__paintSubmit) window.__paintSubmit();
   }
@@ -549,14 +588,13 @@
   }
   mForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    var name = $("#buy-name", root), email = $("#buy-email", root), owner = ownerIn, err = $("#buy-err", root), gh = $("#buy-gh", root);
+    var name = $("#buy-name", root), email = $("#buy-email", root), owner = ownerIn, err = $("#buy-err", root);
     var re = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i, bad = null, msg = "";
     var del = mForm.querySelector('input[name="delivery"]:checked'), selfSetup = own.checked;
-    [name, email, owner, gh].forEach(function (x) { x.closest(".field").classList.remove("invalid"); });
+    [name, email, owner].forEach(function (x) { x.closest(".field").classList.remove("invalid"); });
     if (!name.value.trim()) { bad = name; msg = "Please enter your name."; }
     else if (!re.test(email.value.trim())) { bad = email; msg = "Please enter a valid email address, like name@gmail.com"; }
     else if (!selfSetup && !re.test(owner.value.trim())) { bad = owner; msg = "Enter the email for bookings, or choose “I want to set this up on my own”."; }
-    else if (del.value === "github" && !gh.value.trim()) { bad = gh; msg = "Please enter your GitHub username."; }
     if (bad) { bad.closest(".field").classList.add("invalid"); err.textContent = msg; bad.focus(); return; }
     err.textContent = "";
     if (!selfSetup) { state.contact.email = owner.value.trim(); save(); apply(); }
@@ -567,7 +605,7 @@
       var fields = [
         ["name", name.value.trim()], ["email", email.value.trim()], ["business_name", state.name],
         ["booking_email", selfSetup ? "Customer will set this up on their own" : state.contact.email],
-        ["delivery", del.getAttribute("data-label") + (del.value === "github" ? " — GitHub username: " + gh.value.trim() : "")],
+        ["delivery", del.getAttribute("data-label")],
         ["plan", "Ready-made site"], ["_subject", "New ready-made site order — " + state.name], ["_template", "table"],
         ["design", summary()], ["site_file", file]
       ];
