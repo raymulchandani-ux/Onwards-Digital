@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260924a">
+  <link rel="stylesheet" href="site.css?v=20260924b">
 </head>
 <body>
 
@@ -111,8 +111,8 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260924a"></script>
-<script src="site.js?v=20260924a"></script>
+<script src="config.js?v=20260924b"></script>
+<script src="site.js?v=20260924b"></script>
 <script>
 (function () {
   var CFG = window.ONWARDS || {};
@@ -152,7 +152,7 @@
   if (key === "advanced") s3.textContent = "Your site is ready within 3–5 business days, with two rounds of revisions (bug fixes don’t count).";
   else if (key === "professional") s3.textContent = "Your site is ready within 5–7 business days, with five rounds of revisions (bug fixes don’t count).";
   else if (key === "readyMade") {
-    s3.textContent = "Your finished site arrives by email, with clear steps for putting it on your own domain.";
+    s3.textContent = "Your finished site is sent the way you chose, with clear steps for putting it on your own domain.";
     var s2 = s3.closest("li").previousElementSibling;
     if (s2) s2.lastElementChild.textContent = "We check that your payment has arrived and match it to your design.";
   }
@@ -179,7 +179,7 @@
     note.textContent = (pp
       ? (monthly && !paypalSub
           ? "PayPal takes your first month now; we email you a subscription link for the months after. Cancel any time."
-          : (key === "readyMade" ? "You’ll be taken to PayPal to finish. Your site is emailed to you once the payment is confirmed." : "You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours."))
+          : (key === "readyMade" ? "You’ll be taken to PayPal to finish. Your site is sent to you once the payment is confirmed." : "You’ll be taken to PayPal to finish. Come back here when you’re done — we’ll be in touch within 24 hours."))
       : "You’ll be taken to a Stripe checkout page. We’ll be in touch within 24 hours of payment.") + charged;
     sec.textContent = pp ? "Encrypted by PayPal. We never see your card details." : "Encrypted by Stripe. We never see your card details.";
   }

@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260924a">
-  <link rel="stylesheet" href="builder.css?v=20260924a">
+  <link rel="stylesheet" href="site.css?v=20260924b">
+  <link rel="stylesheet" href="builder.css?v=20260924b">
 </head>
 <body>
 
@@ -23,6 +23,7 @@
   <div class="wrap">
     <span class="left">Design it here, see every change as you make it.</span>
     <div class="right">
+      <a href="custom.html">Order a custom site</a>
       <a href="mailto:contactonwardsdigital@gmail.com">Contact</a>
     </div>
   </div>
@@ -33,6 +34,9 @@
   <div class="wrap">
     <a class="wordmark" href="index.html"><svg class="mark" viewBox="0 0 100 100" width="26" height="26" aria-hidden="true"><path d="M72 24 A36 36 0 1 0 72 76" fill="none" stroke="currentColor" stroke-width="9"/><path d="M50 50 H94" fill="none" stroke="currentColor" stroke-width="9"/><path d="M80 38 L94 50 L80 62" fill="none" stroke="currentColor" stroke-width="9" stroke-linejoin="miter"/></svg>Onwards Digital</a>
     <div class="nav-bar">
+      <div class="site-switch" aria-label="Our services">
+        <a href="custom.html">Custom websites</a><a href="ready-made.html" class="on" aria-current="page">Ready-made sites</a>
+      </div>
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav">Menu
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6"/></svg>
       </button>
@@ -40,7 +44,6 @@
         <a href="#how">How it works</a>
         <a href="#builder">Design yours</a>
         <a href="#faq">Questions</a>
-        <a href="custom.html">Custom builds</a>
       </nav>
       <div class="cur-menu nav-cur">
       <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -92,7 +95,7 @@
     <div class="steps three reveal">
       <div class="step"><span class="n">1</span><span class="t">Pick your starting point</span><p class="d">Choose your kind of business and we fill in example words and photos, so you’re never starting from a blank page.</p></div>
       <div class="step"><span class="n">2</span><span class="t">Make it yours</span><p class="d">Open each part of the site on the right and choose from its designs, colours and fonts. Type your own words, upload your own photos, and switch pages or a booking system on and off.</p></div>
-      <div class="step"><span class="n">3</span><span class="t">Buy it and go live</span><p class="d">Pay once. You receive your finished site with clear steps for putting it on your own domain.</p></div>
+      <div class="step"><span class="n">3</span><span class="t">Buy it and go live</span><p class="d">Pay once. Choose how you’d like it sent, and you receive your finished site with clear steps for putting it on your own domain.</p></div>
     </div>
   </div>
 </section>
@@ -131,22 +134,50 @@
     </aside>
   </div>
 
-  <div class="bl-modal" hidden>
+  <div class="bl-modal" data-buy-modal hidden>
     <div class="bl-dialog" role="dialog" aria-modal="true" aria-labelledby="buy-title">
       <button type="button" class="x" data-close aria-label="Close">&times;</button>
       <span class="cap muted">Step 1 of 2</span>
       <h2 class="form-title" id="buy-title" style="margin-top:10px;">Where should we send your site?</h2>
       <p class="form-sub">Your design is kept exactly as it is on screen.</p>
       <form id="buy-form" novalidate style="margin-top:12px;">
-        <div class="field"><label class="cap" for="buy-name">Your name</label><input class="input" id="buy-name" autocomplete="name"></div>
-        <div class="field"><label class="cap" for="buy-email">Your email</label><input class="input" id="buy-email" type="email" autocomplete="email"><span class="hint">We send your finished site here.</span></div>
-        <div class="field"><label class="cap" for="buy-owner">Email for bookings and messages</label><input class="input" id="buy-owner" type="email"><span class="hint">Where your site’s booking and contact forms send people’s requests. It can be the same address.</span></div>
+        <div class="cols2 f2">
+          <div class="field"><label class="cap" for="buy-name">Your name</label><input class="input" id="buy-name" autocomplete="name"></div>
+          <div class="field"><label class="cap" for="buy-email">Your email</label><input class="input" id="buy-email" type="email" autocomplete="email"></div>
+        </div>
+        <div class="field">
+          <span class="cap" id="del-l">How would you like your website sent?</span>
+          <div class="dels" role="radiogroup" aria-labelledby="del-l">
+            <label class="del"><input type="radio" name="delivery" value="zip" data-label="Zip file" checked><span><b>Zip file</b><small>Most commonly used to put startup websites live through GitHub.</small></span></label>
+            <label class="del"><input type="radio" name="delivery" value="html" data-label="Single HTML file"><span><b>Single file</b><small>One HTML file you can drag into Netlify Drop or any website builder that takes files.</small></span></label>
+            <label class="del"><input type="radio" name="delivery" value="github" data-label="Added to their GitHub"><span><b>Straight to GitHub</b><small>We add it to a repository on your GitHub account, ready to publish.</small></span></label>
+            <label class="del"><input type="radio" name="delivery" value="drive" data-label="Google Drive link"><span><b>Google Drive link</b><small>A shared folder you can open and download from any time.</small></span></label>
+          </div>
+          <div class="field sub" id="buy-gh-wrap" hidden><label class="cap" for="buy-gh">Your GitHub username</label><input class="input" id="buy-gh" autocomplete="username"></div>
+        </div>
+        <div class="field">
+          <label class="cap" for="buy-owner">Email for bookings and messages <span class="muted" style="text-transform:none;letter-spacing:0">(optional)</span></label>
+          <input class="input" id="buy-owner" type="email">
+          <span class="hint">Where your site’s booking and contact forms send people’s requests.</span>
+          <label class="check"><input type="checkbox" id="buy-own"><span>I want to set this up on my own</span></label>
+        </div>
         <div class="submit-row">
           <p id="buy-err" aria-live="polite"></p>
           <button type="submit" class="btn btn-block" id="submit-btn" data-plan-key="readyMade">Continue to payment</button>
           <p class="submit-note">You’ll choose PayPal or Stripe on the next page.</p>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="bl-modal" data-reset-modal hidden>
+    <div class="bl-dialog small" role="alertdialog" aria-modal="true" aria-labelledby="reset-title" aria-describedby="reset-d">
+      <h2 class="form-title" id="reset-title">Start over?</h2>
+      <p class="form-sub" id="reset-d">Everything you’ve changed here will be cleared, and you’ll go back to the example design.</p>
+      <div class="dlg-acts">
+        <button type="button" class="btn-line" data-keep>Keep my design</button>
+        <button type="button" class="btn" data-do-reset>Start over</button>
+      </div>
     </div>
   </div>
 </section>
@@ -162,7 +193,7 @@
     <div class="faq reveal">
       <details>
         <summary>What exactly do I get?</summary>
-        <p>Your finished website, exactly as you designed it here, with your words, photos, colours and fonts, plus clear steps for putting it on your own domain.</p>
+        <p>Your finished website, exactly as you designed it here, with your words, photos, colours and fonts, plus clear steps for putting it on your own domain. You choose how it’s sent: a zip file, a single file, straight to your GitHub, or a Google Drive link.</p>
       </details>
       <details>
         <summary>Will anyone else have the same website?</summary>
@@ -197,9 +228,9 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260924a"></script>
-<script src="site.js?v=20260924a"></script>
-<script src="sitegen.js?v=20260924a"></script>
-<script src="builder.js?v=20260924a"></script>
+<script src="config.js?v=20260924b"></script>
+<script src="site.js?v=20260924b"></script>
+<script src="sitegen.js?v=20260924b"></script>
+<script src="builder.js?v=20260924b"></script>
 </body>
 </html>

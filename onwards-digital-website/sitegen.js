@@ -157,7 +157,7 @@ window.SITEGEN = (function () {
 
   function defaults(key) {
     var s = {
-      preset: "restaurant", name: "", tagline: "", onePage: false, credit: true,
+      preset: "restaurant", name: "", tagline: "", onePage: true, credit: true,
       pages: { about: true, services: true, gallery: true, booking: true, contact: true },
       theme: { pal: 3, custom: null, hf: 1, bf: 4, size: 100, hscale: 100, radius: "soft", btn: "solid" },
       header: { v: 0, tone: "base" },

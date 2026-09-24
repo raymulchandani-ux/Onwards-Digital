@@ -13,8 +13,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Schibsted+Grotesk:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="site.css?v=20260924a">
-  <link rel="stylesheet" href="builder.css?v=20260924a">
+  <link rel="stylesheet" href="site.css?v=20260924b">
+  <link rel="stylesheet" href="builder.css?v=20260924b">
 </head>
 <body>
 
@@ -40,15 +40,7 @@
         <a href="custom.html">Custom websites</a>
         <a href="ready-made.html">Ready-made sites</a>
       </nav>
-      <div class="cur-menu nav-cur">
-      <button type="button" class="cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Currency"><span class="cur-btn-label">USD $</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
-      <ul class="cur-list" role="listbox" hidden>
-        <li role="option" data-cur="USD" aria-selected="true"><span>USD</span><span class="sym">$</span></li>
-        <li role="option" data-cur="EUR"><span>EUR</span><span class="sym">€</span></li>
-        <li role="option" data-cur="GBP"><span>GBP</span><span class="sym">£</span></li>
-        <li role="option" data-cur="AED"><span>AED</span><span class="sym"><svg class="dh" viewBox="0 0 100 100" aria-hidden="true"><path d="M30 14 H52 A36 36 0 0 1 52 86 H30 Z" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="miter"/><path d="M14 42 H70 M14 58 H70" fill="none" stroke="currentColor" stroke-width="6.5"/></svg></span></li>
-      </ul>
-    </div>
+      
     </div>
   </div>
 </header>
@@ -56,17 +48,11 @@
 <main class="wrap choose">
   <div class="choose-head">
     <h1 class="h-hero">How would you like your website?</h1>
-    <p class="lede-lg">Two ways to get online. Either way, the site is yours to keep and works on phone and computer.</p>
   </div>
 
   <div class="choices2">
     <a class="choice2" href="custom.html">
       <span class="cap muted">Custom build</span>
-      <div class="c-imgs" aria-hidden="true">
-        <span><img src="https://images.unsplash.com/photo-1675583690138-5242aee4c0c3?auto=format&fit=crop&w=500&q=70" alt="" loading="lazy" onerror="this.remove()"></span>
-        <span><img src="https://images.unsplash.com/photo-1643944471768-2d2eac3afb6d?auto=format&fit=crop&w=500&q=70" alt="" loading="lazy" onerror="this.remove()"></span>
-        <span><img src="https://images.unsplash.com/photo-1505843513577-22bb7d21e455?auto=format&fit=crop&w=500&q=70" alt="" loading="lazy" onerror="this.remove()"></span>
-      </div>
       <h2 class="h-choice">I want a custom website built for me</h2>
       <p class="lede">We design and build it around your business, with a free mockup first and revisions until it’s right.</p>
       <div class="c-facts">
@@ -77,9 +63,6 @@
     </a>
     <a class="choice2" href="ready-made.html">
       <span class="cap muted">Ready-made site</span>
-      <div class="c-imgs" aria-hidden="true" data-mini>
-        <span></span><span></span><span></span>
-      </div>
       <h2 class="h-choice">I want to purchase a completed site today</h2>
       <p class="lede">Pick the designs, colours and fonts you like, add your words and photos, and see it change as you go.</p>
       <div class="c-facts">
@@ -89,7 +72,6 @@
       <span class="btn-line">Design yours now</span>
     </a>
   </div>
-  <p class="choose-foot">Not sure which? Email <a class="ul" href="mailto:contactonwardsdigital@gmail.com">contactonwardsdigital@gmail.com</a> and we’ll tell you honestly.</p>
 </main>
 
 <!-- Footer -->
@@ -105,28 +87,7 @@
   </footer>
 </div>
 
-<script src="config.js?v=20260924a"></script>
-<script src="site.js?v=20260924a"></script>
-<script src="sitegen.js?v=20260924a"></script>
-<script>
-/* Three live ready-made designs, each a different mix of the same parts */
-(function () {
-  var G = window.SITEGEN, box = document.querySelector("[data-mini]"); if (!G || !box) return;
-  var looks = [
-    { preset: "salon", pal: 6, hf: 7, bf: 5, v: 4, radius: "soft" },
-    { preset: "restaurant", pal: 15, hf: 2, bf: 4, v: 1, radius: "square" },
-    { preset: "cafe", pal: 8, hf: 12, bf: 6, v: 6, radius: "round" }
-  ];
-  var spans = box.querySelectorAll("span");
-  looks.forEach(function (l, i) {
-    var s = G.defaults(l.preset); s.theme.pal = l.pal; s.theme.hf = l.hf; s.theme.bf = l.bf; s.hero.v = l.v; s.theme.radius = l.radius;
-    var f = document.createElement("iframe"); f.setAttribute("tabindex", "-1"); f.setAttribute("aria-hidden", "true"); f.setAttribute("loading", "lazy");
-    f.srcdoc = G.doc(s, { thumb: true, only: "hero" });
-    spans[i].appendChild(f);
-  });
-  function size() { spans.forEach(function (s) { s.style.setProperty("--ts", (s.clientWidth / 1200).toFixed(4)); }); }
-  size(); window.addEventListener("resize", size);
-})();
-</script>
+<script src="config.js?v=20260924b"></script>
+<script src="site.js?v=20260924b"></script>
 </body>
 </html>

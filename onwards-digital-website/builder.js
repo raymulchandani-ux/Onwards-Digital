@@ -8,7 +8,7 @@
   "use strict";
   var G = window.SITEGEN, root = document.getElementById("builder");
   if (!G || !root) return;
-  var LS = "onwards-builder-v1";
+  var LS = "onwards-builder-v2";
 
   /* ── State ─────────────────────────────────────────────── */
   var state;
@@ -59,10 +59,11 @@
     paintTabs();
   }
   function fit() {
-    var W = stage.clientWidth, H = stage.clientHeight, vw, sc, fh;
+    var P = stage.clientWidth < 500 ? 10 : 28;          // breathing room around the site
+    var W = stage.clientWidth - 2 * P, H = stage.clientHeight - 2 * P, vw, sc, fh;
     root.classList.toggle("is-phone", device === "phone");
-    if (device === "laptop") { vw = 1280; sc = W / vw; fh = H / sc; wrap.style.width = W + "px"; wrap.style.height = H + "px"; }
-    else { vw = 390; sc = Math.min(1, (W - (W < 500 ? 0 : 24)) / vw); fh = Math.min(844, (H - (W < 500 ? 0 : 32)) / sc); wrap.style.width = Math.round(vw * sc) + "px"; wrap.style.height = Math.round(fh * sc) + "px"; }
+    if (device === "laptop") { vw = 1280; sc = W / vw; fh = H / sc; wrap.style.width = Math.round(W) + "px"; wrap.style.height = Math.round(H) + "px"; }
+    else { vw = 390; sc = Math.min(1, W / vw); fh = Math.min(844, H / sc); wrap.style.width = Math.round(vw * sc) + "px"; wrap.style.height = Math.round(fh * sc) + "px"; }
     frame.style.width = vw + "px"; frame.style.height = fh + "px"; frame.style.transform = "scale(" + sc + ")";
   }
   window.addEventListener("resize", debounce(function () { fit(); sizeThumbs(); }, 120));
@@ -106,10 +107,15 @@
     state.contact.tone = any(["base", "soft"]); state.footer.tone = any(["ink", "base", "accent"]);
     rebuildPanels(); changed(true);
   });
-  $("[data-reset]", root).addEventListener("click", function () {
-    if (!confirm("Start again from the beginning? Your changes here will be cleared.")) return;
-    state = G.defaults(state.preset); blobs = {}; rebuildPanels(); changed(true);
+  var resetModal = $("[data-reset-modal]", root);
+  function showModal(m, focusSel) { m.hidden = false; document.documentElement.classList.add("modal-open"); setTimeout(function () { var f = $(focusSel, m); if (f) f.focus(); }, 30); }
+  function hideModal(m) { m.hidden = true; if (!root.querySelector(".bl-modal:not([hidden])")) document.documentElement.classList.remove("modal-open"); }
+  $("[data-reset]", root).addEventListener("click", function () { showModal(resetModal, "[data-keep]"); });
+  $("[data-keep]", resetModal).addEventListener("click", function () { hideModal(resetModal); });
+  $("[data-do-reset]", resetModal).addEventListener("click", function () {
+    state = G.defaults(state.preset); blobs = {}; hideModal(resetModal); rebuildPanels(); changed(true);
   });
+  resetModal.addEventListener("click", function (e) { if (e.target === resetModal) hideModal(resetModal); });
 
   /* ── Controls ──────────────────────────────────────────── */
   function group(label, kids, cls) { return h("div", { class: "grp" + (cls ? " " + cls : "") }, [label ? h("span", { class: "cap muted", text: label }) : null].concat(kids)); }
@@ -131,7 +137,7 @@
   }
   function toggle(label, path, onDone) {
     var b = h("button", { type: "button", class: "tg" + (get(path) ? " on" : ""), role: "switch", "aria-checked": get(path) ? "true" : "false", "aria-label": label }, [h("i")]);
-    b.addEventListener("click", function () { set(path, !get(path)); b.classList.toggle("on", !!get(path)); b.setAttribute("aria-checked", !!get(path)); if (onDone) onDone(); changed(true); });
+    b.addEventListener("click", function () { set(path, !get(path)); b.classList.toggle("on", !!get(path)); b.setAttribute("aria-checked", !!get(path)); changed(true); if (onDone) onDone(!!get(path)); });
     return h("div", { class: "sw" }, [h("span", { text: label }), b]);
   }
   function tones(key) {
@@ -275,8 +281,13 @@
       withSize ? group("Heading size", [seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null
     ];
   }
+  function lookTabs(sec, withSize, extra) {
+    var tabs = [["Design", function () { return [layouts(sec)]; }],
+      ["Style", function () { return [group("Section colour", [tones(sec)]), withSize ? group("Heading size", [seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null].concat(extra || []); }]];
+    return tabs;
+  }
   var PANELS = [
-    { id: "start", title: function () { return "Your business"; }, sum: function () { return state.name + " · " + G.ctx(state).pages.length + " pages"; }, page: "home",
+    { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
       build: function () {
         var types = h("div", { class: "chips" });
         Object.keys(G.PRESETS).forEach(function (k) {
@@ -286,90 +297,77 @@
           } }));
         });
         var pages = h("div", { class: "sws" }, [
-          toggle("About page", "pages.about", pagesChanged), toggle((state.services.label || "Services") + " page", "pages.services", pagesChanged),
-          toggle("Gallery page", "pages.gallery", pagesChanged), toggle("Booking system", "pages.booking", pagesChanged), toggle("Contact page", "pages.contact", pagesChanged)
+          toggle("About", "pages.about", pageToggled("about")), toggle(state.services.label || "Services", "pages.services", pageToggled("services")),
+          toggle("Gallery", "pages.gallery", pageToggled("gallery")), toggle("Booking system", "pages.booking", pageToggled("booking")), toggle("Contact", "pages.contact", pageToggled("contact"))
         ]);
         return [
-          group("Kind of business", [types, h("p", { class: "hint", text: "Fills in example words and photos for that kind of business. Your design choices stay as they are." })]),
-          text("Business name", "name", { max: 40 }), text("One-line description", "tagline", { max: 90 }),
-          group("Pages", [h("p", { class: "hint", text: "The homepage is always included." }), pages]),
-          group("How the pages open", [seg("onePage", [[false, "Separate pages"], [true, "One long page"]])])
+          group("Kind of business", [types, h("p", { class: "hint", text: "Fills in example words and photos. Your design stays as it is." })]),
+          h("div", { class: "cols2" }, [text("Business name", "name", { max: 40 }), text("One-line description", "tagline", { max: 90 })]),
+          group("What’s on your site", [pages]),
+          group("Layout", [seg("onePage", [[true, "One long page"], [false, "Separate pages"]])])
         ];
       } },
     { id: "theme", title: function () { return "Colours & fonts"; }, sum: function () { var t = state.theme; return (t.custom ? "Your own colours" : G.PALETTES[t.pal].n) + " · " + G.HEAD_FONTS[t.hf][0]; },
       build: function () {
-        return [
-          group("Colours", [palettes(), h("p", { class: "hint", text: "Or choose your own:" }), customColours()]),
-          group("Heading font", [fontList("hf")]),
-          group("Text font", [fontList("bf")]),
-          group("Sizes", [range("Text size", "theme.size", 90, 115, 5, "%"), range("Heading size", "theme.hscale", 80, 125, 5, "%")]),
-          group("Corners", [seg("theme.radius", [["square", "Square"], ["soft", "Soft"], ["round", "Round"]])]),
-          group("Buttons", [seg("theme.btn", [["solid", "Solid"], ["outline", "Outline"], ["text", "Underline"]])])
-        ];
+        return { tabs: [
+          ["Colours", function () { return [palettes(), h("p", { class: "hint", text: "Or choose your own:" }), customColours()]; }],
+          ["Fonts", function () { return [group("Headings", [fontList("hf")]), group("Text", [fontList("bf")])]; }],
+          ["Sizes & shapes", function () { return [range("Text size", "theme.size", 90, 115, 5, "%"), range("Heading size", "theme.hscale", 80, 125, 5, "%"), group("Corners", [seg("theme.radius", [["square", "Square"], ["soft", "Soft"], ["round", "Round"]])]), group("Buttons", [seg("theme.btn", [["solid", "Solid"], ["outline", "Outline"], ["text", "Underline"]])])]; }]
+        ] };
       } },
     { id: "header", title: function () { return "Header"; }, sum: function () { return G.SECTIONS.header[state.header.v].n; }, page: "home",
-      build: function () { return lookBlock("header", false); } },
+      build: function () { return { tabs: lookTabs("header", false) }; } },
     { id: "hero", title: function () { return "Homepage"; }, sum: function () { return G.SECTIONS.hero[state.hero.v].n + " design"; }, page: "home",
       build: function () {
-        return lookBlock("hero", true).concat([
-          group("Site colours & font", [palettes(), h("div", { class: "fonts-sel" }, [fontSelect()]), range("Text size", "theme.size", 90, 115, 5, "%")], "sub"),
-          group("Words", [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
-            h("div", { class: "cols2" }, [text("Main button", "hero.cta", { max: 28 }), text("Second button", "hero.cta2", { max: 28 })])]),
-          group("Photos", [photo("Main photo", "hero"), photo("Extra photo 1", "x1", "Used by some designs"), photo("Extra photo 2", "x2", "Used by some designs")]),
-          group("Three highlights under the photo", [toggle("Show highlights", "hero.hlOn"), hlFields()])
-        ]);
+        return { tabs: lookTabs("hero", true, [group("Site colours", [palettes()]), group("Fonts & size", [fontSelect(), range("Text size", "theme.size", 90, 115, 5, "%")])]).concat([
+          ["Words", function () { return [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
+            h("div", { class: "cols2" }, [text("Main button", "hero.cta", { max: 28 }), text("Second button", "hero.cta2", { max: 28 })]),
+            group("Three highlights", [toggle("Show highlights", "hero.hlOn"), hlFields()])]; }],
+          ["Photos", function () { return [photo("Main photo", "hero"), photo("Extra photo 1", "x1", "Used by some designs"), photo("Extra photo 2", "x2", "Used by some designs")]; }]
+        ]) };
       } },
-    { id: "about", need: "about", title: function () { return "About page"; }, sum: function () { return G.SECTIONS.about[state.about.v].n + " design"; }, page: "about",
+    { id: "about", need: "about", title: function () { return "About"; }, sum: function () { return G.SECTIONS.about[state.about.v].n + " design"; }, page: "about",
       build: function () {
-        return lookBlock("about", true).concat([
-          group("Words", [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." })]),
-          group("Three numbers", [factFields()]),
-          group("Photos", [photo("Main photo", "about"), photo("Second photo", "x1", "Used by some designs")])
-        ]);
+        return { tabs: lookTabs("about", true).concat([
+          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), group("Three numbers", [factFields()])]; }],
+          ["Photos", function () { return [photo("Main photo", "about"), photo("Second photo", "x1", "Used by some designs")]; }]
+        ]) };
       } },
-    { id: "services", need: "services", title: function () { return (state.services.label || "Services") + " page"; }, sum: function () { return G.SECTIONS.services[state.services.v].n + " · " + state.services.items.length + " items"; }, page: "services",
+    { id: "services", need: "services", title: function () { return state.services.label || "Services"; }, sum: function () { return G.SECTIONS.services[state.services.v].n + " · " + state.services.items.length + " items"; }, page: "services",
       build: function () {
-        return lookBlock("services", true).concat([
-          group("Words", [h("div", { class: "cols2" }, [text("Page name in menu", "services.label", { max: 16 }), text("Heading", "services.title", { max: 60 })]), text("Intro", "services.intro", { area: true, rows: 2, max: 200 })]),
-          group("Items and prices", [itemsEditor()]),
-          group("Photo", [photo("Side photo", "x1", "Used by the With photo design")])
-        ]);
+        return { tabs: lookTabs("services", true, [photo("Side photo", "x1", "Used by the With photo design")]).concat([
+          ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "services.label", { max: 16 }), text("Heading", "services.title", { max: 60 })]), text("Intro", "services.intro", { area: true, rows: 2, max: 200 })]; }],
+          ["Items & prices", function () { return [itemsEditor()]; }]
+        ]) };
       } },
-    { id: "gallery", need: "gallery", title: function () { return "Gallery page"; }, sum: function () { return G.SECTIONS.gallery[state.gallery.v].n + " design"; }, page: "gallery",
+    { id: "gallery", need: "gallery", title: function () { return "Gallery"; }, sum: function () { return G.SECTIONS.gallery[state.gallery.v].n + " design"; }, page: "gallery",
       build: function () {
-        return lookBlock("gallery", true).concat([
-          group("Words", [h("div", { class: "cols2" }, [text("Page name in menu", "gallery.label", { max: 16 }), text("Heading", "gallery.title", { max: 60 })])]),
-          group("Six photos", [photoGrid(), h("p", { class: "hint", text: "Tap any photo to replace it with your own." })])
-        ]);
+        return { tabs: lookTabs("gallery", true).concat([
+          ["Photos", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "gallery.label", { max: 16 }), text("Heading", "gallery.title", { max: 60 })]), photoGrid(), h("p", { class: "hint", text: "Tap any photo to replace it with your own." })]; }]
+        ]) };
       } },
-    { id: "booking", need: "booking", title: function () { return "Booking page"; }, sum: function () { return G.SECTIONS.booking[state.booking.v].n + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[state.booking.kind]; }, page: "booking",
+    { id: "booking", need: "booking", title: function () { return "Booking system"; }, sum: function () { return G.SECTIONS.booking[state.booking.v].n + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[state.booking.kind]; }, page: "booking",
       build: function () {
-        return lookBlock("booking", true).concat([
-          group("What people book", [seg("booking.kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
-          group("Words", [h("div", { class: "cols2" }, [text("Page name in menu", "booking.label", { max: 16 }), text("Button", "booking.button", { max: 28 })]), text("Heading", "booking.title", { max: 60 }), text("Intro", "booking.intro", { area: true, rows: 2, max: 200 }),
-            text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." })]),
-          group("Photo", [photo("Photo", "x1", "Used by the Photo split design")]),
-          h("p", { class: "hint", text: "Requests are emailed to the address on the Contact dropdown." })
-        ]);
+        return { tabs: lookTabs("booking", true, [photo("Photo", "x1", "Used by the Photo split design")]).concat([
+          ["Words & options", function () { return [group("What people book", [seg("booking.kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
+            h("div", { class: "cols2" }, [text("Name in menu", "booking.label", { max: 16 }), text("Button", "booking.button", { max: 28 })]), text("Heading", "booking.title", { max: 60 }), text("Intro", "booking.intro", { area: true, rows: 2, max: 200 }),
+            text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." })]; }]
+        ]) };
       } },
     { id: "contact", title: function () { return "Contact & footer"; }, sum: function () { return (state.pages.contact ? G.SECTIONS.contact[state.contact.v].n + " · " : "") + G.SECTIONS.footer[state.footer.v].n + " footer"; }, page: "contact",
       build: function () {
-        var parts = [];
-        if (state.pages.contact) parts = parts.concat(lookBlock("contact", true));
-        parts = parts.concat([
-          group("Your details", [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
-            h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email", "contact.email", { max: 80, type: "email" })]),
-            h("p", { class: "hint", text: "Bookings and messages from your site are sent to this email." }),
-            state.pages.contact ? text("Heading", "contact.title", { max: 60 }) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
-            state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null]),
-          group("Footer design", [layouts("footer")]),
-          group("Footer colour", [tones("footer")]),
-          toggle("Show “Site by Onwards Digital”", "credit")
-        ]);
-        return parts;
+        var tabs = [];
+        if (state.pages.contact) tabs.push(["Design", function () { return [layouts("contact"), group("Section colour", [tones("contact")])]; }]);
+        tabs.push(["Your details", function () { return [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
+          h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email", "contact.email", { max: 80, type: "email" })]),
+          state.pages.contact ? text("Heading", "contact.title", { max: 60 }) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
+          state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null]; }]);
+        tabs.push(["Footer", function () { return [layouts("footer"), group("Footer colour", [tones("footer")]), toggle("Show “Site by Onwards Digital”", "credit")]; }]);
+        return { tabs: tabs };
       } }
   ];
-  function pagesChanged() { rebuildPanels("start"); }
+  /* A page switched on scrolls the preview to it, so the change is visible straight away */
+  function pageToggled(id) { return function (on) { syncList(); if (on) setTimeout(function () { goPage(id); }, 120); }; }
   function fontSelect() {
     var sel = h("select", { class: "fi", "aria-label": "Heading font" });
     G.HEAD_FONTS.forEach(function (f, i) { sel.appendChild(h("option", { value: i, text: "Headings: " + f[0], selected: state.theme.hf === i })); });
@@ -418,37 +416,87 @@
     return box;
   }
 
-  var list = $(".bl-panels", root), open = null, nodes = {};
+  var list = $(".bl-panels", root), open = null, nodes = {}, tabOf = {};
+  function makeNode(p) {
+    var inner = h("div", { class: "pn-in" });
+    var body = h("div", { class: "pn-c", id: "pn-" + p.id, role: "region" }, [h("div", { class: "pn-b" }, [inner])]);
+    var head = h("button", { type: "button", class: "pn-h", "aria-expanded": "false", "aria-controls": "pn-" + p.id }, [
+      h("span", { class: "pn-no" }), h("span", { class: "pn-t" }, [h("span", { class: "pn-n", text: p.title() }), h("span", { class: "pn-s muted", text: p.sum() })]), h("span", { class: "pn-i", "aria-hidden": "true" })
+    ]);
+    head.addEventListener("click", function () { toggleP(p.id); });
+    return { p: p, node: h("div", { class: "pn" }, [head, body]), head: head, body: body, inner: inner };
+  }
+  function visible() { return PANELS.filter(function (p) { return !p.need || state.pages[p.need]; }); }
+  function number() { visible().forEach(function (p, i) { if (nodes[p.id]) $(".pn-no", nodes[p.id].head).textContent = i + 1; }); }
   function buildList() {
     list.innerHTML = ""; nodes = {};
-    PANELS.forEach(function (p) {
-      if (p.need && !state.pages[p.need]) return;
-      var body = h("div", { class: "pn-b", id: "pn-" + p.id, hidden: true });
-      var head = h("button", { type: "button", class: "pn-h", "aria-expanded": "false", "aria-controls": "pn-" + p.id }, [
-        h("span", { class: "pn-t" }, [h("span", { class: "pn-n", text: p.title() }), h("span", { class: "pn-s muted", text: p.sum() })]), h("span", { class: "pn-i", "aria-hidden": "true" })
-      ]);
-      head.addEventListener("click", function () { toggleP(p.id); });
-      var node = h("div", { class: "pn" }, [head, body]);
-      nodes[p.id] = { p: p, node: node, head: head, body: body };
-      list.appendChild(node);
-    });
+    visible().forEach(function (p) { nodes[p.id] = makeNode(p); list.appendChild(nodes[p.id].node); });
+    number();
   }
-  function toggleP(id, keepScroll) {
+  /* Pages switched on or off: panels slide in or out, the rest stay put */
+  function syncList() {
+    var prev = null;
+    PANELS.forEach(function (p) {
+      var need = !p.need || state.pages[p.need], n = nodes[p.id];
+      if (need && !n) {
+        n = nodes[p.id] = makeNode(p);
+        list.insertBefore(n.node, prev ? prev.nextSibling : list.firstChild);
+        var hh = n.node.offsetHeight;
+        if (n.node.animate) n.node.animate([{ height: "0px", opacity: 0 }, { height: hh + "px", opacity: 1 }], { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
+      } else if (!need && n) {
+        if (open === p.id) open = null;
+        delete nodes[p.id];
+        var el = n.node, h0 = el.offsetHeight;
+        if (el.animate) el.animate([{ height: h0 + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 260, easing: "ease-in" }).onfinish = function () { el.remove(); };
+        else el.remove();
+        n = null;
+      }
+      if (n) prev = n.node;
+    });
+    number(); paintSummaries();
+  }
+  function fill(n) {
+    clearTimeout(n.t); painters = []; customInputs = [];
+    var r = n.p.build(), inner = n.inner; inner.innerHTML = "";
+    function add(k) { if (k) inner.appendChild(k); }
+    if (Array.isArray(r)) r.forEach(add);
+    else {
+      var bar = h("div", { class: "ptabs", role: "tablist" }), area = h("div", { class: "ptab-area" });
+      var show = function (i) {
+        painters = []; customInputs = [];
+        [].forEach.call(bar.children, function (x, j) { x.classList.toggle("on", j === i); x.setAttribute("aria-selected", j === i); });
+        area.innerHTML = ""; area.classList.remove("in"); void area.offsetWidth; area.classList.add("in");
+        r.tabs[i][1]().forEach(function (k) { if (k) area.appendChild(k); });
+        tabOf[n.p.id] = i; requestAnimationFrame(sizeThumbs);
+      };
+      r.tabs.forEach(function (t, i) { bar.appendChild(h("button", { type: "button", role: "tab", text: t[0], onclick: function () { show(i); } })); });
+      add(bar); add(area);
+      show(Math.min(tabOf[n.p.id] || 0, r.tabs.length - 1));
+    }
+    var ids = visible().map(function (p) { return p.id; }), next = ids[ids.indexOf(n.p.id) + 1];
+    add(h("div", { class: "pn-next" }, [next
+      ? h("button", { type: "button", class: "btn-line", text: "Next: " + nodes[next].p.title(), onclick: function () { toggleP(next); } })
+      : h("button", { type: "button", class: "btn", text: "I’m happy with it — buy this site", onclick: openBuy })]));
+  }
+  function toggleP(id, instant) {
     var n = nodes[id]; if (!n) return;
     var willOpen = open !== id;
-    Object.keys(nodes).forEach(function (k) { var o = nodes[k]; o.body.hidden = true; o.body.innerHTML = ""; o.head.setAttribute("aria-expanded", "false"); o.node.classList.remove("open"); });
-    painters = []; customInputs = [];
+    if (open && nodes[open]) {
+      var o = nodes[open]; o.node.classList.remove("open"); o.head.setAttribute("aria-expanded", "false");
+      o.t = setTimeout(function () { if (!o.node.classList.contains("open")) o.inner.innerHTML = ""; }, 420);
+    }
     open = null;
     if (!willOpen) return;
     open = id;
-    n.body.hidden = false; n.head.setAttribute("aria-expanded", "true"); n.node.classList.add("open");
-    n.p.build().forEach(function (k) { if (k) n.body.appendChild(k); });
+    fill(n); n.head.setAttribute("aria-expanded", "true");
+    if (instant) { n.node.classList.add("noanim", "open"); requestAnimationFrame(function () { n.node.classList.remove("noanim"); }); }
+    else requestAnimationFrame(function () { n.node.classList.add("open"); });
     if (n.p.page) goPage(state.pages[n.p.page] || n.p.page === "home" ? n.p.page : "home", id === "contact" && !state.pages.contact ? "bottom" : null);
-    if (!keepScroll) requestAnimationFrame(function () {
-      var top = n.node.offsetTop;
-      if (list.scrollHeight > list.clientHeight + 4) list.scrollTo({ top: top, behavior: "smooth" });
+    if (!instant) setTimeout(function () {
+      if (open !== id) return;
+      if (list.scrollHeight > list.clientHeight + 4) list.scrollTo({ top: n.node.offsetTop, behavior: "smooth" });
       else { var r = n.head.getBoundingClientRect(), pv = root.querySelector(".bl-view").getBoundingClientRect(); if (r.top < pv.bottom || r.top > window.innerHeight - 80) window.scrollBy({ top: r.top - pv.bottom - 8, behavior: "smooth" }); }
-    });
+    }, 380);
   }
   function rebuildPanels(keep) {
     var was = keep || open;
@@ -458,23 +506,28 @@
   function paintSummaries() { Object.keys(nodes).forEach(function (k) { var n = nodes[k]; $(".pn-n", n.head).textContent = n.p.title(); $(".pn-s", n.head).textContent = n.p.sum(); }); }
 
   buildList();
-  toggleP("hero", true);
+  toggleP("start", true);
   fit();
 
   /* ── Buying ────────────────────────────────────────────── */
-  var modal = $(".bl-modal", root), mForm = $("#buy-form", root);
+  var modal = $("[data-buy-modal]", root), mForm = $("#buy-form", root);
+  var own = $("#buy-own", root), ownerIn = $("#buy-owner", root), ghWrap = $("#buy-gh-wrap", root);
+  function paintOwn() { var on = own.checked; ownerIn.disabled = on; ownerIn.closest(".field").classList.toggle("off", on); if (on) ownerIn.closest(".field").classList.remove("invalid"); }
+  own.addEventListener("change", paintOwn);
+  function paintDelivery() { var v = (mForm.querySelector('input[name="delivery"]:checked') || {}).value; ghWrap.hidden = v !== "github"; }
+  mForm.querySelectorAll('input[name="delivery"]').forEach(function (r) { r.addEventListener("change", paintDelivery); });
   function openBuy() {
-    var em = $("#buy-owner", root); var ce = (state.contact.email || "").trim();
-    em.value = /example\.com$/i.test(ce) ? "" : ce;
-    modal.hidden = false; document.documentElement.classList.add("modal-open");
-    setTimeout(function () { $("#buy-name", root).focus(); }, 30);
+    var ce = (state.contact.email || "").trim();
+    if (!ownerIn.value) ownerIn.value = /example\.com$/i.test(ce) ? "" : ce;
+    paintOwn(); paintDelivery();
+    showModal(modal, "#buy-name");
     if (window.__paintSubmit) window.__paintSubmit();
   }
-  function closeBuy() { modal.hidden = true; document.documentElement.classList.remove("modal-open"); }
+  function closeBuy() { hideModal(modal); }
   root.querySelectorAll("[data-buy]").forEach(function (b) { b.addEventListener("click", openBuy); });
   root.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", closeBuy); });
   modal.addEventListener("click", function (e) { if (e.target === modal) closeBuy(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && !modal.hidden) closeBuy(); });
+  document.addEventListener("keydown", function (e) { if (e.key !== "Escape") return; if (!modal.hidden) closeBuy(); if (!resetModal.hidden) hideModal(resetModal); });
 
   function toDataURL(blob) { return new Promise(function (res) { var r = new FileReader(); r.onload = function () { res(r.result); }; r.onerror = function () { res(""); }; r.readAsDataURL(blob); }); }
   function finishedSite() {
@@ -496,19 +549,25 @@
   }
   mForm.addEventListener("submit", function (e) {
     e.preventDefault();
-    var name = $("#buy-name", root), email = $("#buy-email", root), owner = $("#buy-owner", root), err = $("#buy-err", root);
-    var re = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i, bad = null;
-    [name, email, owner].forEach(function (x) { x.closest(".field").classList.remove("invalid"); });
-    if (!name.value.trim()) bad = name; else if (!re.test(email.value.trim())) bad = email; else if (!re.test(owner.value.trim())) bad = owner;
-    if (bad) { bad.closest(".field").classList.add("invalid"); err.textContent = bad === name ? "Please enter your name." : "Please enter a valid email address, like name@gmail.com"; bad.focus(); return; }
+    var name = $("#buy-name", root), email = $("#buy-email", root), owner = ownerIn, err = $("#buy-err", root), gh = $("#buy-gh", root);
+    var re = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i, bad = null, msg = "";
+    var del = mForm.querySelector('input[name="delivery"]:checked'), selfSetup = own.checked;
+    [name, email, owner, gh].forEach(function (x) { x.closest(".field").classList.remove("invalid"); });
+    if (!name.value.trim()) { bad = name; msg = "Please enter your name."; }
+    else if (!re.test(email.value.trim())) { bad = email; msg = "Please enter a valid email address, like name@gmail.com"; }
+    else if (!selfSetup && !re.test(owner.value.trim())) { bad = owner; msg = "Enter the email for bookings, or choose “I want to set this up on my own”."; }
+    else if (del.value === "github" && !gh.value.trim()) { bad = gh; msg = "Please enter your GitHub username."; }
+    if (bad) { bad.closest(".field").classList.add("invalid"); err.textContent = msg; bad.focus(); return; }
     err.textContent = "";
-    state.contact.email = owner.value.trim(); save(); apply();
+    if (!selfSetup) { state.contact.email = owner.value.trim(); save(); apply(); }
     var btn = $("#submit-btn", root); btn.disabled = true; btn.textContent = "Preparing your site…";
     finishedSite().then(function (html) {
       var slug = (state.name || "website").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "website";
       var file; try { file = new File([html], slug + "-website.html", { type: "text/html" }); } catch (x) { file = new Blob([html], { type: "text/html" }); file.name = slug + "-website.html"; }
       var fields = [
-        ["name", name.value.trim()], ["email", email.value.trim()], ["business_name", state.name], ["booking_email", state.contact.email],
+        ["name", name.value.trim()], ["email", email.value.trim()], ["business_name", state.name],
+        ["booking_email", selfSetup ? "Customer will set this up on their own" : state.contact.email],
+        ["delivery", del.getAttribute("data-label") + (del.value === "github" ? " — GitHub username: " + gh.value.trim() : "")],
         ["plan", "Ready-made site"], ["_subject", "New ready-made site order — " + state.name], ["_template", "table"],
         ["design", summary()], ["site_file", file]
       ];
