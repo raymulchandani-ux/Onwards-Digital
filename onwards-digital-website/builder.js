@@ -14,6 +14,7 @@
   var state;
   try { state = JSON.parse(localStorage.getItem(LS) || "null"); } catch (e) { state = null; }
   if (!state || !state.theme || !state.img) state = G.defaults("restaurant");
+  G.migrate(state);
   (function fillMissing(o, d) { Object.keys(d).forEach(function (k) { if (o[k] === undefined) o[k] = JSON.parse(JSON.stringify(d[k])); else if (d[k] && typeof d[k] === "object" && !Array.isArray(d[k]) && o[k] && typeof o[k] === "object") fillMissing(o[k], d[k]); }); })(state, G.defaults(state.preset || "restaurant"));
   var blobs = {};            // blob: URL -> Blob, for photos the customer uploads
   var page = "home", device = window.innerWidth < 760 ? "phone" : "laptop";
@@ -21,11 +22,16 @@
   function save() {
     try {
       var c = JSON.parse(JSON.stringify(state)), p = G.PRESETS[c.preset] || G.PRESETS.restaurant;
-      ["hero", "x1", "x2", "about"].forEach(function (k) { if (/^blob:/.test(c.img[k])) c.img[k] = p.img[k]; });
-      c.img.g = c.img.g.map(function (u, i) { return /^blob:/.test(u) ? p.img.g[i] : u; });
+      imgSets(c).forEach(function (im) {
+        ["hero", "x1", "x2", "about"].forEach(function (k) { if (/^blob:/.test(im[k])) im[k] = p.img[k]; });
+        im.g = (im.g || []).map(function (u, i) { return /^blob:/.test(u) ? p.img.g[i] : u; });
+      });
       localStorage.setItem(LS, JSON.stringify(c));
     } catch (e) {}
   }
+
+  /* Every photo set in a design: the site's, plus one per added section */
+  function imgSets(s) { var out = [s.img]; (s.layout || []).forEach(function (e) { if (s[e.k] && s[e.k].img) out.push(s[e.k].img); }); return out; }
 
   /* ── Tiny DOM helpers ──────────────────────────────────── */
   function $(sel, el) { return (el || document).querySelector(sel); }
@@ -141,7 +147,7 @@
     var t = state.theme;
     t.pal = rnd(G.PALETTES.length); t.custom = null; t.hf = rnd(G.HEAD_FONTS.length); t.bf = rnd(G.BODY_FONTS.length);
     t.radius = any(["square", "soft", "round"]); t.btn = any(["solid", "solid", "outline", "text"]);
-    Object.keys(G.SECTIONS).forEach(function (k) { state[k].v = rnd(G.SECTIONS[k].length); });
+    ["header", "hero", "footer"].concat(state.layout.map(function (e) { return e.k; })).forEach(function (k) { state[k].v = rnd(G.SECTIONS[G.typeOf(state, k)].length); });
     state.header.tone = any(["base", "base", "soft", "ink"]); state.hero.tone = any(["base", "soft", "ink"]);
     state.about.tone = any(["soft", "base", "accent"]); state.services.tone = any(["base", "soft"]);
     state.gallery.tone = any(["base", "soft", "ink"]); state.booking.tone = any(["ink", "soft", "accent", "base"]);
@@ -217,27 +223,28 @@
       img.src = url;
     });
   }
-  function imgGet(key) { return key.charAt(0) === "g" ? state.img.g[+key.slice(1)] : state.img[key]; }
-  function imgSet(key, v) { if (key.charAt(0) === "g") state.img.g[+key.slice(1)] = v; else state.img[key] = v; }
-  function photoInput(key, onDone) {
+  function imgBase(sk) { return (sk && state[sk] && state[sk].img) || state.img; }
+  function imgGet(key, sk) { var b = imgBase(sk); return key.charAt(0) === "g" ? (b.g || [])[+key.slice(1)] : b[key]; }
+  function imgSet(key, v, sk) { var b = imgBase(sk); if (key.charAt(0) === "g") b.g[+key.slice(1)] = v; else b[key] = v; }
+  function photoInput(key, onDone, sk) {
     var inp = h("input", { type: "file", accept: "image/*", class: "sr" });
     inp.addEventListener("change", function () {
       var f = inp.files && inp.files[0]; if (!f) return;
-      shrink(f).then(function (b) { var u = URL.createObjectURL(b); blobs[u] = b; imgSet(key, u); onDone(u); changed(true); }, function () { alert("That file couldn't be read as a photo. Try a JPG or PNG."); });
+      shrink(f).then(function (b) { var u = URL.createObjectURL(b); blobs[u] = b; imgSet(key, u, sk); onDone(u); changed(true); }, function () { alert("That file couldn't be read as a photo. Try a JPG or PNG."); });
       inp.value = "";
     });
     return inp;
   }
-  function photo(label, key, note) {
-    var im = h("img", { src: imgGet(key), alt: "" });
-    var inp = photoInput(key, function (u) { im.src = u; });
+  function photo(label, key, note, sk) {
+    var im = h("img", { src: imgGet(key, sk), alt: "" });
+    var inp = photoInput(key, function (u) { im.src = u; }, sk);
     return h("div", { class: "photo" }, [h("span", { class: "photo-i" }, [im]), h("span", { class: "photo-t" }, [h("span", { text: label }), note ? h("small", { class: "muted", text: note }) : null]), h("label", { class: "btn-text cap" }, ["Change", inp])]);
   }
-  function photoGrid() {
+  function photoGrid(sk) {
     var box = h("div", { class: "photos" });
     for (var i = 0; i < 6; i++) (function (i) {
-      var im = h("img", { src: state.img.g[i], alt: "" });
-      box.appendChild(h("label", { class: "ptile" }, [im, h("span", { text: "Change" }), photoInput("g" + i, function (u) { im.src = u; })]));
+      var im = h("img", { src: imgGet("g" + i, sk), alt: "" });
+      box.appendChild(h("label", { class: "ptile" }, [im, h("span", { text: "Change" }), photoInput("g" + i, function (u) { im.src = u; }, sk)]));
     })(i);
     return box;
   }
@@ -248,11 +255,11 @@
   function palettes() {
     var box = h("div", { class: "pals" });
     G.PALETTES.forEach(function (p, i) {
-      box.appendChild(h("button", { type: "button", class: "pal" + (!state.theme.custom && state.theme.pal === i ? " on" : ""), title: p.n, "aria-label": p.n, style: "background:" + p.bg,
+      box.appendChild(h("button", { type: "button", class: "pal" + (i >= PAL_SHORT ? " more" : "") + (!state.theme.custom && state.theme.pal === i ? " on" : ""), title: p.n, "aria-label": p.n, style: "background:" + p.bg,
         onclick: function (e) { state.theme.pal = i; state.theme.custom = null; [].forEach.call(document.querySelectorAll(".pal"), function (x) { x.classList.toggle("on", +x.getAttribute("data-i") === i); }); syncCustom(); changed(true); }, "data-i": i },
         [h("i", { style: "background:" + p.fg }), h("i", { style: "background:" + p.ac })]));
     });
-    return box;
+    return morePals(box, !state.theme.custom && state.theme.pal >= PAL_SHORT);
   }
   var customInputs = [];
   function syncCustom() { var c = G.colors(state); customInputs.forEach(function (inp) { inp.value = c[inp.getAttribute("data-k")]; }); }
@@ -271,16 +278,6 @@
     });
     return box;
   }
-  function fontList(which) {
-    loadFonts();
-    var list = which === "hf" ? G.HEAD_FONTS : G.BODY_FONTS, box = h("div", { class: "fonts" });
-    list.forEach(function (f, i) {
-      box.appendChild(h("button", { type: "button", class: "fnt" + (state.theme[which] === i ? " on" : ""), "data-w": which, "data-i": i,
-        onclick: function () { state.theme[which] = i; [].forEach.call(document.querySelectorAll('.fnt[data-w="' + which + '"]'), function (x) { x.classList.toggle("on", +x.getAttribute("data-i") === i); }); changed(true); } },
-        [h("b", { text: "Aa", style: "font-family:'" + f[0] + "',serif" }), h("span", { text: f[0] })]));
-    });
-    return box;
-  }
   function range(label, path, min, max, step, unit) {
     var out = h("output", { text: get(path) + unit });
     var inp = h("input", { type: "range", min: min, max: max, step: step, value: get(path), "aria-label": label });
@@ -292,7 +289,7 @@
   var thumbSets = [];     // { sec, frames[] } for panels that are open
   var painters = [];
   function layouts(sec) {
-    var list = G.SECTIONS[sec], frames = [];
+    var list = G.SECTIONS[G.typeOf(state, sec)], frames = [];
     if (sec === "header") {
       var names = h("div", { class: "names" });
       list.forEach(function (t, i) {
@@ -336,14 +333,16 @@
   }, 450);
 
   /* ── Panels ────────────────────────────────────────────── */
-  function lookBlock(sec, withSize) {
-    return [
-      group("Design", [layouts(sec)]),
-      group("Section colour", [tones(sec)]),
-      withSize ? group("Heading size", [seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null
-    ];
-  }
   function secColors(k) { var o = state[k]; return (o && (o.custom || (o.pal != null && G.PALETTES[o.pal]))) || G.colors(state); }
+  /* A palette grid that starts short: the first two rows, and "Show all colours" for the rest */
+  var PAL_SHORT = 15;
+  function morePals(box, startOpen) {
+    var btn = h("button", { type: "button", class: "btn-text cap more-pals", text: "Show all " + G.PALETTES.length + " colours" });
+    if (startOpen) box.classList.add("all");
+    btn.hidden = startOpen;
+    btn.addEventListener("click", function () { box.classList.add("all"); btn.hidden = true; });
+    return h("div", { class: "palwrap" }, [box, btn]);
+  }
   function secPalettes(sec) {
     var o = state[sec], box = h("div", { class: "pals" });
     function mark(x) { [].forEach.call(box.children, function (c) { c.classList.toggle("on", c === x); }); }
@@ -351,11 +350,11 @@
     same.addEventListener("click", function () { o.pal = null; o.custom = null; mark(same); changed(true); });
     box.appendChild(same);
     G.PALETTES.forEach(function (p, i) {
-      var b = h("button", { type: "button", class: "pal" + (o.pal === i && !o.custom ? " on" : ""), title: p.n, "aria-label": p.n, style: "background:" + p.bg }, [h("i", { style: "background:" + p.fg }), h("i", { style: "background:" + p.ac })]);
+      var b = h("button", { type: "button", class: "pal" + (i >= PAL_SHORT ? " more" : "") + (o.pal === i && !o.custom ? " on" : ""), title: p.n, "aria-label": p.n, style: "background:" + p.bg }, [h("i", { style: "background:" + p.fg }), h("i", { style: "background:" + p.ac })]);
       b.addEventListener("click", function () { o.pal = i; o.custom = null; mark(b); changed(true); });
       box.appendChild(b);
     });
-    return box;
+    return morePals(box, o.pal != null && o.pal >= PAL_SHORT);
   }
   function secSize(sec) {
     var o = state[sec], val = function () { return o.size != null ? o.size : state.theme.size; };
@@ -365,13 +364,45 @@
     reset.addEventListener("click", function () { o.size = null; inp.value = val(); out.textContent = val() + "%"; reset.hidden = true; changed(true); });
     return h("div", { class: "rng" }, [h("span", { class: "fl-l", text: "Text size" }), inp, out, reset]);
   }
+  /* Rows that show their current value and open one at a time, so only one set of choices is on screen */
+  function optRows(rows) {
+    var box = h("div", { class: "orows" });
+    rows.forEach(function (r) {
+      if (!r) return;
+      var val = h("span", { class: "or-v" }), sw = r.swatch ? h("i", { class: "or-sw", "aria-hidden": "true" }) : null;
+      var head = h("button", { type: "button", class: "or-h", "aria-expanded": "false" }, [h("span", { class: "or-l", text: r.label }), h("span", { class: "or-r" }, [sw, val]), h("i", { class: "or-c", "aria-hidden": "true" })]);
+      var inner = h("div", { class: "rv-body or-b" }), body = h("div", { class: "rv" }, [h("div", { class: "rv-in" }, [inner])]);
+      var row = h("div", { class: "or" }, [head, body]), built = false, t;
+      function paint() { val.textContent = r.value(); if (sw) sw.style.background = r.swatch(); }
+      function close(x) { x.classList.remove("open", "done"); x.querySelector(".rv").classList.remove("open"); x.firstChild.setAttribute("aria-expanded", "false"); }
+      head.addEventListener("click", function () {
+        var willOpen = !row.classList.contains("open");
+        [].forEach.call(box.children, close);
+        if (!willOpen) return;
+        if (!built) { r.body().forEach(function (n) { if (n) inner.appendChild(n); }); built = true; requestAnimationFrame(sizeThumbs); }
+        row.classList.add("open"); body.classList.add("open"); head.setAttribute("aria-expanded", "true");
+        clearTimeout(t); t = setTimeout(function () { if (row.classList.contains("open")) row.classList.add("done"); }, 400);
+      });
+      ["click", "input"].forEach(function (ev) { inner.addEventListener(ev, function () { setTimeout(paint, 0); }); });
+      paint(); painters.push(paint);
+      box.appendChild(row);
+    });
+    return box;
+  }
+  var TONE_NAME = { base: "Page", soft: "Soft", ink: "Dark", accent: "Accent" };
+  function toneBg(k) { var c = secColors(k), t = state[k].tone || "base"; return { base: c.bg, soft: G.mix(c.bg, c.fg, .06), ink: c.fg, accent: c.ac }[t]; }
+  function fontName(which, i) { var list = which === "hf" ? G.HEAD_FONTS : G.BODY_FONTS; return list[i == null ? state.theme[which] : i][0]; }
   function styleBlock(sec, withSize) {
+    var o = state[sec];
     return [
-      h("p", { class: "hint", text: "These change this section only. To change the whole site at once, use Colours & fonts." }),
-      group("Background", [tones(sec)]),
-      group("Sizes", [secSize(sec), withSize ? h("div", { class: "fl" }, [h("span", { class: "fl-l", text: "Heading size" }), seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null]),
-      group("Colours", [secPalettes(sec)]),
-      group("Fonts", [h("div", { class: "cols2" }, [fontPick("Headings", "hf", state[sec]), fontPick("Text", "bf", state[sec])])])
+      h("p", { class: "hint", text: "Changes this section only." }),
+      optRows([
+        { label: "Background", value: function () { return TONE_NAME[o.tone || "base"]; }, swatch: function () { return toneBg(sec); }, body: function () { return [tones(sec)]; } },
+        { label: "Colours", value: function () { return o.custom ? "Your own" : o.pal != null ? G.PALETTES[o.pal].n : "Same as site"; }, swatch: function () { return secColors(sec).ac; }, body: function () { return [secPalettes(sec)]; } },
+        { label: "Fonts", value: function () { return fontName("hf", o.hf) + " · " + fontName("bf", o.bf); }, body: function () { return [h("div", { class: "cols2" }, [fontPick("Headings", "hf", o), fontPick("Text", "bf", o)])]; } },
+        { label: "Sizes", value: function () { return (o.size != null ? o.size : state.theme.size) + "%" + (withSize ? " · " + { s: "Small", m: "Medium", l: "Large" }[o.hs || "m"] + " headings" : ""); },
+          body: function () { return [secSize(sec), withSize ? h("div", { class: "fl" }, [h("span", { class: "fl-l", text: "Heading size" }), seg(sec + ".hs", [["s", "Small"], ["m", "Medium"], ["l", "Large"]])]) : null]; } }
+      ])
     ];
   }
   function lookTabs(sec, withSize, extra) {
@@ -418,8 +449,107 @@
     return wrap;
   }
   document.addEventListener("click", function (e) { document.querySelectorAll(".fp.open").forEach(function (x) { if (!x.contains(e.target) && x._close) x._close(); }); });
-  var PANELS = [
-    { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
+
+  /* Names used for sections in the list and on the dropdowns */
+  function rowName(k) {
+    var ty = G.typeOf(state, k);
+    if (k !== ty) return state[k].label || G.DEF_LABEL[ty];
+    return { about: "About", services: state.services.label || "Services", gallery: "Gallery", booking: "Booking system", contact: "Contact", terms: "Terms of service" }[ty];
+  }
+  var ADD_NAME = { about: "Text & photo", services: function () { return state.services.label || "Services"; }, gallery: "Gallery", booking: "Booking system" };
+  var GRIP = '<svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true"><circle cx="2" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="2" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="2" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/></svg>';
+
+  /* "What's on your site": drag to reorder, switch on or off, + to add another */
+  function sectionList() {
+    var wrapEl = h("div", { class: "sl" }), box = h("div", { class: "sl-rows", role: "list" });
+    function sw(on, label, fn) {
+      var b = h("button", { type: "button", class: "tg" + (on ? " on" : ""), role: "switch", "aria-checked": on ? "true" : "false", "aria-label": label }, [h("i")]);
+      b.addEventListener("click", function () { var v = !b.classList.contains("on"); b.classList.toggle("on", v); b.setAttribute("aria-checked", v); fn(v); });
+      return b;
+    }
+    function moved(k) { draw(); var r = box.querySelector('[data-k="' + k + '"]'); if (r) { r.classList.add("moved"); setTimeout(function () { r.classList.remove("moved"); }, 700); } syncList(); changed(true); }
+    function makeRow(e) {
+      var k = e.k, extra = k !== G.typeOf(state, k);
+      var grip = h("button", { type: "button", class: "grip", "aria-label": "Move " + rowName(k) + ". Drag, or use the up and down arrow keys.", html: GRIP });
+      var row = h("div", { class: "slr" + (e.on ? "" : " off"), role: "listitem", "data-k": k }, [
+        grip, h("span", { class: "slr-n", text: rowName(k) }),
+        extra ? h("button", { type: "button", class: "slr-x", "aria-label": "Remove " + rowName(k), title: "Remove", html: "&times;", onclick: function () { removeRow(row, k); } }) : null,
+        sw(e.on, rowName(k), function (v) { e.on = v; row.classList.toggle("off", !v); syncList(); changed(true); if (v) setTimeout(function () { goPage(k); }, 140); })
+      ]);
+      dragify(row, grip, k);
+      return row;
+    }
+    function draw() {
+      box.innerHTML = "";
+      state.layout.forEach(function (e) { box.appendChild(makeRow(e)); });
+    }
+    function removeRow(row, k) {
+      var hh = row.offsetHeight;
+      var done = function () { G.removeSection(state, k); delete panelCache[k]; delete tabOf[k]; draw(); syncList(); changed(true); };
+      if (row.animate) row.animate([{ height: hh + "px", opacity: 1 }, { height: "0px", opacity: 0, paddingTop: "0px", paddingBottom: "0px" }], { duration: 240, easing: "ease-in" }).onfinish = done; else done();
+    }
+    function dragify(row, grip, k) {
+      grip.addEventListener("pointerdown", function (ev) {
+        if (ev.button !== 0) return;
+        ev.preventDefault();
+        var rows = [].slice.call(box.querySelectorAll(".slr")), from = rows.indexOf(row), to = from;
+        var rects = rows.map(function (r) { return r.getBoundingClientRect(); });
+        var step = rows.length > 1 ? rects[1].top - rects[0].top : rects[0].height, y0 = ev.clientY;
+        row.classList.add("dragging"); box.classList.add("is-dragging");
+        try { grip.setPointerCapture(ev.pointerId); } catch (x) {}
+        function move(e) {
+          var dy = Math.max(-from * step - 8, Math.min((rows.length - 1 - from) * step + 8, e.clientY - y0));
+          row.style.transform = "translateY(" + dy + "px)";
+          var mid = rects[from].top + rects[from].height / 2 + dy; to = 0;
+          rows.forEach(function (r, i) { if (i !== from && rects[i].top + rects[i].height / 2 < mid) to++; });
+          rows.forEach(function (r, i) {
+            if (i === from) return;
+            var s = (from < to && i > from && i <= to) ? -step : (from > to && i < from && i >= to) ? step : 0;
+            r.style.transform = s ? "translateY(" + s + "px)" : "";
+          });
+        }
+        function up() {
+          grip.removeEventListener("pointermove", move); grip.removeEventListener("pointerup", up); grip.removeEventListener("pointercancel", up);
+          box.classList.remove("is-dragging"); row.classList.remove("dragging");
+          rows.forEach(function (r) { r.style.transform = ""; });
+          if (to !== from) { var en = state.layout.splice(from, 1)[0]; state.layout.splice(to, 0, en); moved(en.k); setTimeout(function () { goPage(en.k); }, 140); }
+        }
+        grip.addEventListener("pointermove", move); grip.addEventListener("pointerup", up); grip.addEventListener("pointercancel", up);
+      });
+      grip.addEventListener("keydown", function (e) {
+        if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+        e.preventDefault();
+        var i = state.layout.findIndex(function (x) { return x.k === k; }), j = i + (e.key === "ArrowUp" ? -1 : 1);
+        if (j < 0 || j >= state.layout.length) return;
+        var en = state.layout.splice(i, 1)[0]; state.layout.splice(j, 0, en);
+        moved(k); var g = box.querySelector('[data-k="' + k + '"] .grip'); if (g) g.focus();
+      });
+    }
+    draw();
+
+    var footRow = h("div", { class: "slr fixed" + (state.footerOn ? "" : " off") }, [h("span", { class: "grip-ph", "aria-hidden": "true" }), h("span", { class: "slr-n", text: "Footer" }),
+      sw(state.footerOn, "Footer", function (v) { state.footerOn = v; footRow.classList.toggle("off", !v); syncList(); changed(true); if (v) setTimeout(function () { goPage("home", "bottom"); }, 140); })]);
+
+    var menu = h("div", { class: "sl-add-menu" }), menuWrap = h("div", { class: "rv" }, [h("div", { class: "rv-in" }, [h("div", { class: "rv-body" }, [h("p", { class: "hint", text: "Add another section. It starts as a copy you can change." }), menu])])]);
+    G.ADDABLE.forEach(function (ty) {
+      var nm = typeof ADD_NAME[ty] === "function" ? ADD_NAME[ty]() : ADD_NAME[ty];
+      menu.appendChild(h("button", { type: "button", class: "chipb", text: "+ " + nm, onclick: function () {
+        var k = G.addSection(state, ty); menuWrap.classList.remove("open"); addBtn.setAttribute("aria-expanded", "false");
+        draw(); var r = box.querySelector('[data-k="' + k + '"]');
+        if (r && r.animate) { var hh = r.offsetHeight; r.animate([{ height: "0px", opacity: 0 }, { height: hh + "px", opacity: 1 }], { duration: 300, easing: "cubic-bezier(.2,.7,.2,1)" }); r.classList.add("moved"); setTimeout(function () { r.classList.remove("moved"); }, 900); }
+        syncList(); changed(true); setTimeout(function () { goPage(k); }, 160);
+      } }));
+    });
+    var addBtn = h("button", { type: "button", class: "sl-add", "aria-expanded": "false" }, [h("span", { class: "plus", "aria-hidden": "true", text: "+" }), "Add a section"]);
+    addBtn.addEventListener("click", function () { var o = !menuWrap.classList.contains("open"); menuWrap.classList.toggle("open", o); addBtn.setAttribute("aria-expanded", o); });
+
+    wrapEl.appendChild(box); wrapEl.appendChild(footRow); wrapEl.appendChild(addBtn); wrapEl.appendChild(menuWrap);
+    return wrapEl;
+  }
+
+  /* Every part of the site has a dropdown. Sections in the list get one each, in the list's order. */
+  var STATIC = {
+    start: { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
       build: function () {
         var types = h("div", { class: "chips" });
         Object.keys(G.PRESETS).forEach(function (k) {
@@ -428,28 +558,29 @@
             G.applyPreset(state, k, true); blobs = {}; rebuildPanels("start"); changed(true);
           } }));
         });
-        var pages = h("div", { class: "sws" }, [
-          toggle("About", "pages.about", pageToggled("about")), toggle(state.services.label || "Services", "pages.services", pageToggled("services")),
-          toggle("Gallery", "pages.gallery", pageToggled("gallery")), toggle("Booking system", "pages.booking", pageToggled("booking")), toggle("Contact", "pages.contact", pageToggled("contact")), toggle("Terms of service", "pages.terms", pageToggled("terms"))
-        ]);
         return [
           group("Kind of business", [types, h("p", { class: "hint", text: "Fills in example words and photos. Your design stays as it is." })]),
           h("div", { class: "cols2" }, [text("Business name", "name", { max: 40 }), text("One-line description", "tagline", { max: 90 })]),
-          group("What’s on your site", [pages]),
+          group("What’s on your site", [h("p", { class: "hint", text: "Drag to change the order. Switch any part off." }), sectionList()]),
           group("Layout", [seg("onePage", [[true, "One long page"], [false, "Separate pages"]])])
         ];
       } },
-    { id: "theme", title: function () { return "Colours & fonts"; }, sum: function () { var t = state.theme; return (t.custom ? "Your own colours" : G.PALETTES[t.pal].n) + " · " + G.HEAD_FONTS[t.hf][0]; },
+    theme: { id: "theme", title: function () { return "Colours & fonts"; }, sum: function () { var t = state.theme; return (t.custom ? "Your own colours" : G.PALETTES[t.pal].n) + " · " + G.HEAD_FONTS[t.hf][0]; },
       build: function () {
         return { tabs: [
-          ["Colours", function () { return [palettes(), h("p", { class: "hint", text: "Or choose your own:" }), customColours()]; }],
-          ["Fonts", function () { return [group("Headings", [fontList("hf")]), group("Text", [fontList("bf")])]; }],
+          ["Colours", function () {
+            var own = h("div", { class: "rv" + (state.theme.custom ? " open" : "") }, [h("div", { class: "rv-in" }, [h("div", { class: "rv-body" }, [customColours()])])]);
+            var ob = h("button", { type: "button", class: "btn-text cap", text: "Choose your own colours", "aria-expanded": state.theme.custom ? "true" : "false" });
+            ob.addEventListener("click", function () { var o = !own.classList.contains("open"); own.classList.toggle("open", o); ob.setAttribute("aria-expanded", o); });
+            return [h("p", { class: "hint", text: "Changes the whole site. Each section can also have its own, under its Style tab." }), palettes(), h("div", { class: "grp" }, [ob, own])];
+          }],
+          ["Fonts", function () { return [h("p", { class: "hint", text: "Changes the whole site." }), h("div", { class: "cols2" }, [fontPick("Headings", "hf", state.theme), fontPick("Text", "bf", state.theme)])]; }],
           ["Sizes & shapes", function () { return [range("Text size", "theme.size", 90, 115, 5, "%"), range("Heading size", "theme.hscale", 80, 125, 5, "%"), group("Corners", [seg("theme.radius", [["square", "Square"], ["soft", "Soft"], ["round", "Round"]])]), group("Buttons", [seg("theme.btn", [["solid", "Solid"], ["outline", "Outline"], ["text", "Underline"]])])]; }]
         ] };
       } },
-    { id: "header", title: function () { return "Header"; }, sum: function () { return G.SECTIONS.header[state.header.v].n; }, page: "home",
+    header: { id: "header", title: function () { return "Header"; }, sum: function () { return G.SECTIONS.header[state.header.v].n; }, page: "home",
       build: function () { return { tabs: lookTabs("header", false) }; } },
-    { id: "hero", title: function () { return "Homepage"; }, sum: function () { return G.SECTIONS.hero[state.hero.v].n + " design"; }, page: "home",
+    hero: { id: "hero", title: function () { return "Homepage"; }, sum: function () { return G.SECTIONS.hero[state.hero.v].n + " design"; }, page: "home",
       build: function () {
         return { tabs: lookTabs("hero", true).concat([
           ["Words", function () { return [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
@@ -458,71 +589,80 @@
           ["Photos", function () { return [photo("Main photo", "hero"), photo("Extra photo 1", "x1", "Used by some designs"), photo("Extra photo 2", "x2", "Used by some designs")]; }]
         ]) };
       } },
-    { id: "about", need: "about", title: function () { return "About"; }, sum: function () { return G.SECTIONS.about[state.about.v].n + " design"; }, page: "about",
-      build: function () {
-        return { tabs: lookTabs("about", true).concat([
-          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), factsBlock("about")]; }],
-          ["Photos", function () { return [photo("Main photo", "about"), photo("Second photo", "x1", "Used by some designs")]; }]
-        ]) };
-      } },
-    { id: "services", need: "services", title: function () { return state.services.label || "Services"; }, sum: function () { return G.SECTIONS.services[state.services.v].n + " · " + state.services.items.length + " items"; }, page: "services",
-      build: function () {
-        return { tabs: lookTabs("services", true, [photo("Side photo", "x1", "Used by the With photo design")]).concat([
-          ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "services.label", { max: 16 }), text("Heading", "services.title", { max: 60 })]), text("Intro", "services.intro", { area: true, rows: 2, max: 200 }), factsBlock("services")]; }],
-          ["Items & prices", function () { return [itemsEditor()]; }]
-        ]) };
-      } },
-    { id: "gallery", need: "gallery", title: function () { return "Gallery"; }, sum: function () { return G.SECTIONS.gallery[state.gallery.v].n + " design"; }, page: "gallery",
-      build: function () {
-        return { tabs: lookTabs("gallery", true).concat([
-          ["Photos", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "gallery.label", { max: 16 }), text("Heading", "gallery.title", { max: 60 })]), photoGrid(), h("p", { class: "hint", text: "Tap any photo to replace it with your own." }), factsBlock("gallery")]; }]
-        ]) };
-      } },
-    { id: "booking", need: "booking", title: function () { return "Booking system"; }, sum: function () { return G.SECTIONS.booking[state.booking.v].n + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[state.booking.kind]; }, page: "booking",
-      build: function () {
-        return { tabs: lookTabs("booking", true, [photo("Photo", "x1", "Used by the Photo split design")]).concat([
-          ["Words & options", function () { return [group("What people book", [seg("booking.kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
-            h("div", { class: "cols2" }, [text("Name in menu", "booking.label", { max: 16 }), text("Button", "booking.button", { max: 28 })]), text("Heading", "booking.title", { max: 60 }), text("Intro", "booking.intro", { area: true, rows: 2, max: 200 }),
-            text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." }),
-            text("Times people can pick, separated by commas", "booking.times", { max: 300, ph: state.booking.kind === "table" ? "5:30pm, 6:00pm, 6:30pm…" : "9:00am, 10:00am, 11:00am…" }), h("p", { class: "hint", text: "Leave empty to use our usual times. Every design has a full calendar, so people can pick any future date." }), factsBlock("booking")]; }],
-          ["Requests", function () { return destBlock(); }]
-        ]) };
-      } },
-    { id: "contact", title: function () { return "Contact & footer"; }, sum: function () { return (state.pages.contact ? G.SECTIONS.contact[state.contact.v].n + " · " : "") + G.SECTIONS.footer[state.footer.v].n + " footer"; }, page: "contact",
-      build: function () {
-        var tabs = [];
-        if (state.pages.contact) { tabs.push(["Design", function () { return [layouts("contact")]; }]); tabs.push(["Style", function () { return styleBlock("contact", true); }]); }
-        tabs.push(["Your details", function () { return [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
-          h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email shown on your site", "contact.email", { max: 80, type: "email" })]),
-          state.pages.contact ? text("Heading", "contact.title", { max: 60 }) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
-          state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null, state.pages.contact ? factsBlock("contact") : null]; }]);
-        tabs.push(["Footer", function () { return [layouts("footer"), toggle("Show “Site by Onwards Digital”", "credit")]; }]);
-        tabs.push(["Footer style", function () { return styleBlock("footer", false); }]);
-        return { tabs: tabs };
-      } },
-    { id: "terms", need: "terms", title: function () { return "Terms of service"; }, sum: function () { return G.SECTIONS.terms[state.terms.v].n + " design"; }, page: "terms",
-      build: function () {
-        return { tabs: lookTabs("terms", true).concat([
-          ["Words", function () { return [group("Where it goes", [seg("terms.place", [["footer", "Link in the footer"], ["section", "Its own section"]], function () { setTimeout(function () { goPage("terms"); }, 60); }),
-              h("p", { class: "hint", text: "“Link in the footer” keeps it off your main pages: clicking the link opens the terms on a page of their own." })]),
-            h("div", { class: "cols2" }, [text("Heading", "terms.title", { max: 60 }), text("Name in menu and footer", "terms.label", { max: 20 })]), text("Date line", "terms.updated", { max: 60 }),
-            text("Your terms", "terms.text", { area: true, rows: 16, max: 8000 }),
-            h("p", { class: "hint", text: "Start each part with a short heading on its own line and the text underneath. Leave a blank line between parts." }),
-            h("p", { class: "hint note", text: "This is a starting point, not legal advice. Change it to match how your business works." })]; }]
-        ]) };
-      } }
-  ];
-  function destBlock() {
+    footer: { id: "footer", title: function () { return "Footer"; }, sum: function () { return G.SECTIONS.footer[state.footer.v].n + " design"; }, page: "home", where: "bottom",
+      build: function () { return { tabs: [["Design", function () { return [layouts("footer"), h("p", { class: "hint", text: "Click any words in the footer on the left to change them." })]; }], ["Style", function () { return styleBlock("footer", false); }]] }; } }
+  };
+  /* What each kind of section offers. `k` is the section's own key: "gallery", "gallery2"… */
+  var TYPE_TABS = {
+    about: function (k) {
+      return lookTabs(k, true).concat([
+        ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Heading", k + ".title", { max: 90 })]), text("Your story", k + ".text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), factsBlock(k)]; }],
+        ["Photos", function () { return [photo("Main photo", "about", null, k), photo("Second photo", "x1", "Used by some designs", k)]; }]
+      ]);
+    },
+    services: function (k) {
+      return lookTabs(k, true, [photo("Side photo", "x1", "Used by the With photo design", k)]).concat([
+        ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Heading", k + ".title", { max: 60 })]), text("Intro", k + ".intro", { area: true, rows: 2, max: 200 }), factsBlock(k)]; }],
+        ["Items & prices", function () { return [itemsEditor(k)]; }]
+      ]);
+    },
+    gallery: function (k) {
+      return lookTabs(k, true).concat([
+        ["Photos", function () { return [h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Heading", k + ".title", { max: 60 })]), photoGrid(k), h("p", { class: "hint", text: "Tap any photo to replace it with your own." }), factsBlock(k)]; }]
+      ]);
+    },
+    booking: function (k) {
+      return lookTabs(k, true, [photo("Photo", "x1", "Used by the Photo split design", k)]).concat([
+        ["Words & options", function () { return [group("What people book", [seg(k + ".kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
+          h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Button", k + ".button", { max: 28 })]), text("Heading", k + ".title", { max: 60 }), text("Intro", k + ".intro", { area: true, rows: 2, max: 200 }),
+          text("Choices, separated by commas", k + ".options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." }),
+          text("Times people can pick, separated by commas", k + ".times", { max: 300, ph: state[k].kind === "table" ? "5:30pm, 6:00pm, 6:30pm…" : "9:00am, 10:00am, 11:00am…" }), h("p", { class: "hint", text: "Leave empty to use our usual times. Every design has a full calendar, so people can pick any future date." }), factsBlock(k)]; }],
+        ["Requests", function () { return destBlock(k); }]
+      ]);
+    },
+    contact: function (k) {
+      var tabs = [], on = G.isOn(state, "contact");
+      if (on) { tabs.push(["Design", function () { return [layouts("contact")]; }]); tabs.push(["Style", function () { return styleBlock("contact", true); }]); }
+      tabs.push(["Your details", function () { return [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
+        h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email shown on your site", "contact.email", { max: 80, type: "email" })]),
+        on ? h("div", { class: "cols2" }, [text("Name in menu", "contact.label", { max: 16 }), text("Heading", "contact.title", { max: 60 })]) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
+        on ? photo("Photo", "x2", "Used by the With photo design") : null, on ? factsBlock("contact") : null]; }]);
+      return tabs;
+    },
+    terms: function (k) {
+      return lookTabs(k, true).concat([
+        ["Words", function () { return [group("Where it goes", [seg("terms.place", [["footer", "Link in the footer"], ["section", "Its own section"]], function () { setTimeout(function () { goPage("terms"); }, 60); }),
+            h("p", { class: "hint", text: "“Link in the footer” keeps it off your main pages: clicking the link opens the terms on a page of their own." })]),
+          h("div", { class: "cols2" }, [text("Heading", "terms.title", { max: 60 }), text("Name in menu and footer", "terms.label", { max: 20 })]), text("Date line", "terms.updated", { max: 60 }),
+          text("Your terms", "terms.text", { area: true, rows: 16, max: 8000 }),
+          h("p", { class: "hint", text: "Start each part with a short heading on its own line and the text underneath. Leave a blank line between parts." }),
+          h("p", { class: "hint note", text: "This is a starting point, not legal advice. Change it to match how your business works." })]; }]
+      ]);
+    }
+  };
+  function secSum(k) {
+    var ty = G.typeOf(state, k), o = state[k], d = G.SECTIONS[ty][o.v | 0].n;
+    if (ty === "services") return d + " · " + (o.items || []).length + " items";
+    if (ty === "booking") return d + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[o.kind];
+    if (ty === "contact") return G.isOn(state, "contact") ? d + " design" : "Address, hours, phone and email";
+    return d + " design";
+  }
+  var panelCache = {};
+  function panelFor(k) {
+    if (STATIC[k]) return STATIC[k];
+    if (panelCache[k]) return panelCache[k];
+    return (panelCache[k] = { id: k, title: function () { return k === "contact" && !G.isOn(state, "contact") ? "Contact details" : rowName(k); }, sum: function () { return secSum(k); }, page: k,
+      build: function () { return { tabs: TYPE_TABS[G.typeOf(state, k)](k) }; } });
+  }
+  function destBlock(k) {
     var mail = h("div", { class: "grp" }, [text("Send requests to this email", "contact.email", { max: 80, type: "email" }),
       h("p", { class: "hint", text: "Your site’s forms use FormSubmit, a free form service, to email each request straight to you. The first one asks you to confirm the address." })]);
     var mine = h("p", { class: "hint", text: "The forms stay on your site but won’t send anything until you connect your own booking tool or form service." });
-    function paint() { var own = state.booking.dest === "own"; mail.hidden = own; mine.hidden = !own; }
+    function paint() { var own = state[k].dest === "own"; mail.hidden = own; mine.hidden = !own; }
     paint();
-    return [group("Where should booking requests go?", [seg("booking.dest", [["email", "To my email"], ["own", "I’ll set this up myself"]], paint)]), mail, mine,
+    return [group("Where should booking requests go?", [seg(k + ".dest", [["email", "To my email"], ["own", "I’ll set this up myself"]], paint)]), mail, mine,
       h("p", { class: "hint note", text: "Onwards Digital never receives, stores or sends your bookings, and doesn’t put your site online for you. You own and run it." })];
   }
-  /* A page switched on scrolls the preview to it, so the change is visible straight away */
-  function pageToggled(id) { return function (on) { syncList(); if (on) setTimeout(function () { goPage(id); }, 120); }; }
   function hlFields() {
     var box = h("div", { class: "hls" });
     state.hl.forEach(function (x, i) {
@@ -545,21 +685,21 @@
     });
     return box;
   }
-  function itemsEditor() {
-    var box = h("div", { class: "items" });
+  function itemsEditor(k) {
+    var box = h("div", { class: "items" }), o = state[k];
     function draw() {
       box.innerHTML = "";
-      state.services.items.forEach(function (x, i) {
-        var n = h("input", { class: "fi", "data-path": "services.items." + i + ".n", value: x.n, placeholder: "Name", maxlength: 50, "aria-label": "Item name" });
-        var p = h("input", { class: "fi", "data-path": "services.items." + i + ".p", value: x.p, placeholder: "Price", maxlength: 14, "aria-label": "Price" });
-        var d = h("input", { class: "fi", "data-path": "services.items." + i + ".d", value: x.d, placeholder: "Short description", maxlength: 120, "aria-label": "Description" });
+      o.items.forEach(function (x, i) {
+        var n = h("input", { class: "fi", "data-path": k + ".items." + i + ".n", value: x.n, placeholder: "Name", maxlength: 50, "aria-label": "Item name" });
+        var p = h("input", { class: "fi", "data-path": k + ".items." + i + ".p", value: x.p, placeholder: "Price", maxlength: 14, "aria-label": "Price" });
+        var d = h("input", { class: "fi", "data-path": k + ".items." + i + ".d", value: x.d, placeholder: "Short description", maxlength: 120, "aria-label": "Description" });
         n.addEventListener("input", function () { x.n = n.value; changed(); });
         p.addEventListener("input", function () { x.p = p.value; changed(); });
         d.addEventListener("input", function () { x.d = d.value; changed(); });
-        var rm = h("button", { type: "button", class: "x", "aria-label": "Remove " + (x.n || "item"), html: "&times;", onclick: function () { state.services.items.splice(i, 1); draw(); changed(true); } });
+        var rm = h("button", { type: "button", class: "x", "aria-label": "Remove " + (x.n || "item"), html: "&times;", onclick: function () { o.items.splice(i, 1); draw(); changed(true); } });
         box.appendChild(h("div", { class: "item" }, [n, p, rm, d]));
       });
-      if (state.services.items.length < 12) box.appendChild(h("button", { type: "button", class: "btn-text cap add", text: "Add an item", onclick: function () { state.services.items.push({ n: "", p: "", d: "" }); draw(); changed(true); var f = box.querySelectorAll(".item"); if (f.length) f[f.length - 1].querySelector("input").focus(); } }));
+      if (o.items.length < 12) box.appendChild(h("button", { type: "button", class: "btn-text cap add", text: "Add an item", onclick: function () { o.items.push({ n: "", p: "", d: "" }); draw(); changed(true); var f = box.querySelectorAll(".item"); if (f.length) f[f.length - 1].querySelector("input").focus(); } }));
     }
     draw();
     return box;
@@ -575,32 +715,33 @@
     head.addEventListener("click", function () { toggleP(p.id); });
     return { p: p, node: h("div", { class: "pn" }, [head, body]), head: head, body: body, inner: inner };
   }
-  function visible() { return PANELS.filter(function (p) { return !p.need || state.pages[p.need]; }); }
-  function number() { visible().forEach(function (p, i) { if (nodes[p.id]) $(".pn-no", nodes[p.id].head).textContent = i + 1; }); }
-  function buildList() {
-    list.innerHTML = ""; nodes = {};
-    visible().forEach(function (p) { nodes[p.id] = makeNode(p); list.appendChild(nodes[p.id].node); });
-    number();
+  function visible() {
+    var ids = ["start", "theme", "header", "hero"];
+    state.layout.forEach(function (e) { if (e.on && state[e.k]) ids.push(e.k); });
+    if (!G.isOn(state, "contact")) ids.push("contact");
+    if (state.footerOn) ids.push("footer");
+    return ids.map(panelFor);
   }
-  /* Pages switched on or off: panels slide in or out, the rest stay put */
-  function syncList() {
+  function number() { visible().forEach(function (p, i) { if (nodes[p.id]) $(".pn-no", nodes[p.id].head).textContent = i + 1; }); }
+  function buildList() { list.innerHTML = ""; nodes = {}; syncList(true); }
+  /* Sections switched on, off, added, removed or moved: dropdowns slide in or out and follow the new order */
+  function syncList(quiet) {
+    var want = visible(), ids = want.map(function (p) { return p.id; });
+    Object.keys(nodes).forEach(function (id) {
+      if (ids.indexOf(id) >= 0) return;
+      var n = nodes[id]; if (open === id) open = null; delete nodes[id];
+      var el = n.node, h0 = el.offsetHeight;
+      if (el.animate) el.animate([{ height: h0 + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 260, easing: "ease-in" }).onfinish = function () { el.remove(); };
+      else el.remove();
+    });
     var prev = null;
-    PANELS.forEach(function (p) {
-      var need = !p.need || state.pages[p.need], n = nodes[p.id];
-      if (need && !n) {
-        n = nodes[p.id] = makeNode(p);
-        list.insertBefore(n.node, prev ? prev.nextSibling : list.firstChild);
-        var hh = n.node.offsetHeight;
-        if (n.node.animate) n.node.animate([{ height: "0px", opacity: 0 }, { height: hh + "px", opacity: 1 }], { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" });
-      } else if (!need && n) {
-        if (open === p.id) open = null;
-        delete nodes[p.id];
-        var el = n.node, h0 = el.offsetHeight;
-        if (el.animate) el.animate([{ height: h0 + "px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 260, easing: "ease-in" }).onfinish = function () { el.remove(); };
-        else el.remove();
-        n = null;
-      }
-      if (n) prev = n.node;
+    want.forEach(function (p) {
+      var n = nodes[p.id], fresh = !n;
+      if (fresh) n = nodes[p.id] = makeNode(p);
+      var after = prev ? prev.nextSibling : list.firstChild;
+      if (n.node !== after) list.insertBefore(n.node, after);
+      if (fresh && !quiet && n.node.animate) { var hh = n.node.offsetHeight; n.node.animate([{ height: "0px", opacity: 0 }, { height: hh + "px", opacity: 1 }], { duration: 320, easing: "cubic-bezier(.2,.7,.2,1)" }); }
+      prev = n.node;
     });
     number(); paintSummaries();
   }
@@ -641,7 +782,7 @@
     if (instant) { n.node.classList.add("noanim", "open"); requestAnimationFrame(function () { n.node.classList.remove("noanim"); }); }
     else requestAnimationFrame(function () { n.node.classList.add("open"); });
     clearTimeout(n.st); n.st = setTimeout(function () { if (open === id) n.node.classList.add("settled"); }, instant ? 0 : 400);
-    if (n.p.page) goPage(state.pages[n.p.page] || n.p.page === "home" ? n.p.page : "home", id === "contact" && !state.pages.contact ? "bottom" : null);
+    if (n.p.page) { var pg = n.p.page === "home" || G.isOn(state, n.p.page) ? n.p.page : "home"; goPage(pg, n.p.where || (pg === "home" && n.p.page !== "home" ? "bottom" : null)); }
     if (!instant) setTimeout(function () {
       if (open !== id) return;
       if (list.scrollHeight > list.clientHeight + 4) list.scrollTo({ top: n.node.offsetTop, behavior: "smooth" });
@@ -668,12 +809,13 @@
   function openBuy() {
     var ce = (state.contact.email || "").trim();
     if (!ownerIn.value) ownerIn.value = /example\.com$/i.test(ce) ? "" : ce;
-    own.checked = state.booking.dest === "own";
+    own.checked = bookingKeys().every(function (k) { return state[k].dest === "own"; });
     paintOwn();
     showModal(modal, "#buy-name");
     if (window.__paintSubmit) window.__paintSubmit();
   }
   function closeBuy() { hideModal(modal); }
+  function bookingKeys() { var ks = state.layout.filter(function (e) { return G.typeOf(state, e.k) === "booking"; }).map(function (e) { return e.k; }); return ks.length ? ks : ["booking"]; }
   root.querySelectorAll("[data-buy]").forEach(function (b) { b.addEventListener("click", openBuy); });
   root.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", closeBuy); });
   modal.addEventListener("click", function (e) { if (e.target === modal) closeBuy(); });
@@ -683,8 +825,10 @@
   function finishedSite() {
     var s = JSON.parse(JSON.stringify(state)), jobs = [];
     function swap(get, put) { var u = get(); if (blobs[u]) jobs.push(toDataURL(blobs[u]).then(put)); }
-    ["hero", "x1", "x2", "about"].forEach(function (k) { swap(function () { return s.img[k]; }, function (d) { s.img[k] = d; }); });
-    s.img.g.forEach(function (u, i) { swap(function () { return u; }, function (d) { s.img.g[i] = d; }); });
+    imgSets(s).forEach(function (im) {
+      ["hero", "x1", "x2", "about"].forEach(function (k) { swap(function () { return im[k]; }, function (d) { im[k] = d; }); });
+      (im.g || []).forEach(function (u, i) { swap(function () { return u; }, function (d) { im.g[i] = d; }); });
+    });
     return Promise.all(jobs).then(function () { return G.doc(s); });
   }
   function summary() {
@@ -694,7 +838,7 @@
       "Colours: " + (t.custom ? "custom " + t.custom.bg + " / " + t.custom.fg + " / " + t.custom.ac : G.PALETTES[t.pal].n),
       "Fonts: " + G.HEAD_FONTS[t.hf][0] + " + " + G.BODY_FONTS[t.bf][0] + ", text " + t.size + "%, headings " + t.hscale + "%",
       "Corners: " + t.radius + ", buttons: " + t.btn,
-      "Designs: " + Object.keys(G.SECTIONS).map(function (k) { return k + " " + G.SECTIONS[k][state[k].v].n; }).join(" · ")
+      "Designs: " + ["header", "hero"].concat(state.layout.filter(function (e) { return e.on; }).map(function (e) { return e.k; }), state.footerOn ? ["footer"] : []).map(function (k) { return k + " " + G.SECTIONS[G.typeOf(state, k)][state[k].v].n; }).join(" · ") + (state.footerOn ? "" : " · no footer")
     ].join("\n");
   }
   mForm.addEventListener("submit", function (e) {
@@ -708,7 +852,7 @@
     else if (!selfSetup && !re.test(owner.value.trim())) { bad = owner; msg = "Enter the email for bookings, or choose “I want to set this up on my own”."; }
     if (bad) { bad.closest(".field").classList.add("invalid"); err.textContent = msg; bad.focus(); return; }
     err.textContent = "";
-    state.booking.dest = selfSetup ? "own" : "email";
+    bookingKeys().forEach(function (k) { state[k].dest = selfSetup ? "own" : "email"; });
     if (!selfSetup) state.contact.email = owner.value.trim();
     save(); apply();
     var btn = $("#submit-btn", root); btn.disabled = true; btn.textContent = "Preparing your site…";

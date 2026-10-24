@@ -33,7 +33,7 @@ The dropdown is the boxed pricing-section style only (the old utility-bar versio
 
 - GitHub repo **raymulchandani-ux/Onwards-Digital**, folder **`onwards-digital-website/`**, deployed by Vercel. The site is **flat** — every file in one folder, no subfolders.
 - Ray deploys by dragging the unzipped folder into GitHub's web upload. **Every delivery must be a zip containing the single `onwards-digital-website` folder with ALL previous changes included** (never a partial set of files), **always named exactly `onwards-digital-website.zip`** (no date or version suffix). Keep the updated CLAUDE.md inside the folder.
-- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20260924g`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
+- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20261024a`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
 - Fonts load from Google Fonts. Photos are Unsplash CDN URLs (`images.unsplash.com/photo-<id>?auto=format&fit=crop&w=…&q=…`) with `onerror="this.remove()"` fallbacks on the homepage tiles.
 
 ### Files
@@ -143,13 +143,24 @@ Five tiles: Restaurants (Ossobello), Cafés & bakeries (Hollowmere), Salons & st
 
 ---
 
-## 8. Change log — chat of 24 Sept 2026 (`v=20260924g`)
+## 8. Change log — ready-made builder, 24 Sept – 24 Oct 2026 (now `v=20261024a`)
 
-1. New landing chooser at index.html; old homepage moved to custom.html; links rewired.
-2. New ready-made.html with the live site builder (sitegen.js, builder.js, builder.css). See section 10.
-3. config.js: `prices.readyMade`, `stripe.readyMade`. payment.html: ready-made plan key, labels and next steps.
+**24 Oct 2026 (`v=20261024a`)**
+1. Price is now **$4.99** (`prices.readyMade`: USD 4.99 / AED 18 / GBP 3.99 / EUR 4.49), everywhere it shows.
+2. No watermark on sold sites: the "Site by Onwards Digital" credit and its switch are gone; the finished file contains no mention of Onwards.
+3. "What's on your site" is a list you can **drag to reorder** (mouse, finger, or arrow keys on the handle), switch parts off, and **+ Add a section** (another Text & photo, Menu/Services, Gallery or Booking system — each added one starts as a copy with its own words, photos, design and style, and can be removed with ×). The order drives the site's menu, the long page and the dropdowns. A **Footer** switch sits at the bottom of the list (pinned); with the footer off, a footer-placed Terms link moves into the menu.
+4. Footer has its own dropdown (Design / Style). Every word in the footer can be clicked and typed in the preview, including "Hours"/"Find us", opening hours and address (multi-line editing).
+5. Mouse wheel over the preview never scrolls the Onwards page, at the top or the bottom (wheel guard + `overscroll-behavior` in the preview only).
+6. Calmer sidebar: Style tabs are four rows (Background, Colours, Fonts, Sizes) that show the current choice and open one at a time; colour grids show two rows plus "Show all 32 colours"; whole-site fonts are two dropdowns; "Choose your own colours" is folded away.
+- Data model: `state.layout = [{k, on}]` (order + on/off) and `state.footerOn` replace `state.pages` / `state.credit` (`SITEGEN.migrate()` converts old saved designs). Added sections are keys like `gallery2` with `type: "gallery"` and their own `img`. In the generator, `renderSection()` renders an added section by aliasing it onto its type, and `t()` rewrites edit paths (`gallery.title` → `gallery2.title`).
 
-Verified at 390 px and 1440 px: no page errors, no horizontal scroll; every design × booking kind checked for overflow at 390 and 1280 inside the generated site; buy flow tested through to checkout.
+**24 Sept 2026, rounds 2–7 (`v=20260924b`…`g`)**
+- Builder: preview and options as two separate cards; site floats with space around it, 3:2 landscape on laptop; Bigger website / Split / Bigger options views; dropdowns numbered, animated, split into tabs, with "Next: …" buttons; own "Start over" dialog; one long page by default; click any words in the preview to edit them; preview patched in place (no flicker); header designs listed by name.
+- Generator: more designs (header 10, homepage 12, about 12, services 10, gallery 10, booking 12, contact 10, terms 3, footer 8), 32 palettes, 22 heading + 18 text fonts; per-section colours/fonts/sizes (`.x-<key>` CSS); key facts switch on every content section; full month calendar in every booking design (selected day highlighted); booking requests go to the owner's email via FormSubmit or "I'll set this up myself"; optional Terms of service page (own section, or footer link that opens on its own page); contact section uses the accent colour; restaurant preset has fine-dining photos.
+- Buy dialog: delivery choice (Zip file / Single file / Google Drive link), optional bookings email with "I want to set this up on my own". Wording everywhere: Onwards never hosts sites or receives/stores/sends bookings (also a "Ready-made sites" section in terms.html).
+- Headers: Custom websites | Ready-made sites switch on both main pages; landing page simplified (no images, no currency menu, boxes lift on hover).
+
+Verified each round at 390 px and 1440 px: no page errors, no horizontal scroll; every design (with added sections) checked for overflow at 390 and 1280; buy flow through to checkout.
 
 ## 8b. Change log — chat of 7–16 Sept 2026 (all delivered as `onwards-digital-website.zip`, `v=20260916a`)
 
@@ -173,19 +184,17 @@ Everything verified at 390 px and 1440 px (also 360 px and 1000 px where relevan
 
 ## 10. Ready-made sites (added 24 Sept 2026)
 
-Ray's idea: keep selling custom sites, and also sell one website with thousands of options to many people, cheaply, "received instantly". Price **$99.99** for now (`prices.readyMade` in config.js: USD 99.99 / AED 367 / GBP 74.99 / EUR 84.99; `stripe.readyMade` empty).
+Keep selling custom sites, and also sell one website with trillions of combinations to many people, cheaply. Price **$4.99** (from 24 Oct 2026; was $99.99).
 
-**Structure.** `index.html` is now a two-option landing page using Ray's exact wording. The old homepage lives at `custom.html`; every `index.html#…` link on other pages was rewired to `custom.html#…`, demo sites' "Back to Onwards Digital" goes to `custom.html#build`, and every footer's Plans column has "Ready-made site". Wordmarks still go to `index.html`.
+**Structure.** `index.html` is a two-option landing page (Ray's exact wording). The old homepage is `custom.html`. Wordmarks go to `index.html`.
 
-**The builder** (`#builder` on ready-made.html). Left: the customer's site, live, in an iframe (laptop at 1280 px scaled to fit, or phone at 390 px), with page tabs, Shuffle, Start over. Right: one dropdown per part of the site, one open at a time: Your business (kind of business preset, name, tagline, which pages, separate pages vs one long page), Colours & fonts, Header, Homepage, About, Services/Menu, Gallery, Booking, Contact & footer. Each section dropdown shows **square live thumbnails of every design** drawn in the customer's own colours and words, plus section colour (Page/Soft/Dark/Accent), heading size, the words, and photos. The Homepage dropdown also has site colours, heading font and text size, as Ray asked. On phones the preview is sticky on top (50svh) and the dropdowns scroll beneath it, with the buy bar sticky at the bottom. Work is autosaved in localStorage (`onwards-builder-v1`); uploaded photos are kept only for the session.
+**The builder** (`#builder` on ready-made.html). Left: the customer's site, live and editable, in an iframe (laptop 1280 px scaled into a 3:2 frame, or phone 390 px). Right: dropdowns — Your business (preset, name, tagline, the section list with drag/switch/add, one long page vs separate pages), Colours & fonts, Header, Homepage, then one per section in the list's order (added sections included), Contact (or "Contact details" when the contact section is off), Footer (when on). Design tabs show live thumbnails; Style tabs are four rows. Autosave in localStorage `onwards-builder-v3` (uploaded photos only for the session); view choice in `onwards-builder-view`.
 
-**Design counts** (sitegen.js `SECTIONS`, as of 24 Sept third round): header 10, homepage 12, about (text + image) 12, services 10, gallery 10, booking 12, contact 10, footer 8. 32 palettes + custom colours, 22 heading fonts, 18 text fonts, 3 corner styles, 3 button styles = about 15.8 trillion combinations before words/photos (computed live into `[data-combos]`). Booking kinds: table / appointment / enquiry, with a custom day strip or month calendar, time chips and a guest stepper (no native pickers). Presets: Restaurant, Café & bakery, Salon & studio, Real estate, Something else — photos reuse the Unsplash IDs already used in the demos.
+**The finished site** is one self-contained HTML file, no Onwards credit. Forms post to FormSubmit at the owner's email, or are left unconnected ("I'll set this up myself").
 
-**The finished site** is one self-contained HTML file (all pages in one file, switched by `#about`, `#booking`…; small runtime script inside). Booking and contact forms post to FormSubmit at the owner's email (first submission triggers FormSubmit's confirmation email to the owner). Optional "Site by Onwards Digital" footer credit (on by default).
+**Buying.** "Buy this site" → dialog → order parked with `ONWARDS_PENDING` (generated `<name>-website.html` with uploaded photos embedded, plus a design summary) → `payment.html?plan=Ready-made site&price=4.99` → emailed to Ray on Pay; Ray checks payment and sends the site the way the customer chose. **Not instant yet:** needs Stripe Checkout + a verified webhook on Vercel; the price must then be set on the server, not read from the URL. Discussed with Ray 24 Oct 2026 (backend + security plan); he wanted these design changes first.
 
-**Buying.** "Buy this site" → dialog (name, email, delivery choice, optional email for bookings) → the order is parked with `ONWARDS_PENDING` including a generated `<name>-website.html` file (uploaded photos embedded) and a text summary of every design choice → `payment.html?plan=Ready-made site&price=99.99`. On the Pay click the order and file are emailed to Ray (existing flow); Ray checks the payment and emails the file to the customer. **Not yet truly instant:** PayPal.me cannot confirm a payment to the site, so an automatic download would be free for anyone. Instant delivery needs Stripe Payment Links (or PayPal Checkout) plus a small Vercel serverless function that verifies the payment and returns the file.
-
-**Open questions for Ray (asked 24 Sept):** refund wording for ready-made sites; whether Monthly Care can be added to a ready-made site; whether the footer credit should default on; delivery promise wording; which section types to grow to 10 designs next.
+**Open questions for Ray:** refund wording for ready-made sites; whether Monthly Care applies to them; delivery promise wording.
 
 ## 9. How to resume in a new chat
-Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Sept 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20260924g` and is zipped as `onwards-digital-website.zip`.
+Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Oct 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20261024a` and is zipped as `onwards-digital-website.zip`.

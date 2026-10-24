@@ -12,10 +12,13 @@ window.SITEGEN = (function () {
   function paras(s) { return String(s || "").split(/\n\s*\n/).filter(function (p) { return p.trim(); }).map(function (p) { return "<p>" + esc(p.trim()).replace(/\n/g, "<br>") + "</p>"; }).join(""); }
   /* In the builder preview every piece of text is marked with the setting it comes from,
      so the customer can click it and type. Finished sites get plain text. */
-  var EDIT = false, CUR = null;
+  var EDIT = false, CUR = null, ALIAS = null;
   function getp(path) { return path.split(".").reduce(function (o, k) { return o == null ? o : o[k]; }, CUR); }
-  function t(path, v) { var val = v !== undefined ? v : getp(path); return EDIT ? '<span data-e="' + path + '">' + esc(val) + "</span>" : esc(val); }
-  function pe(path) { var val = getp(path); return EDIT ? '<div class="pe" data-e="' + path + '" data-m="1">' + paras(val) + "</div>" : paras(val); }
+  function real(path) { return ALIAS && path.indexOf(ALIAS[0] + ".") === 0 ? ALIAS[1] + path.slice(ALIAS[0].length) : path; }
+  function t(path, v) { var val = v !== undefined ? v : getp(path); return EDIT ? '<span data-e="' + real(path) + '">' + esc(val) + "</span>" : esc(val); }
+  function pe(path) { var val = getp(path); return EDIT ? '<div class="pe" data-e="' + real(path) + '" data-m="1">' + paras(val) + "</div>" : paras(val); }
+  /* Several lines (hours, address): one setting, one editable block in the preview */
+  function mlines(path, tag) { var ls = lines(getp(path)); var inner = ls.map(function (l) { return "<" + tag + ">" + esc(l) + "</" + tag + ">"; }).join(""); return EDIT ? '<div class="ml" data-e="' + real(path) + '" data-m="br">' + inner + "</div>" : inner; }
   function lines(s) { return String(s || "").split(/\n/).map(function (l) { return l.trim(); }).filter(Boolean); }
 
   /* ── Colour ─────────────────────────────────────────────── */
@@ -80,12 +83,43 @@ window.SITEGEN = (function () {
     ["Nunito Sans", "wght@400;600"], ["IBM Plex Sans", "wght@400;500;600"], ["Outfit", "wght@400;500;600"], ["Mulish", "wght@400;500;700"]
   ];
   function fam(f) { return "family=" + f[0].replace(/ /g, "+") + (f[1] ? ":" + f[1] : ""); }
-  var OWN = ["header", "hero", "about", "services", "gallery", "booking", "contact", "terms", "footer"];
+  var LIST_TYPES = ["about", "services", "gallery", "booking", "contact", "terms"];
+  var ADDABLE = ["about", "services", "gallery", "booking"];
+  var DEF_LABEL = { about: "About", services: "Services", gallery: "Gallery", booking: "Book", contact: "Contact", terms: "Terms" };
+  function typeOf(s, k) { return (s[k] && s[k].type) || k; }
+  /* Older saved designs used s.pages; now s.layout keeps the order and on/off of every section */
+  function migrate(s) {
+    if (!s || !s.theme) return s;
+    if (!Array.isArray(s.layout)) {
+      var pg = s.pages || {};
+      s.layout = LIST_TYPES.map(function (k) { return { k: k, on: pg[k] === undefined ? true : !!pg[k] }; });
+    }
+    if (s.footerOn === undefined) s.footerOn = true;
+    delete s.pages; delete s.credit;
+    LIST_TYPES.forEach(function (k) { if (!s.layout.some(function (e) { return e.k === k; })) s.layout.push({ k: k, on: false }); });
+    s.layout = s.layout.filter(function (e) { return e && s[e.k]; });
+    return s;
+  }
+  function isOn(s, k) { return (s.layout || []).some(function (e) { return e.k === k && e.on; }); }
+  function addSection(s, type) {
+    migrate(s);
+    var n = 2; while (s[type + n]) n++;
+    var k = type + n, o = JSON.parse(JSON.stringify(s[type]));
+    o.type = type; o.label = (s[type].label || DEF_LABEL[type]) + " " + n;
+    o.img = JSON.parse(JSON.stringify(s.img));          // its own photos, starting from the site's
+    s[k] = o;
+    var at = -1; s.layout.forEach(function (e, i) { if (typeOf(s, e.k) === type) at = i; });
+    s.layout.splice(at < 0 ? s.layout.length : at + 1, 0, { k: k, on: true });
+    return k;
+  }
+  function removeSection(s, k) { if (!s[k] || !s[k].type) return; delete s[k]; s.layout = s.layout.filter(function (e) { return e.k !== k; }); }
+  function ownKeys(s) { return ["header", "hero"].concat((s.layout || []).map(function (e) { return e.k; }), ["footer"]); }
   function fontsHref(s) {
+    migrate(s);
     var seen = {}, list = [];
     function add(f) { if (f && !seen[f[0]]) { seen[f[0]] = 1; list.push(fam(f)); } }
     add(HEAD_FONTS[s.theme.hf] || HEAD_FONTS[0]); add(BODY_FONTS[s.theme.bf] || BODY_FONTS[0]);
-    OWN.forEach(function (k) { var o = s[k]; if (!o) return; if (o.hf != null) add(HEAD_FONTS[o.hf]); if (o.bf != null) add(BODY_FONTS[o.bf]); });
+    ownKeys(s).forEach(function (k) { var o = s[k]; if (!o) return; if (o.hf != null) add(HEAD_FONTS[o.hf]); if (o.bf != null) add(BODY_FONTS[o.bf]); });
     return "https://fonts.googleapis.com/css2?" + list.join("&") + "&display=swap";
   }
   function allFontsHref() {
@@ -177,20 +211,20 @@ window.SITEGEN = (function () {
 
   function defaults(key) {
     var s = {
-      preset: "restaurant", name: "", tagline: "", onePage: true, credit: true,
-      pages: { about: true, services: true, gallery: true, booking: true, contact: true, terms: true },
+      preset: "restaurant", name: "", tagline: "", onePage: true, footerOn: true,
+      layout: LIST_TYPES.map(function (k) { return { k: k, on: true }; }),
       theme: { pal: 3, custom: null, hf: 1, bf: 4, size: 100, hscale: 100, radius: "soft", btn: "solid" },
       header: { v: 0, tone: "base" },
       hero: { v: 0, factsOn: false, tone: "base", hs: "m", hlOn: true },
       hl: [],
-      about: { v: 0, tone: "soft", hs: "m", factsOn: true },
+      about: { v: 0, tone: "soft", hs: "m", factsOn: true, label: "About" },
       services: { v: 0, factsOn: false, tone: "base", hs: "m", items: [] },
       gallery: { v: 0, factsOn: false, tone: "base", hs: "m" },
       booking: { v: 0, factsOn: false, tone: "ink", hs: "m", dest: "email", times: "" },
-      contact: { v: 0, factsOn: false, tone: "base", hs: "m" },
+      contact: { v: 0, factsOn: false, tone: "base", hs: "m", label: "Contact" },
       terms: { v: 0, tone: "base", hs: "m", place: "footer", label: "Terms", title: "Terms of service", updated: "Last updated September 2026",
         text: "Bookings\nA booking is a request until we confirm it by email or phone. Please give us at least 24 hours\u2019 notice if you need to change or cancel.\n\nPrices\nPrices on this site can change. The price you pay is the one confirmed when you book or order.\n\nPayments and refunds\nTell customers here how they pay you and when, if ever, they can get a refund.\n\nYour information\nWe only use the details you send us to reply to you and manage your booking. We never sell them.\n\nQuestions\nIf you have a question about these terms, contact us using the details on this site." },
-      footer: { v: 0, tone: "ink" },
+      footer: { v: 0, tone: "ink", hoursLabel: "Hours", findLabel: "Find us" },
       img: {}
     };
     return applyPreset(s, key || "restaurant");
@@ -227,7 +261,7 @@ window.SITEGEN = (function () {
   /* A section can have its own colours, fonts and text size; otherwise it follows the site */
   function sectionVars(s) {
     var out = "";
-    OWN.forEach(function (k) {
+    ownKeys(s).forEach(function (k) {
       var o = s[k]; if (!o) return;
       var sc = ".x-" + k, v = "";
       if (o.custom || o.pal != null) { var c = o.custom || PALETTES[o.pal] || PALETTES[0]; out += toneCSS(c, sc); v += "--ac:" + c.ac + ";"; }
@@ -303,23 +337,25 @@ window.SITEGEN = (function () {
   /* ── Context helpers ───────────────────────────────────── */
   var ORDER = ["home", "about", "services", "gallery", "booking", "contact"];
   function ctx(s) {
-    var pages = [{ id: "home", label: "Home" }];
-    if (s.pages.about) pages.push({ id: "about", label: "About" });
-    if (s.pages.services) pages.push({ id: "services", label: s.services.label || "Services" });
-    if (s.pages.gallery) pages.push({ id: "gallery", label: s.gallery.label || "Gallery" });
-    if (s.pages.booking) pages.push({ id: "booking", label: s.booking.label || "Book" });
-    if (s.pages.contact) pages.push({ id: "contact", label: "Contact" });
-    if (s.pages.terms) pages.push({ id: "terms", label: s.terms.label || "Terms", foot: s.terms.place !== "section", solo: s.terms.place !== "section" });
+    migrate(s);
+    var pages = [{ id: "home", label: "Home", type: "home" }];
+    s.layout.forEach(function (e) {
+      if (!e.on || !s[e.k]) return;
+      var ty = typeOf(s, e.k), o = s[e.k], p = { id: e.k, type: ty, label: o.label || DEF_LABEL[ty] };
+      if (ty === "terms") { var solo = o.place !== "section"; p.solo = solo; p.foot = solo && s.footerOn; }
+      pages.push(p);
+    });
+    var first = function (ty) { for (var i = 0; i < pages.length; i++) if (pages[i].type === ty) return pages[i].id; return ""; };
     var has = function (id) { return pages.some(function (p) { return p.id === id; }); };
-    var target = has("booking") ? "booking" : has("contact") ? "contact" : has("about") ? "about" : "";
-    return { s: s, pages: pages, has: has, target: target, img: function (k) { var v = k.charAt(0) === "g" ? s.img.g[+k.slice(1)] : s.img[k]; return v || ""; } };
+    var target = first("booking") || first("contact") || first("about") || "";
+    return { s: s, pages: pages, has: has, first: first, target: target, img: function (k) { var v = k.charAt(0) === "g" ? (s.img.g || [])[+k.slice(1)] : s.img[k]; return v || ""; } };
   }
   function im(c, k, alt) { var u = c.img(k); return u ? '<img src="' + esc(u) + '" alt="' + esc(alt || "") + '" loading="lazy">' : ""; }
-  function sec(c, key, cls, inner) { var o = c.s[key]; return '<section class="s x-' + key + " t-" + (o.tone || "base") + " hs-" + (o.hs || "m") + " " + cls + '">' + inner + "</section>"; }
+  function sec(c, key, cls, inner, xk) { var o = c.s[key]; return '<section class="s x-' + (xk || key) + " t-" + (o.tone || "base") + " hs-" + (o.hs || "m") + " " + cls + '">' + inner + "</section>"; }
   function heroActs(c) {
     var h = c.s.hero, out = "";
     if (h.cta && c.target) out += '<a class="btn" href="#' + c.target + '">' + t("hero.cta") + "</a>";
-    if (h.cta2 && c.has("services")) out += '<a class="btn alt" href="#services">' + t("hero.cta2") + "</a>";
+    if (h.cta2 && c.first("services")) out += '<a class="btn alt" href="#' + c.first("services") + '">' + t("hero.cta2") + "</a>";
     return out ? '<div class="acts">' + out + "</div>" : "";
   }
   function heroText(c, noKick) {
@@ -336,7 +372,7 @@ window.SITEGEN = (function () {
     FACTS_DONE = true;
     return '<div class="facts">' + f.map(function (x, i) { return "<div><b>" + t(key + ".facts." + i + ".0", x[0]) + "</b><span>" + t(key + ".facts." + i + ".1", x[1]) + "</span></div>"; }).join("") + "</div>";
   }
-  function factStrip(c, key) { var inner = facts(c, key); return inner ? '<div class="s x-' + key + " t-" + (c.s[key].tone || "base") + ' fxs"><div class="w">' + inner + "</div></div>" : ""; }
+  function factStrip(c, key, xk) { var inner = facts(c, key); return inner ? '<div class="s x-' + (xk || key) + " t-" + (c.s[key].tone || "base") + ' fxs"><div class="w">' + inner + "</div></div>" : ""; }
 
   /* ── Header designs ────────────────────────────────────── */
   function logo(c) { return '<a class="logo" href="#home">' + t("name") + "</a>"; }
@@ -504,7 +540,7 @@ window.SITEGEN = (function () {
     return (o.noOpts ? "" : pOpts(c)) + (k === "enquiry" ? "" : pDay()) + pTime(c) + pGuests(c) + pMsg(c);
   }
   function fullForm(c, o) { return formOpen(c) + pickers(c, o) + pDetails() + pSubmit(c) + "</form>"; }
-  function infoBlock(c) { var ct = c.s.contact; return '<div class="info"><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Address</span>' + lines(ct.address).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Phone</span><p>' + esc(ct.phone) + "</p></div></div>"; }
+  function infoBlock(c) { var ct = c.s.contact; return '<div class="info"><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">Address</span>' + lines(ct.address).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Phone</span><p>' + esc(ct.phone) + "</p></div></div>"; }
   var BOOKINGS = [
     { n: "Centred card", css: ".bk-1 .card{max-width:760px;margin-inline:auto;border:1px solid var(--sline);border-radius:var(--r);padding:clamp(24px,5vw,56px)}", html: function (c) { return '<div class="w pad"><div class="card">' + sh(c, "booking", "intro", true) + fullForm(c) + "</div></div>"; } },
     { n: "Photo split", css: ".bk-2 .g{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,5vw,80px);align-items:stretch}.bk-2 .ph{min-height:100%;aspect-ratio:auto}@media(max-width:760px){.bk-2 .g{grid-template-columns:1fr}.bk-2 .ph{aspect-ratio:16/9;min-height:0}}", html: function (c) { return '<div class="w g pad"><div class="ph">' + im(c, "x1") + "</div><div>" + sh(c, "booking", "intro") + fullForm(c) + "</div></div>"; } },
@@ -528,54 +564,54 @@ window.SITEGEN = (function () {
 
   /* ── Contact page designs ──────────────────────────────── */
   function hoursRows(c) { return lines(c.s.contact.hours).map(function (l) { var p = l.split(/\s{2,}|\t|\|/); return '<div class="hr"><span>' + esc(p[0]) + "</span><span>" + esc(p.slice(1).join(" ")) + "</span></div>"; }).join(""); }
-  function addr(c) { return lines(c.s.contact.address).map(esc).join("<br>"); }
+  function addr(c) { var ls = lines(c.s.contact.address).map(esc); return EDIT ? '<span data-e="contact.address" data-m="br">' + ls.join("<br>") + "</span>" : ls.join("<br>"); }
+  function addrInline(c) { var ls = lines(c.s.contact.address).map(esc); return EDIT ? '<span data-e="contact.address" data-m="comma">' + ls.join(", ") + "</span>" : ls.join(", "); }
   function tel(c) { return '<a href="tel:' + esc(String(c.s.contact.phone).replace(/[^\d+]/g, "")) + '">' + t("contact.phone") + "</a>"; }
   function mail(c) { return '<a href="mailto:' + esc(c.s.contact.email) + '">' + t("contact.email") + "</a>"; }
   var CT_BASE = ".ct a{color:var(--bb)}.ct .lb{color:var(--bb)}.ct h2:after{content:'';display:block;width:48px;height:2px;background:var(--bb);margin-top:18px}.ct .c h2:after,.ct-4 h2:after{margin-inline:auto}.ct-10 .blk a,.ct-10 .blk .lb{color:inherit}.ct-10 .blk h2:after{background:currentColor}.ct a{text-decoration:none}.ct a:hover{text-decoration:underline}.hr{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--sline)}.hr span:last-child{color:var(--smut);text-align:right}";
   var CONTACTS = [
     { n: "Columns", css: ".ct-1 .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,40px)}.ct-1 .cols>div{border-top:1px solid var(--sline);padding-top:16px;display:grid;gap:6px;align-content:start}.ct-1 .note{margin-top:32px}@media(max-width:760px){.ct-1 .cols{grid-template-columns:1fr 1fr}.ct-1 .cols>div:last-child{grid-column:1/-1}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact") + '<div class="cols"><div><span class="lb">Visit</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div>" + (ct.note ? '<p class="mut note">' + t("contact.note") + "</p>" : "") + "</div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact") + '<div class="cols"><div><span class="lb">Visit</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div>" + (ct.note ? '<p class="mut note">' + t("contact.note") + "</p>" : "") + "</div>"; } },
     { n: "Split", css: ".ct-2 .g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,96px)}.ct-2 h2{font-size:calc(clamp(38px,5.4vw,80px)*var(--k,1)*var(--hk))}.ct-2 .row{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:16px 0;border-top:1px solid var(--sline)}@media(max-width:760px){.ct-2 .g{grid-template-columns:1fr;gap:20px}.ct-2 .row{grid-template-columns:90px 1fr}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div><h2>' + t("contact.title") + "</h2>" + (ct.note ? '<p class="lede">' + t("contact.note") + "</p>" : "") + '</div><div><div class="row"><span class="lb">Address</span><p>' + addr(c) + '</p></div><div class="row"><span class="lb">Hours</span><div>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div></div><div class="row"><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div class="row"><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div><h2>' + t("contact.title") + "</h2>" + (ct.note ? '<p class="lede">' + t("contact.note") + "</p>" : "") + '</div><div><div class="row"><span class="lb">Address</span><p>' + addr(c) + '</p></div><div class="row"><span class="lb">Hours</span><div>' + mlines("contact.hours", "p") + '</div></div><div class="row"><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div class="row"><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div>"; } },
     { n: "With photo", css: ".ct-3 .g{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,96px);align-items:center}.ct-3 .ph{aspect-ratio:4/5}.ct-3 .d{display:grid;gap:18px;margin-top:8px}@media(max-width:760px){.ct-3 .g{grid-template-columns:.9fr 1fr;gap:18px;align-items:start}.ct-3 .d{font-size:.88em;gap:12px}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact", "note") + '<div class="g"><div class="ph">' + im(c, "x2") + '</div><div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact", "note") + '<div class="g"><div class="ph">' + im(c, "x2") + '</div><div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div></div>"; } },
     { n: "Big type", css: ".ct-4 .c{text-align:center}.ct-4 .big{display:grid;gap:4px;margin:clamp(24px,4vw,48px) 0}.ct-4 .big a{font-family:var(--hf),serif;font-weight:var(--hw);font-size:calc(clamp(30px,4.6vw,68px)*var(--hk));line-height:1.15;word-break:break-word}.ct-4 .two{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:640px;margin-inline:auto;padding-top:24px;border-top:1px solid var(--sline);text-align:left}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w pad c"><h2>' + t("contact.title") + '</h2><div class="big">' + tel(c) + mail(c) + '</div><div class="two"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + "</div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w pad c"><h2>' + t("contact.title") + '</h2><div class="big">' + tel(c) + mail(c) + '</div><div class="two"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + "</div></div></div>"; } },
     { n: "Hours table", css: ".ct-5 .g{display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(28px,6vw,96px)}.ct-5 .d{display:grid;gap:18px;margin-top:8px}.ct-5 .t{border-top:1px solid var(--sline)}@media(max-width:760px){.ct-5 .g{grid-template-columns:1fr;gap:24px}.ct-5 .d{grid-template-columns:1fr 1fr}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div>' + sh(c, "contact", "note") + '<div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + '</p></div></div></div><div><span class="lb">Opening hours</span><div class="t" style="margin-top:10px">' + hoursRows(c) + "</div></div></div>"; } },
     { n: "Message form", css: ".ct-6 .g{display:grid;grid-template-columns:1fr 1.3fr;gap:clamp(28px,6vw,96px);align-items:start}.ct-6 .d{display:grid;gap:18px}@media(max-width:760px){.ct-6 .g{grid-template-columns:1fr;gap:28px}.ct-6 .d{grid-template-columns:1fr 1fr}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w g pad"><div>' + sh(c, "contact", "note") + '<div class="d"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>" + '<form class="bk-form" method="POST" ' + formAction(c) + ' novalidate><input type="hidden" name="_subject" value="New message — ' + esc(c.s.name) + '"><input type="hidden" name="_captcha" value="false"><div class="r3" style="grid-template-columns:1fr 1fr"><label class="fld"><span class="lb">Name</span><input class="inp" name="name" required></label><label class="fld"><span class="lb">Email</span><input class="inp" type="email" name="email" required></label></div><div class="fld"><span class="lb">Message</span><textarea class="inp" name="message" required></textarea></div><p class="err-msg" aria-live="polite"></p><div><button class="btn" type="submit">Send message</button></div><div class="sent-msg"><h3>Message sent.</h3><p class="mut">Thank you. We\'ll reply soon.</p></div></form></div>'; } },
     { n: "Cards", css: ".ct-7 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(8px,1.4vw,16px)}.ct-7 .card{border:1px solid var(--sline);border-radius:var(--r);padding:clamp(18px,2.6vw,32px);display:grid;gap:6px;align-content:start}.ct-7 h3{margin-bottom:8px}@media(max-width:760px){.ct-7 .grid{grid-template-columns:1fr 1fr}.ct-7 .card:last-child{grid-column:1/-1}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact", "note") + '<div class="grid"><div class="card"><h3>Visit</h3><p>' + addr(c) + '</p></div><div class="card"><h3>Hours</h3>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div class="card"><h3>Get in touch</h3><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact", "note") + '<div class="grid"><div class="card"><h3>Visit</h3><p>' + addr(c) + '</p></div><div class="card"><h3>Hours</h3>' + mlines("contact.hours", "p") + '</div><div class="card"><h3>Get in touch</h3><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div></div>"; } },
     { n: "Photo banner", css: ".ct-8{min-height:560px;display:flex;align-items:flex-end}.ct-8 .in{position:relative;padding-block:clamp(40px,6vw,80px)}.ct-8 .card{background:var(--sbg);max-width:520px;padding:clamp(24px,3.6vw,44px);border-radius:var(--r);display:grid;gap:14px}.ct-8 .card h2{margin-bottom:6px}@media(max-width:760px){.ct-8 .in{padding-block:20px}}",
-      html: function (c) { var ct = c.s.contact; return '<div class="bgimg">' + im(c, "x2") + '</div><div class="w in"><div class="card"><h2>' + t("contact.title") + '</h2><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Contact</span><p>' + tel(c) + " &middot; " + mail(c) + "</p></div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="bgimg">' + im(c, "x2") + '</div><div class="w in"><div class="card"><h2>' + t("contact.title") + '</h2><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">Contact</span><p>' + tel(c) + " &middot; " + mail(c) + "</p></div></div></div>"; } },
     { n: "Centred list", css: ".ct-9 .c{text-align:center;max-width:560px;margin-inline:auto}.ct-9 .l{display:grid;margin-top:12px}.ct-9 .l>div{padding:16px 0;border-top:1px solid var(--sline);display:grid;gap:4px}.ct-9 .l>div:last-child{border-bottom:1px solid var(--sline)}",
-      html: function (c) { var ct = c.s.contact; return '<div class="w pad"><div class="c">' + sh(c, "contact", "note", true) + '<div class="l"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div></div>"; } },
+      html: function (c) { var ct = c.s.contact; return '<div class="w pad"><div class="c">' + sh(c, "contact", "note", true) + '<div class="l"><div><span class="lb">Address</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">Phone</span><p>' + tel(c) + '</p></div><div><span class="lb">Email</span><p>' + mail(c) + "</p></div></div></div></div>"; } },
     { n: "Accent block", css: ".ct-10 .g{display:grid;grid-template-columns:1fr 1fr;border-radius:var(--r);overflow:hidden;border:1px solid var(--sline)}.ct-10 .blk{background:var(--bb);color:var(--bt);--smut:currentColor;padding:clamp(28px,5vw,64px);display:grid;gap:14px;align-content:center}.ct-10 .blk a.big{font-family:var(--hf),serif;font-weight:var(--hw);font-size:calc(clamp(26px,3.4vw,50px)*var(--hk));line-height:1.1}.ct-10 .hrs{padding:clamp(28px,5vw,64px)}@media(max-width:760px){.ct-10 .g{grid-template-columns:1fr}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w pad"><div class="g"><div class="blk"><h2>' + t("contact.title") + '</h2><a class="big" href="tel:' + esc(String(ct.phone).replace(/[^\d+]/g, "")) + '">' + esc(ct.phone) + "</a><p>" + mail(c) + "</p><p>" + addr(c) + '</p></div><div class="hrs"><span class="lb">Opening hours</span><div style="margin-top:10px">' + hoursRows(c) + "</div></div></div></div>"; } }
   ];
 
   /* ── Footer designs ────────────────────────────────────── */
-  function credit(c) { return c.s.credit ? '<a href="https://onwardsdigital.com" class="mut">Site by Onwards Digital</a>' : ""; }
   function flinks(c) { return c.pages.map(function (p) { return '<a href="#' + p.id + '">' + esc(p.label) + "</a>"; }).join(""); }
-  var FT_BASE = ".ft a{text-decoration:none}.ft a:hover{text-decoration:underline}.ft .small{font-size:.82em;color:var(--smut);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}";
+  var FT_BASE = ".ml{display:grid;gap:inherit}.ft a{text-decoration:none}.ft a:hover{text-decoration:underline}.ft .small{font-size:.82em;color:var(--smut);display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}";
   var FOOTERS = [
     { n: "Columns", css: ".ft-1 .g{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:32px;padding-block:clamp(40px,6vw,72px) 32px}.ft-1 .g>div{display:grid;gap:8px;align-content:start;font-size:.94em}.ft-1 .logo{font-size:1.8em;margin-bottom:6px}.ft-1 .small{padding:20px 0 28px;border-top:1px solid var(--sline)}@media(max-width:760px){.ft-1 .g{grid-template-columns:1fr 1fr}.ft-1 .g>div:first-child{grid-column:1/-1}}",
-      html: function (c) { return '<div class="w g"><div>' + logo(c) + '<p class="mut">' + t("tagline") + "</p></div><div>" + flinks(c) + '</div><div><p>' + addr(c) + "</p><p>" + tel(c) + "</p><p>" + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + credit(c) + "</div>"; } },
+      html: function (c) { return '<div class="w g"><div>' + logo(c) + '<p class="mut">' + t("tagline") + "</p></div><div>" + flinks(c) + '</div><div><p>' + addr(c) + "</p><p>" + tel(c) + "</p><p>" + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + "</div>"; } },
     { n: "Centred", css: ".ft-2 .in{text-align:center;display:grid;gap:22px;justify-items:center;padding-block:clamp(48px,7vw,88px) 28px}.ft-2 .logo{font-size:2.4em}.ft-2 nav{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:center}.ft-2 .small{justify-content:center;padding-bottom:28px}",
-      html: function (c) { return '<div class="w in">' + logo(c) + '<p class="mut">' + t("tagline") + "</p><nav>" + flinks(c) + '</nav></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + " &middot; " + t("contact.phone") + "</span>" + credit(c) + "</div>"; } },
+      html: function (c) { return '<div class="w in">' + logo(c) + '<p class="mut">' + t("tagline") + "</p><nav>" + flinks(c) + '</nav></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + " &middot; " + t("contact.phone") + "</span>" + "</div>"; } },
     { n: "One line", css: ".ft-3 .in{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding-block:28px;font-size:.9em;border-top:1px solid var(--sline)}.ft-3 nav{display:flex;flex-wrap:wrap;gap:8px 22px}",
-      html: function (c) { return '<div class="w in"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span><nav>" + flinks(c) + "</nav>" + (credit(c) || "<span></span>") + "</div>"; } },
+      html: function (c) { return '<div class="w in"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span><nav>" + flinks(c) + "</nav>" + "<span></span>" + "</div>"; } },
     { n: "Big name", css: ".ft-4{overflow:hidden}.ft-4 .top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px 40px;padding-top:clamp(40px,6vw,72px);font-size:.94em}.ft-4 nav{display:flex;flex-wrap:wrap;gap:8px 24px}.ft-4 .huge{font-family:var(--hf),serif;font-weight:var(--hw);font-size:clamp(56px,13vw,210px);line-height:.9;letter-spacing:-.03em;white-space:nowrap;margin:clamp(28px,5vw,64px) 0 -0.12em;padding-inline:var(--gut)}.ft-4 .small{padding-bottom:22px;padding-top:28px}",
-      html: function (c) { return '<div class="w top"><nav>' + flinks(c) + "</nav><span>" + esc(lines(c.s.contact.address).join(", ")) + " &middot; " + tel(c) + '</span></div><div class="huge">' + t("name") + '</div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + credit(c) + "</div>"; } },
+      html: function (c) { return '<div class="w top"><nav>' + flinks(c) + "</nav><span>" + addrInline(c) + " &middot; " + tel(c) + '</span></div><div class="huge">' + t("name") + '</div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + "</div>"; } },
     { n: "Two sides", css: ".ft-5 .g{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding-block:clamp(40px,6vw,72px) 28px;align-items:end}.ft-5 .logo{font-size:2em}.ft-5 .l{display:grid;gap:8px}.ft-5 .r{display:grid;gap:10px;justify-items:end;text-align:right}.ft-5 nav{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:flex-end}.ft-5 .small{padding:18px 0 26px;border-top:1px solid var(--sline)}@media(max-width:760px){.ft-5 .g{grid-template-columns:1fr}.ft-5 .r{justify-items:start;text-align:left}.ft-5 nav{justify-content:flex-start}}",
-      html: function (c) { return '<div class="w g"><div class="l">' + logo(c) + '<p class="mut">' + t("tagline") + '</p></div><div class="r"><nav>' + flinks(c) + "</nav><p>" + tel(c) + " &middot; " + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + credit(c) + "</div>"; } },
+      html: function (c) { return '<div class="w g"><div class="l">' + logo(c) + '<p class="mut">' + t("tagline") + '</p></div><div class="r"><nav>' + flinks(c) + "</nav><p>" + tel(c) + " &middot; " + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + "</div>"; } },
     { n: "With hours", css: ".ft-6 .g{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;padding-block:clamp(40px,6vw,72px) 28px;font-size:.94em}.ft-6 .g>div{display:grid;gap:6px;align-content:start}.ft-6 .logo{font-size:1.7em}.ft-6 .small{padding:18px 0 26px;border-top:1px solid var(--sline)}@media(max-width:760px){.ft-6 .g{grid-template-columns:1fr 1fr}.ft-6 .g>div:first-child{grid-column:1/-1}}",
-      html: function (c) { return '<div class="w g"><div>' + logo(c) + '<p class="mut">' + t("tagline") + '</p></div><div><span class="lb">Hours</span>' + lines(c.s.contact.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Find us</span><p>' + addr(c) + "</p><p>" + tel(c) + "</p><p>" + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + credit(c) + "</div>"; } },
+      html: function (c) { return '<div class="w g"><div>' + logo(c) + '<p class="mut">' + t("tagline") + '</p></div><div><span class="lb">' + t("footer.hoursLabel") + '</span>' + mlines("contact.hours", "p") + '</div><div><span class="lb">' + t("footer.findLabel") + '</span><p>' + addr(c) + "</p><p>" + tel(c) + "</p><p>" + mail(c) + '</p></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span>" + "</div>"; } },
     { n: "Call to action", css: ".ft-7 .cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px;padding-block:clamp(40px,6vw,72px);border-bottom:1px solid var(--sline)}.ft-7 .cta h2{font-size:calc(clamp(28px,3.6vw,52px)*var(--hk))}.ft-7 .in{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 28px;padding-block:24px;font-size:.9em}.ft-7 nav{display:flex;flex-wrap:wrap;gap:8px 22px}",
-      html: function (c) { var btn = c.target && c.target !== "home" ? '<a class="btn" href="#' + c.target + '">' + esc(c.s.hero.cta || "Contact us") + "</a>" : ""; return '<div class="w cta"><h2>' + t("contact.title") + "</h2>" + btn + '</div><div class="w in"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span><nav>" + flinks(c) + "</nav>" + (credit(c) || "<span></span>") + "</div>"; } },
+      html: function (c) { var btn = c.target && c.target !== "home" ? '<a class="btn" href="#' + c.target + '">' + t("hero.cta") + "</a>" : ""; return '<div class="w cta"><h2>' + t("contact.title") + "</h2>" + btn + '</div><div class="w in"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + "</span><nav>" + flinks(c) + "</nav>" + "<span></span>" + "</div>"; } },
     { n: "Boxed", css: ".ft-8 .box{border:1px solid var(--sline);border-radius:var(--r);padding:clamp(24px,4vw,48px);margin-block:clamp(28px,4vw,48px) 20px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}.ft-8 .box>div{display:grid;gap:8px}.ft-8 nav{display:flex;flex-wrap:wrap;gap:8px 22px}.ft-8 .small{padding-bottom:24px}@media(max-width:760px){.ft-8 .box{grid-template-columns:1fr}}",
-      html: function (c) { return '<div class="w"><div class="box"><div>' + logo(c) + '<p class="mut">' + t("tagline") + "</p></div><nav>" + flinks(c) + '</nav></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + " &middot; " + esc(c.s.contact.phone) + "</span>" + credit(c) + "</div>"; } }
+      html: function (c) { return '<div class="w"><div class="box"><div>' + logo(c) + '<p class="mut">' + t("tagline") + "</p></div><nav>" + flinks(c) + '</nav></div></div><div class="w small"><span>&copy; ' + new Date().getFullYear() + " " + t("name") + " &middot; " + t("contact.phone") + "</span>" + "</div>"; } }
   ];
 
   function termsBody(c) {
@@ -594,29 +630,40 @@ window.SITEGEN = (function () {
   var SECTIONS = { header: HEADERS, hero: HEROES, about: ABOUTS, services: SERVICES, gallery: GALLERIES, booking: BOOKINGS, contact: CONTACTS, terms: TERMS, footer: FOOTERS };
   var PFX = { header: "hd", hero: "he", about: "ab", services: "sv", gallery: "ga", booking: "bk", contact: "ct", terms: "tm", footer: "ft" };
 
-  function pick(key, s) { var list = SECTIONS[key]; var v = Math.max(0, Math.min(list.length - 1, s[key].v | 0)); return { t: list[v], cls: PFX[key] + "-" + (v + 1) }; }
+  function pick(key, s) { var ty = typeOf(s, key), list = SECTIONS[ty]; var v = Math.max(0, Math.min(list.length - 1, s[key].v | 0)); return { t: list[v], cls: PFX[ty] + "-" + (v + 1), type: ty }; }
 
   function renderHeader(c) { var p = pick("header", c.s); return '<header class="s x-header hd ' + p.cls + " t-" + c.s.header.tone + '">' + p.t.html(c) + "</header>"; }
   function renderFooter(c) { var p = pick("footer", c.s); return '<footer class="s x-footer ft ' + p.cls + " t-" + c.s.footer.tone + '">' + p.t.html(c) + "</footer>"; }
+  /* A repeated section (gallery2 …) borrows its type's designs but keeps its own words, photos and style */
   function renderSection(c, key) {
-    var p = pick(key, c.s); FACTS_DONE = false;
-    var inner = p.t.html(c), done = FACTS_DONE;
-    var out = sec(c, key, key === "hero" ? "he " + p.cls : (key === "contact" ? "ct " : key === "terms" ? "tm " : "") + p.cls, inner);
-    if (!done && c.s[key] && c.s[key].factsOn) out += factStrip(c, key);
-    return out;
+    var p = pick(key, c.s), ty = p.type, cc = c, keepCur = CUR, keepAlias = ALIAS;
+    if (ty !== key) {
+      var s2 = {}; Object.keys(c.s).forEach(function (k) { s2[k] = c.s[k]; });
+      s2[ty] = c.s[key]; if (c.s[key].img) s2.img = c.s[key].img;
+      cc = ctx(s2); CUR = s2; ALIAS = [ty, key];
+    }
+    try {
+      FACTS_DONE = false;
+      var inner = p.t.html(cc), done = FACTS_DONE;
+      var out = sec(cc, ty, key === "hero" ? "he " + p.cls : (ty === "contact" ? "ct " : ty === "terms" ? "tm " : "") + p.cls, inner, key);
+      if (!done && cc.s[ty] && cc.s[ty].factsOn) out += factStrip(cc, ty, key);
+      return out;
+    } finally { CUR = keepCur; ALIAS = keepAlias; }
   }
 
   /* Which CSS is needed for a given render */
   function css(s, only) {
+    migrate(s);
     var parts = [rootVars(s), sectionVars(s), BASE_CSS, HEADER_BASE, CT_BASE, FT_BASE, TERMS_BASE];
-    var keys = only ? (only === "hero" || only === "header" ? ["header", "hero"] : [only]) : ["header", "hero", "about", "services", "gallery", "booking", "contact", "terms", "footer"];
-    keys.forEach(function (k) { parts.push(pick(k, s).t.css); });
+    var keys = only ? (only === "hero" || only === "header" ? ["header", "hero"] : [only]) : ["header", "hero"].concat(s.layout.filter(function (e) { return e.on; }).map(function (e) { return e.k; }), s.footerOn ? ["footer"] : []);
+    var seen = {};
+    keys.forEach(function (k) { var c = pick(k, s).t.css; if (!seen[c]) { seen[c] = 1; parts.push(c); } });
     if (!only || only === "hero") parts.push(HL_CSS);
     return parts.join("\n");
   }
 
   function bodyHTML(s, only, edit) {
-    EDIT = !!edit; CUR = s;
+    migrate(s); EDIT = !!edit; CUR = s; ALIAS = null;
     try { return bodyInner(s, only); } finally { EDIT = false; }
   }
   function bodyInner(s, only) {
@@ -633,7 +680,7 @@ window.SITEGEN = (function () {
       if (p.id === "home") return;
       out += '<div class="pg" id="pg-' + p.id + '"' + (p.solo ? " data-solo" : "") + ">" + (p.solo ? '<div class="s x-' + p.id + " t-" + (s[p.id].tone || "base") + ' tback"><div class="w"><a href="#home">&larr; Back to the site</a></div></div>' : "") + renderSection(c, p.id) + "</div>";
     });
-    return out + "</main>" + renderFooter(c);
+    return out + "</main>" + (s.footerOn ? renderFooter(c) : "");
   }
   function bodyClass(s) { return (s.onePage ? "single" : "multi") + " r-" + s.theme.radius + " b-" + s.theme.btn; }
 
@@ -715,13 +762,21 @@ window.SITEGEN = (function () {
       if (f.hasAttribute("data-own")) { e.preventDefault(); if (msg) msg.textContent = "Online requests aren\u2019t switched on yet. Please call or email us."; }
     });
     if (P) {
+      /* the mouse wheel stays inside the site, at the top and at the bottom */
+      window.addEventListener("wheel", function (e) {
+        if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+        var se = d.scrollingElement || d.documentElement, y = se.scrollTop, max = se.scrollHeight - se.clientHeight;
+        if (max <= 0 || (e.deltaY < 0 && y <= 0) || (e.deltaY > 0 && y >= max - 1)) e.preventDefault();
+      }, { passive: false });
       d.addEventListener("input", function (e) {
         var el = e.target.closest && e.target.closest("[data-e]"); if (!el) return;
-        var v = el.innerText;
-        v = el.hasAttribute("data-m") ? v.replace(/\n{3,}/g, "\n\n").trim() : v.replace(/\s*\n\s*/g, " ");
+        var v = el.innerText, m = el.getAttribute("data-m");
+        v = !m ? v.replace(/\s*\n\s*/g, " ")
+          : m === "1" ? v.replace(/\n{3,}/g, "\n\n").trim()
+          : (m === "comma" ? v.split(/\s*,\s*|\n+/) : v.split(/\n+/)).map(function (x) { return x.trim(); }).filter(Boolean).join("\n");
         try { parent.postMessage({ edit: el.getAttribute("data-e"), value: v }, "*"); } catch (x) {}
       });
-      d.addEventListener("keydown", function (e) { var el = e.target.closest && e.target.closest("[data-e]"); if (el && e.key === "Enter" && !el.hasAttribute("data-m")) { e.preventDefault(); el.blur(); } });
+      d.addEventListener("keydown", function (e) { var el = e.target.closest && e.target.closest("[data-e]"); if (el && e.key === "Enter" && (!el.hasAttribute("data-m") || el.getAttribute("data-m") === "comma")) { e.preventDefault(); el.blur(); } });
       d.addEventListener("focusout", function (e) { if (e.target.closest && e.target.closest("[data-e]")) try { parent.postMessage({ editDone: true }, "*"); } catch (x) {} });
     }
     window.__site = { show: show, fill: fill, page: function () { return cur; } };
@@ -737,7 +792,7 @@ window.SITEGEN = (function () {
       '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' +
       '<link id="fonts" rel="stylesheet" href="' + fontsHref(s) + '"><style id="css">' + css(s, o.only) + "</style>" +
       (o.thumb ? "<style>html,body{overflow:hidden;pointer-events:none}.hd{position:relative}</style>" : "") +
-      (o.preview ? "<style>html{scrollbar-width:thin}[data-e]{cursor:text;outline:1px dashed transparent;outline-offset:3px;border-radius:2px;transition:outline-color .15s}[data-e]:hover{outline-color:rgba(128,128,128,.7)}[data-e]:focus{outline:1.5px solid rgba(128,128,128,.95)}.pe{display:block}.pe:empty:before,[data-e]:empty:before{content:'Click to type';opacity:.4}</style>" : "");
+      (o.preview ? "<style>html,body{overscroll-behavior:none}html{scrollbar-width:thin}[data-e]{cursor:text;outline:1px dashed transparent;outline-offset:3px;border-radius:2px;transition:outline-color .15s}[data-e]:hover{outline-color:rgba(128,128,128,.7)}[data-e]:focus{outline:1.5px solid rgba(128,128,128,.95)}.pe{display:block}.pe:empty:before,[data-e]:empty:before{content:'Click to type';opacity:.4}</style>" : "");
     return "<!DOCTYPE html><html lang=\"en\"" + (o.preview || o.thumb ? " data-preview" : "") + "><head>" + head + '</head><body class="' + bodyClass(s) + '"><div id="root">' + bodyHTML(s, o.only, o.preview) + "</div>" + (o.thumb ? "" : "<script>" + RUNTIME + "<\/script>") + "</body></html>";
   }
 
@@ -749,6 +804,7 @@ window.SITEGEN = (function () {
   return {
     PRESETS: PRESETS, PALETTES: PALETTES, HEAD_FONTS: HEAD_FONTS, BODY_FONTS: BODY_FONTS, SECTIONS: SECTIONS,
     defaults: defaults, applyPreset: applyPreset, doc: doc, css: css, body: bodyHTML, bodyClass: bodyClass,
-    fontsHref: fontsHref, allFontsHref: allFontsHref, colors: colors, onColor: onColor, mix: mix, count: count, ctx: ctx
+    fontsHref: fontsHref, allFontsHref: allFontsHref, colors: colors, onColor: onColor, mix: mix, count: count, ctx: ctx,
+    migrate: migrate, typeOf: typeOf, isOn: isOn, addSection: addSection, removeSection: removeSection, ADDABLE: ADDABLE, DEF_LABEL: DEF_LABEL
   };
 })();
