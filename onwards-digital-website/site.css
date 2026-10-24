@@ -656,3 +656,18 @@ mark.ph { background: #f3e6b8; color: var(--ink); padding: 0 4px; }
   .cases .tile-copy .lede { font-size: 14.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .cases .case-list, .cases .tile-copy .btn-text { display: none; }
 }
+
+/* ── Header switch between the two main pages ──────────────── */
+.site-switch { display: inline-flex; border: 1px solid var(--ink); }
+.site-switch a { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; font-weight: 500; padding: 10px 14px; transition: background .2s ease, color .2s ease; white-space: nowrap; }
+.site-switch a + a { border-left: 1px solid var(--ink); }
+.site-switch a:hover { background: var(--paper); color: var(--ink); }
+.site-switch a.on { background: var(--ink); color: var(--bg); }
+.nav-bar:has(.site-switch) { grid-template-rows: auto auto; row-gap: 14px; }
+.nav-bar .site-switch { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
+.nav-bar:has(.site-switch) .nav, .nav-bar:has(.site-switch) .nav-cur { grid-row: 2; }
+@media (max-width: 760px) {
+  .nav-bar .site-switch { order: -1; width: 100%; display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 4px; }
+  .site-switch a { text-align: center; padding: 10px 6px; font-size: 11px; }
+}
+

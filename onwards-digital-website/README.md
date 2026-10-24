@@ -4,7 +4,9 @@ Plain HTML, CSS and JavaScript. No build step, no subfolders — every file sits
 at the same level. Upload them all to GitHub and Vercel deploys as-is.
 
 ```
-index.html            Homepage
+index.html            Landing page: custom website or ready-made site
+custom.html           Custom-build homepage
+ready-made.html       Ready-made site builder (uses sitegen.js, builder.js, builder.css)
 beginner.html         Free mockup (form only, no payment)
 advanced.html         $299 plan — questionnaire → payment.html
 professional.html     $599 plan — questionnaire → payment.html

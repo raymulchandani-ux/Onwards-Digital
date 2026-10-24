@@ -158,12 +158,13 @@ window.SITEGEN = (function () {
     }
   };
 
+  var FACT_KEYS = ["hero", "about", "services", "gallery", "booking", "contact"];
   function applyPreset(s, key, keepDesign) {
     var p = PRESETS[key]; if (!p) return s;
     s.preset = key; s.name = p.name; s.tagline = p.tagline;
     s.hero.kick = p.hero.kick; s.hero.title = p.hero.title; s.hero.text = p.hero.text; s.hero.cta = p.hero.cta; s.hero.cta2 = p.hero.cta2;
     s.hl = p.hl.map(function (x) { return [x[0], x[1]]; });
-    s.about.title = p.about.title; s.about.text = p.about.text; s.about.facts = p.about.facts.map(function (x) { return [x[0], x[1]]; });
+    s.about.title = p.about.title; s.about.text = p.about.text; FACT_KEYS.forEach(function (k) { if (s[k]) s[k].facts = p.about.facts.map(function (x) { return [x[0], x[1]]; }); });
     s.services.label = p.services.label; s.services.title = p.services.title; s.services.intro = p.services.intro;
     s.services.items = p.services.items.map(function (x) { return { n: x[0], p: x[1], d: x[2] }; });
     s.gallery.label = p.gallery.label; s.gallery.title = p.gallery.title;
@@ -180,14 +181,14 @@ window.SITEGEN = (function () {
       pages: { about: true, services: true, gallery: true, booking: true, contact: true, terms: true },
       theme: { pal: 3, custom: null, hf: 1, bf: 4, size: 100, hscale: 100, radius: "soft", btn: "solid" },
       header: { v: 0, tone: "base" },
-      hero: { v: 0, tone: "base", hs: "m", hlOn: true },
+      hero: { v: 0, factsOn: false, tone: "base", hs: "m", hlOn: true },
       hl: [],
-      about: { v: 0, tone: "soft", hs: "m" },
-      services: { v: 0, tone: "base", hs: "m", items: [] },
-      gallery: { v: 0, tone: "base", hs: "m" },
-      booking: { v: 0, tone: "ink", hs: "m", dest: "email", times: "" },
-      contact: { v: 0, tone: "base", hs: "m" },
-      terms: { v: 0, tone: "base", hs: "m", label: "Terms", title: "Terms of service", updated: "Last updated September 2026",
+      about: { v: 0, tone: "soft", hs: "m", factsOn: true },
+      services: { v: 0, factsOn: false, tone: "base", hs: "m", items: [] },
+      gallery: { v: 0, factsOn: false, tone: "base", hs: "m" },
+      booking: { v: 0, factsOn: false, tone: "ink", hs: "m", dest: "email", times: "" },
+      contact: { v: 0, factsOn: false, tone: "base", hs: "m" },
+      terms: { v: 0, tone: "base", hs: "m", place: "footer", label: "Terms", title: "Terms of service", updated: "Last updated September 2026",
         text: "Bookings\nA booking is a request until we confirm it by email or phone. Please give us at least 24 hours\u2019 notice if you need to change or cancel.\n\nPrices\nPrices on this site can change. The price you pay is the one confirmed when you book or order.\n\nPayments and refunds\nTell customers here how they pay you and when, if ever, they can get a refund.\n\nYour information\nWe only use the details you send us to reply to you and manage your booking. We never sell them.\n\nQuestions\nIf you have a question about these terms, contact us using the details on this site." },
       footer: { v: 0, tone: "ink" },
       img: {}
@@ -267,7 +268,9 @@ window.SITEGEN = (function () {
     ".sh{display:grid;gap:14px;margin-bottom:clamp(28px,4vw,52px)}.sh .lede{margin-top:0}.sh.c{text-align:center;justify-items:center}",
     ".facts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px;padding-top:24px;border-top:1px solid var(--sline)}",
     ".facts b{display:block;font-family:var(--hf),serif;font-weight:var(--hw);font-size:2em;line-height:1.1}.facts span{font-size:.88em;color:var(--smut)}",
-    ".pg{scroll-margin-top:70px}.multi .pg[hidden]{display:none}",
+    ".pg{scroll-margin-top:70px}.pg[hidden]{display:none}",
+    ".fxs{padding:clamp(24px,3vw,40px) 0 clamp(44px,6vw,80px)}.fxs .facts{margin-top:0}",
+    ".tback{padding-top:28px}.tback a{text-decoration:none;font-size:.9em;color:var(--smut)}.tback a:hover{color:var(--sfg)}",
     /* forms */
     ".bk-form{display:grid;gap:20px}.fld{display:grid;gap:8px}.lb{font-size:.82em;color:var(--smut)}",
     ".inp{width:100%;font:inherit;color:inherit;background:transparent;border:1px solid var(--sline);border-radius:var(--brf);padding:.8em .95em;outline:none}",
@@ -306,7 +309,7 @@ window.SITEGEN = (function () {
     if (s.pages.gallery) pages.push({ id: "gallery", label: s.gallery.label || "Gallery" });
     if (s.pages.booking) pages.push({ id: "booking", label: s.booking.label || "Book" });
     if (s.pages.contact) pages.push({ id: "contact", label: "Contact" });
-    if (s.pages.terms) pages.push({ id: "terms", label: s.terms.label || "Terms", foot: true });
+    if (s.pages.terms) pages.push({ id: "terms", label: s.terms.label || "Terms", foot: s.terms.place !== "section", solo: s.terms.place !== "section" });
     var has = function (id) { return pages.some(function (p) { return p.id === id; }); };
     var target = has("booking") ? "booking" : has("contact") ? "contact" : has("about") ? "about" : "";
     return { s: s, pages: pages, has: has, target: target, img: function (k) { var v = k.charAt(0) === "g" ? s.img.g[+k.slice(1)] : s.img[k]; return v || ""; } };
@@ -324,7 +327,16 @@ window.SITEGEN = (function () {
     return (h.kick && !noKick ? '<p class="kick">' + t("hero.kick") + "</p>" : "") + "<h1>" + t("hero.title") + "</h1>" + (h.text ? '<p class="lede">' + t("hero.text") + "</p>" : "") + heroActs(c);
   }
   function sh(c, key, introKey, center) { var o = c.s[key], intro = introKey && o[introKey]; return '<div class="sh' + (center ? " c" : "") + '"><h2>' + t(key + ".title") + "</h2>" + (intro ? '<p class="lede">' + t(key + "." + introKey) + "</p>" : "") + "</div>"; }
-  function facts(c) { var f = c.s.about.facts || []; if (!f.some(function (x) { return (x[0] || "").trim() || (x[1] || "").trim(); })) return ""; return '<div class="facts">' + f.map(function (x, i) { return "<div><b>" + t("about.facts." + i + ".0", x[0]) + "</b><span>" + t("about.facts." + i + ".1", x[1]) + "</span></div>"; }).join("") + "</div>"; }
+  /* Key facts: any content section can show three big numbers with labels. Designs that
+     place them inline call facts(); every other design gets them as a strip underneath. */
+  var FACTS_DONE = false;
+  function facts(c, key) {
+    key = key || "about"; var o = c.s[key]; if (!o || !o.factsOn) return "";
+    var f = o.facts || []; if (!f.some(function (x) { return (x[0] || "").trim() || (x[1] || "").trim(); })) return "";
+    FACTS_DONE = true;
+    return '<div class="facts">' + f.map(function (x, i) { return "<div><b>" + t(key + ".facts." + i + ".0", x[0]) + "</b><span>" + t(key + ".facts." + i + ".1", x[1]) + "</span></div>"; }).join("") + "</div>";
+  }
+  function factStrip(c, key) { var inner = facts(c, key); return inner ? '<div class="s x-' + key + " t-" + (c.s[key].tone || "base") + ' fxs"><div class="w">' + inner + "</div></div>" : ""; }
 
   /* ── Header designs ────────────────────────────────────── */
   function logo(c) { return '<a class="logo" href="#home">' + t("name") + "</a>"; }
@@ -518,8 +530,8 @@ window.SITEGEN = (function () {
   function hoursRows(c) { return lines(c.s.contact.hours).map(function (l) { var p = l.split(/\s{2,}|\t|\|/); return '<div class="hr"><span>' + esc(p[0]) + "</span><span>" + esc(p.slice(1).join(" ")) + "</span></div>"; }).join(""); }
   function addr(c) { return lines(c.s.contact.address).map(esc).join("<br>"); }
   function tel(c) { return '<a href="tel:' + esc(String(c.s.contact.phone).replace(/[^\d+]/g, "")) + '">' + t("contact.phone") + "</a>"; }
-  function mail(c) { return '<a href="mailto:' + t("contact.email") + '">' + t("contact.email") + "</a>"; }
-  var CT_BASE = ".ct a{text-decoration:none}.ct a:hover{text-decoration:underline}.hr{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--sline)}.hr span:last-child{color:var(--smut);text-align:right}";
+  function mail(c) { return '<a href="mailto:' + esc(c.s.contact.email) + '">' + t("contact.email") + "</a>"; }
+  var CT_BASE = ".ct a{color:var(--bb)}.ct .lb{color:var(--bb)}.ct h2:after{content:'';display:block;width:48px;height:2px;background:var(--bb);margin-top:18px}.ct .c h2:after,.ct-4 h2:after{margin-inline:auto}.ct-10 .blk a,.ct-10 .blk .lb{color:inherit}.ct-10 .blk h2:after{background:currentColor}.ct a{text-decoration:none}.ct a:hover{text-decoration:underline}.hr{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px solid var(--sline)}.hr span:last-child{color:var(--smut);text-align:right}";
   var CONTACTS = [
     { n: "Columns", css: ".ct-1 .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,3vw,40px)}.ct-1 .cols>div{border-top:1px solid var(--sline);padding-top:16px;display:grid;gap:6px;align-content:start}.ct-1 .note{margin-top:32px}@media(max-width:760px){.ct-1 .cols{grid-template-columns:1fr 1fr}.ct-1 .cols>div:last-child{grid-column:1/-1}}",
       html: function (c) { var ct = c.s.contact; return '<div class="w pad">' + sh(c, "contact") + '<div class="cols"><div><span class="lb">Visit</span><p>' + addr(c) + '</p></div><div><span class="lb">Hours</span>' + lines(ct.hours).map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div><div><span class="lb">Contact</span><p>' + tel(c) + "</p><p>" + mail(c) + "</p></div></div>" + (ct.note ? '<p class="mut note">' + t("contact.note") + "</p>" : "") + "</div>"; } },
@@ -586,7 +598,13 @@ window.SITEGEN = (function () {
 
   function renderHeader(c) { var p = pick("header", c.s); return '<header class="s x-header hd ' + p.cls + " t-" + c.s.header.tone + '">' + p.t.html(c) + "</header>"; }
   function renderFooter(c) { var p = pick("footer", c.s); return '<footer class="s x-footer ft ' + p.cls + " t-" + c.s.footer.tone + '">' + p.t.html(c) + "</footer>"; }
-  function renderSection(c, key) { var p = pick(key, c.s); return sec(c, key, key === "hero" ? "he " + p.cls : (key === "contact" ? "ct " : key === "terms" ? "tm " : "") + p.cls, p.t.html(c)); }
+  function renderSection(c, key) {
+    var p = pick(key, c.s); FACTS_DONE = false;
+    var inner = p.t.html(c), done = FACTS_DONE;
+    var out = sec(c, key, key === "hero" ? "he " + p.cls : (key === "contact" ? "ct " : key === "terms" ? "tm " : "") + p.cls, inner);
+    if (!done && c.s[key] && c.s[key].factsOn) out += factStrip(c, key);
+    return out;
+  }
 
   /* Which CSS is needed for a given render */
   function css(s, only) {
@@ -611,7 +629,10 @@ window.SITEGEN = (function () {
     }
     var out = renderHeader(c) + "<main>";
     out += '<div class="pg" id="pg-home">' + renderSection(c, "hero") + highlights(c) + "</div>";
-    c.pages.forEach(function (p) { if (p.id !== "home") out += '<div class="pg" id="pg-' + p.id + '">' + renderSection(c, p.id) + "</div>"; });
+    c.pages.forEach(function (p) {
+      if (p.id === "home") return;
+      out += '<div class="pg" id="pg-' + p.id + '"' + (p.solo ? " data-solo" : "") + ">" + (p.solo ? '<div class="s x-' + p.id + " t-" + (s[p.id].tone || "base") + ' tback"><div class="w"><a href="#home">&larr; Back to the site</a></div></div>' : "") + renderSection(c, p.id) + "</div>";
+    });
     return out + "</main>" + renderFooter(c);
   }
   function bodyClass(s) { return (s.onePage ? "single" : "multi") + " r-" + s.theme.radius + " b-" + s.theme.btn; }
@@ -624,12 +645,12 @@ window.SITEGEN = (function () {
     function show(id, scroll) {
       if (!d.getElementById("pg-" + id)) id = "home";
       cur = id;
-      var multi = d.body.classList.contains("multi");
-      pages().forEach(function (p) { p.hidden = multi && p.id !== "pg-" + id; });
+      var multi = d.body.classList.contains("multi"), tgt = d.getElementById("pg-" + id), solo = tgt.hasAttribute("data-solo");
+      pages().forEach(function (p) { p.hidden = (multi || solo) ? p !== tgt : p.hasAttribute("data-solo"); });
       [].forEach.call(d.querySelectorAll("[data-l]"), function (a) { a.classList.toggle("on", a.getAttribute("data-l") === id); });
       [].forEach.call(d.querySelectorAll(".hd.open"), function (h) { h.classList.remove("open"); });
       if (scroll !== false) {
-        if (multi) window.scrollTo(0, 0);
+        if (multi || solo) window.scrollTo(0, 0);
         else { var t = d.getElementById("pg-" + id), hd = d.querySelector(".hd"); if (t) window.scrollTo({ top: id === "home" ? 0 : t.getBoundingClientRect().top + window.scrollY - (hd && getComputedStyle(hd).position === "sticky" ? hd.offsetHeight : 0), behavior: "smooth" }); }
       }
       if (P) try { parent.postMessage({ sitePage: id }, "*"); } catch (e) {}

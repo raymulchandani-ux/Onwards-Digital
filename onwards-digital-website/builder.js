@@ -181,6 +181,13 @@
     b.addEventListener("click", function () { set(path, !get(path)); b.classList.toggle("on", !!get(path)); b.setAttribute("aria-checked", !!get(path)); changed(true); if (onDone) onDone(!!get(path)); });
     return h("div", { class: "sw" }, [h("span", { text: label }), b]);
   }
+  function reveal(label, path, kids) {
+    var box = h("div", { class: "rv" + (get(path) ? " open" : "") }, [h("div", { class: "rv-in" }, [h("div", { class: "rv-body" }, kids)])]);
+    return h("div", { class: "grp rv-grp" }, [toggle(label, path, function (on) { box.classList.toggle("open", on); }), box]);
+  }
+  function factsBlock(key) {
+    return reveal("Show key facts", key + ".factsOn", [h("p", { class: "hint", text: "Three short facts shown as big numbers with a label, e.g. “12 — dishes on the menu”." }), factFields(key)]);
+  }
   function tones(key) {
     var names = [["base", "Page"], ["soft", "Soft"], ["ink", "Dark"], ["accent", "Accent"]];
     var box = h("div", { class: "tones" });
@@ -377,11 +384,11 @@
     var list = which === "hf" ? G.HEAD_FONTS : G.BODY_FONTS, allowSame = obj !== state.theme;
     var wrap = h("div", { class: "fp" }), btn = h("button", { type: "button", class: "fp-btn", "aria-haspopup": "listbox", "aria-expanded": "false" });
     var pop = h("div", { class: "fp-list", role: "listbox", "aria-label": label + " font", hidden: true });
-    function nameOf(i) { return i == null ? "Same as site" : list[i][0]; }
+    function nameOf(i) { return list[i == null ? state.theme[which] : i][0]; }
     function paint() {
       var i = obj[which]; btn.innerHTML = "";
       btn.appendChild(h("span", { class: "fp-l", text: label }));
-      btn.appendChild(h("span", { class: "fp-v", text: nameOf(i), style: i == null ? null : "font-family:'" + list[i][0] + "',serif" }));
+      btn.appendChild(h("span", { class: "fp-v", text: nameOf(i), style: "font-family:'" + nameOf(i) + "',serif" }));
       btn.appendChild(h("i", { class: "fp-c", "aria-hidden": "true" }));
       [].forEach.call(pop.children, function (o) { var on = String(o.getAttribute("data-i")) === String(i == null ? "" : i); o.classList.toggle("on", on); o.setAttribute("aria-selected", on); });
     }
@@ -397,7 +404,7 @@
       });
     }
     function choose(i) { obj[which] = i; paint(); close(); btn.focus(); changed(true); }
-    if (allowSame) pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o same", "data-i": "", text: "Same as the rest of the site", onclick: function () { choose(null); } }));
+    if (allowSame) pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o same", "data-i": "", onclick: function () { choose(null); } }, [h("span", { text: list[state.theme[which]][0], style: "font-family:'" + list[state.theme[which]][0] + "',serif" }), h("small", { text: "Same as the rest of the site" })]));
     list.forEach(function (f, i) { pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o", "data-i": i, text: f[0], style: "font-family:'" + f[0] + "',serif", onclick: function () { choose(i); } })); });
     btn.addEventListener("click", function () { pop.hidden ? openIt() : close(); });
     pop.addEventListener("keydown", function (e) {
@@ -447,28 +454,28 @@
         return { tabs: lookTabs("hero", true).concat([
           ["Words", function () { return [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
             h("div", { class: "cols2" }, [text("Main button", "hero.cta", { max: 28 }), text("Second button", "hero.cta2", { max: 28 })]),
-            group("Three highlights", [toggle("Show highlights", "hero.hlOn"), hlFields()])]; }],
+            reveal("Show three highlights under the top section", "hero.hlOn", [hlFields()]), factsBlock("hero")]; }],
           ["Photos", function () { return [photo("Main photo", "hero"), photo("Extra photo 1", "x1", "Used by some designs"), photo("Extra photo 2", "x2", "Used by some designs")]; }]
         ]) };
       } },
     { id: "about", need: "about", title: function () { return "About"; }, sum: function () { return G.SECTIONS.about[state.about.v].n + " design"; }, page: "about",
       build: function () {
         return { tabs: lookTabs("about", true).concat([
-          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), group("Key facts", [h("p", { class: "hint", text: "Three short facts shown as big numbers with a label, e.g. “12 — dishes on the menu”. Some About designs show them. Clear all three to hide them." }), factFields()])]; }],
+          ["Words", function () { return [text("Heading", "about.title", { area: true, rows: 2, max: 90 }), text("Your story", "about.text", { area: true, rows: 6, max: 1200 }), h("p", { class: "hint", text: "Leave a blank line to start a new paragraph." }), factsBlock("about")]; }],
           ["Photos", function () { return [photo("Main photo", "about"), photo("Second photo", "x1", "Used by some designs")]; }]
         ]) };
       } },
     { id: "services", need: "services", title: function () { return state.services.label || "Services"; }, sum: function () { return G.SECTIONS.services[state.services.v].n + " · " + state.services.items.length + " items"; }, page: "services",
       build: function () {
         return { tabs: lookTabs("services", true, [photo("Side photo", "x1", "Used by the With photo design")]).concat([
-          ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "services.label", { max: 16 }), text("Heading", "services.title", { max: 60 })]), text("Intro", "services.intro", { area: true, rows: 2, max: 200 })]; }],
+          ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "services.label", { max: 16 }), text("Heading", "services.title", { max: 60 })]), text("Intro", "services.intro", { area: true, rows: 2, max: 200 }), factsBlock("services")]; }],
           ["Items & prices", function () { return [itemsEditor()]; }]
         ]) };
       } },
     { id: "gallery", need: "gallery", title: function () { return "Gallery"; }, sum: function () { return G.SECTIONS.gallery[state.gallery.v].n + " design"; }, page: "gallery",
       build: function () {
         return { tabs: lookTabs("gallery", true).concat([
-          ["Photos", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "gallery.label", { max: 16 }), text("Heading", "gallery.title", { max: 60 })]), photoGrid(), h("p", { class: "hint", text: "Tap any photo to replace it with your own." })]; }]
+          ["Photos", function () { return [h("div", { class: "cols2" }, [text("Name in menu", "gallery.label", { max: 16 }), text("Heading", "gallery.title", { max: 60 })]), photoGrid(), h("p", { class: "hint", text: "Tap any photo to replace it with your own." }), factsBlock("gallery")]; }]
         ]) };
       } },
     { id: "booking", need: "booking", title: function () { return "Booking system"; }, sum: function () { return G.SECTIONS.booking[state.booking.v].n + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[state.booking.kind]; }, page: "booking",
@@ -477,7 +484,7 @@
           ["Words & options", function () { return [group("What people book", [seg("booking.kind", [["table", "A table"], ["appointment", "Appointment"], ["enquiry", "Enquiry"]])]),
             h("div", { class: "cols2" }, [text("Name in menu", "booking.label", { max: 16 }), text("Button", "booking.button", { max: 28 })]), text("Heading", "booking.title", { max: 60 }), text("Intro", "booking.intro", { area: true, rows: 2, max: 200 }),
             text("Choices, separated by commas", "booking.options", { max: 200 }), h("p", { class: "hint", text: "Shown as buttons, e.g. the service or occasion." }),
-            text("Times people can pick, separated by commas", "booking.times", { max: 300, ph: state.booking.kind === "table" ? "5:30pm, 6:00pm, 6:30pm…" : "9:00am, 10:00am, 11:00am…" }), h("p", { class: "hint", text: "Leave empty to use our usual times. Every design has a full calendar, so people can pick any future date." })]; }],
+            text("Times people can pick, separated by commas", "booking.times", { max: 300, ph: state.booking.kind === "table" ? "5:30pm, 6:00pm, 6:30pm…" : "9:00am, 10:00am, 11:00am…" }), h("p", { class: "hint", text: "Leave empty to use our usual times. Every design has a full calendar, so people can pick any future date." }), factsBlock("booking")]; }],
           ["Requests", function () { return destBlock(); }]
         ]) };
       } },
@@ -488,7 +495,7 @@
         tabs.push(["Your details", function () { return [text("Address", "contact.address", { area: true, rows: 2, max: 160 }), text("Opening hours", "contact.hours", { area: true, rows: 4, max: 300 }), h("p", { class: "hint", text: "One line per day or group of days." }),
           h("div", { class: "cols2" }, [text("Phone", "contact.phone", { max: 30 }), text("Email shown on your site", "contact.email", { max: 80, type: "email" })]),
           state.pages.contact ? text("Heading", "contact.title", { max: 60 }) : null, text("A short note", "contact.note", { area: true, rows: 2, max: 200 }),
-          state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null]; }]);
+          state.pages.contact ? photo("Photo", "x2", "Used by the With photo design") : null, state.pages.contact ? factsBlock("contact") : null]; }]);
         tabs.push(["Footer", function () { return [layouts("footer"), toggle("Show “Site by Onwards Digital”", "credit")]; }]);
         tabs.push(["Footer style", function () { return styleBlock("footer", false); }]);
         return { tabs: tabs };
@@ -496,7 +503,9 @@
     { id: "terms", need: "terms", title: function () { return "Terms of service"; }, sum: function () { return G.SECTIONS.terms[state.terms.v].n + " design"; }, page: "terms",
       build: function () {
         return { tabs: lookTabs("terms", true).concat([
-          ["Words", function () { return [h("div", { class: "cols2" }, [text("Heading", "terms.title", { max: 60 }), text("Name in footer", "terms.label", { max: 20 })]), text("Date line", "terms.updated", { max: 60 }),
+          ["Words", function () { return [group("Where it goes", [seg("terms.place", [["footer", "Link in the footer"], ["section", "Its own section"]], function () { setTimeout(function () { goPage("terms"); }, 60); }),
+              h("p", { class: "hint", text: "“Link in the footer” keeps it off your main pages: clicking the link opens the terms on a page of their own." })]),
+            h("div", { class: "cols2" }, [text("Heading", "terms.title", { max: 60 }), text("Name in menu and footer", "terms.label", { max: 20 })]), text("Date line", "terms.updated", { max: 60 }),
             text("Your terms", "terms.text", { area: true, rows: 16, max: 8000 }),
             h("p", { class: "hint", text: "Start each part with a short heading on its own line and the text underneath. Leave a blank line between parts." }),
             h("p", { class: "hint note", text: "This is a starting point, not legal advice. Change it to match how your business works." })]; }]
@@ -525,14 +534,13 @@
     });
     return box;
   }
-  function factFields() {
+  function factFields(key) {
     var box = h("div", { class: "facts3" });
-    state.about.facts.forEach(function (x, i) {
-      var v = h("input", { class: "fi", "data-path": "about.facts." + i + ".0", value: x[0], maxlength: 10, "aria-label": "Number " + (i + 1) });
-      var l = h("input", { class: "fi", "data-path": "about.facts." + i + ".1", value: x[1], maxlength: 30, "aria-label": "Label " + (i + 1) });
-      v.addEventListener("input", function () { state.about.facts[i][0] = v.value; changed(); });
-      l.addEventListener("input", function () { state.about.facts[i][1] = l.value; changed(); });
-      v.setAttribute("placeholder", "12"); l.setAttribute("placeholder", "dishes on the menu");
+    state[key].facts.forEach(function (x, i) {
+      var v = h("input", { class: "fi", "data-path": key + ".facts." + i + ".0", value: x[0], maxlength: 10, placeholder: "12", "aria-label": "Fact " + (i + 1) + " number" });
+      var l = h("input", { class: "fi", "data-path": key + ".facts." + i + ".1", value: x[1], maxlength: 30, placeholder: "dishes on the menu", "aria-label": "Fact " + (i + 1) + " label" });
+      v.addEventListener("input", function () { state[key].facts[i][0] = v.value; changed(); });
+      l.addEventListener("input", function () { state[key].facts[i][1] = l.value; changed(); });
       box.appendChild(h("div", { class: "fact-row" }, [v, l]));
     });
     return box;
