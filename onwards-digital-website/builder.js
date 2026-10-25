@@ -26,6 +26,7 @@
         ["hero", "x1", "x2", "about"].forEach(function (k) { if (/^blob:/.test(im[k])) im[k] = p.img[k]; });
         im.g = (im.g || []).map(function (u, i) { return /^blob:/.test(u) ? p.img.g[i] : u; });
       });
+      (c.layout || []).forEach(function (e) { var o = c[e.k]; if (o && o.items && G.typeOf(c, e.k) === "shop") o.items.forEach(function (x, i) { if (/^blob:/.test(x.img)) x.img = PROD_FALLBACK[i % PROD_FALLBACK.length] || ""; }); });
       localStorage.setItem(LS, JSON.stringify(c));
     } catch (e) {}
   }
@@ -115,8 +116,11 @@
   /* Page tabs above the preview */
   var tabs = $(".pv-tabs", root);
   function paintTabs() {
-    var pages = G.ctx(state).pages;
-    if (!pages.some(function (p) { return p.id === page; })) page = "home";
+    var all = G.ctx(state).pages;
+    if (!all.some(function (p) { return p.id === page; })) page = "home";
+    var prods = all.filter(function (p) { return p.type === "product"; }), oneProd = prods.filter(function (p) { return p.id === page; })[0] || prods[0];
+    var pages = all.filter(function (p) { if (p.type === "product") return p === oneProd; return !p.hidden || p.type === "cart" || p.type === "checkout"; })
+      .map(function (p) { return p.type === "product" ? { id: p.id, label: "Product" } : p; });
     tabs.innerHTML = "";
     pages.forEach(function (p) {
       tabs.appendChild(h("button", { type: "button", class: p.id === page ? "on" : "", text: p.label, onclick: function () { goPage(p.id); } }));
@@ -147,7 +151,7 @@
     var t = state.theme;
     t.pal = rnd(G.PALETTES.length); t.custom = null; t.hf = rnd(G.HEAD_FONTS.length); t.bf = rnd(G.BODY_FONTS.length);
     t.radius = any(["square", "soft", "round"]); t.btn = any(["solid", "solid", "outline", "text"]);
-    ["header", "hero", "footer"].concat(state.layout.map(function (e) { return e.k; })).forEach(function (k) { state[k].v = rnd(G.SECTIONS[G.typeOf(state, k)].length); });
+    ["header", "hero", "footer", "product", "cart", "checkout"].concat(state.layout.map(function (e) { return e.k; })).forEach(function (k) { state[k].v = rnd(G.SECTIONS[G.typeOf(state, k)].length); });
     state.header.tone = any(["base", "base", "soft", "ink"]); state.hero.tone = any(["base", "soft", "ink"]);
     state.about.tone = any(["soft", "base", "accent"]); state.services.tone = any(["base", "soft"]);
     state.gallery.tone = any(["base", "soft", "ink"]); state.booking.tone = any(["ink", "soft", "accent", "base"]);
@@ -302,7 +306,7 @@
     var box = h("div", { class: "lays" });
     list.forEach(function (t, i) {
       var fr = h("iframe", { tabindex: "-1", "aria-hidden": "true", title: t.n, loading: "lazy" });
-      var b = h("button", { type: "button", class: "lay" + (state[sec].v === i ? " on" : ""), "aria-label": t.n + " design", "aria-pressed": state[sec].v === i ? "true" : "false" }, [h("span", { class: "lay-box" }, [fr]), h("span", { class: "lay-n", text: t.n })]);
+      var b = h("button", { type: "button", class: "lay" + (state[sec].v === i ? " on" : ""), "aria-label": t.n + " design", "aria-pressed": state[sec].v === i ? "true" : "false" }, [h("span", { class: "lay-box" }, [fr]), h("span", { class: "lay-n", text: t.n }), t.d ? h("span", { class: "lay-d", text: t.d }) : null]);
       b.addEventListener("click", function () { state[sec].v = i; [].forEach.call(box.children, function (x, j) { x.classList.toggle("on", j === i); x.setAttribute("aria-pressed", j === i); }); changed(true); });
       box.appendChild(b); frames.push(fr);
     });
@@ -450,13 +454,127 @@
   }
   document.addEventListener("click", function (e) { document.querySelectorAll(".fp.open").forEach(function (x) { if (!x.contains(e.target) && x._close) x._close(); }); });
 
+  /* A dropdown in our own style for choosing from a list (button destinations) */
+  function choice(label, optsFn, getV, setV) {
+    var wrap = h("div", { class: "fp ch" }), btn = h("button", { type: "button", class: "fp-btn", "aria-haspopup": "listbox", "aria-expanded": "false" });
+    var pop = h("div", { class: "fp-list", role: "listbox", "aria-label": label, hidden: true });
+    function now() { var v = getV(), o = optsFn(); for (var i = 0; i < o.length; i++) if (o[i].v === v) return o[i]; return o[0]; }
+    function paint() { var c = now(); btn.innerHTML = ""; btn.appendChild(h("span", { class: "fp-l", text: label })); btn.appendChild(h("span", { class: "fp-v", text: c.label + (c.sub ? " · " + c.sub : "") })); btn.appendChild(h("i", { class: "fp-c", "aria-hidden": "true" })); }
+    function close() { pop.hidden = true; wrap.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }
+    function openIt() {
+      document.querySelectorAll(".fp.open").forEach(function (x) { if (x !== wrap && x._close) x._close(); });
+      pop.innerHTML = ""; var cv = getV();
+      optsFn().forEach(function (o) {
+        pop.appendChild(h("button", { type: "button", role: "option", class: "fp-o" + (o.v === cv ? " on" : ""), "aria-selected": o.v === cv ? "true" : "false", onclick: function () { setV(o.v); paint(); close(); btn.focus(); } },
+          [h("span", { text: o.label }), o.sub ? h("small", { text: o.sub }) : null]));
+      });
+      pop.hidden = false; wrap.classList.add("open"); btn.setAttribute("aria-expanded", "true");
+      var sel = pop.querySelector(".on") || pop.firstChild; sel.focus({ preventScroll: true });
+      requestAnimationFrame(function () {
+        var L = wrap.closest(".bl-panels"), r = pop.getBoundingClientRect();
+        if (L && L.scrollHeight > L.clientHeight + 4) { var lr = L.getBoundingClientRect(); if (r.bottom > lr.bottom) L.scrollBy({ top: r.bottom - lr.bottom + 16, behavior: "smooth" }); }
+        else if (r.bottom > window.innerHeight) window.scrollBy({ top: r.bottom - window.innerHeight + 90, behavior: "smooth" });
+      });
+    }
+    btn.addEventListener("click", function () { pop.hidden ? openIt() : close(); });
+    pop.addEventListener("keydown", function (e) {
+      var items = [].slice.call(pop.children), k = items.indexOf(document.activeElement);
+      if (e.key === "ArrowDown") { e.preventDefault(); (items[k + 1] || items[k]).focus(); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); (items[k - 1] || items[k]).focus(); }
+      else if (e.key === "Escape") { e.preventDefault(); close(); btn.focus(); }
+    });
+    wrap._close = close; wrap._paint = paint; painters.push(paint);
+    wrap.appendChild(btn); wrap.appendChild(pop); paint();
+    return wrap;
+  }
+  /* A homepage button: its words, and where it goes (any page, the bag, or a web address) */
+  function buttonLink(which, label) {
+    var hero = state.hero;
+    function pageName(id) { var p = G.ctx(state).pages.filter(function (x) { return x.id === id; })[0]; return p ? (p.type === "cart" ? (state.cart.label || "Bag") : p.label) : ""; }
+    function autoTo() { var c = G.ctx(state); return which === "cta" ? c.target : (c.first("services") || c.first("shop") || c.first("gallery") || c.first("about")); }
+    function opts() {
+      var c = G.ctx(state), o = [{ v: null, label: "Automatic", sub: autoTo() ? pageName(autoTo()) : "hidden" }];
+      c.pages.forEach(function (p) { if (!p.hidden || p.type === "cart" || p.type === "checkout") o.push({ v: p.id, label: p.type === "cart" ? (state.cart.label || "Bag") : p.label }); });
+      o.push({ v: "url", label: "A web address", sub: "Instagram, an app, anything" });
+      return o;
+    }
+    var urlBox = h("div", { class: "rv" + (hero[which + "To"] === "url" ? " open" : "") }, [h("div", { class: "rv-in" }, [h("div", { class: "rv-body" }, [text("Web address", "hero." + which + "Url", { max: 300, ph: "e.g. instagram.com/yourbrand" }), h("p", { class: "hint", text: "Opens in a new tab on your finished site." })])])]);
+    var pick = choice("Goes to", opts, function () { return hero[which + "To"] || null; }, function (v) { hero[which + "To"] = v; urlBox.classList.toggle("open", v === "url"); changed(true); });
+    return h("div", { class: "btnlink" }, [text(label, "hero." + which, { max: 28 }), pick, urlBox]);
+  }
+
+  /* Products: photo, name and price on one line; description and sizes fold away */
+  var PROD_FALLBACK = (G.PRESETS.store.shop.items || []).map(function (x) { return x[4]; });
+  function productsEditor(k) {
+    var box = h("div", { class: "prods" }), o = state[k];
+    function nextId() { var n = 0; o.items.forEach(function (x) { var m = /^p(\d+)$/.exec(x.id || ""); if (m) n = Math.max(n, +m[1]); }); return "p" + (n + 1); }
+    function draw() {
+      box.innerHTML = "";
+      o.items.forEach(function (x, i) {
+        if (!x.id) x.id = nextId();
+        var im = h("img", { src: x.img || "", alt: "" }), file = h("input", { type: "file", accept: "image/*", class: "sr" });
+        file.addEventListener("change", function () {
+          var f = file.files && file.files[0]; if (!f) return;
+          shrink(f).then(function (b) { var u = URL.createObjectURL(b); blobs[u] = b; x.img = u; im.src = u; changed(true); }, function () { alert("That file couldn't be read as a photo. Try a JPG or PNG."); });
+          file.value = "";
+        });
+        var n = h("input", { class: "fi", "data-path": k + ".items." + i + ".n", value: x.n, placeholder: "Product name", maxlength: 60, "aria-label": "Product name" });
+        var pr = h("input", { class: "fi", "data-path": k + ".items." + i + ".p", value: x.p, placeholder: "0", maxlength: 12, inputmode: "decimal", "aria-label": "Price" });
+        n.addEventListener("input", function () { x.n = n.value; changed(); });
+        pr.addEventListener("input", function () { x.p = pr.value; changed(); });
+        var det = h("div", { class: "rv" }, [h("div", { class: "rv-in" }, [h("div", { class: "rv-body" }, [
+          text("Description", k + ".items." + i + ".d", { area: true, rows: 3, max: 400 }),
+          text("Sizes or options, separated by commas", k + ".items." + i + ".sizes", { max: 120, ph: "S, M, L, XL" }),
+          h("p", { class: "hint", text: "Leave sizes empty if there's only one." })])])]);
+        var more = h("button", { type: "button", class: "btn-text cap pr-more", text: "Details", "aria-expanded": "false" });
+        more.addEventListener("click", function () { var op = !det.classList.contains("open"); det.classList.toggle("open", op); more.setAttribute("aria-expanded", op); });
+        var rm = h("button", { type: "button", class: "x", "aria-label": "Remove " + (x.n || "product"), html: "&times;", onclick: function () { o.items.splice(i, 1); draw(); changed(true); } });
+        box.appendChild(h("div", { class: "pr" }, [
+          h("label", { class: "pr-img", title: "Change photo" }, [im, h("span", { text: "Change" }), file]),
+          h("div", { class: "pr-f" }, [n, h("div", { class: "pr-row" }, [h("label", { class: "pr-pr" }, [h("span", { class: "pr-cur", text: state.store.cur || "$" }), pr]), more])]),
+          rm, det]));
+      });
+      var lim = +((/\d+/.exec(G.SECTIONS.shop[o.v | 0].d || "") || [])[0] || 99), shown = o.items.filter(function (x) { return x.n; }).length;
+      if (shown > lim) box.appendChild(h("p", { class: "hint note pr-lim", text: "Your “" + G.SECTIONS.shop[o.v | 0].n + "” design shows the first " + lim + ". To show all " + shown + ", pick “Many small” under Design, or add a second Shop section." }));
+      if (o.items.length < 24) box.appendChild(h("button", { type: "button", class: "btn-text cap add", text: "Add a product", onclick: function () {
+        o.items.push({ id: nextId(), n: "New product", p: "40", d: "", sizes: "", img: PROD_FALLBACK[o.items.length % PROD_FALLBACK.length] || "" });
+        draw(); changed(true); var f = box.querySelectorAll(".pr"); if (f.length) { var inp = f[f.length - 1].querySelector(".pr-f input"); inp.focus(); inp.select(); }
+      } }));
+    }
+    draw();
+    return box;
+  }
+  function payBlock() {
+    var linksHint = h("p", { class: "hint", text: "Switch on the ways you take payment and paste the link from your own account. Customers are sent to that link to pay; PayPal.me links get the order total filled in." });
+    var listEl = h("div", { class: "grp paylist" }, G.PAY_METHODS.map(function (m) {
+      var path = "store.pay." + m[0];
+      var field = m[3] === "url" ? [text("Payment link", path + ".url", { max: 300, ph: m[4] })]
+        : m[3] === "text" ? [text("Bank details shown after ordering", path + ".text", { area: true, rows: 3, max: 400, ph: m[4] })]
+        : [h("p", { class: "hint", text: "Customers place the order and pay when it arrives." })];
+      return reveal(m[1], path + ".on", field);
+    }));
+    var ownNote = h("p", { class: "hint", text: "Your checkout page stays on your site with a “Place order” button. Add your own payment methods to it later, or take payment after each order comes in." });
+    function paint() { var own = state.store.payMode === "own"; listEl.hidden = own; linksHint.hidden = own; ownNote.hidden = !own; }
+    paint();
+    return [group("How customers pay", [seg("store.payMode", [["buttons", "Payment buttons"], ["own", "I’ll add my own"]], paint)]), linksHint, listEl, ownNote,
+      h("p", { class: "hint note", text: "Onwards Digital never handles your payments or orders. Money goes straight to your own accounts." })];
+  }
+  function ordersBlock() {
+    var mail = h("div", { class: "grp" }, [text("Send each order to this email", "contact.email", { max: 80, type: "email" }), h("p", { class: "hint", text: "Orders are emailed to you through FormSubmit, a free form service. The first one asks you to confirm the address." })]);
+    var mine = h("p", { class: "hint", text: "Orders won't be emailed anywhere until you connect your own order system." });
+    function paint() { var own = state.store.orders === "own"; mail.hidden = own; mine.hidden = !own; }
+    paint();
+    return [group("Where should orders go?", [seg("store.orders", [["email", "To my email"], ["own", "I’ll set this up myself"]], paint)]), mail, mine,
+      h("div", { class: "cols2" }, [text("Currency symbol", "store.cur", { max: 4 }), text("Shipping note", "store.ship", { max: 160 })])];
+  }
+
   /* Names used for sections in the list and on the dropdowns */
   function rowName(k) {
     var ty = G.typeOf(state, k);
     if (k !== ty) return state[k].label || G.DEF_LABEL[ty];
-    return { about: "About", services: state.services.label || "Services", gallery: "Gallery", booking: "Booking system", contact: "Contact", terms: "Terms of service" }[ty];
+    return { about: "About", services: state.services.label || "Services", shop: state.shop.label || "Shop", gallery: "Gallery", booking: "Booking system", contact: "Contact", terms: "Terms of service" }[ty];
   }
-  var ADD_NAME = { about: "Text & photo", services: function () { return state.services.label || "Services"; }, gallery: "Gallery", booking: "Booking system" };
+  var ADD_NAME = { about: "Text & photo", services: function () { return state.services.label || "Services"; }, shop: "Shop (products)", gallery: "Gallery", booking: "Booking system" };
   var GRIP = '<svg viewBox="0 0 10 16" width="10" height="16" aria-hidden="true"><circle cx="2" cy="3" r="1.3"/><circle cx="8" cy="3" r="1.3"/><circle cx="2" cy="8" r="1.3"/><circle cx="8" cy="8" r="1.3"/><circle cx="2" cy="13" r="1.3"/><circle cx="8" cy="13" r="1.3"/></svg>';
 
   /* "What's on your site": drag to reorder, switch on or off, + to add another */
@@ -549,7 +667,7 @@
 
   /* Every part of the site has a dropdown. Sections in the list get one each, in the list's order. */
   var STATIC = {
-    start: { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
+    start: { id: "start", title: function () { return "Your business"; }, sum: function () { var n = G.ctx(state).pages.filter(function (x) { return !x.hidden; }).length; return state.name + " · " + n + (state.onePage ? " sections on one page" : " pages"); }, page: "home",
       build: function () {
         var types = h("div", { class: "chips" });
         Object.keys(G.PRESETS).forEach(function (k) {
@@ -584,11 +702,21 @@
       build: function () {
         return { tabs: lookTabs("hero", true).concat([
           ["Words", function () { return [text("Small line above", "hero.kick", { max: 60 }), text("Headline", "hero.title", { area: true, rows: 2, max: 90 }), text("Paragraph", "hero.text", { area: true, rows: 3, max: 240 }),
-            h("div", { class: "cols2" }, [text("Main button", "hero.cta", { max: 28 }), text("Second button", "hero.cta2", { max: 28 })]),
+            group("Buttons", [buttonLink("cta", "Main button"), buttonLink("cta2", "Second button"), h("p", { class: "hint", text: "Leave a button's words empty to hide it." })]),
             reveal("Show three highlights under the top section", "hero.hlOn", [hlFields()]), factsBlock("hero")]; }],
           ["Photos", function () { return [photo("Main photo", "hero"), photo("Extra photo 1", "x1", "Used by some designs"), photo("Extra photo 2", "x2", "Used by some designs")]; }]
         ]) };
       } },
+    product: { id: "product", title: function () { return "Product page"; }, sum: function () { return G.SECTIONS.product[state.product.v].n + " design"; }, page: "@product",
+      build: function () { return { tabs: [["Design", function () { return [layouts("product"), h("p", { class: "hint", text: "Every product uses this page, filled with its own photo, name, price and sizes." })]; }], ["Style", function () { return styleBlock("product", true); }],
+        ["Words", function () { return [h("div", { class: "cols2" }, [text("Button", "product.add", { max: 28 }), text("Size label", "product.sizeLabel", { max: 20 })]), h("div", { class: "cols2" }, [text("Message after adding", "product.added", { max: 80 }), text("Link to the bag", "product.view", { max: 24 })]), text("Small print under the button", "product.note", { area: true, rows: 2, max: 200 })]; }]] }; } },
+    cart: { id: "cart", title: function () { return state.cart.label || "Bag"; }, sum: function () { return G.SECTIONS.cart[state.cart.v].n + " design"; }, page: "cart",
+      build: function () { return { tabs: [["Design", function () { return [layouts("cart")]; }], ["Style", function () { return styleBlock("cart", true); }],
+        ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in header", "cart.label", { max: 16 }), text("Heading", "cart.title", { max: 40 })]), text("When it's empty", "cart.empty", { max: 80 }), h("div", { class: "cols2" }, [text("Keep shopping button", "cart.cont", { max: 28 }), text("Checkout button", "cart.go", { max: 28 })])]; }]] }; } },
+    checkout: { id: "checkout", title: function () { return "Checkout & payments"; }, sum: function () { var on = G.PAY_METHODS.filter(function (m) { return (state.store.pay[m[0]] || {}).on; }).length; return G.SECTIONS.checkout[state.checkout.v].n + " · " + (state.store.payMode === "own" ? "your own payments" : on + " payment option" + (on === 1 ? "" : "s")); }, page: "checkout",
+      build: function () { return { tabs: [["Design", function () { return [layouts("checkout")]; }], ["Payments", function () { return payBlock(); }], ["Orders", function () { return ordersBlock(); }], ["Style", function () { return styleBlock("checkout", true); }],
+        ["Words", function () { return [text("Heading", "checkout.title", { max: 40 }), h("div", { class: "cols2" }, [text("Details heading", "checkout.detailsTitle", { max: 30 }), text("Order heading", "checkout.sumTitle", { max: 30 })]), h("div", { class: "cols2" }, [text("Payment heading", "checkout.payTitle", { max: 30 }), text("Place order button", "checkout.place", { max: 28 })]),
+          text("Thank-you message", "checkout.done", { area: true, rows: 2, max: 200 }), text("Thank-you message when you take payment yourself", "checkout.ownDone", { area: true, rows: 2, max: 200 }), text("Text above “Place order”", "checkout.ownText", { area: true, rows: 2, max: 200 })]; }]] }; } },
     footer: { id: "footer", title: function () { return "Footer"; }, sum: function () { return G.SECTIONS.footer[state.footer.v].n + " design"; }, page: "home", where: "bottom",
       build: function () { return { tabs: [["Design", function () { return [layouts("footer"), h("p", { class: "hint", text: "Click any words in the footer on the left to change them." })]; }], ["Style", function () { return styleBlock("footer", false); }]] }; } }
   };
@@ -604,6 +732,12 @@
       return lookTabs(k, true, [photo("Side photo", "x1", "Used by the With photo design", k)]).concat([
         ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Heading", k + ".title", { max: 60 })]), text("Intro", k + ".intro", { area: true, rows: 2, max: 200 }), factsBlock(k)]; }],
         ["Items & prices", function () { return [itemsEditor(k)]; }]
+      ]);
+    },
+    shop: function (k) {
+      return lookTabs(k, true).concat([
+        ["Products", function () { return [h("p", { class: "hint", text: "Name, price and photo for each product. Click a product on your site to see its own page." }), productsEditor(k)]; }],
+        ["Words", function () { return [h("div", { class: "cols2" }, [text("Name in menu", k + ".label", { max: 16 }), text("Heading", k + ".title", { max: 60 })]), text("Intro", k + ".intro", { area: true, rows: 2, max: 200 }), factsBlock(k)]; }]
       ]);
     },
     gallery: function (k) {
@@ -643,6 +777,7 @@
   function secSum(k) {
     var ty = G.typeOf(state, k), o = state[k], d = G.SECTIONS[ty][o.v | 0].n;
     if (ty === "services") return d + " · " + (o.items || []).length + " items";
+    if (ty === "shop") return d + " · " + (o.items || []).filter(function (x) { return x.n; }).length + " products";
     if (ty === "booking") return d + " · " + { table: "tables", appointment: "appointments", enquiry: "enquiries" }[o.kind];
     if (ty === "contact") return G.isOn(state, "contact") ? d + " design" : "Address, hours, phone and email";
     return d + " design";
@@ -717,7 +852,9 @@
   }
   function visible() {
     var ids = ["start", "theme", "header", "hero"];
-    state.layout.forEach(function (e) { if (e.on && state[e.k]) ids.push(e.k); });
+    var lastShop = -1;
+    state.layout.forEach(function (e) { if (e.on && state[e.k]) { ids.push(e.k); if (G.typeOf(state, e.k) === "shop") lastShop = ids.length; } });
+    if (lastShop > 0) ids.splice(lastShop, 0, "product", "cart", "checkout");
     if (!G.isOn(state, "contact")) ids.push("contact");
     if (state.footerOn) ids.push("footer");
     return ids.map(panelFor);
@@ -782,7 +919,7 @@
     if (instant) { n.node.classList.add("noanim", "open"); requestAnimationFrame(function () { n.node.classList.remove("noanim"); }); }
     else requestAnimationFrame(function () { n.node.classList.add("open"); });
     clearTimeout(n.st); n.st = setTimeout(function () { if (open === id) n.node.classList.add("settled"); }, instant ? 0 : 400);
-    if (n.p.page) { var pg = n.p.page === "home" || G.isOn(state, n.p.page) ? n.p.page : "home"; goPage(pg, n.p.where || (pg === "home" && n.p.page !== "home" ? "bottom" : null)); }
+    if (n.p.page) { var cx = G.ctx(state), pg = n.p.page === "@product" ? ((cx.pages.filter(function (x) { return x.type === "product"; })[0] || {}).id || "home") : n.p.page; if (pg !== "home" && !cx.has(pg)) pg = "home"; goPage(pg, n.p.where || (pg === "home" && n.p.page !== "home" ? "bottom" : null)); }
     if (!instant) setTimeout(function () {
       if (open !== id) return;
       if (list.scrollHeight > list.clientHeight + 4) list.scrollTo({ top: n.node.offsetTop, behavior: "smooth" });
@@ -829,6 +966,7 @@
       ["hero", "x1", "x2", "about"].forEach(function (k) { swap(function () { return im[k]; }, function (d) { im[k] = d; }); });
       (im.g || []).forEach(function (u, i) { swap(function () { return u; }, function (d) { im.g[i] = d; }); });
     });
+    (s.layout || []).forEach(function (e) { var o = s[e.k]; if (o && o.items && G.typeOf(s, e.k) === "shop") o.items.forEach(function (x) { swap(function () { return x.img; }, function (d) { x.img = d; }); }); });
     return Promise.all(jobs).then(function () { return G.doc(s); });
   }
   function summary() {
@@ -838,6 +976,7 @@
       "Colours: " + (t.custom ? "custom " + t.custom.bg + " / " + t.custom.fg + " / " + t.custom.ac : G.PALETTES[t.pal].n),
       "Fonts: " + G.HEAD_FONTS[t.hf][0] + " + " + G.BODY_FONTS[t.bf][0] + ", text " + t.size + "%, headings " + t.hscale + "%",
       "Corners: " + t.radius + ", buttons: " + t.btn,
+      G.ctx(state).has("cart") ? "Store: " + state.layout.filter(function (e) { return e.on && G.typeOf(state, e.k) === "shop"; }).map(function (e) { return state[e.k].items.length + " products"; }).join(" + ") + "; payments: " + (state.store.payMode === "own" ? "customer adds their own" : G.PAY_METHODS.filter(function (m) { return (state.store.pay[m[0]] || {}).on; }).map(function (m) { return m[1] + ((state.store.pay[m[0]].url || state.store.pay[m[0]].text) ? "" : " (no link yet)"); }).join(", ")) + "; orders " + (state.store.orders === "own" ? "set up by customer" : "to " + state.contact.email) : "Store: none",
       "Designs: " + ["header", "hero"].concat(state.layout.filter(function (e) { return e.on; }).map(function (e) { return e.k; }), state.footerOn ? ["footer"] : []).map(function (k) { return k + " " + G.SECTIONS[G.typeOf(state, k)][state[k].v].n; }).join(" · ") + (state.footerOn ? "" : " · no footer")
     ].join("\n");
   }

@@ -33,7 +33,7 @@ The dropdown is the boxed pricing-section style only (the old utility-bar versio
 
 - GitHub repo **raymulchandani-ux/Onwards-Digital**, folder **`onwards-digital-website/`**, deployed by Vercel. The site is **flat** — every file in one folder, no subfolders.
 - Ray deploys by dragging the unzipped folder into GitHub's web upload. **Every delivery must be a zip containing the single `onwards-digital-website` folder with ALL previous changes included** (never a partial set of files), **always named exactly `onwards-digital-website.zip`** (no date or version suffix). Keep the updated CLAUDE.md inside the folder.
-- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20261024a`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
+- Cache-busting: every HTML file loads `site.css?v=…`, `config.js?v=…`, `site.js?v=…`. **Bump the `v=` value in all HTML files on every change** (`sed -i 's/v=OLD/v=NEW/g' *.html`). **Current value: `v=20261024c`.** (`builder.css`, `sitegen.js` and `builder.js` carry the same `v=`.)
 - Fonts load from Google Fonts. Photos are Unsplash CDN URLs (`images.unsplash.com/photo-<id>?auto=format&fit=crop&w=…&q=…`) with `onerror="this.remove()"` fallbacks on the homepage tiles.
 
 ### Files
@@ -143,7 +143,19 @@ Five tiles: Restaurants (Ossobello), Cafés & bakeries (Hollowmere), Salons & st
 
 ---
 
-## 8. Change log — ready-made builder, 24 Sept – 24 Oct 2026 (now `v=20261024a`)
+## 8. Change log — ready-made builder, 24 Sept – 24 Oct 2026 (now `v=20261024c`)
+
+**24 Oct 2026, second round (`v=20261024c`) — online stores**
+1. "Pages: Up to 6" → **Unlimited**. Headers fold their links into the menu button whenever they don't fit (`crowd()` in the runtime adds `.hd.crowded`), so any number of sections works.
+2. **Homepage buttons**: words plus "Goes to" — Automatic, any page, the bag/checkout, or a web address (opens in a new tab; `safeUrl()` allows http(s)/mailto/tel only). Stored as `hero.ctaTo/cta2To` (`null` = automatic, page id, or `"url"`) + `hero.ctaUrl/cta2Url`. The header button follows the main button. A button with empty words is hidden.
+3. **Online store** preset ("Line & Thread", clothing, 8 products, Unsplash product photos) next to Restaurant/Salon; also "+ Add a section → Shop (products)" on any site. Turning the store preset on switches Shop on and Booking/Sizes off (and back when leaving it).
+   - Shop section: 8 grid designs (Four across 4, Grid of eight 8, Three large 6, Two up 4, Many small 24, Featured 5, Side heading 6, Strip 12). Products tab: photo, name, price, and folded Description + Sizes; up to 24; a note appears when the chosen design shows fewer than you have.
+   - Every product gets its own page (`#p-<shopKey>-<id>`, solo page with "← Back to Shop"): 4 designs, size chips (required if any), quantity, Add to bag, "Added… View bag".
+   - **Bag** (`#cart`, 3 designs) and header bag link with live count; quantity +/−, remove, subtotal/total, shipping note. The bag is stored in the customer's browser (`localStorage` "bag:<site title>"); in the builder preview it's in memory and starts with two sample items.
+   - **Checkout** (`#checkout`, 5 designs: Two columns, Summary first, Card, Order panel, Three steps): details form, order summary, payment. Payments tab: "Payment buttons" (PayPal, Stripe, Square, Apple Pay, Google Pay, Venmo, Cash App — each a switch + the owner's own link; Bank transfer shows the owner's details + an order reference; Cash on delivery) or "I'll add my own" (a Place order button stays). PayPal.me links get the total appended. Orders tab: order emailed to the owner via FormSubmit AJAX (form-encoded, no JSON preflight) or "I'll set this up myself"; currency symbol; shipping note.
+   - Generator: `SHOPS`, `PRODUCTS`, `CARTS`, `CHECKOUTS`, `PAY_METHODS`, `STORE_BASE`; product/bag data embedded as `<script type="application/json" id="shopdata">`; `cartMarkup()` is shared by the generator and the finished site's script. Store parts are excluded from the combinations count.
+- Verified: sold store run as a customer on laptop and phone (add with size/qty, bag survives reload, totals, bank-transfer confirmation, PayPal.me opened with total, order email request); builder store flow; 262 test sites with every design at 390/1280, no overflow.
+
 
 **24 Oct 2026 (`v=20261024a`)**
 1. Price is now **$4.99** (`prices.readyMade`: USD 4.99 / AED 18 / GBP 3.99 / EUR 4.49), everywhere it shows.
@@ -184,7 +196,7 @@ Everything verified at 390 px and 1440 px (also 360 px and 1000 px where relevan
 
 ## 10. Ready-made sites (added 24 Sept 2026)
 
-Keep selling custom sites, and also sell one website with trillions of combinations to many people, cheaply. Price **$4.99** (from 24 Oct 2026; was $99.99).
+Keep selling custom sites, and also sell one website with trillions of combinations to many people, cheaply — now including online stores (see 8, 24 Oct second round). Price **$4.99** (from 24 Oct 2026; was $99.99).
 
 **Structure.** `index.html` is a two-option landing page (Ray's exact wording). The old homepage is `custom.html`. Wordmarks go to `index.html`.
 
@@ -197,4 +209,4 @@ Keep selling custom sites, and also sell one website with trillions of combinati
 **Open questions for Ray:** refund wording for ready-made sites; whether Monthly Care applies to them; delivery promise wording.
 
 ## 9. How to resume in a new chat
-Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Oct 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20261024a` and is zipped as `onwards-digital-website.zip`.
+Upload this file plus the latest `onwards-digital-website.zip` (the one delivered on 24 Oct 2026 is the current site). Ask Claude to read both before doing anything, then send snags with screenshots as usual. Next delivery bumps `v=` to something after `20261024c` and is zipped as `onwards-digital-website.zip`.
